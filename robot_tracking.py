@@ -30,7 +30,7 @@ ap.add_argument("-v", "--video",
 d_argument("-b", "--buffer", type=int, default=2, help="max buffer size")
 
 args = vars(ap.parse_args())
-
+	
 """
 Define lower and upper boundaries for coloured sticker
 Initialize list of events
@@ -38,6 +38,15 @@ Initialize list of events
 stickerLower =
 stickerUpper = #XKCD find using range-detecter script in imutils
 pts = deque(maxlen=args["buffer"])
+
+# if a video path was not supplied, grab the reference
+# to the webcam
+if not args.get("video", False):
+    camera = cv2.VideoCapture(0)
+ 
+# otherwise, grab a reference to the video file
+else:
+    camera = cv2.VideoCapture(args["video"])
 
 while True:
     #grab current frame
@@ -87,5 +96,6 @@ while True:
 camera.release()
 cv2.destroyAllWindows()
 
+	
 	
 
