@@ -15,6 +15,8 @@
 # webcam usage:
 # python robot_tracking.py 
 
+#if not working try using python 2
+
 # packages needed
 from collections import deque
 import numpy #must be installed
