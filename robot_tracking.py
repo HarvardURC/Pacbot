@@ -8,7 +8,12 @@
 #this is a modified version of the ball-tracking software at
 #http://www.pyimagesearch.com/2015/09/14/ball-tracking-with-opencv/
 
-#use pts to access a dequeue containing the sticker center point. 
+#use pts to access a dequeue containing the sticker center point.
+
+# video usage:
+# python robot_tracking.py --video [filename].mp4
+# webcam usage:
+# python robot_tracking.py 
 
 # packages needed
 from collections import deque
@@ -43,7 +48,7 @@ while True:
     if args.get("video") and not grabbed:
         break
 
-    #resize the frame, blur and convert to HSV collour space
+    #resize the frame, blur and convert to HSV colour space
     frame = imutils.resize(frame, width=600)
     blurred = cv2.GaussianBlur(frame, (11,11), 0)
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -83,3 +88,4 @@ camera.release()
 cv2.destroyAllWindows()
 
 	
+
