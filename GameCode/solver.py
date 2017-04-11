@@ -43,7 +43,7 @@ def getch():
     """
         getch() -> key character
     """
-    TIMEOUT = 0.4
+    TIMEOUT = 0.2
     signal.signal(signal.SIGALRM, input)
     signal.setitimer(signal.ITIMER_REAL, TIMEOUT)
     global previous

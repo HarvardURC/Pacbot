@@ -3,10 +3,16 @@ from variables import *
 from g import *
 from classes import *
 from display import *
+import layout
+from graphicsDisplay import *
 
 def main():   
     # initialize the game
-    game = GameState(grid)
+    lay = layout.getLayout("pacbotLayout.lay")
+    game = GameState(grid, lay)
+    graphics = PacmanGraphics(.5)
+    graphics.initialize(game.gstate)
+
     # display start postions
     display_game(game.pacbot,game.red,game.pink,game.orange,game.blue,game.score,game.lives,game.state,game.grid)
     move_pacman(game.pacbot,game.grid)
@@ -15,8 +21,17 @@ def main():
         game.grid[game.pacbot.pos[0]][game.pacbot.pos[1]] = e
         game.score += 1
         
+    counter = 1
     while game.game_on:
-        game.game_go()
+        if counter < 2:
+            graphics.update(game.gstate)
+            counter += 1
+        else:
+            counter = 1
+            graphics.update(game.gstate)
+            game.game_go()
+        move_pacman(game.pacbot,game.grid)
+
 
                         
 if __name__ == "__main__":

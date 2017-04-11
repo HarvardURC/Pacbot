@@ -11,7 +11,7 @@ class Configuration:
     """
     def __init__(self, x1, y1, x2, y2, color,direction):
         self.color = color
-        self.pos = { 'current' : (x1,y1), 'next' : (x2,y2)}
+        self.pos = { 'current' : (x1,y1), 'next' : (x2,y2), 'graph' : (y1 , 30 - x1)}
         self.direction = direction
         self.scared_counter = 8
      
@@ -32,8 +32,40 @@ class Configuration:
         self.direction = up
         self.scared_counter = 0
 
+    def getDirection(self):
+        self.direction
 
-        
+    def getPosition(self):
+        return self.pos['graph']
+
+    def change_pos(self):
+        (x,y) = self.pos['graph']
+        if self.direction == up:
+            self.pos['graph'] = (x , y + .5)
+        elif self.direction == down:
+            self.pos['graph'] = (x , y - .5)
+        elif self.direction == left:
+            self.pos['graph'] = (x -  .5 , y )
+        else:
+            self.pos['graph'] = (x + .5 , y )
+
+class AgentState:
+  """
+  AgentStates hold the state of an agent (configuration, speed, scared, etc).
+  """
+
+  def __init__( self, startConfiguration):
+    self.start = startConfiguration
+    self.configuration = startConfiguration
+    self.scaredTimer = startConfiguration.scared_counter
+  
+  def getPosition(self):
+    return self.configuration.getPosition()
+
+  def getDirection(self):
+    return self.configuration.getDirection()
+
+       
 class PacBot:
     """
         Allows initializing and updating information about PacBot
@@ -47,7 +79,7 @@ class PacBot:
         self.direction = direction
 
 class GameState:
-    def __init__(self,grid):
+    def __init__(self, grid, layout):
         self.game_on = True
         self.lives = 3
         self.state = chase
@@ -58,11 +90,32 @@ class GameState:
         self.frightened_counter = 0
         self.scatter_counter = 0
         self.frightened_eaten = 1
+        self.respawn = False
+
+        self.food = layout.food.copy()
+        self.capsules = layout.capsules[:]
+        self.layout = layout
+
+        self._foodEaten = None
+        self._capsuleEaten = None
+
+        self.agentStates = []
+
         self.pacbot = PacBot(23,13,left)
-        self.red = Configuration(11,13,11,12, 'red',left)
-        self.pink = Configuration(15,14,14,14, 'pink',up)
-        self.orange = Configuration(15,15,14,15,'orange',up)
-        self.blue = Configuration(15,12,14,12,'blue',up)
+
+        self.agentStates.append(Configuration(11,13,11,12, 'red',left))
+        self.agentStates.append(Configuration(15,14,14,14, 'pink',up))
+        self.agentStates.append(Configuration(15,15,14,15,'orange',up))
+        self.agentStates.append(Configuration(15,12,14,12,'blue',up))
+
+        self.red = self.agentStates[0]
+        self.pink = self.agentStates[1]
+        self.orange = self.agentStates[2]
+        self.blue = self.agentStates[3]
+
+        self.gstate = {'layout' : self.layout, 'agentStates' : self.agentStates,
+                        'respawn' : self.respawn, '_foodEaten' : self._foodEaten,
+                        '_capsuleEaten' : self._capsuleEaten}
 
     def change_state(self,state):
         if state == scatter:
@@ -109,15 +162,19 @@ class GameState:
         if self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] == o:
             self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] = e
             self.score += 10
+            self._foodEaten = (self.pacbot.pos[1], 30 - self.pacbot.pos[0])
         if self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] == O:
             self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] = e
             self.score += 50
             self.change_state(frightened)
             self.frightened_counter = 50
+            self._capsuleEaten = (self.pacbot.pos[1] , 30 - self.pacbot.pos[0])
 
 
 
     def game_go(self):
+        self._capsuleEaten = None
+        self._foodEaten = None
         self.update_ghosts()
 
         clean_screen(33)
@@ -204,4 +261,5 @@ class GameState:
                 
                 else:
                     self.update_score()
+
                     
