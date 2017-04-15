@@ -4,7 +4,6 @@ import random
 import sys
 import tty, termios
 import signal
-
 def move_pacman(pacbot,grid):
     """ 
         Obtains a keyboard press from user through the stdin and updates the pacman position as commanded
@@ -43,7 +42,7 @@ def getch():
     """
         getch() -> key character
     """
-    TIMEOUT = 0.2
+    TIMEOUT = 0.001
     signal.signal(signal.SIGALRM, input)
     signal.setitimer(signal.ITIMER_REAL, TIMEOUT)
     global previous
@@ -63,7 +62,7 @@ def getch():
         
         
 
-def find_possible(pos,direction,grid):
+def find_possible(ghost, pos,direction,grid):
     """
         Finds and returns all possible tiles that the ghost can move to as a list of tuples
     """
@@ -71,9 +70,10 @@ def find_possible(pos,direction,grid):
     (x,y) = pos["next"]
     possible=[]
     if pos["next"] == (14,27) and direction == left:
-        possible.append((14,26))
+        possible.append((14,26))    
     elif pos["next"] == (14,0) and direction == right:
-        possible.append((14,1))
+        possible.append((14,1)) 
+
     else:
         if (x+1,y) != pos["current"] and grid[x+1][y] != I and grid[x+1][y] != n:
             possible.append((x+1,y))
@@ -99,18 +99,22 @@ def get_direction (pos_prev,pos_new,direction):
     else:
         return direction
 
-def next_move(pacbot, ghost,grid,state,red_ghost=None):
+def next_move(pacbot, ghost,grid,state,red_ghost=None,scattered = False):
     """
         Finds and returns the possible tile with the shortest distance to the target as a tuple
     """
     if ghost.pos["next"] == (14,0) and ghost.direction == left:
+        ghost.switch((28 ,16))
         return (14,27), left
 
+
     elif ghost.pos["next"] == (14,27) and ghost.direction == right:
+        ghost.switch((-1,16))
         return (14,0), right
 
+
     else:
-        possible = find_possible(ghost.pos,ghost.direction,grid)
+        possible = find_possible(ghost, ghost.pos,ghost.direction,grid)
         third = None
         index = 0
         distances = []
@@ -168,8 +172,7 @@ def next_move(pacbot, ghost,grid,state,red_ghost=None):
             return third, get_direction(ghost.pos["next"],third,ghost.direction)
 
         elif state == scatter:
-            if scatter_start < 5:
-                scatter_start  += 1
+            if scattered:
                 return ghost.pos["current"], get_direction(ghost.pos["next"],ghost.pos["current"],ghost.direction)
 
 

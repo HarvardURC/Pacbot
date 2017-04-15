@@ -23,14 +23,14 @@ def main():
         
     counter = 1
     while game.game_on:
-        if counter < 2:
-            graphics.update(game.gstate)
-            counter += 1
-        else:
-            counter = 1
-            graphics.update(game.gstate)
-            game.game_go()
-        move_pacman(game.pacbot,game.grid)
+        # if counter < 2:
+        #     graphics.update(game.gstate)
+        #     counter += 1
+        # else:
+        #     counter = 1
+        graphics.update(game.gstate)
+        game.game_go()
+        
 
 
                         
