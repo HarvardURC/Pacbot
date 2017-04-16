@@ -19,4 +19,19 @@ int main(void)
 	pinMode(polarPinR, OUTPUT);
 
 	printf("Motor pins set! Press CTRL+C to exit!\n");
+
+	pwmWrite(pwmPinL, 700);
+    digitalWrite(polarPinL, HIGH);
+
+    delay(1000);
+
+    printf("Left motor running!");
+
+    delay(1000);
+
+    pwmWrite(pwmPinR, 700);
+    digitalWrite(polarPinR, HIGH);
+
+    printf("Right motor running!");
+
 }
