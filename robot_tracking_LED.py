@@ -29,7 +29,7 @@ ap = argparse.ArgumentParser()
 
 ap.add_argument("-v", "--video",
     help = "video file path (optional), else webcam will be used")
-d_argument("-b", "--buffer", type=int, default=2, help="max buffer size")
+ap.d_argument("-b", "--buffer", type=int, default=2, help="max buffer size")
 
 args = vars(ap.parse_args())
 	
@@ -37,8 +37,8 @@ args = vars(ap.parse_args())
 Define lower and upper boundaries for coloured sticker
 Initialize list of events
 """
-stickerLower =
-stickerUpper = #XKCD find using range-detecter script in imutils
+stickerLower = ""#XKCD
+stickerUpper = ""#XKCD find using range-detecter script in imutils
 pts = deque(maxlen=args["buffer"])
 
 # if a video path was not supplied, grab the reference

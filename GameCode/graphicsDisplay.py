@@ -8,21 +8,22 @@ import math, time
 # Most code by Dan Klein and John Denero written or rewritten for cs188, UC Berkeley.
 # Some code from a Pacman implementation by LiveWires, and used / modified with permission.
 
-FRAME_TIME=0.001 # The time that pacman's animation last
-PAUSE_TIME=0   # Pause time between frames
-DEFAULT_GRID_SIZE = 28
+FRAME_TIME=0.000001 # The time that pacman's animation last
+PAUSE_TIME= 0   # Pause time between frames
+DEFAULT_GRID_SIZE = 30
 INFO_PANE_HEIGHT = 35
 BACKGROUND_COLOR = formatColor(0,0,0)    
 WALL_COLOR = formatColor(0.0/255.0, 51.0/255.0, 255.0/255.0)
 INFO_PANE_COLOR = formatColor(.4,.4,0)
 SCORE_COLOR = formatColor(.9, .9, .9)
 
-GHOST_COLORS = []                       
-GHOST_COLORS.append(formatColor(200.0/255.0,200.0/255.0,61.0/255))
-GHOST_COLORS.append(formatColor(0.0/255.0,150.0/255.0,200.0/255.0))
-GHOST_COLORS.append(formatColor(221.0/255.0,0,0))
-GHOST_COLORS.append(formatColor(0.0/255.0,200.0/255.0,153.0/255.0))
+GHOST_COLORS = []  
+GHOST_COLORS.append(formatColor(221.0/255.0,0,0)) 
+GHOST_COLORS.append(formatColor(234.0/255.0,130.0/255.0,229.0/255.0)) 
 GHOST_COLORS.append(formatColor(255.0/255.0,150.0/255.0,0))
+GHOST_COLORS.append(formatColor(70.0/255.0,191.0/255.0,238.0/255.0))  
+
+
 GHOST_SHAPE = [                
     ( 0,    0.3 ),            
     ( 0.25, 0.75 ),           
@@ -56,6 +57,36 @@ CAPSULE_SIZE = 0.25
 # Drawing walls
 WALL_RADIUS = 0.15
 
+class InfoPane:
+  def __init__(self, layout, gridSize):
+    self.gridSize = gridSize
+    self.width = (layout.width) * gridSize
+    self.base = (layout.height + 1) * gridSize
+    self.height = INFO_PANE_HEIGHT 
+    self.drawPane()
+
+  def toScreen(self, pos, y = None):
+    """
+      Translates a point relative from the bottom left of the info pane.
+    """
+    if y == None:
+      x,y = pos
+    else:
+      x = pos
+      
+    x = self.gridSize + x # Margin
+    y = self.base + y 
+    return x,y
+
+  def drawPane(self):
+    color = formatColor(255.0/255.0,255.0/255.0,61.0/255)
+    size = 24
+    self.scoreText = text( self.toScreen(0, 0), color, "SCORE:    0", "Times", size, "bold")
+    
+  def updateScore(self, score):
+    changeText(self.scoreText, "SCORE: % 4d" % score)
+    
+
 class PacmanGraphics:
     def __init__(self, zoom=1.0):  
         self.have_window = 0
@@ -74,11 +105,12 @@ class PacmanGraphics:
         self.width = layout.width
         self.height = layout.height
         self.make_window(self.width, self.height)
+        self.infoPane = InfoPane(layout, self.gridSize)
         self.currentState = layout
 
     def drawStaticObjects(self, state):
         layout = self.layout
-        self.drawWalls(layout.walls)
+        # self.drawWalls(layout.walls)
         self.food = self.drawFood(layout.food)
         self.capsules = self.drawCapsules(layout.capsules)
         refresh
@@ -90,36 +122,42 @@ class PacmanGraphics:
           #   image = self.drawPacman(agent, index)
           #   self.agentImages.append( (agent, image) )
           # else:  
-            image = self.drawGhost(agent, index)
+            image = self.drawGhost(agent, index, state['scared'])
             self.agentImages.append( (agent, image) )
         refresh
 
     def update(self, newState):
         if newState['respawn']:
-            sys.exit()
+          for agentIndex in range(4):
+                agentState = newState['agentStates'][agentIndex]
 
+
+                prevState, prevImage = self.agentImages[agentIndex]
+
+                self.moveGhost(agentState, agentIndex, prevState, prevImage, newState["scared"], True)
+                self.agentImages[agentIndex] = (agentState, prevImage)
+          newState["respawn"] = False
+          sleep(5)
         else:
             for agentIndex in range(4):
                 agentState = newState['agentStates'][agentIndex]
 
 
-                if agentIndex == 0 and PAUSE_TIME > 0:
-                  sleep(PAUSE_TIME)
-                  refresh
-
                 prevState, prevImage = self.agentImages[agentIndex]
-                # if agentState.isPacman:
-                #   self.animatePacman(agentState, prevState, prevImage)
-                # else:
 
-                self.moveGhost(agentState, agentIndex, prevState, prevImage)
+                self.moveGhost(agentState, agentIndex, prevState, prevImage, newState["scared"], agentState.homed)
                 self.agentImages[agentIndex] = (agentState, prevImage)
+
+                if agentState.homed:
+                  agentState.dehome()
               
-        if newState['_foodEaten'] != None:
-          self.removeFood(newState._foodEaten, self.food)
-        if newState['_capsuleEaten'] != None:
-          self.removeCapsule(newState['_capsuleEaten'], self.capsules)
-        # self.infoPane.updateScore(newState.score)
+        if newState['foodEaten'] != None:
+          self.removeFood(newState["foodEaten"], self.food)
+          
+        if newState['capsuleEaten'] != None:
+          self.removeCapsule(newState['capsuleEaten'], self.capsules)
+        
+        self.infoPane.updateScore(0)
 
     def make_window(self, width, height):
         grid_width = (width-1) * self.gridSize 
@@ -152,13 +190,13 @@ class PacmanGraphics:
         # Overridden in FirstPersonGraphics
         return ghost.getPosition()
 
-    def getGhostColor(self, ghost, ghostIndex):
-        if ghost.scared_counter < 8:
+    def getGhostColor(self, ghost, ghostIndex, scared):
+        if scared:
           return SCARED_COLOR
         else:
           return GHOST_COLORS[ghostIndex]
 
-    def drawGhost(self, ghost, agentIndex):
+    def drawGhost(self, ghost, agentIndex, scared):
         pos = self.getGhostPos(ghost)
         dir = ghost.direction
         (screen_x, screen_y) = (self.to_screen(pos)) 
@@ -166,7 +204,7 @@ class PacmanGraphics:
         for (x, y) in GHOST_SHAPE:
           coords.append((x*self.gridSize*GHOST_SIZE + screen_x, y*self.gridSize*GHOST_SIZE + screen_y))
 
-        colour = self.getGhostColor(ghost, agentIndex)
+        colour = self.getGhostColor(ghost, agentIndex, scared)
         body = polygon(coords, colour, filled = 1)
         WHITE = formatColor(1.0, 1.0, 1.0)
         BLACK = formatColor(0.0, 0.0, 0.0)
@@ -196,23 +234,31 @@ class PacmanGraphics:
         return ghostImageParts
 
     def moveEyes(self, pos, dir, eyes):
-        (screen_x, screen_y) = (self.to_screen(pos) ) 
+        (screen_x, screen_y) = (self.to_screen(pos)) 
         dx = 0
         dy = 0
-        if dir == 'North':
+        if dir == 'up':
           dy = -0.2
-        if dir == 'South':
+        if dir == 'down':
           dy = 0.2
-        if dir == 'East':
+        if dir == 'right':
           dx = 0.2
-        if dir == 'West':
+        if dir == 'left':
           dx = -0.2
         moveCircle(eyes[0],(screen_x+self.gridSize*GHOST_SIZE*(-0.3+dx/1.5), screen_y-self.gridSize*GHOST_SIZE*(0.3-dy/1.5)), self.gridSize*GHOST_SIZE*0.2)
         moveCircle(eyes[1],(screen_x+self.gridSize*GHOST_SIZE*(0.3+dx/1.5), screen_y-self.gridSize*GHOST_SIZE*(0.3-dy/1.5)), self.gridSize*GHOST_SIZE*0.2)
         moveCircle(eyes[2],(screen_x+self.gridSize*GHOST_SIZE*(-0.3+dx), screen_y-self.gridSize*GHOST_SIZE*(0.3-dy)), self.gridSize*GHOST_SIZE*0.08)
         moveCircle(eyes[3],(screen_x+self.gridSize*GHOST_SIZE*(0.3+dx), screen_y-self.gridSize*GHOST_SIZE*(0.3-dy)), self.gridSize*GHOST_SIZE*0.08)
     
-    def moveGhost(self, ghost, ghostIndex, prevGhost, ghostImageParts):
+    def moveGhost(self, ghost, ghostIndex, prevGhost, ghostImageParts, scared, respawn):
+      if respawn:
+        ghost.change_pos()
+        for ghostImagePart in ghostImageParts:
+          move_to(ghostImagePart, self.to_screen(self.getGhostPos(ghost)))
+        refresh
+
+      else:
+
         old_x, old_y = self.to_screen(self.getGhostPos(prevGhost))
         ghost.change_pos()
         new_x, new_y = self.to_screen(self.getGhostPos(ghost))
@@ -221,14 +267,16 @@ class PacmanGraphics:
         for ghostImagePart in ghostImageParts:
           move_by(ghostImagePart, delta)
         refresh
-        
-        if ghost.scared_counter < 8:
-          color = SCARED_COLOR
-        else:
-          color = GHOST_COLORS[ghostIndex]
-        edit(ghostImageParts[0], ('fill', color), ('outline', color))  
-        self.moveEyes(self.getGhostPos(ghost), ghost.direction, ghostImageParts[-4:])
-        refresh
+          
+      if scared:
+        color = SCARED_COLOR
+      else:
+        color = GHOST_COLORS[ghostIndex]
+
+     
+      edit(ghostImageParts[0], ('fill', color), ('outline', color))  
+      self.moveEyes(self.getGhostPos(ghost), ghost.direction, ghostImageParts[-4:])
+      refresh
 
     def finish(self):
         end_graphics()
