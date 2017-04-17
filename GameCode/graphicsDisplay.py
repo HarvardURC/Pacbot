@@ -158,6 +158,7 @@ class PacmanGraphics:
           self.removeCapsule(newState['capsuleEaten'], self.capsules)
         
         self.infoPane.updateScore(0)
+        
 
     def make_window(self, width, height):
         grid_width = (width-1) * self.gridSize 

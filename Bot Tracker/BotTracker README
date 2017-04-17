@@ -1,0 +1,46 @@
+BotTracker.py README
+
+
+Overview:
+
+BotTracker uses OpenCV 2.4 to detect and localize a yellow shape. It can give
+the location and direction of the pacbot in game coordinates. To use bottracker,
+include the line
+
+from BotTracker import BotTracker
+
+at the top of the file. To instantiate a bottracker object, either instantiate
+with no arguments or with the camera number (defaults to 0) of either 0 or 1 to
+distinguish between arena camera and built-in webcam.
+
+
+Public Methods:
+
+get_bot_location(): Returns the pacbot's location in terms of in-game
+	coordinates. Bottom left corner of arena is (0,0), top right is (27,30).
+	A call to this method currently takes about .08 seconds, but most
+	computation time comes from image filtering. With the tops of the walls
+	covered we will probably need significantly less filtering, so I think a
+	call will ultimately take about half this time.
+
+get_bot_direction(): Returns the direction of the pacbot. Return value will be
+	the string "EAST", "WEST", "NORTH", or "SOUTH". Direction cannot be None and
+	is calculated solely based on the current square the pacbot is in compared
+	to the previous square it occupied. Direction only updates when
+	"get_bot_location()" is called, so it assumes that "get_bot_location" is
+	called frequently enough that the robot cannot traverse more than a square
+	between calls.
+
+display_grid_image(): Enters an infinite loop and displays webcam video with the
+	pacbot grid superimposed. This is for visually tuning grid alignment.
+
+set_grid_edges(left, right, top, bottom): Sets the edges of the pacbot grid to
+	their pixel positions in the camera frame. The camera frame is 720 x 1280, 
+	with the y-axis increasing from top to bottom (so top should be a smaller
+	number than bottom). Note that these values can be outside of the video
+	frame if the edges of the arena are right on the edges of the camera frame.
+	The best way to determine this is to guess and check using 
+	display_grid_image() to test. Note that left, right, top and bottom refer
+	to the values from the camera image (which is actually the pacman arena
+	rotated -90 degrees), so "top" in this case actually corresponds to the
+	right side of the arena.

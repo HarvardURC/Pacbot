@@ -38,7 +38,7 @@ def sleep( secs ):
         _root_window.after( int( 10*secs ), _root_window.quit )
         _root_window.mainloop()
 
-def begin_graphics( width=35, height=30, color=formatColor(0,0,0), title=None ):
+def begin_graphics( width=700, height=480, color=formatColor(0,0,0), title=None ):
 
     global _root_window, _canvas, _canvas_x, _canvas_y, _canvas_xs, _canvas_ys
 
@@ -143,7 +143,10 @@ def text( pos, color, contents, font='Helvetica', size=12, style='normal'):
     global _canvas_x, _canvas_y
     x,y = pos
     font = (font, str(size), style)
-    return _canvas.create_text(x,y,anchor='nw', fill=color, text=contents, font=font)
+    texts = _canvas.create_text(x,y,anchor='nw', fill=color)
+    _canvas.itemconfig(texts, text=contents)
+    _canvas.insert(texts, size, style)
+    return texts
 
 def changeText(id, newText, font=None, size=12, style='normal'):
   _canvas.itemconfigure(id, text=newText)
