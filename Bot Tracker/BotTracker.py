@@ -93,6 +93,7 @@ class BotTracker:
 		self.cap.set(4, 720) # set frame height
 		self.previous_location = (-1, -1)
 		self.current_location = (-1, -2)
+		self.direction = "right"
 
 		# cap.release()
 		# cv2.destroyAllWindows()
@@ -108,7 +109,13 @@ class BotTracker:
 			self.previous_location = self.current_location
 			self.current_location = game_loc
 		self.current_location = game_loc
-		return game_loc
+
+		# the game code coordinate system has the upper left corner as (0,0) and lower right as (27,30)
+		# so the values return have been altered to match the game coordinate system
+		return game_loc[0], 30 - game_loc[1]
+		
+		# return game_loc
+
 		# if cv2.waitKey(1) & 0xFF == ord('q'):
 		# 		break
 
@@ -117,16 +124,26 @@ class BotTracker:
 		new_y = self.current_location[1]
 		last_x = self.previous_location[0]
 		last_y = self.previous_location[1]
+		
+		# the code always needs a direction, so it might be a problem if the pacbot is 
+		# still in the same grid after more than one call to get_bot_direction
+		# added a new variable that stores direction which is returned if in same grid
+		# direction name has been changed to match game's naming system 
 		if new_x > last_x:
-			return "EAST"
+			self.direction = "left"
+			# return "EAST"
 		elif new_x < last_x:
-			return "WEST"
+			self.direction = "left"
+			# return "WEST"
 		elif new_y > last_y:
-			return "NORTH"
+			self.direction = "up"
+			# return "NORTH"
 		elif new_y < last_y:
-			return "SOUTH"
-		else:
-			return "NO DIRECTION"
+			self.direction = "down"
+			# return "SOUTH"
+		return self.direction
+		# else:
+		# 	return "NO DIRECTION"
 
 	def display_grid_image(self):
 		while(True):
