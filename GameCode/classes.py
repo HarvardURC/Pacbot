@@ -204,10 +204,10 @@ class GameState:
         clean_screen(33)
         display_game(self.pacbot,self.red,self.pink,self.orange,self.blue,self.score,self.lives,self.state,self.grid)
         
-        x, y = self.gstate["agentStates"][1].getPosition()
-        print(str(x) + " " + str(y))
-        x, y = self.gstate["agentStates"][1].pos["current"]
-        print(str(y) + " " + str(30-x))
+        # x, y = self.gstate["agentStates"][1].getPosition()
+        # print(str(x) + " " + str(y))
+        # x, y = self.gstate["agentStates"][1].pos["current"]
+        # print(str(y) + " " + str(30-x))
         if self.game_on:
             # update ghost positions
             if self.state == scatter:
