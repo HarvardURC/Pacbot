@@ -1,11 +1,13 @@
 #High Level Game code for PacGhosts
 from variables import *
+from BotTracker import *
+from graphicsDisplay import *
 from g import *
 from classes import *
 from display import *
 import layout
-from graphicsDisplay import *
-from BotTracker import *
+
+
 
 def main():   
     # initialize the game
@@ -31,7 +33,17 @@ def main():
         #     counter = 1
         graphics.update(game.gstate)
         game.game_go()
-        
+
+class dotdict(dict):
+    __getattr__ = dict.get
+    __setattr__ = dict.__setitem__
+    __delattr__ = dict.__delitem__
+
+def getPacbot(pacbot_pos, pacbot_direction):
+    pacbot = {}
+    pacbot["pos"] = pacbot_pos
+    pacbot["direction"] = pacbot_direction
+    return dotdict(pacbot)
 
 
                         

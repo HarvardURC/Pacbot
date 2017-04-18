@@ -4,7 +4,7 @@ import random
 import string
 import time
 import types
-import tkinter
+import Tkinter
 
 _Windows = sys.platform == 'win32'	# True if on Win95/98/NT
 
@@ -52,9 +52,15 @@ def begin_graphics( width=700, height=480, color=formatColor(0,0,0), title=None 
     _canvas_xs, _canvas_ys = width-1, height-1
     _canvas_x, _canvas_y  = 0, _canvas_ys
 
+    # Create the root window
+    _root_window = Tkinter.Tk()
+    _root_window.protocol( 'WM_DELETE_WINDOW', _destroy_window )
+    _root_window.title( title or 'Graphics Window' )
+    _root_window.resizable( 0, 0 )
+
     # Create the canvas object
     try:
-      _canvas = tkinter.Canvas( _root_window, width=width, height=height,background=color)
+      _canvas = Tkinter.Canvas( _root_window, width=width, height=height,background=color)
       _canvas.pack()
       _canvas.update()
     except:
@@ -163,8 +169,8 @@ def line(here, there, color =  formatColor(0,0,0), width=2):
 
 
 def remove_from_screen( x, 
-                       d_o_e=tkinter.Tk().tk.dooneevent,
-                       d_w=tkinter._tkinter.DONT_WAIT):
+                       d_o_e=Tkinter.tkinter.dooneevent,
+                       d_w=Tkinter.tkinter.DONT_WAIT):
     _canvas.delete( x)
     d_o_e( d_w )
 
@@ -175,8 +181,8 @@ def _adjust_coords( coord_list, x, y ):
     return coord_list
 
 def move_to( object, x, y=None, 
-            d_o_e=tkinter.Tk().tk.dooneevent,
-            d_w=tkinter._tkinter.DONT_WAIT):
+            d_o_e=Tkinter.tkinter.dooneevent,
+            d_w=Tkinter.tkinter.DONT_WAIT):
     if y is None:
         try: x, y = x
         except: raise  'incomprehensible coordinates' 
@@ -197,8 +203,8 @@ def move_to( object, x, y=None,
     d_o_e( d_w )
     
 def move_by( object, x, y=None, 
-            d_o_e=tkinter.Tk().tk.dooneevent,
-            d_w=tkinter._tkinter.DONT_WAIT):
+            d_o_e=Tkinter.tkinter.dooneevent,
+            d_w=Tkinter.tkinter.DONT_WAIT ):
     if y is None:
         try: x, y = x
         except: raise Exception

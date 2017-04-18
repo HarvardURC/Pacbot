@@ -1,5 +1,5 @@
+from __future__ import print_function
 import sys
-from termcolor import colored
 
 
 scatter = "Scatter"
@@ -33,77 +33,77 @@ def display_game(pacbot,red_ghost,pink_ghost,orange_ghost,blue_ghost,score,lives
 
                 if state == frightened:
                     if (row,col) == pacbot.pos:
-                        print(colored("P", "yellow"),end="")
+                        print(("P"),end='')
                     elif (row,col) == red_ghost.pos["current"] or (row,col) == pink_ghost.pos["current"] or (row,col) == orange_ghost.pos["current"] or (row,col) == blue_ghost.pos["current"]: 
-                        print(colored("G", "grey"),end="")
+                        print(("G"),end='')
                     elif grid[row][col] == o:
-                        print(".",end="")
+                        print(".",end='')
                     elif grid[row][col] == O:
-                        print(colored("o", "red"),end="")
+                        print(("o"),end='')
                     elif grid[row][col] == e or grid[row][col] == n:
-                        print(" ",end="")
+                        print(" ",end='')
                     elif grid[row][col] == I:
-                        print("0",end="")
+                        print("0",end='')
                 else:
                     if (row,col) == pacbot.pos and (row,col) == red_ghost.pos["current"]:
-                        print("!",end="")
+                        print("!",end='')
                     elif (row,col) == pacbot.pos and (row,col) == pink_ghost.pos["current"]:
-                        print("!",end="")
+                        print("!",end='')
                     elif (row,col) == pacbot.pos and (row,col) == orange_ghost.pos["current"]:
-                        print("!",end="")
+                        print("!",end='')
                     elif (row,col) == pacbot.pos and (row,col) == blue_ghost.pos["current"]:
-                        print("!",end="")
+                        print("!",end='')
                     elif (row,col) == pacbot.pos:
-                        print(colored("P", "yellow"),end="")
+                        print(("P"),end='')
                     elif (row,col) == red_ghost.pos["current"]:
-                        print(colored("G", "red"),end="")
+                        print(("G"),end='')
                     elif (row,col) == pink_ghost.pos["current"]:
-                        print(colored("G", "magenta"),end="")
+                        print(("G"),end='')
                     elif (row,col) == orange_ghost.pos["current"]:
-                        print(colored("G", "yellow"),end="")
+                        print(("G"),end='')
                     elif (row,col) == blue_ghost.pos["current"]:
-                        print(colored("G", "blue"),end="")
+                        print(("G"),end='')
                     elif grid[row][col] == o:
-                        print(".",end="")
+                        print(".",end='')
                     elif grid[row][col] == O:
-                        print(colored("o", "red"),end="")
+                        print(("o"),end='')
                     elif grid[row][col] == e or grid[row][col] == n:
-                        print(" ",end="")
+                        print(" ",end='')
                     elif grid[row][col] == I:
-                        print("0",end="")
+                        print("0",end='')
             else:
                 if state == frightened:
                     if (row,col) == pacbot.pos:
-                        print(colored("P", "yellow"),end="")
+                        print(("P"),end='')
                     elif (row,col) == red_ghost.pos["current"] or (row,col) == pink_ghost.pos["current"] or (row,col) == orange_ghost.pos["current"] or (row,col) == blue_ghost.pos["current"]: 
-                        print(colored("G", "grey"),end="")
+                        print(("G"),end='')
                     elif grid[row][col] == o:
-                        print(".",end="")
+                        print(".",end='')
                     elif grid[row][col] == O:
-                        print(colored("o", "red"),end="")
+                        print(("o"),end='')
                     elif grid[row][col] == e or grid[row][col] == n:
-                        print(" ",end="")
+                        print(" ",end='')
                     elif grid[row][col] == I:
-                        print("0",end="")
+                        print("0",end='')
                 else:
                     if (row,col) == pacbot.pos:
-                        print(colored("P", "yellow"),end="")
+                        print(("P"),end='')
                     elif (row,col) == red_ghost.pos["current"]:
-                        print(colored("G", "red"),end="")
+                        print(("G"),end='')
                     elif (row,col) == pink_ghost.pos["current"]:
-                        print(colored("G", "magenta"),end="")
+                        print(("G"),end='')
                     elif (row,col) == orange_ghost.pos["current"]:
-                        print(colored("G", "yellow"),end="")
+                        print(("G"),end='')
                     elif (row,col) == blue_ghost.pos["current"]:
-                        print(colored("G", "blue"),end="")
+                        print(("G"),end='')
                     elif grid[row][col] == o:
-                        print(".",end="")
+                        print(".",end='')
                     elif grid[row][col] == O:
-                        print(colored("o", "red"),end="")
+                        print(("o"),end='')
                     elif grid[row][col] == e or grid[row][col] == n:
-                        print(" ",end="")
+                        print(" ",end='')
                     elif grid[row][col] == I:
-                        print("0",end="")
+                        print("0",end='')
 
         print()
     print()
