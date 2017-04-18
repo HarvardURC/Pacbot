@@ -5,6 +5,7 @@ from classes import *
 from display import *
 import layout
 from graphicsDisplay import *
+from BotTracker import *
 
 def main():   
     # initialize the game
