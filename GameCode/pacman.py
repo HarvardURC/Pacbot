@@ -8,6 +8,7 @@ from graphicsDisplay import *
 from BotTracker import *
 from makePacbot import *
 import random
+from flask import Flask, jsonify
 
 from threading import Thread, Lock
 import time
@@ -20,6 +21,39 @@ game = GameState(grid, lay, pacbot)
 botTracker = BotTracker()
 graphics = None
 
+app = Flask("Pacman")
+
+@app.route('/pac-bot')
+def pacBot():
+    if game.game_on:
+        response = {}
+        response['pacbot'] = {
+            'x': game.pacbot.pos['current'][0],
+            'y': game.pacbot.pos['current'][1]
+        }
+        response['ghost1'] = {
+            'x': game.red.pos['current'][0],
+            'y': game.red.pos['current'][1]
+        }
+        response['ghost2'] = {
+            'x': game.pink.pos['current'][0],
+            'y': game.pink.pos['current'][1]
+        }
+        response['ghost3'] = {
+            'x': game.orange.pos['current'][0],
+            'y': game.orange.pos['current'][1]
+        }
+        response['ghost4'] = {
+            'x': game.blue.pos['current'][0],
+            'y': game.blue.pos['current'][1]
+        }
+        if (game.state == frightened):
+            response['specialTimer'] = game.frightened_counter
+        return jsonify(response)
+    else:
+        return jsonify({'stop': True})
+
+
 def main():
     global lay, pacbot, game, botTracker
     graphics = PacmanGraphics(0.5)
@@ -31,9 +65,14 @@ def main():
     direction = botTracker.get_bot_direction()
     pacbot.update(position, direction)
 
+    Thread(target = appRunner).start()
     Thread(target = trackerUpdate).start()
-    Thread(target = gameUpdate(graphics), ).start()
 
+    Thread(target = gameUpdate(graphics)).start()
+
+def appRunner():
+    app.run(host="0.0.0.0", port=8080)
+    
 def trackerUpdate():
 
     while game.game_on: 
@@ -65,6 +104,7 @@ def gameUpdate(graphics):
     
     counter = 1
     while game.game_on:
+        time.sleep(.1)
     
         # if counter < 2:
         #     graphics.update(game.gstate)
