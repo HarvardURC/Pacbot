@@ -14,7 +14,7 @@ import time
 lock = Lock()
 
 lay = layout.getLayout("pacbotLayout.lay")
-pacbot = PacBot((23,26), "right")
+pacbot = PacBot((23,13), "right")
 
 game = GameState(grid, lay, pacbot)
 botTracker = BotTracker()
@@ -27,18 +27,18 @@ def main():
     graphics.initialize(game.gstate)
 
     
-    position = (23,26)
+    position = botTracker.get_bot_location()
     direction = botTracker.get_bot_direction()
     pacbot.update(position, direction)
 
     Thread(target = trackerUpdate).start()
-    Thread(target = gameUpdate(graphics)).start()
+    Thread(target = gameUpdate(graphics), ).start()
 
 def trackerUpdate():
 
     while game.game_on: 
         lock.acquire()
-        position = (-1,-1)
+        position = botTracker.get_bot_location()
         direction = botTracker.get_bot_direction()
         pacbot.update(position, direction)
         try:
@@ -71,7 +71,7 @@ def gameUpdate(graphics):
         #     counter += 1
         # else:
         #     counter = 1
-        position =(23,12)
+        position = botTracker.get_bot_location()
         direction = botTracker.get_bot_direction()
 
         graphics.update(game.gstate)
