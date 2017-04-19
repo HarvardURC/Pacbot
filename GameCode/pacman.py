@@ -8,6 +8,7 @@ from graphicsDisplay import *
 from BotTracker import *
 from makePacbot import *
 import random
+from flask import Flask, jsonify
 
 from threading import Thread, Lock
 import time
@@ -19,6 +20,35 @@ pacbot = PacBot((23,26), "right")
 game = GameState(grid, lay, pacbot)
 botTracker = BotTracker()
 graphics = None
+
+app = Flask("Pacman")
+
+@app.route('/pac-bot')
+def pacBot():
+    if game.game_on:
+        response = {}
+        response['ghost1'] = {
+            'x': game.red.pos['current'][0],
+            'y': game.red.pos['current'][1]
+        }
+        response['ghost2'] = {
+            'x': game.pink.pos['current'][0],
+            'y': game.pink.pos['current'][1]
+        }
+        response['ghost3'] = {
+            'x': game.orange.pos['current'][0],
+            'y': game.orange.pos['current'][1]
+        }
+        response['ghost4'] = {
+            'x': game.blue.pos['current'][0],
+            'y': game.blue.pos['current'][1]
+        }
+        if (game.state == frightened):
+            response['specialTimer'] = game.frightened_counter
+        return jsonify(response)
+    else:
+        return jsonify({'stop': True})
+
 
 def main():
     global lay, pacbot, game, botTracker
@@ -34,6 +64,9 @@ def main():
     Thread(target = trackerUpdate).start()
     Thread(target = gameUpdate(graphics)).start()
 
+    app.run()
+    
+    
 def trackerUpdate():
 
     while game.game_on: 
