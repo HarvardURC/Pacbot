@@ -2,9 +2,9 @@ import numpy as np
 import cv2
 
 # Tune constaxnts for grid
-LEFT_EDGE = 263
-RIGHT_EDGE = 1103
-TOP_EDGE = -17
+LEFT_EDGE = 273
+RIGHT_EDGE = 1107
+TOP_EDGE = -20
 BOTTOM_EDGE = 735
 
 #28 grid spaces across
@@ -42,11 +42,12 @@ class BotTracker:
 			cv2.line(hsv, p1, p2, draw_col)
 
 
-		cv2.imshow('Grid', hsv)
-		cv2.waitKey(1)
-		## box around target pixel for testing
-		# pt = (600, 350)
+		# cv2.imshow('Grid', hsv)
+		# cv2.waitKey(1)
+		# # box around target pixel for testing
+		# pt = (350, 600)
 		# cv2.circle(hsv, pt, 3, draw_col, thickness =1)
+		# print hsv[600][350]
 
 
 		return hsv
@@ -54,14 +55,14 @@ class BotTracker:
 	def __detect_bot(self, hsv_image):
 
 		# Experimentally determined LED thresholds
-		BOT_MIN = np.array([28,12,100], np.uint8)
+		BOT_MIN = np.array([28,8,100], np.uint8)
 		BOT_MAX = np.array([32,255,255], np.uint8)
 
 		thresholded_image = cv2.inRange(hsv_image, BOT_MIN, BOT_MAX)
 		thresholded_image = cv2.medianBlur(thresholded_image, 15)
 
-		cv2.imshow('Yellow Tresh', thresholded_image)
-		cv2.waitKey(1)
+		# cv2.imshow('Yellow Tresh', thresholded_image)
+		# cv2.waitKey(1)
 
 		contours, hierarchy = cv2.findContours(thresholded_image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 		if not contours:
@@ -118,7 +119,7 @@ class BotTracker:
 
 		# the game code coordinate system has the upper left corner as (0,0) and lower right as (27,30)
 		# so the values return have been altered to match the game coordinate system
-		return game_loc[0], game_loc[1]#30 - game_loc[1]
+		return  game_loc[1], game_loc[0]#30 - game_loc[1]
 		
 		# return game_loc
 

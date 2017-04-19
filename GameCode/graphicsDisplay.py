@@ -151,11 +151,14 @@ class PacmanGraphics:
                 if agentState.homed:
                   agentState.dehome()
               
-        if newState['foodEaten'] != None:
-          self.removeFood(newState["foodEaten"], self.food)
-          
-        if newState['capsuleEaten'] != None:
-          self.removeCapsule(newState['capsuleEaten'], self.capsules)
+        if newState['foodEaten'] != []:
+          for eaten in newState['foodEaten']:
+            self.removeFood(eaten, self.food)
+          newState['foodEaten'] = []
+        if newState['capsuleEaten'] != []:
+          for eaten in newState['capsuleEaten']:
+            self.removeCapsule(eaten, self.capsules)
+          newState['capsuleEaten'] = []
         
         self.infoPane.updateScore(0)
         

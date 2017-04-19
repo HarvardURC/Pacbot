@@ -38,7 +38,7 @@ def sleep( secs ):
         _root_window.after( int( 10*secs ), _root_window.quit )
         _root_window.mainloop()
 
-def begin_graphics( width=700, height=480, color=formatColor(0,0,0), title=None ):
+def begin_graphics( width=500, height=600, color=formatColor(0,0,0), title=None ):
 
     global _root_window, _canvas, _canvas_x, _canvas_y, _canvas_xs, _canvas_ys
 
