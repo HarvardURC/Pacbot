@@ -61,11 +61,13 @@ def main():
     direction = botTracker.get_bot_direction()
     pacbot.update(position, direction)
 
+    Thread(target = appRunner).start()
     Thread(target = trackerUpdate).start()
     Thread(target = gameUpdate(graphics)).start()
+  
 
-    app.run()
-    
+def appRunner():
+    app.run(host="0.0.0.0", port=8080)
     
 def trackerUpdate():
 
@@ -98,6 +100,7 @@ def gameUpdate(graphics):
     
     counter = 1
     while game.game_on:
+        time.sleep(.1)
     
         # if counter < 2:
         #     graphics.update(game.gstate)
