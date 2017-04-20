@@ -1,16 +1,18 @@
-import serial
+from serial import Serial
 from xbee import XBee
 import time
 from threading import Thread, Lock
 
 def xBee():
-    serial_port = serial.Serial('/dev/ttyUSB0', 9600)
-    def send_state(data):
-        xbee.tx(dest_addr='\x00\x01', data=pacBot())
-    xbee = XBee(ser)
+    xbee = Serial('/dev/cu.usbserial-DA00VDM1', 9600)
+    # xbee = XBee(serial_port)
+    # def send_state():
+    #     xbee.tx(data="hello_world")
     while True:
         try:
-            time.sleep(0.001)
+            xbee.write("hello")
+            # xbee.send("hello_world", command='MY')
+            time.sleep(0.5)
         except KeyboardInterrupt:
             break
     xbee.halt
