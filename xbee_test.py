@@ -13,7 +13,7 @@ def xBee():
             time.sleep(0.001)
         except KeyboardInterrupt:
             break
-    xbee.helt
+    xbee.halt
     serial_port.close()
 
 Thread(target = xBee).start()
