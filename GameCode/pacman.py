@@ -9,6 +9,8 @@ from BotTracker import *
 from makePacbot import *
 import random
 from flask import Flask, jsonify
+from serial import Serial 
+from xbee import Xbee
 
 from threading import Thread, Lock
 import time
@@ -53,6 +55,16 @@ def pacBot():
     else:
         return jsonify({'stop': True})
 
+def xBee():
+    xbee = Serial('/dev/cu.usbserial-DA00VDM1', 9600)
+    while True:
+        try:
+            xbee.write(pacBot())
+            time.sleep(0.5)
+        except KeyboardInterrupt:
+            break
+    xbee.halt
+serial_port.close()
 
 def main():
     global lay, pacbot, game, botTracker
@@ -69,6 +81,7 @@ def main():
     Thread(target = trackerUpdate).start()
 
     Thread(target = gameUpdate(graphics)).start()
+    Thread(target = xBee).start()
 
 def appRunner():
     app.run(host="0.0.0.0", port=8080)
