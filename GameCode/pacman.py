@@ -27,10 +27,10 @@ app = Flask("Pacman")
 def pacBot():
     if game.game_on:
         response = {}
-        response['pacbot'] = {
-            'x': game.pacbot.pos['current'][0],
-            'y': game.pacbot.pos['current'][1]
-        }
+        # response['pacbot'] = {
+        #     'x': game.pacbot.pos['current'][0],
+        #     'y': game.pacbot.pos['current'][1]
+        # }
         response['ghost1'] = {
             'x': game.red.pos['current'][0],
             'y': game.red.pos['current'][1]
@@ -56,7 +56,7 @@ def pacBot():
 
 def main():
     global lay, pacbot, game, botTracker
-    graphics = PacmanGraphics(0.5)
+    graphics = PacmanGraphics(0.95)
 
     graphics.initialize(game.gstate)
 
@@ -74,7 +74,7 @@ def appRunner():
     app.run(host="0.0.0.0", port=8080)
     
 def trackerUpdate():
-
+    global game
     while game.game_on: 
         lock.acquire()
         position = botTracker.get_bot_location()
@@ -93,7 +93,8 @@ def trackerUpdate():
         time.sleep(.1)
 
 
-def gameUpdate(graphics):       
+def gameUpdate(graphics):
+    global game      
     # display start postions
     display_game(game.pacbot,game.red,game.pink,game.orange,game.blue,game.score,game.lives,game.state,game.grid)
 
@@ -104,7 +105,7 @@ def gameUpdate(graphics):
     
     counter = 1
     while game.game_on:
-        time.sleep(.1)
+        # time.sleep(.1)
     
         # if counter < 2:
         #     graphics.update(game.gstate)
