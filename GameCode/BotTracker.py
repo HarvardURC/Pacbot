@@ -2,8 +2,8 @@ import numpy as np
 import cv2
 
 # Tune constaxnts for grid
-LEFT_EDGE = 273
-RIGHT_EDGE = 1107
+LEFT_EDGE = 270
+RIGHT_EDGE = 1112
 TOP_EDGE = -20
 BOTTOM_EDGE = 735
 
