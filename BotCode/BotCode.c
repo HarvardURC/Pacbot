@@ -9,6 +9,7 @@
 #include <time.h>
 #include <sys/time.h>
 #include <stdio.h>
+#include "network.h"
 //#include <wiringPi.h>
 //#include <Direction.c> 
 // Initialize connection with camera
@@ -94,6 +95,11 @@ int main(int argc, char** argv) {
 		}
 		printf("\n");
 	}
+    struct state_response state;
+    while(1) {
+       getState(&state);
+       printState(&state);
+    }
 
 	return 0; 
 }
