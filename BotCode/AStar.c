@@ -1,102 +1,11 @@
-// Initialize libraries
-#include <stdio.h>
+#include "AStar.h"
+#include "state.h"
+#include <math.h>
 #include <stdlib.h>
-#include <string.h>
-#include <inttypes.h>
-#include <math.h>
-#include <getopt.h>
-#include <assert.h>
-#include <time.h>
-#include <sys/time.h>
-#include <stdio.h>
-#include "network.h"
-#include <math.h>
-//#include <wiringPi.h>
-//#include <Direction.c> 
-// Initialize connection with camera
-//Must have two modes 
 
-// Ineitialize Variables
-	// need a variable to keep track of cardinal direction state
-		// card_state = 1, 2, 3, 4. 1 being north, 2 being east, 3 being south, 4 being west
-#define NORTH 	= 1;
-#define EAST 	= 2;
-#define SOUTH 	= 3;
-#define WEST 	= 4;
-//Pacman initial Position
-#define ROW = 22;
-#define COL = 13; 
+node *head;
 
-//food opt = pellet =1, big pellet =  2 ; empty= 3; fruit = 4
-typedef struct game_state
-{
-	cell_pos cur_pos; 
-	int dir; 
-}game_state;
-
-//return type of getSuccessors
-typedef struct sca{
-	game_state state; 
-	int cost;  
-	int action; 
-
-}sca; 
-typedef struct free_cell {
-    cell_pos coordinates; 
-    int pacman_pos;
-    int ghost_pos;
-    char food_opt; 
- 	cell_pos adj_cell[4]; 
-    int directions[4]; 
-}free_cell;
-
-// Declare Grid as global 
-free_cell *grid; 
-void createGrid(){
-	grid = (free_cell*) malloc(868*sizeof(free_cell)); 
-    FILE *fp;
-    int a; 
-    int b; 
-    char c;  
-    fp = fopen("freespaces.txt", "r"); // I open the file to read it("r")
-    while(fscanf (fp, "%d,%d,%c", &a, &b, &c)==3) {  
-    	free_cell new_cell; 
-    	new_cell.coordinates.cp_x = a; 
-    	new_cell.coordinates.cp_y = b;
-    	new_cell.pacman_pos = 0; 
-    	new_cell.ghost_pos =0; 
-    	new_cell.food_opt = c; 
-    	new_cell.adj_cell[0].cp_x= 0; 
-    	new_cell.adj_cell[1].cp_x = 0; 
-    	new_cell.adj_cell[2].cp_x = 0; 
-    	new_cell.adj_cell[3].cp_x= 0; 
-    	new_cell.adj_cell[0].cp_y = 0; 
-    	new_cell.adj_cell[1].cp_y = 0; 
-    	new_cell.adj_cell[2].cp_y = 0; 
-    	new_cell.adj_cell[3].cp_y = 0;   
-    	new_cell.directions[0]= 0;
-    	new_cell.directions[1]= 0; 
-    	*(grid+b + 28*a) = new_cell;     
-    }  
-
-}
-/*
-````````````````````````````````````````````````````````````````````````````````
-HEAP CODE
-````````````````````````````````````````````````````````````````````````````````
-*/
-typedef struct node_t{
-    int priority;
-    sca * data;
-} node_t;
- 
-typedef struct heap_t{
-    node_t *nodes;
-    int len;
-    int size;
-} heap_t;
- 
-void push (heap_t *h, int priority, game_state *data) {
+void push (heap_t *h, int priority, game_state *state) {
     if (h->len + 1 >= h->size) {
         h->size = h->size ? h->size * 2 : 4;
         h->nodes = (node_t *)realloc(h->nodes, h->size * sizeof (node_t));
@@ -109,16 +18,16 @@ void push (heap_t *h, int priority, game_state *data) {
         j = j / 2;
     }
     h->nodes[i].priority = priority;
-    h->nodes[i].data = data;
+    h->nodes[i].data->state = *state;
     h->len++;
 }
  
-char *pop (heap_t *h) {
+sca *pop (heap_t *h) {
     int i, j, k;
     if (!h->len) {
         return NULL;
     }
-    char *data = h->nodes[1].data;
+    sca *data = h->nodes[1].data;
     h->nodes[1] = h->nodes[h->len];
     h->len--;
     i = 1;
@@ -172,11 +81,6 @@ int manhattanDistance(cell_pos pos1, cell_pos pos2){
 /*
 LINKED LIST CODE 
 */
-typedef struct node {
-    struct game_state* next;
-    struct game_state* prev;
-} node;
-
 void insert_head(node* n) {
     n->next = head;
     n->prev = NULL;
@@ -185,7 +89,7 @@ void insert_head(node* n) {
     head = n;
 }
 
-void remove(node* n) {
+void remove_node(node* n) {
     if (n->next)
         n->next->prev = n->prev;
     if (n->prev)
@@ -198,17 +102,15 @@ int getNextMove(game_state pac_pos, cell_pos target_pos){
 	//Store all nodes on the tree fringe as a priority queue
 	
 	heap_t *fringe = (heap_t *)calloc(1, sizeof (heap_t));
-	node_t cur_node; 
-	cur_node.priority = manhattanDistance(pac_pos.coordinates, target_pos); 
-	cur_node.data = pacman_pos; 
-	push(new_node); 
-	node * closed;
+	int prio = manhattanDistance(pac_pos.cur_pos, target_pos); 
+	push(fringe, prio, &pac_pos); 
+	sca *cur_sca;
 	while(1){
-		cur_node = pop(fringe)
-		if(cur_node==NULL)
+		cur_sca = pop(fringe);
+		if(cur_sca==NULL)
 			break;
-		if((cur_node.data.coordinates.cp_x == target_pos.cp_x )&&(cur_node.data.coordinates.cp_y == target_pos.cp_y )){
-			return;
+		if((cur_sca->state.cur_pos.cp_x == target_pos.cp_x )&&(cur_sca->state.cur_pos.cp_y == target_pos.cp_y )){
+			return 0;
 		} else {
 
 		}
@@ -217,23 +119,3 @@ int getNextMove(game_state pac_pos, cell_pos target_pos){
     int i;	
 }
 
-int main(int argc, char** argv) {
-	createGrid();
-
-	int i = manhattanDistance(grid[30].coordinates, grid[45].coordinates);
-	printf("%d\n", i);
-
-	for(int i=0; i<868; i++){
-		printf("(%d,%d)",grid[i].coordinates.cp_x, grid[i].coordinates.cp_y);
-		if(i%28==0)
-		printf("\n");
-	}
-   
-    // struct state_response state;
-    // while(1) {
-    //    getState(&state);
-    //    printState(&state);
-    // }
-
-	return 0; 
-}

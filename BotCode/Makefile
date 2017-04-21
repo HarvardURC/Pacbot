@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-I.
-DEPS = network.h
-OBJ = BotCode.c network.o 
+DEPS = network.h state.h AStar.h grid.h
+OBJ = BotCode.c network.o AStar.o grid.o
 
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)

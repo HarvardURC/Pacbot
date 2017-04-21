@@ -69,7 +69,7 @@ static int getResponse(char* response, size_t resLen)
 
 }
 
-static int parseResponse(char* response, struct state_response *s_resp) {
+static int parseResponse(char* response, state_response *s_resp) {
     char *inky = "ghost4";
     char *blinky = "ghost1";
     char *pinky = "ghost2";
@@ -192,18 +192,18 @@ static int parseResponse(char* response, struct state_response *s_resp) {
     return 0;
 }
 
-int getState(struct state_response *state) {
+int getState(state_response *state) {
     int err;
     char response[4096];
     err = getResponse(&response[0], 4096);
     if (err)  return err;
-    memset(state, 0, sizeof(struct state_response));
+    memset(state, 0, sizeof(state_response));
     parseResponse(&response[0], state);
     return 0;
 }
 
 
-void printState(struct state_response *state) {
+void printState(state_response *state) {
     printf("inky:\n\tx:%d\n\ty:%d\n", state->sr_inky.cp_x, state->sr_inky.cp_y);
     printf("blinky:\n\tx:%d\n\ty:%d\n", state->sr_blinky.cp_x, state->sr_blinky.cp_y);
     printf("pinky:\n\tx:%d\n\ty:%d\n", state->sr_pinky.cp_x, state->sr_pinky.cp_y);
