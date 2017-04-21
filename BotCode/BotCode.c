@@ -11,13 +11,10 @@
 #include <stdio.h>
 //#include <wiringPi.h>
 //#include <Direction.c> 
-
-
 // Initialize connection with camera
 //Must have two modes 
 
-// Initialize Variables
-
+// Ineitialize Variables
 	// need a variable to keep track of cardinal direction state
 		// card_state = 1, 2, 3, 4. 1 being north, 2 being east, 3 being south, 4 being west
 #define NORTH 	= 1;
@@ -37,7 +34,7 @@ typedef struct game_state
 	cell_cordinates cur_pos; 
 	int dir; 
 }game_state;
-
+typedef struct 
 typedef struct free_cell {
     cell_cordinates cordinates; 
     int pacman_pos;
@@ -93,7 +90,7 @@ int main(int argc, char** argv) {
 	createGrid();
 	for(int i=0; i<=31; i++){
 		for(int j=0; j<28; j++){
-				printf("(%d,%d)",grid[j*28 + i].cordinates.x, grid[j*28 + i].cordinates.y);
+				printf("(%d,%d)",grid[i*28 + j].cordinates.x, grid[i*28 + j].cordinates.y);
 		}
 		printf("\n");
 	}
