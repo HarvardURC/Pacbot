@@ -11,7 +11,7 @@ class Configuration:
     """
     def __init__(self, x1, y1, x2, y2, color,direction):
         self.color = color
-        self.pos = { 'current' : (x1,y1), 'next' : (x2,y2), 'graph' : (y1 , 30 - x1)}
+        self.pos = { 'current' : (x1,y1), 'next' : (x2,y2)}
         self.direction = direction
         self.scared_counter = 8
         self.homed = False
@@ -20,7 +20,7 @@ class Configuration:
      
     def respawn(self, x1, y1, x2, y2, color,direction):
         self.color = color
-        self.pos = { 'current' : (x1,y1), 'next' : (x2,y2), 'graph' : (y1 , 30 - x1 )}
+        self.pos = { 'current' : (x1,y1), 'next' : (x2,y2)}
         self.direction = direction
         self.scared_counter = 8
         
@@ -53,18 +53,18 @@ class Configuration:
         self.direction
 
     def getPosition(self):
-        return self.pos['graph']
+        return (self.pos['current'][1], 30 - self.pos['current'][0])
 
-    def change_pos(self):
-        (x,y) = self.pos['graph']
-        if self.direction == up:
-            self.pos['graph'] = (x , y + 1)
-        elif self.direction == down:
-            self.pos['graph'] = (x , y - 1)
-        elif self.direction == left:
-            self.pos['graph'] = (x -  1 , y )
-        else:
-            self.pos['graph'] = (x + 1, y )
+    # def change_pos(self):
+    #     (x,y) = self.pos['graph']
+    #     if self.direction == up:
+    #         self.pos['graph'] = (x , y + 1)
+    #     elif self.direction == down:
+    #         self.pos['graph'] = (x , y - 1)
+    #     elif self.direction == left:
+    #         self.pos['graph'] = (x -  1 , y )
+    #     else:
+    #         self.pos['graph'] = (x + 1, y )
 
 class AgentState:
   """
@@ -110,6 +110,7 @@ class GameState:
         self.food = layout.food.copy()
         self.capsules = layout.capsules[:]
         self.layout = layout
+        self.play = False
 
 
         self.agentStates = []
@@ -127,11 +128,13 @@ class GameState:
         self.orange = self.agentStates[2]
         self.blue = self.agentStates[3]
 
-        self.gstate = {'foodEaten' : [(12,7)], 'layout' : self.layout, 'agentStates' : self.agentStates,
+        self.gstate = {'foodEaten' : [], 'layout' : self.layout, 'agentStates' : self.agentStates,
                         'respawn' : False, 
                         'capsuleEaten' : [],
                         'scared' : False,
-                        'scatter': False}
+                        'scatter': False,
+                        'score' : self.score,
+                        'lives' : self.lives}
 
     def change_state(self,state):
         if state == scatter:
@@ -178,7 +181,7 @@ class GameState:
                 self.gstate['foodEaten'].append((pacbot.pos[1] , 30 - pacbot.pos[0]))
                 self.grid[pacbot.pos[0]][pacbot.pos[1]] = e
                 self.score += 10
-                print("eaten")
+        
             
             if self.grid[pacbot.pos[0]][pacbot.pos[1]] == O:
                 self.grid[pacbot.pos[0]][self.pacbot.pos[1]] = e
@@ -193,7 +196,7 @@ class GameState:
                 self.gstate['foodEaten'].append((self.pacbot.pos[1] , 30 - self.pacbot.pos[0]))
                 self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] = e
                 self.score += 10
-                print("eaten")
+
                 
             if self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] == O:
                 self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] = e
@@ -216,8 +219,8 @@ class GameState:
 
         self.pacbot = pacbot
 
-        clean_screen(33)
-        display_game(self.pacbot,self.red,self.pink,self.orange,self.blue,self.score,self.lives,self.state,self.grid)
+        # clean_screen(33)
+        # display_game(self.pacbot,self.red,self.pink,self.orange,self.blue,self.score,self.lives,self.state,self.grid)
         
         # x, y = self.gstate["agentStates"][1].getPosition()
         # print(str(x) + " " + str(y))
@@ -241,14 +244,15 @@ class GameState:
                 self.blue.pos["current"] == self.pacbot.pos):
                 
                     if self.lives > 1:
+                        self.play = False
                         self.pacbot.update((23,14),left)
                         self.red.respawn(11,13,11,12, 'red',left)
                         self.pink.respawn(15,14,14,14, 'pink',up)
                         self.orange.respawn(15,15,14,15,'orange',up)
                         self.blue.respawn(15,12,14,12,'blue',up)
-                        self.pink.change_pos()
-                        self.orange.change_pos()
-                        self.blue.change_pos()
+                        # self.pink.change_pos()
+                        # self.orange.change_pos()
+                        # self.blue.change_pos()
                         # self.pink.change_pos()
                         # self.orange.change_pos()
                         # self.blue.change_pos()
@@ -258,6 +262,7 @@ class GameState:
                         self.update_score()
 
                     else:
+                        self.play = False
                         print("Success")
                         self.game_on = False
                 
@@ -306,23 +311,25 @@ class GameState:
                 self.blue.pos["current"] == self.pacbot.pos):
 
                     if self.lives > 1:
+                        self.play = False
                         self.pacbot.update((23,14),left)
                         self.red.respawn(11,13,11,12, 'red',left)
                         self.pink.respawn(15,14,14,14, 'pink',up)
                         self.orange.respawn(15,15,14,15,'orange',up)
                         self.blue.respawn(15,12,14,12,'blue',up)
-                        self.pink.change_pos()
-                        self.orange.change_pos()
-                        self.blue.change_pos()
+                        # self.pink.change_pos()
+                        # self.orange.change_pos()
+                        # self.blue.change_pos()
                         # self.pink.change_pos()
                         # self.orange.change_pos()
                         # self.blue.change_pos()
                         self.gstate["respawn"] = True
-                        self.start_counter = 0 
+                        self.start_counter = -1 
                         self.lives -= 1
                         self.update_score()
 
                     else:
+                        self.play = False
                         print("Success")
                         self.game_on = False
                 
@@ -335,4 +342,7 @@ class GameState:
         if not fast:
             self.counter += 1
             self.start_counter += 1
+
+        self.gstate["score"] = self.score
+        self.gstate["lives"] = self.lives
 
