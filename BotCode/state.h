@@ -30,7 +30,7 @@ typedef struct game_state {
 typedef struct free_cell {
     cell_pos coordinates; 
     int pacman_pos;
-    int ghost_pos;
+    int ghost_danger;
     char food_opt; 
  	cell_pos adj_cell[4]; 
     int directions[4]; 

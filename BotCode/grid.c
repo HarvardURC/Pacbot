@@ -15,7 +15,7 @@ void createGrid(){
     	new_cell.coordinates.cp_x = a; 
     	new_cell.coordinates.cp_y = b;
     	new_cell.pacman_pos = 0; 
-    	new_cell.ghost_pos =0; 
+    	new_cell.ghost_danger = INT_MAX; 
     	new_cell.food_opt = c; 
     	new_cell.adj_cell[0].cp_x= 0; 
     	new_cell.adj_cell[1].cp_x = 0; 

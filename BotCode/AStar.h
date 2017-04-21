@@ -4,10 +4,16 @@
 #include "state.h"
 
 //return type of getSuccessors
+typedef struct  inode
+{
+    int i; 
+    inode * next; 
+}inode;
+
 typedef struct sca{
 	game_state state; 
 	int cost;  
-	int action; 
+	inode * action_list; 
 
 } sca; 
 
@@ -41,7 +47,7 @@ LINKED LIST CODE
 typedef struct node {
     struct node* prev;
     struct node* next;
-    struct game_state* state;
+    struct sca* state;
 } node;
 
 void insert_head(node* n);

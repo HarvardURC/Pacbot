@@ -78,9 +78,11 @@ int manhattanDistance(cell_pos pos1, cell_pos pos2){
 	int y2 = pos2.cp_y;
 	return (abs(x1-x2) + abs(y1-y2));
 }
+
 /*
 LINKED LIST CODE 
 */
+
 void insert_head(node* n) {
     n->next = head;
     n->prev = NULL;
@@ -97,23 +99,39 @@ void remove_node(node* n) {
     else
         head = n->next;
 }
+int contains(node * head, sca tar_sca){
+    node * cur_sca = head; 
+    while(cur_sca !=NULL){
+        if(cur_sca->state == tar_sca)
+    }
+}
 //Use A* to get best next move in a sequence of moves
+node * head_closed; 
 int getNextMove(game_state pac_pos, cell_pos target_pos){
 	//Store all nodes on the tree fringe as a priority queue
 	
 	heap_t *fringe = (heap_t *)calloc(1, sizeof (heap_t));
 	int prio = manhattanDistance(pac_pos.cur_pos, target_pos); 
-	push(fringe, prio, &pac_pos); 
-	sca *cur_sca;
-	while(1){
-		cur_sca = pop(fringe);
-		if(cur_sca==NULL)
-			break;
-		if((cur_sca->state.cur_pos.cp_x == target_pos.cp_x )&&(cur_sca->state.cur_pos.cp_y == target_pos.cp_y )){
-			return 0;
-		} else {
+	push(fringe, prio, &pac_pour_sca;
+    int successors [4]; 
+    noder_sca;
+    node * curr_closed; 
+       while(1){
+        cur_sca = pop(fringe);
+        if(cur_sca==NULL)
+            break;
+        if((cur_sca->state.cur_pos.cp_x == target_pos.cp_x )&&(cur_sca->state.cur_pos.cp_y == target_pos.cp_y )){
+            //If hit goal state, return the head of the action list to get there
+    cur_sca->action_lr_sca
 
-		}
+action  } else {
+
+        successors = getSuccessors()
+
+             nt i;  
+}
+
+
 	}  
 	
     int i;	
