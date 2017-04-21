@@ -1,5 +1,6 @@
 from graphicsUtils import *        
 import math, time
+import copy
 
 ###########################
 #  GRAPHICS DISPLAY CODE  #
@@ -80,12 +81,15 @@ class InfoPane:
 
   def drawPane(self):
     color = formatColor(255.0/255.0,255.0/255.0,61.0/255)
-    size = 24
-    self.scoreText = text( self.toScreen(0, 0), color, "SCORE:    0", "Times", size, "bold")
+    size = 12
+    self.scoreText = text( self.toScreen(20, -225), color, "SCORE:    \n    0", "Joystix", size, "bold")
+    self.livesText = text( self.toScreen(335, -225), color, "LIVES:    \n    3", "Joystix", size, "bold")
     
-  def updateScore(self, score):
-    changeText(self.scoreText, "SCORE: % 4d" % score)
-    
+  def updateScore(self, score, lives):
+    changeText(self.scoreText, "SCORE:    \n %4d" % score)
+    changeText(self.livesText, "LIVES:    \n %4d" % lives)
+
+  
 
 class PacmanGraphics:
     def __init__(self, zoom=1.0):  
@@ -117,36 +121,38 @@ class PacmanGraphics:
 
     def drawAgentObjects(self, state):
         self.agentImages = [] # (agentState, image)
+        copyState = copy.deepcopy(state['agentStates'])
         for index, agent in enumerate(state['agentStates']):
           # if agent.isPacman:
           #   image = self.drawPacman(agent, index)
           #   self.agentImages.append( (agent, image) )
           # else:  
+
             image = self.drawGhost(agent, index, state['scared'])
-            self.agentImages.append( (agent, image) )
+            self.agentImages.append( (copyState[index], image) )
         refresh
 
     def update(self, newState):
         if newState['respawn']:
           for agentIndex in range(4):
                 agentState = newState['agentStates'][agentIndex]
-
+                copyState = copy.deepcopy(newState['agentStates'])
 
                 prevState, prevImage = self.agentImages[agentIndex]
 
                 self.moveGhost(agentState, agentIndex, prevState, prevImage, newState["scared"], True)
-                self.agentImages[agentIndex] = (agentState, prevImage)
+                self.agentImages[agentIndex] = (copyState[agentIndex], prevImage)
           newState["respawn"] = False
           sleep(5)
         else:
             for agentIndex in range(4):
                 agentState = newState['agentStates'][agentIndex]
-
+                copyState = copy.deepcopy(newState['agentStates'])
 
                 prevState, prevImage = self.agentImages[agentIndex]
 
                 self.moveGhost(agentState, agentIndex, prevState, prevImage, newState["scared"], agentState.homed)
-                self.agentImages[agentIndex] = (agentState, prevImage)
+                self.agentImages[agentIndex] = (copyState[agentIndex], prevImage)
 
                 if agentState.homed:
                   agentState.dehome()
@@ -160,14 +166,14 @@ class PacmanGraphics:
             self.removeCapsule(eaten, self.capsules)
           newState['capsuleEaten'] = []
         
-        self.infoPane.updateScore(0)
-        
+        self.infoPane.updateScore(newState["score"], newState["lives"])
+                
 
     def make_window(self, width, height):
         grid_width = (width-1) * self.gridSize 
         grid_height = (height-1) * self.gridSize 
         screen_width = 2*self.gridSize + grid_width
-        screen_height = 2*self.gridSize + grid_height #+ INFO_PANE_HEIGHT 
+        screen_height = 2*self.gridSize + grid_height + INFO_PANE_HEIGHT 
 
         begin_graphics(screen_width,    
                        screen_height,
@@ -256,7 +262,7 @@ class PacmanGraphics:
     
     def moveGhost(self, ghost, ghostIndex, prevGhost, ghostImageParts, scared, respawn):
       if respawn:
-        ghost.change_pos()
+        # ghost.change_pos()
         for ghostImagePart in ghostImageParts:
           move_to(ghostImagePart, self.to_screen(self.getGhostPos(ghost)))
         refresh
@@ -264,8 +270,9 @@ class PacmanGraphics:
       else:
 
         old_x, old_y = self.to_screen(self.getGhostPos(prevGhost))
-        ghost.change_pos()
+        # ghost.change_pos()
         new_x, new_y = self.to_screen(self.getGhostPos(ghost))
+       
         delta = new_x - old_x, new_y - old_y
         
         for ghostImagePart in ghostImageParts:
