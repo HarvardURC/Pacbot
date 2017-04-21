@@ -15,18 +15,18 @@ typedef enum {
     P_REGULAR
 } game_status;
 
-struct character_pos {
+struct cell_pos {
     int cp_x;
     int cp_y;
 };
 
 struct state_response {
     game_status sr_state; 
-    struct character_pos sr_pacbot;
-    struct character_pos sr_inky;
-    struct character_pos sr_blinky;
-    struct character_pos sr_pinky;
-    struct character_pos sr_clyde;
+    struct cell_pos sr_pacbot;
+    struct cell_pos sr_inky;
+    struct cell_pos sr_blinky;
+    struct cell_pos sr_pinky;
+    struct cell_pos sr_clyde;
     int sr_power_counter;
 };
 
