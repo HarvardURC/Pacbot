@@ -59,12 +59,12 @@ CAPSULE_SIZE = 0.25
 WALL_RADIUS = 0.15
 
 class InfoPane:
-  def __init__(self, layout, gridSize):
+  def __init__(self, layout, gridSize, zoom):
     self.gridSize = gridSize
     self.width = (layout.width) * gridSize
     self.base = (layout.height + 1) * gridSize
     self.height = INFO_PANE_HEIGHT 
-    self.drawPane()
+    self.drawPane(zoom)
 
   def toScreen(self, pos, y = None):
     """
@@ -79,11 +79,11 @@ class InfoPane:
     y = self.base + y 
     return x,y
 
-  def drawPane(self):
-    color = formatColor(255.0/255.0,255.0/255.0,61.0/255)
-    size = 12
-    self.scoreText = text( self.toScreen(20, -225), color, "SCORE:    \n    0", "Joystix", size, "bold")
-    self.livesText = text( self.toScreen(335, -225), color, "LIVES:    \n    3", "Joystix", size, "bold")
+  def drawPane(self, zoom):
+    color = formatColor(1,1,1)     
+    size = int(25/.95 * zoom)
+    self.scoreText = text( self.toScreen(30/.95 * zoom, -415/.95*zoom), color, "SCORE:    \n    0", "Joystix", size, "bold")
+    self.livesText = text( self.toScreen(630/.95 * zoom, -415/.95 * zoom), color, "LIVES:    \n    3", "Joystix", size, "bold")
     
   def updateScore(self, score, lives):
     changeText(self.scoreText, "SCORE:    \n %4d" % score)
@@ -109,7 +109,7 @@ class PacmanGraphics:
         self.width = layout.width
         self.height = layout.height
         self.make_window(self.width, self.height)
-        self.infoPane = InfoPane(layout, self.gridSize)
+        self.infoPane = InfoPane(layout, self.gridSize, self.zoom)
         self.currentState = layout
 
     def drawStaticObjects(self, state):
@@ -173,7 +173,7 @@ class PacmanGraphics:
         grid_width = (width-1) * self.gridSize 
         grid_height = (height-1) * self.gridSize 
         screen_width = 2*self.gridSize + grid_width
-        screen_height = 2*self.gridSize + grid_height + INFO_PANE_HEIGHT 
+        screen_height = 2*self.gridSize + grid_height 
 
         begin_graphics(screen_width,    
                        screen_height,

@@ -55,16 +55,6 @@ class Configuration:
     def getPosition(self):
         return (self.pos['current'][1], 30 - self.pos['current'][0])
 
-    # def change_pos(self):
-    #     (x,y) = self.pos['graph']
-    #     if self.direction == up:
-    #         self.pos['graph'] = (x , y + 1)
-    #     elif self.direction == down:
-    #         self.pos['graph'] = (x , y - 1)
-    #     elif self.direction == left:
-    #         self.pos['graph'] = (x -  1 , y )
-    #     else:
-    #         self.pos['graph'] = (x + 1, y )
 
 class AgentState:
   """
@@ -81,42 +71,30 @@ class AgentState:
   def getDirection(self):
     return self.configuration.getDirection()
 
-       
-# class PacBot:
-#     """
-#         Allows initializing and updating information about PacBot
-#     """
-#     def __init__(self, x, y, direction):
-#         self.direction = direction
-#         self.pos = (x,y)
-        
-#     def update(self,position, direction):
-#         self.pos = position
-#         self.direction = direction
 
 class GameState:
     def __init__(self, grid, layout,pacbot):
         self.game_on = True
         self.lives = 3
-        self.state = chase
+        self.state = scatter
         self.score = 0
         self.counter = 0
         self.start_counter = 0
         self.grid = grid
         self.frightened_counter = 0
-        self.scatter_counter = 0
+        # self.scatter_timer = 0
         self.frightened_eaten = 1
         self.scattered = False
         self.food = layout.food.copy()
         self.capsules = layout.capsules[:]
         self.layout = layout
         self.play = False
+        self.respawn = False
 
 
         self.agentStates = []
 
         self.pacbot = pacbot
-        # PacBot(23,13,right)
 
         self.agentStates.append(Configuration(11,13,11,12, 'red',left))
         self.agentStates.append(Configuration(15,14,14,14, 'pink',up))
@@ -138,11 +116,10 @@ class GameState:
 
     def change_state(self,state):
         if state == scatter:
-            self.scatter_counter = 60
             self.scattered = True
         elif state == frightened:
-
-            self.frightened_counter = 60
+            self.frightened_counter = 13
+            self.scattered = True
 
         self.state = state
 
@@ -188,7 +165,6 @@ class GameState:
                 self.score += 50
                 self.gstate['capsuleEaten'].append((pacbot.pos[1] , 30 - pacbot.pos[0]))
                 self.change_state(frightened)
-                self.frightened_counter = 50
                 self.gstate['scared'] = True
         else:
 
@@ -203,12 +179,9 @@ class GameState:
                 self.score += 50
                 self.gstate['capsuleEaten'].append((self.pacbot.pos[1] , 30 - self.pacbot.pos[0]))
                 self.change_state(frightened)
-                self.frightened_counter = 50
                 self.gstate['scared'] = True
 
-        
-        # x,y = self.gstate["agentStates"][0].pos["current"]
-        
+ 
     def despawn(self):
         self.gstate["respawn"] = False
 
@@ -221,22 +194,18 @@ class GameState:
 
         # clean_screen(33)
         # display_game(self.pacbot,self.red,self.pink,self.orange,self.blue,self.score,self.lives,self.state,self.grid)
-        
-        # x, y = self.gstate["agentStates"][1].getPosition()
-        # print(str(x) + " " + str(y))
-        # x, y = self.gstate["agentStates"][1].pos["current"]
-        # print(str(y) + " " + str(30-x))
+ 
         if self.game_on:
             # update ghost positions
             if self.state == scatter:
-                if self.scatter_counter == 1:
-                    self.change_state(chase)
+                # if self.scatter_counter == 1:
+                #     self.change_state(chase)
 
                 if self.scattered:
                     self.scattered = not self.scattered
 
-                if not fast:
-                    self.scatter_counter -= 1
+                # if not fast:
+                #     self.scatter_counter -= 1
 
                 if (self.red.pos["current"] == self.pacbot.pos or 
                 self.pink.pos["current"] == self.pacbot.pos or 
@@ -244,32 +213,55 @@ class GameState:
                 self.blue.pos["current"] == self.pacbot.pos):
                 
                     if self.lives > 1:
-                        self.play = False
                         self.pacbot.update((23,14),left)
                         self.red.respawn(11,13,11,12, 'red',left)
                         self.pink.respawn(15,14,14,14, 'pink',up)
                         self.orange.respawn(15,15,14,15,'orange',up)
                         self.blue.respawn(15,12,14,12,'blue',up)
-                        # self.pink.change_pos()
-                        # self.orange.change_pos()
-                        # self.blue.change_pos()
-                        # self.pink.change_pos()
-                        # self.orange.change_pos()
-                        # self.blue.change_pos()
                         self.start_counter = 0 
                         self.gstate["respawn"] = True
                         self.lives -= 1
                         self.update_score()
+                        self.play = False
+                        self.respawn = True
 
                     else:
                         self.play = False
+                        self.respawn = True
                         print("Success")
                         self.game_on = False
                 
                 else:
                     self.update_score()
 
+                    if not fast:
+                        if self.counter == 20:
+                            self.change_state(chase)
+
+                        elif self.counter == 80:
+                            self.change_state(scatter)
+
+                        elif self.counter == 100:
+                            self.change_state(chase)
+
+                        elif self.counter == 160:
+                            self.change_state(scatter)
+
+                        elif self.counter == 180:
+                            self.change_state(chase)
+
+                        elif self.counter == 240:
+                            self.change_state(scatter)
+
+                        elif self.counter == 260:
+                            self.change_state(chase)
+                if not fast:
+                    self.counter += 1
+
             elif self.state == frightened:
+                if self.scattered:
+                    self.scattered = not self.scattered
+
                 if self.red.pos["current"] == self.pacbot.pos:
                     self.red.send_home()
 
@@ -311,36 +303,55 @@ class GameState:
                 self.blue.pos["current"] == self.pacbot.pos):
 
                     if self.lives > 1:
-                        self.play = False
                         self.pacbot.update((23,14),left)
                         self.red.respawn(11,13,11,12, 'red',left)
                         self.pink.respawn(15,14,14,14, 'pink',up)
                         self.orange.respawn(15,15,14,15,'orange',up)
                         self.blue.respawn(15,12,14,12,'blue',up)
-                        # self.pink.change_pos()
-                        # self.orange.change_pos()
-                        # self.blue.change_pos()
-                        # self.pink.change_pos()
-                        # self.orange.change_pos()
-                        # self.blue.change_pos()
                         self.gstate["respawn"] = True
-                        self.start_counter = -1 
+                        self.start_counter = 0 
                         self.lives -= 1
                         self.update_score()
+                        self.play = False
+                        self.respawn = True
 
                     else:
                         self.play = False
+                        self.respawn = True
                         print("Success")
                         self.game_on = False
                 
                 else:
-                    if self.counter == 10:
-                        self.change_state(scatter)
+                    if not fast:
+                        if self.counter == 20:
+                            self.change_state(chase)
+
+                        elif self.counter == 80:
+                            self.change_state(scatter)
+
+                        elif self.counter == 100:
+                            self.change_state(chase)
+
+                        elif self.counter == 160:
+                            self.change_state(scatter)
+
+                        elif self.counter == 180:
+                            self.change_state(chase)
+
+                        elif self.counter == 240:
+                            self.change_state(scatter)
+
+                        elif self.counter == 260:
+                            self.change_state(chase)
+
+
 
                 self.update_score()
                 
+                if not fast:
+                    self.counter += 1
+
         if not fast:
-            self.counter += 1
             self.start_counter += 1
 
         self.gstate["score"] = self.score

@@ -14,3 +14,4 @@ chase = "Chase"
 frightened = "Frightened"
 
 previous = 'a'
+
