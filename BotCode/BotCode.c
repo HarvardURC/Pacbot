@@ -19,15 +19,15 @@
 // Initialize connection with camera
 //Must have two modes 
 
-// Ineitialize Variables
-	// need a variable to keep track of cardinal direction state
-		// card_state = 1, 2, 3, 4. 1 being north, 2 being east, 3 being south, 4 being west
-
-//food opt = pellet =1, big pellet =  2 ; empty= 3; fruit = 4
-// Declare Grid as global 
+// GLOBALS 
 free_cell *grid; 
+state_response *latest_state;
 
 int main(int argc, char** argv) {
+    latest_state = malloc(sizeof(state_response));
+    if(latest_stae == NULL) {
+        return 1;
+    }
 	createGrid();
 
 	int i = manhattanDistance(grid[30].coordinates, grid[45].coordinates);
@@ -44,6 +44,8 @@ int main(int argc, char** argv) {
     //    getState(&state);
     //    printState(&state);
     // }
+    
+    free(grid);
 
 	return 0; 
 }

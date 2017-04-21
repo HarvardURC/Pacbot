@@ -10,6 +10,7 @@
 #include <netdb.h> /* struct hostent, gethostbyname */
 #include "state.h"
 
+void pollState();
 int getState(state_response *state);
 void printState(state_response *state);
 
