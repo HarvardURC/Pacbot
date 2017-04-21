@@ -39,19 +39,19 @@ def getFormattedGameData():
         #     'x': game.pacbot.pos['current'][0],
         #     'y': game.pacbot.pos['current'][1]
         # }
-        response['ghost1'] = {
+        response['blinky'] = {
             'x': game.red.pos['current'][0],
             'y': game.red.pos['current'][1]
         }
-        response['ghost2'] = {
+        response['pinky'] = {
             'x': game.pink.pos['current'][0],
             'y': game.pink.pos['current'][1]
         }
-        response['ghost3'] = {
+        response['clyde'] = {
             'x': game.orange.pos['current'][0],
             'y': game.orange.pos['current'][1]
         }
-        response['ghost4'] = {
+        response['inky'] = {
             'x': game.blue.pos['current'][0],
             'y': game.blue.pos['current'][1]
         }
@@ -63,7 +63,7 @@ def getFormattedGameData():
 
 def xBee():
     xbee = Serial('/dev/cu.usbserial-DA00VDM1', 9600)
-    m = dumps(getFormattedGameData())
+    m = "$" + dumps(getFormattedGameData()) + "#"
     while True:
         try:
             xbee.write(m)
