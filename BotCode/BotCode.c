@@ -56,7 +56,7 @@ void createGrid(){
     int b; 
     char c;  
     fp = fopen("freespaces.txt", "r"); // I open the file to read it("r")
-    while(fscanf (fp, "%d,%d, %s ", &a, &b, &c)==3) {  
+    while(fscanf (fp, "%d,%d,%s", &a, &b, &c)==3) {  
     	free_cell new_cell; 
     	new_cell.cordinates.x = a; 
     	new_cell.cordinates.y = b;
