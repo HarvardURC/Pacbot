@@ -35,10 +35,10 @@ def pacBot():
 def getFormattedGameData():
     if game.game_on:
         response = {}
-        # response['pacbot'] = {
-        #     'x': game.pacbot.pos['current'][0],
-        #     'y': game.pacbot.pos['current'][1]
-        # }
+        response['pacbot'] = {
+            'x': game.pacbot.pos[0],
+            'y': game.pacbot.pos[1]
+        }
         response['blinky'] = {
             'x': game.red.pos['current'][0],
             'y': game.red.pos['current'][1]
@@ -67,7 +67,6 @@ def xBee():
     while True:
         try:
             xbee.write(m)
-            time.sleep(.1)
         except KeyboardInterrupt:
             break
     xbee.halt
