@@ -91,12 +91,8 @@ game_state * get_successor(game_state current_node){
 
 int main(int argc, char** argv) {
 	createGrid();
-	for(int i=0; i<=28; i++){
-		for(int j=0; j<31; j++){
-			// if(grid[i + 28*j].cordinates.x == 0 && grid[j*28 + i].cordinates.y == 0)
-			// 	printf("%s", "w");
-			// else
-				//printf("%s","_");
+	for(int i=0; i<=31; i++){
+		for(int j=0; j<28; j++){
 				printf("(%d,%d)",grid[j*28 + i].cordinates.x, grid[j*28 + i].cordinates.y);
 		}
 		printf("\n");
