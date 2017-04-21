@@ -1,4 +1,5 @@
 #include "network.h"
+#include "state.h"
 
 static void error(const char *msg) { perror(msg); exit(0); }
 
@@ -200,6 +201,13 @@ int getState(state_response *state) {
     memset(state, 0, sizeof(state_response));
     parseResponse(&response[0], state);
     return 0;
+}
+
+void pollState() {
+    state_response new_state;
+    int err = getState(&new_state);
+    if (err)  return;
+    *latest_state = new_state;
 }
 
 

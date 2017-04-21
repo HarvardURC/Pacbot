@@ -27,6 +27,8 @@ typedef struct game_state {
 	int dir; 
 } game_state;
 
+
+//food opt = pellet =1, big pellet =  2 ; empty= 3; fruit = 4
 typedef struct free_cell {
     cell_pos coordinates; 
     int pacman_pos;
@@ -37,11 +39,23 @@ typedef struct free_cell {
 } free_cell;
 
 extern free_cell *grid; 
+extern state_response *latest_state;
 
 #define NORTH 	 1;
 #define EAST 	 2;
 #define SOUTH 	 3;
 #define WEST 	 4;
+
+
+cell_pos getPacbot();
+cell_pos getClyde();
+cell_pos getBlinky();
+cell_pos getInky();
+cell_pos getPinky();
+game_status getGameStatus();
+int getPowerCounter();
+
+
 
 
 #endif /* _STATE_H_*/
