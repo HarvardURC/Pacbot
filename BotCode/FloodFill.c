@@ -54,7 +54,7 @@ void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited, flood_
 
 void clear_ghost_danger(){
 	for(int i=0; i<868; i++){
-		grid[i].ghost_danger = INT_MAX; 
+		grid[i].ghost_danger = 255; 
 	}
 }
 

@@ -37,9 +37,9 @@ typedef struct heap_t{
  
 void push (heap_t *h, int priority, sca * data);
 
-sca *pop (heap_t *h);
+sca* pop (heap_t *h);
 
-sca * as_get_legal_successors(sca current_node);
+sca_node* as_get_legal_successors(sca current_node);
 
 double get_transition_cost(int pac_dir, int intended_dir);
 
