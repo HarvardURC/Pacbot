@@ -5,26 +5,41 @@
 #include "desired_coordinates.h"
 
 void desired_coordinates(cell_pos *max1, cell_pos *max2, cell_pos *max3) {
-	max1 = NULL;
-	max2 = NULL;
-	max3 = NULL;
+	cur_max1 = NULL;
+	cur_max2 = NULL;
+	cur_max3 = NULL;
 	cell_pos pacbot = getPacbot();
 	for (int i = 0; i < 868; i++){
 		if (grid[i].food_opt == 'p'){
-			if (get_distance(max1, &pacbot)  < get_distance(&grid[i].coordinates, &pacbot)){
-				*max3 = *max2;
-				*max2 = *max1;
-				*max1 = grid[i].coordinates;
+			if (get_distance(cur_max1, &pacbot)  < get_distance(&grid[i].coordinates, &pacbot)){
+				*cur_max3 = *cur_max2;
+				*cur_max2 = *cur_max1;
+				*cur_max1 = grid[i].coordinates;
 			}
-			else if (get_distance(max2, &pacbot)  < get_distance(&grid[i].coordinates, &pacbot) && get_distance(&grid[i].coordinates, &pacbot)  < get_distance(max1, &pacbot) + 15){
-				*max3 = *max2;
-				*max2 = grid[i].coordinates;
+			else if (get_distance(cur_max2, &pacbot)  < get_distance(&grid[i].coordinates, &pacbot) && get_distance(&grid[i].coordinates, &pacbot)  < get_distance(cur_max1, &pacbot) + 15){
+				*cur_max3 = *cur_max2;
+				*cur_max2 = grid[i].coordinates;
 			}
-			else if (get_distance(max3, &pacbot) < get_distance(&grid[i].coordinates, &pacbot) && get_distance(&grid[i].coordinates, &pacbot) < get_distance(max2, &pacbot) + 7){
-				*max3 = grid[i].coordinates;
+			else if (get_distance(cur_max3, &pacbot) < get_distance(&grid[i].coordinates, &pacbot) && get_distance(&grid[i].coordinates, &pacbot) < get_distance(cur_max2, &pacbot) + 7){
+				*cur_max3 = grid[i].coordinates;
 			}
 		}
 	}
+    if (cur_max1 != NULL) {
+        *max1 = *cur_max1;
+    } else {
+        max1->cp_x = 111;
+    }
+    if (cur_max2 != NULL) {
+        *max2 = *cur_max2;
+    } else {
+        max2->cp_x = 111;
+    }
+    if (cur_max3 != NULL) {
+        *max3 = *cur_max3;
+    } else {
+        max3->cp_x = 111;
+    }
 }
 
 int get_distance(cell_pos *a, cell_pos *b) {

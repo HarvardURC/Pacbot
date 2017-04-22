@@ -38,8 +38,6 @@ int main(int argc, char **arg) {
 
     ghost_dir* directions = (ghost_dir*)malloc(sizeof(ghost_dir));
 
-    //setupMovement();
-
     //softPwmCreate(pwmPinL, 0, 100);
     //softPwmCreate(pwmPinR, 0, 100);
     
@@ -104,7 +102,7 @@ int main(int argc, char **arg) {
     cell_pos max1;
     cell_pos max2;
     cell_pos max3;
-    setupMovement();
+    all_init();
 
     int pac_direction = START_DIRECTION;
     while(getGameStatus() != P_STOPPED) {
@@ -134,21 +132,53 @@ int main(int argc, char **arg) {
         ghost_flood(directions);
 
         
-        if (getActionList(pacbot_cur, pac_direction, max1, 0, &(actionbuffer[0])) == 1){
+        if (max1.cp_x != 111) {
+            
+            if (getActionList(pacbot_cur, pac_direction, max1, 0, &(actionbuffer[0])) == 1) {
 
-            if (getActionList(pacbot_cur, pac_direction, max2, 0, &(actionbuffer[0])) == 1){
+                if (max2.cp_x != 111) {
 
-                if (getActionList(pacbot_cur, pac_direction, max3, 0, &(actionbuffer[0])) == 1){
+                    if (getActionList(pacbot_cur, pac_direction, max2, 0, &(actionbuffer[0])) == 1){
 
+                        if (max3.cp_x != 111) {
+
+                            if (getActionList(pacbot_cur, pac_direction, max3, 0, &(actionbuffer[0])) == 1){
+
+                                while (getActionList(pacbot_cur, pac_direction, random_cell_pos, 0, &(actionbuffer[0])) == 1) {
+
+                                    random_cell_pos.cp_x = rand() % 30; 
+                                    random_cell_pos.cp_y = rand() % 28; 
+
+                                }
+                            }
+                        } else {
+                            while (getActionList(pacbot_cur, pac_direction, random_cell_pos, 0, &(actionbuffer[0])) == 1) {
+
+                                random_cell_pos.cp_x = rand() % 30; 
+                                random_cell_pos.cp_y = rand() % 28; 
+
+                            }
+                        }
+                    }
+                } else {
                     while (getActionList(pacbot_cur, pac_direction, random_cell_pos, 0, &(actionbuffer[0])) == 1) {
 
                         random_cell_pos.cp_x = rand() % 30; 
                         random_cell_pos.cp_y = rand() % 28; 
 
                     }
+
                 }
+            }
+        } else {
+
+            while (getActionList(pacbot_cur, pac_direction, random_cell_pos, 0, &(actionbuffer[0])) == 1) {
+
+                random_cell_pos.cp_x = rand() % 30; 
+                random_cell_pos.cp_y = rand() % 28; 
 
             }
+
         }
 
         pac_direction = pacbot_execute(&(actionbuffer[0]));
