@@ -4,22 +4,24 @@
 #include "state.h"
 
 //return type of getSuccessors
-typedef struct  inode
+typedef struct dir_node
 {
-    int i; 
-    inode * next; 
-}inode;
+    int dir; 
+    struct dir_node * next; 
+}dir_node;
+
+void append_to_action_list(int i, dir_node * action_list);
 
 typedef struct sca{
-	game_state state; 
-	int cost;  
-	inode * action_list; 
-
+	free_cell cell; 
+	double cost; 
+	dir_node * action_list; 
+    int last_dir;
 } sca; 
 
 /*
 ````````````````````````````````````````````````````````````````````````````````
-HEAP CODE
+HEAP CODE (Priority Queue)
 ````````````````````````````````````````````````````````````````````````````````
 */
 typedef struct node_t{
@@ -33,27 +35,31 @@ typedef struct heap_t{
     int size;
 } heap_t;
  
-void push (heap_t *h, int priority, game_state *state);
+void push (heap_t *h, int priority, sca * data);
 
 sca *pop (heap_t *h);
 
-sca * getSuccessors(game_state current_node);
+sca * get_legal_successors(sca current_node);
+
+double get_transition_cost(int pac_dir, int intended_dir)
 
 int manhattanDistance(cell_pos pos1, cell_pos pos2);
 
 /*
-LINKED LIST CODE 
+CLosed Node LINKED LIST CODE 
 */
-typedef struct node {
-    struct node* prev;
-    struct node* next;
-    struct sca* state;
-} node;
+typedef struct sca_node {
+    struct sca_node* prev_sca_node;
+    struct sca_node* next_sca_node;
+    struct sca state;
+} sca_node;
 
 void insert_head(node* n);
 
+void insert_sca_tail(sca_node* n, sca_node* legal_successors_tail, sca_node* legal_successors_head)
+
 void remove_node(node* n);
 
-int getNextMove(game_state pac_pos, cell_pos target_pos);
+dir_node * getActionList(cell_pos pac_pos, int pac_dir, cell_pos target_pos);
 
 #endif /* _ASTAR_H_*/

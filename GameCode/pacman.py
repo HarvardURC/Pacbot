@@ -125,7 +125,7 @@ def xBee():
 
 def main():
     global lay, pacbot, game, botTracker, graphics
-    graphics = PacmanGraphics(0.5)
+    graphics = PacmanGraphics(0.95)
 
     graphics.initialize(game.gstate)
     graphics.update(game.gstate)
@@ -141,18 +141,7 @@ def main():
     # Thread(target = xBee).start()
     Thread(target = gameUpdate(graphics)).start()
     Thread(target = trackerUpdate).start()
-
-
-        
-        
-   
     
-
-
-
-
-    
-
 
 def appRunner():
     app.run(host="0.0.0.0", port=8080)
