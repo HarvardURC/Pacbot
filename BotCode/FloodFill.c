@@ -8,6 +8,12 @@
 #include "AStar.h"
 #include "FloodFill.h"
 
+
+int direc[4];
+direc[0] = 1;
+direc[1] = 2;
+direc[2] = 3;
+direc[3] = 1;
 //Returns the head node and moves head pointer to next node
 int pop_flood_node(flood_node **head, flood_node **tail, flood_node **ret){
 	if(*head == NULL) {
@@ -39,6 +45,7 @@ void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited, flood_
 			new_flood_node->next_flood_node = NULL; 
             new_flood_node->depth = new_depth;
             new_flood_node->direction = i+1; 
+            direc[i] = i + 1;
             if (*head == NULL) {
                 *head = new_flood_node;
                 *tail = *head;
@@ -76,11 +83,6 @@ void ghost_flood(/*ghost_dir* direcs*/){
 	ghosts[2].cp_y = 21;  //getPinky();
 	ghosts[3].cp_x = 1;
 	ghosts[3].cp_y = 1; //getClyde();
-    int direc[4];
-    direc[0] = 1;
-    direc[1] = 2;
-    direc[2] = 3;
-    direc[3] = 1;
     uint8_t visited[868];
 	clear_ghost_danger();
 	for(int i=0; i<4; i++) {
@@ -108,18 +110,18 @@ void ghost_flood(/*ghost_dir* direcs*/){
 		head_fringe->depth = 0;
         head_fringe->direction = direc[i]; 
         head_fringe->next_flood_node = NULL;
-        rintf("%d\n", head_fringe->direction);
+
 		while (1) {
             flood_node *cur_node;
 			if(head_fringe == NULL) {
 				break; 
 			}
+
             int empty = pop_flood_node(&head_fringe, &tail, &cur_node);
             if (empty) {
                 printf("should not reach here!\n");
             }
-            printf("%d\n", head_fringe->depth);
-			add_legal_successors(cur_node->depth+1, cur_node->current_cell, &visited[0], &head_fringe, &tail, head_fringe->direction);
+			add_legal_successors(cur_node->depth+1, cur_node->current_cell, &visited[0], &head_fringe, &tail, direc[i]);
             if (grid[28*cur_node->current_cell.coordinates.cp_x + cur_node->current_cell.coordinates.cp_y].ghost_danger > cur_node->depth) {
 			    grid[28*cur_node->current_cell.coordinates.cp_x + cur_node->current_cell.coordinates.cp_y].ghost_danger = cur_node->depth; 
             }
