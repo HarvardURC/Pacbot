@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include "AStar.h"
 #include "state.h"
@@ -75,17 +76,17 @@ int manhattanDistance(cell_pos pos1, cell_pos pos2) {
 }
 
 //N=1, E=2, S=3, W=4, STOP = 5
-static void as_add_legal_successors(sca* current_node, heap_t *fringe, uint16_t *costs,
-        int ignore_ghosts, cell_pos target_pos) {
+static void as_add_legal_successors(sca* current_node, heap_t *fringe,
+        uint16_t *costs, int ignore_ghosts, cell_pos target_pos) {
     free_cell adjacent_cell; 
     double action_cost;
     for(int i = 0; i<4; i++){
-        adjacent_cell = grid[current_node->cell.adj_cell[i].cp_x + 28 * current_node->cell.adj_cell[i].cp_y];  
+        adjacent_cell = grid[current_node->cell.adj_cell[i].cp_y + 28 * current_node->cell.adj_cell[i].cp_x];  
         action_cost = get_transition_cost(current_node->actions[current_node->next_action-1], i+1) + current_node->cost;
         if((adjacent_cell.food_opt != 'w') && (ignore_ghosts || 
                 (SPEED_RATIO * adjacent_cell.ghost_danger > action_cost)) &&
-                action_cost < *(costs+current_node->cell.adj_cell[i].cp_x + 28 * current_node->cell.adj_cell[i].cp_y)) {                  
-            *(costs+current_node->cell.adj_cell[i].cp_x + 28 * current_node->cell.adj_cell[i].cp_y) = action_cost;
+                action_cost < *(costs+current_node->cell.adj_cell[i].cp_y + 28 * current_node->cell.adj_cell[i].cp_x)) {                  
+            *(costs+current_node->cell.adj_cell[i].cp_y + 28 * current_node->cell.adj_cell[i].cp_x) = action_cost;
             sca *new_sca = malloc(sizeof(sca)); 
             new_sca->cell = adjacent_cell;
             new_sca->cost = action_cost;
@@ -117,13 +118,18 @@ int getActionList(cell_pos pac_pos, int pac_dir, cell_pos target_pos,
     int prio = manhattanDistance(pac_pos, target_pos);
     push(fringe, prio, cur_dat);
     uint16_t costs[868];
-    memset(&costs[0], 4096, sizeof(uint16_t) * 868); 
+    for (int i = 0; i <868; i++) {
+        costs[i] = 4096;
+    }
     *(costs+28*pac_pos.cp_x + pac_pos.cp_y) = 0;
     while(1){
         if (fringe->nodes == NULL){
             return 1; 
         }
         cur_dat = pop(fringe);
+        if (cur_dat == NULL) {
+            break;
+        }
         if ((cur_dat->cell.coordinates.cp_x == target_pos.cp_x) &&
                 (cur_dat->cell.coordinates.cp_y == target_pos.cp_y)){
             memcpy(res, &cur_dat->actions[0], sizeof(uint8_t) * 200);

@@ -7,20 +7,17 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-<<<<<<< HEAD
 //#include "vl6180_pi.h"
-=======
-#include <movement.h>
->>>>>>> cfcd90c4ee5367a918f3edbbc1b29da2de63ed50
+#include "movement.h"
 #include "state.h"
 #include "network.h"
 
 #define RIGHT_MAX 99;
 #define LEFT_MAX 100;
 
-vl6180 handle0;
-vl6180 handle1;
-vl6180 handle2;
+//vl6180 handle0;
+//vl6180 handle1;
+//vl6180 handle2;
 
 int left_count = 0;
 int right_count = 0;
@@ -35,6 +32,7 @@ const int EncR = 18;
 const int EncL = 24;
 
 void initialise_irs(){
+    return; /*
 	digitalWrite(20, HIGH);
 	digitalWrite(22, HIGH);
 	digitalWrite(27, HIGH);
@@ -53,10 +51,11 @@ void initialise_irs(){
 	digitalWrite(22, HIGH);
 	handle0 = vl6180_initialise(1, 0);
 	change_address(handle0, 0x2c);
-	return; 
+	return; */
 }
 
 void setupMovement() {
+    /*
     wiringPiSetup();
 	wiringPiSetupGpio();
 
@@ -75,15 +74,17 @@ void setupMovement() {
 	wiringPiISR(EncL, INT_EDGE_RISING, *left_add_count);
 
 	initialise_irs();
+    */
+    return;
 };
 
 void all_init() {	
     
     setupMovement();
-
+    /*
 	softPwmCreate(pwmPinL, 0, 100);
 	softPwmCreate(pwmPinR, 0, 100);
-
+    */
 	//while(1){
 	//	go_straight();
 		//turn_left();
@@ -92,6 +93,7 @@ void all_init() {
 }
 
 void turn_right() {
+    /*
 	while (left_count < 123){
 		digitalWrite(polarPinL, LOW);
 		softPwmWrite(pwmPinL, 50);
@@ -101,9 +103,12 @@ void turn_right() {
 	
 	softPwmWrite(pwmPinL, 0);
 	softPwmWrite(pwmPinR, 0);
+    */
+    return;
 }
 
 void turn_left() {
+    /*
 	left_count = 0;
 	while (left_count < 115){
 		digitalWrite(polarPinL, HIGH);
@@ -114,6 +119,8 @@ void turn_left() {
 
 	softPwmWrite(pwmPinL, 0);
 	softPwmWrite(pwmPinR, 0);
+    */
+    return;
 }
 
 void turn_around(){
@@ -122,6 +129,7 @@ void turn_around(){
 }
 
 void correct_rot() {
+    /*
 	if(get_distance(handle0, 0x2b) < 42){
 		digitalWrite(polarPinL, HIGH);
 		digitalWrite(polarPinR, LOW);
@@ -141,6 +149,8 @@ void correct_rot() {
 
 	softPwmWrite(pwmPinL, 0);
 	softPwmWrite(pwmPinR, 0);
+    */
+    return;
 }
 
 static int same_square(cell_pos a, cell_pos b) {
@@ -151,6 +161,7 @@ static int same_square(cell_pos a, cell_pos b) {
 }
 
 void go_straight() {
+     /*
     int left;
     int right;
     int front;
@@ -234,9 +245,12 @@ void go_straight() {
 	forward_half();
 	softPwmWrite(pwmPinL, 0);
 	softPwmWrite(pwmPinR, 0);
+    */
+    return;
 }
 
 void forward_half(){
+    /*
 	left_count = 0;
 	digitalWrite(polarPinL, LOW);
 	digitalWrite(polarPinR, LOW);
@@ -246,6 +260,8 @@ void forward_half(){
 	}
 	digitalWrite(pwmPinL, 0);
 	digitalWrite(pwmPinR, 0);
+    */
+    return;
 }
 
 void left_add_count(){

@@ -60,28 +60,17 @@ int main(int argc, char **arg) {
     directions->clyde_dir = direc[3];
     ghost_flood(directions);
 
-    printf("1");
     cell_pos start_pos;
-    printf("2");
     cell_pos goal_pos;
-    printf("3");
     cell_pos init_pos;
-    printf("4");
     start_pos.cp_x = 1;
-    printf("5");
     start_pos.cp_y = 1;
-    printf("6");
     goal_pos.cp_x = 29;
-    printf("7");
     goal_pos.cp_y = 26;
-    printf("8");
     init_pos.cp_x = 23;
-    printf("9");
     init_pos.cp_y = 13;
-    printf("10");
     uint8_t actionbuffer[200];
 
-    printf("got here");
     int test = getActionList(start_pos, 1, goal_pos, 1, &(actionbuffer[0]));
     if (test) {
         printf("failed\n");
