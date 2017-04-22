@@ -1,6 +1,5 @@
 #include <math.h>
 #include <stdlib.h>
-#include <limits.h>
 #include <stdio.h>
 #include <inttypes.h>
 #include <string.h>
@@ -54,7 +53,7 @@ void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited, flood_
 
 void clear_ghost_danger(){
 	for(int i=0; i<868; i++){
-		grid[i].ghost_danger = INT_MAX; 
+		grid[i].ghost_danger = 255; 
 	}
 }
 
@@ -101,7 +100,9 @@ void ghost_flood(){
                 printf("should not reach here!\n");
             }
 			add_legal_successors(cur_node->depth+1, cur_node->current_cell, &visited[0], &head_fringe, &tail);
-			grid[28*cur_node->current_cell.coordinates.cp_x + cur_node->current_cell.coordinates.cp_y].ghost_danger = cur_node->depth; 
+            if (grid[28*cur_node->current_cell.coordinates.cp_x + cur_node->current_cell.coordinates.cp_y].ghost_danger > cur_node->depth) {
+			    grid[28*cur_node->current_cell.coordinates.cp_x + cur_node->current_cell.coordinates.cp_y].ghost_danger = cur_node->depth; 
+            }
             free(cur_node);
 		}
 	}
