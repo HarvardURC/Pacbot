@@ -77,26 +77,6 @@ void ghost_flood(){
 	ghosts[3].cp_y = 1; //getClyde();
     uint8_t visited[868];
 	clear_ghost_danger();
-<<<<<<< HEAD
-	printf("%s\n", "Cleared");
-	for(int i=0; i<4; i++){
-		flood_node * head_fringe = (flood_node*) malloc(sizeof(flood_node));
-		//flood_node * head_closed;
-		flood_node* current_node = (flood_node*) malloc(sizeof(flood_node));
-		printf("%d\n", 28*ghosts[i].cp_x + ghosts[i].cp_y);
-		grid[ghosts[i].cp_x + 28*ghosts[i].cp_y].ghost_danger = 0;
-		printf("Assigned ghost position 0\n");
-		current_node->current_cell = grid[28*ghosts[i].cp_x + ghosts[i].cp_y];
-		//printf("%c\n", (*new_cell).food_opt);
-		//current_node->current_cell = *new_cell;
-		printf("%s\n", "About to PUsh");
-		push_flood_node(current_node, head_fringe);
-		printf("%s\n", "Called flood_node");
-		printf("%d, %d \n", head_fringe->current_cell.coordinates.cp_x,head_fringe->current_cell.coordinates.cp_y); 
-		int depth = 1; 
-		while (1){
-			if(head_fringe == NULL){
-=======
 	for(int i=0; i<4; i++) {
         memset(&visited[0], 0, sizeof(uint8_t) * 868); 
 		flood_node *head_fringe = (flood_node*) malloc(sizeof(flood_node));
@@ -114,7 +94,6 @@ void ghost_flood(){
             printf("%d\n", i);
             flood_node *cur_node;
 			if(head_fringe == NULL) {
->>>>>>> 6d28255bebe6516b6e48623a92eac3f0626e99bb
 				break; 
 			}
             int empty = pop_flood_node(&head_fringe, &tail, &cur_node);
