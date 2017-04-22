@@ -12,7 +12,8 @@
 #include "AStar.h"
 #include "state.h"
 #include "grid.h"
-#include "movement.h"
+#include "FloodFill.h"
+//#include "movement.h"
 //#include <wiringPi.h>
 //#include <Direction.c> 
 // Initialize connection with camera
@@ -24,12 +25,25 @@ state_response* latest_state;
 
 int main(int argc, char **arg) {
 
-    all_init();
+    //setupMovement();
+
+    // softPwmCreate(pwmPinL, 0, 100);
+    // softPwmCreate(pwmPinR, 0, 100);
+    
     latest_state = malloc(sizeof(state_response));
     if(latest_state == NULL) {
         return -1;
     }
     createGrid();
+    
+    ghost_flood(); 
+    for(int i =0; i<31; i++) {
+        for (int j = 0; j < 28; j++)
+        {
+            printf("%d ", grid[j+ i*28].ghost_danger);
+        }
+        printf("\n");
+    }
 
     struct state_response state;
     while(1) {

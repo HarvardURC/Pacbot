@@ -1,4 +1,3 @@
-#include "vl6180_pi.h"
 #include <stdio.h>
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
@@ -8,6 +7,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include "vl6180_pi.h"
 
 #define RIGHT_MAX 99;
 #define LEFT_MAX 100;
@@ -69,10 +69,21 @@ void setupMovement() {
 	wiringPiISR(EncL, INT_EDGE_RISING, *left_add_count);
 
 	initialise_irs();
-    softPwmCreate(pwmPinL, 0, 100);
+};
+
+void all_init() {	
+    
+    setupMovement();
+
+	softPwmCreate(pwmPinL, 0, 100);
 	softPwmCreate(pwmPinR, 0, 100);
 
-};
+	//while(1){
+	//	go_straight();
+		//turn_left();
+	//}
+
+}
 
 void turn_right() {
 	while (left_count < 121){

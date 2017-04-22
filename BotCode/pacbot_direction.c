@@ -5,9 +5,11 @@ typedef struct directions{
 	int* point;
 } directions;
 
-int pacbot_direction(){
+int initial_direction = WEST;
+int current_direction;
+/*int pacbot_direction(){
 
-	int direction;
+	current_direction = initial_direction;
 
 	state_response state = NULL;
 	get_state(*state);
@@ -35,7 +37,7 @@ int pacbot_direction(){
 	}
 
 	return direction;
-}
+}*/
 
 int pacbot_getnext(start){
 	directions next_direc = *start;
@@ -46,14 +48,19 @@ int pacbot_getnext(start){
 	return 1;
 }
 
-void pacbot_execute(command){
-	int cur_direction = pacbot_direction();
-	if ((command - cur_direction) % 4 == 2)
+int pacbot_execute(command){
+	//int cur_direction = pacbot_direction();
+	if (command == 0)
+		return current_direction;
+	if ((command - current_direction) % 4 == 2)
 		turn_around();
-	else if ((command - cur_direction) % 4 == 3)
+	else if ((command - current_direction) % 4 == 3)
 		turn_left();
-	else if ((command - cur_direction) % 4 == 1)
+	else if ((command - current_direction) % 4 == 1)
 		turn_right();
 	else
 		go_straight();
+
+	current_direction = command;
+	return current_direction;
 }
