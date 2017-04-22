@@ -13,9 +13,9 @@ typedef struct dir_node
 void append_to_action_list(int i, dir_node * action_list);
 
 typedef struct sca{
-	free_cell cell; 
-	double cost; 
-	dir_node * action_list; 
+    free_cell cell; 
+    double cost; 
+    dir_node * action_list; 
     int last_dir;
 } sca; 
 

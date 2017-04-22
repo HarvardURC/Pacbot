@@ -10,5 +10,7 @@ void left_add_count();
 void initialise_irs();
 void turn_right();
 void turn_left();
+void turn_around();
+void forward_half();
 void setupMovement();
 void all_init();

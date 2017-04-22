@@ -8,8 +8,8 @@
 #define SOUTH 3
 #define WEST 4
 
-int pacbot_direction();
+//int pacbot_direction();
 int pacbot_getnext(int* start);
-void pacbot_execute(int);
+int pacbot_execute(int);
 
 #endif /* _PACBOT_DIRECTION_H_*/

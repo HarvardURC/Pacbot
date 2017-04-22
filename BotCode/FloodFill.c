@@ -8,14 +8,24 @@
 #include "state.h"
 //Add a node n to the end of current_node
 void push_flood_node(flood_node* n, flood_node * current_node){ 
+	printf("%d\n", n->current_cell.coordinates.cp_x);
+	printf("%d\n", n->current_cell.coordinates.cp_y);
 	if(n==NULL)
 		return; 
 	while(current_node->next_flood_node != NULL){
+		current_node->next_flood_node = (flood_node*) malloc(sizeof(flood_node));
 		current_node= current_node->next_flood_node; 
 	}
+	printf("3\n");
 	current_node->next_flood_node = n; 
+	printf("%d\n", current_node->next_flood_node->current_cell.coordinates.cp_x);
+	printf("%d\n", current_node->next_flood_node->current_cell.coordinates.cp_y);
+	printf("4\n");
 	current_node = n; 
-	current_node->next_flood_node = NULL; 
+	current_node->next_flood_node = NULL;
+	printf("%d\n", current_node->current_cell.coordinates.cp_x);
+	printf("%d\n", current_node->current_cell.coordinates.cp_y); 
+	printf("5");
 } 
 //Returns the head node and moves head pointer to next node
 free_cell pop_flood_node(flood_node* head){
@@ -63,6 +73,14 @@ void clear_ghost_danger(){
 		grid[i].ghost_danger= INT_MAX; 
 	}
 }
+void freer_function(flood_node* head){
+	flood_node* new_head; 
+	while(head->next_flood_node != NULL){
+		new_head = head->next_flood_node; 
+		free(head); 
+	}
+	free(new_head);
+}
 // void print_linked_list(flood_node * head){
 // 	flood_node * head_t = head; 
 // 	while(head != NULL)
@@ -81,13 +99,21 @@ void ghost_flood(){
 	ghosts[3].cp_x = 1;
 	ghosts[3].cp_y = 1; //getClyde();
 	clear_ghost_danger();
+	printf("%s\n", "Cleared");
 	for(int i=0; i<4; i++){
-		flood_node * head_fringe;
+		flood_node * head_fringe = (flood_node*) malloc(sizeof(flood_node));
 		//flood_node * head_closed;
-		flood_node* current_node; 
+		flood_node* current_node = (flood_node*) malloc(sizeof(flood_node));
+		printf("%d\n", 28*ghosts[i].cp_x + ghosts[i].cp_y);
 		grid[ghosts[i].cp_x + 28*ghosts[i].cp_y].ghost_danger = 0;
-		current_node->current_cell = grid[ghosts[i].cp_x + 28*ghosts[i].cp_y];
+		printf("Assigned ghost position 0\n");
+		current_node->current_cell = grid[28*ghosts[i].cp_x + ghosts[i].cp_y];
+		//printf("%c\n", (*new_cell).food_opt);
+		//current_node->current_cell = *new_cell;
+		printf("%s\n", "About to PUsh");
 		push_flood_node(current_node, head_fringe);
+		printf("%s\n", "Called flood_node");
+		printf("%d, %d \n", head_fringe->current_cell.coordinates.cp_x,head_fringe->current_cell.coordinates.cp_y); 
 		int depth =1; 
 		while (1){
 			if(head_fringe == NULL){
@@ -98,10 +124,12 @@ void ghost_flood(){
 			if(successors_head!=NULL){
 				push_flood_node(successors_head, head_fringe);
 			}
-			grid[cell.coordinates.cp_x + 28*cell.coordinates.cp_y].ghost_danger = depth; 
+			grid[28*cell.coordinates.cp_x + cell.coordinates.cp_y].ghost_danger = depth; 
 			depth = cell.ghost_danger +1;  
 		}
 		
+		free(head_fringe);
+		free(current_node);
 	}
 }
 
