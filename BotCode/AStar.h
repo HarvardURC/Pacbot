@@ -19,6 +19,12 @@ typedef struct sca{
     int last_dir;
 } sca; 
 
+typedef struct sca_node {
+    struct sca_node* prev_sca_node;
+    struct sca_node* next_sca_node;
+    struct sca state;
+} sca_node;
+
 /*
 ````````````````````````````````````````````````````````````````````````````````
 HEAP CODE (Priority Queue)
@@ -48,11 +54,7 @@ int manhattanDistance(cell_pos pos1, cell_pos pos2);
 /*
 CLosed Node LINKED LIST CODE 
 */
-typedef struct sca_node {
-    struct sca_node* prev_sca_node;
-    struct sca_node* next_sca_node;
-    struct sca state;
-} sca_node;
+
 
 void insert_head(sca_node* n);
 

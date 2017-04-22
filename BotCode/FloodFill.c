@@ -1,6 +1,5 @@
 #include <math.h>
 #include <stdlib.h>
-#include <limits.h>
 #include <stdio.h>
 #include <inttypes.h>
 #include <string.h>
@@ -101,7 +100,9 @@ void ghost_flood(){
                 printf("should not reach here!\n");
             }
 			add_legal_successors(cur_node->depth+1, cur_node->current_cell, &visited[0], &head_fringe, &tail);
-			grid[28*cur_node->current_cell.coordinates.cp_x + cur_node->current_cell.coordinates.cp_y].ghost_danger = cur_node->depth; 
+            if (grid[28*cur_node->current_cell.coordinates.cp_x + cur_node->current_cell.coordinates.cp_y].ghost_danger > cur_node->depth) {
+			    grid[28*cur_node->current_cell.coordinates.cp_x + cur_node->current_cell.coordinates.cp_y].ghost_danger = cur_node->depth; 
+            }
             free(cur_node);
 		}
 	}
