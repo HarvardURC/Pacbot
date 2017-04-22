@@ -150,4 +150,3 @@ int getActionList(cell_pos pac_pos, int pac_dir, cell_pos target_pos,
     free(fringe);
     return 1;
 }
-    

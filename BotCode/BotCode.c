@@ -8,15 +8,16 @@
 #include <assert.h>
 #include <time.h>
 #include <sys/time.h>
-//#include "movement.h"
+//#include <wiringPi.h>
 #include "network.h"
 #include "AStar.h"
 #include "state.h"
 #include "grid.h"
 #include "FloodFill.h"
 #include "pacbot_direction.h"
+#include "movement.h"
 //#include "movement.h"
-//#include <wiringPi.h>
+//
 //#include <Direction.c> 
 // Initialize connection with camera
 //Must have two modes 
@@ -40,8 +41,8 @@ int main(int argc, char **arg) {
 
     //setupMovement();
 
-    // softPwmCreate(pwmPinL, 0, 100);
-    // softPwmCreate(pwmPinR, 0, 100);
+    //softPwmCreate(pwmPinL, 0, 100);
+    //softPwmCreate(pwmPinR, 0, 100);
     
     latest_state = malloc(sizeof(state_response));
     if(latest_state == NULL) {
@@ -67,11 +68,11 @@ int main(int argc, char **arg) {
     start_pos.cp_y = 1;
     goal_pos.cp_x = 29;
     goal_pos.cp_y = 26;
-    init_pos.cp_x = 23;
-    init_pos.cp_y = 13;
+    // init_pos.cp_x = 23;
+    // init_pos.cp_y = 13;
     uint8_t actionbuffer[200];
 
-    int test = getActionList(start_pos, 1, goal_pos, 1, &(actionbuffer[0]));
+    /*int test = getActionList(start_pos, 1, goal_pos, 1, &(actionbuffer[0]));
     if (test) {
         printf("failed\n");
     } else {
@@ -81,109 +82,115 @@ int main(int argc, char **arg) {
             i++;
         }
         printf("%d\n", actionbuffer[i]);
+    }*/
+
+    /*for(int i =0; i<31; i++) {
+        for (int j = 0; j < 28; j++)
+        {
+            printf("%03d ", grid[j+ i*28].ghost_danger);
+        }
+        printf("\n");
+    }*/
+ 
+    pollState();
+    cell_pos blink_cur = getBlinky();
+    cell_pos ink_cur = getInky();
+    cell_pos pink_cur = getPinky();
+    cell_pos clyde_cur = getClyde();
+    cell_pos pacbot_cur = getPacbot();
+    state_response state;
+    cell_pos blink_last;
+    cell_pos ink_last;
+    cell_pos pink_last;
+    cell_pos clyde_last;
+    uint8_t a = 0;
+    while(getGameStatus() != P_STOPPED) {
+        blink_last = blink_cur;
+        ink_last = ink_cur;
+        pink_last = pink_cur;
+        clyde_last = clyde_cur;
+        pollState();
+        blink_cur = getBlinky();
+        ink_cur = getInky();
+        pink_cur = getPinky();
+        clyde_cur = getClyde();
+        pacbot_cur = getPacbot();
+
+        if (getDirectionGhost(&blink_last, &blink_cur) != 0){
+            directions->blink_dir = getDirectionGhost(&blink_last, &blink_cur);
+            directions->ink_dir = getDirectionGhost(&ink_last, &ink_cur);
+            directions->pink_dir = getDirectionGhost(&pink_last, &pink_cur);
+            directions->clyde_dir = getDirectionGhost(&clyde_last, &clyde_cur);
+        }
+        cell_pos random_cell_pos; 
+        random_cell_pos.cp_x = rand() % 30; 
+        random_cell_pos.cp_y = rand() % 28; 
+
+        desired_coordinates(*max1, *max2, *max3);
+
+        ghost_flood(directions);
+
+        
+        if (getActionList(pacbot_cur, pacbot_execute(&a), *max1, 0, &(actionbuffer[0])) == 1){
+
+            if (getActionList(pacbot_cur, pacbot_execute(&a), *max2, 0, &(actionbuffer[0])) == 1){
+
+                if (getActionList(pacbot_cur, pacbot_execute(&a), *max3, 0, &(actionbuffer[0])) == 1){
+
+                    while (getActionList(pacbot_cur, pacbot_execute(&a), random_cell_pos, 0, &(actionbuffer[0])) == 1) {
+
+                        random_cell_pos.cp_x = rand() % 30; 
+                        random_cell_pos.cp_y = rand() % 28; 
+
+                    }
+                }
+
+            }
+        }
+
+        pacbot_execute(&(actionbuffer[0]));
+    
     }
 
-    // for(int i =0; i<31; i++) {
-    //     for (int j = 0; j < 28; j++)
-    //     {
-    //         printf("%03d ", grid[j+ i*28].ghost_danger);
-    //     }
-    //     printf("\n");
-    // }
+    getActionList(pacbot_cur, pacbot_execute(&a), init_pos, 1, &(actionbuffer[0]));
+    pacbot_execute(&(actionbuffer[0]));
+    uint8_t zero = 0;
+    while (pacbot_execute(&zero) != WEST){
+        turn_left();
+    }
+    lives--;
+
+
+    if (lives == 0) {
+        free(grid);
+        return 0; 
+    }    
+}
  
-//     pollState();
-//     cell_pos blink_cur = getBlinky();
-//     cell_pos ink_cur = getInky();
-//     cell_pos pink_cur = getPinky();
-//     cell_pos clyde_cur = getClyde();
-//     cell_pos pacbot_cur = getPacbot();
-//     state_response state;
-//     cell_pos blink_last;
-//     cell_pos ink_last;
-//     cell_pos pink_last;
-//     cell_pos clyde_last;
-//     while(getGameStatus() != P_STOPPED) {
-//         blink_last = blink_cur;
-//         ink_last = ink_cur;
-//         pink_last = pink_cur;
-//         clyde_last = clyde_cur;
-//         pollState();
-//         blink_cur = getBlinky();
-//         ink_cur = getInky();
-//         pink_cur = getPinky();
-//         clyde_cur = getClyde();
-//         pacbot_cur = getPacbot();
+int getDirectionGhost(cell_pos* init, cell_pos* final){
+    int ghost_direc;
 
-//         if (getDirectionGhost(&blink_last, &blink_cur) != 0){
-//             directions->blink_dir = getDirectionGhost(&blink_last, &blink_cur);
-//             directions->ink_dir = getDirectionGhost(&ink_last, &ink_cur);
-//             directions->pink_dir = getDirectionGhost(&pink_last, &pink_cur);
-//             directions->clyde_dir = getDirectionGhost(&clyde_last, &clyde_cur);
-//         }
-//         cell_pos random_cell_pos; 
-//         random_cell_pos.cp_x = rand() % 30; 
-//         random_cell_pos.cp_y = rand() % 28; 
+    if (init->cp_x != final->cp_x){
+        if (init->cp_x < final->cp_x){
+            ghost_direc = SOUTH;
+        }
+        else{
+            ghost_direc = NORTH;
+        }
 
-//         desired_coordinates(*max1, *max2, *max3);
+    return ghost_direc;
+    }
+    else if (init->cp_y != final->cp_y){
+        if (init->cp_y < final->cp_y){
+            ghost_direc = EAST;
+        }
 
-//         ghost_flood(directions);
-        
-//         if (getActionList(pacbot_cur, pacbot_execute(0), *max1, 0, &(actionbuffer[0])) == 1){
-
-//             if (getActionList(pacbot_cur, pacbot_execute(0), *max2, 0, &(actionbuffer[0])) == 1){
-
-//                 if (getActionList(pacbot_cur, pacbot_execute(0), *max3, 0, &(actionbuffer[0])) == 1){
-
-//                     while (getActionList(pacbot_cur, pacbot_execute(0), random_cell_pos, 0, &(actionbuffer[0])) == 1) {
-
-//                         random_cell_pos.cp_x = rand() % 30; 
-//                         random_cell_pos.cp_y = rand() % 28; 
-
-//                     }
-//                 }
-
-//             }
-//         }
-
-//         pacbot_execute(&(actionbuffer[0]));
-    
-//     }
-
-//     getActionList(pacbot_cur, pacbot_execute(0), init_pos, 1, &(actionbuffer[0]));
-//     pacbot_execute(&(actionbuffer[0]));
-//     lives--;
-
-
-//     if (lives == 0) {
-//         free(grid);
-//         return 0; 
-//     }    
-// }
- 
-// int getDirectionGhost(cell_pos* init, cell_pos* final){
-//     int ghost_direc;
-
-//     if (init->cp_x != final->cp_x){
-//         if (init->cp_x < final->cp_x){
-//             ghost_direc = SOUTH;
-//         }
-//         else{
-//             ghost_direc = NORTH;
-//         }
-
-//     return ghost_direc;
-//     }
-//     else if (init->cp_y != final->cp_y){
-//         if (init->cp_y < final->cp_y){
-//             ghost_direc = EAST;
-//         }
-
-//         else{
-//             ghost_direc = WEST;
-//         }
-//     return ghost_direc;
-//     }
-//     else{
-//         return 0;
-//     }
+        else{
+            ghost_direc = WEST;
+        }
+    return ghost_direc;
+    }
+    else{
+        return 0;
+    }
 }

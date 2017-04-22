@@ -47,10 +47,10 @@ typedef struct free_cell {
 extern free_cell *grid; 
 extern state_response *latest_state;
 
-#define NORTH 	 1;
-#define EAST 	 2;
-#define SOUTH 	 3;
-#define WEST 	 4;
+#define NORTH 	 1
+#define EAST 	 2
+#define SOUTH 	 3
+#define WEST 	 4
 
 
 cell_pos getPacbot();

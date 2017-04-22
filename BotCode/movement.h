@@ -2,6 +2,8 @@
 #define _MOVEMENT_H_
 
 //#include "vl6180_pi.h"
+#include "state.h"
+#include "pacbot_direction.h"
 
 #define RIGHT_MAX 99;
 #define LEFT_MAX 100;
@@ -17,7 +19,6 @@ void turn_around();
 void forward_half();
 void setupMovement();
 void all_init();
-
-
+int did_change(cell_pos* a, cell_pos* b);
 
 #endif /* _MOVEMENT_H_*/

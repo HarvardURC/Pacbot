@@ -72,20 +72,20 @@ void clear_ghost_danger(){
 //on new ghost position update, change the main grid danger variable to match distance from ghosts
 void ghost_flood(ghost_dir *direcs) {
 	cell_pos ghosts [4]; 
-    /*
+    
 	ghosts[0] = getInky();
 	ghosts[1] = getBlinky();
 	ghosts[2] = getPinky();
 	ghosts[3] = getClyde();
-    */
-    ghosts[0].cp_x = 8;//getInky();
+    
+    /*ghosts[0].cp_x = 8;//getInky();
 	ghosts[0].cp_y = 15; 
 	ghosts[1].cp_x = 14;//getBlinky();
 	ghosts[1].cp_y = 9;
 	ghosts[2].cp_x = 26; 
 	ghosts[2].cp_y = 21;  //getPinky();
 	ghosts[3].cp_x = 1;
-	ghosts[3].cp_y = 1; //getClyde();
+	ghosts[3].cp_y = 1; //getClyde();*/
     int directions[4];
     directions[0] = direcs->ink_dir;
     directions[1] = direcs->blink_dir;

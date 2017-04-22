@@ -1,5 +1,4 @@
 #include "pacbot_direction.h"
-#include "movement.h"
 
 typedef struct directions{
 	int direc;
@@ -40,7 +39,7 @@ int current_direction;
 	return direction;
 }*/
 
-int pacbot_execute(uint8_t* start_array){
+/*int pacbot_execute(uint8_t* start_array){
 	//int cur_direction = pacbot_direction();
 	if (start_array[0] == 0)
 		return current_direction;
@@ -68,4 +67,4 @@ int pacbot_execute(uint8_t* start_array){
 		current_direction = start_array[i];
 	}
 	return current_direction;
-}
+}*/
