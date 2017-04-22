@@ -114,7 +114,7 @@ void ghost_flood(){
 		push_flood_node(current_node, head_fringe);
 		printf("%s\n", "Called flood_node");
 		printf("%d, %d \n", head_fringe->current_cell.coordinates.cp_x,head_fringe->current_cell.coordinates.cp_y); 
-		int depth =1; 
+		int depth = 1; 
 		while (1){
 			if(head_fringe == NULL){
 				break; 

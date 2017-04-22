@@ -87,7 +87,7 @@ void all_init() {
 }
 
 void turn_right() {
-	while (left_count < 121){
+	while (left_count < 123){
 		digitalWrite(polarPinL, LOW);
 		softPwmWrite(pwmPinL, 50);
 		digitalWrite(polarPinR, HIGH);
@@ -100,7 +100,7 @@ void turn_right() {
 
 void turn_left() {
 	left_count = 0;
-	while (left_count < 121){
+	while (left_count < 115){
 		digitalWrite(polarPinL, HIGH);
 		softPwmWrite(pwmPinL, 50);
 		digitalWrite(polarPinR, LOW);
@@ -109,6 +109,11 @@ void turn_left() {
 
 	softPwmWrite(pwmPinL, 0);
 	softPwmWrite(pwmPinR, 0);
+}
+
+void turn_around(){
+	turn_left();
+	turn_left();
 }
 
 void correct_rot() {
@@ -151,57 +156,82 @@ void go_straight() {
 
 	digitalWrite(polarPinL, LOW);
 	digitalWrite(polarPinR, LOW);
-	while(get_distance(handle0, 0x2a) > 40 && getPacbot() == pacbot_init){
+	while(get_distance(handle0, 0x2a) > 31 && pacbot_init == getPacbot()){
 		
 		left = get_distance(handle0, 0x2b);
 		right = get_distance(handle0, 0x2c);
 		if (right > left && right < 100){
 			//printf("turn right\n");
 			softPwmWrite(pwmPinL,50);
-			softPwmWrite(pwmPinR, 50*left/right);
+			if (left > 30)
+				softPwmWrite(pwmPinR, 44 + 6*left/right);
+			else
+				softPwmWrite(pwmPinR, 40 + 10*left/right);
 		}
 		else if (left > right && left < 100){
 			//printf("turn left\n");
-			softPwmWrite(pwmPinL, 50*right/left);
 			softPwmWrite(pwmPinR, 50);
+			if (right > 30)
+				softPwmWrite(pwmPinL, 44 + 6*right/left);
+			else
+				softPwmWrite(pwmPinL, 40 + 10*right/left);
 		}
-		else if (left > 100){
+		else if (left > 100 && right < 100){
 			//printf("left gap\n");
 			right_init = right;
-			while (get_distance(handle0, 0x2b) > 100 && get_distance(handle0, 0x2a) > 40 && getPacbot() == pacbot_init){
+			while (get_distance(handle0, 0x2b) > 100 && get_distance(handle0, 0x2a) > 40 && pacbot_init == getPacbot()){
 				new_right = get_distance(handle0, 0x2c);
-				if (new_right > right_init){
+				if (new_right > right_init || new_right > 44){
 					softPwmWrite(pwmPinL, 50);
-					softPwmWrite(pwmPinR, right_init/new_right*50);
+					softPwmWrite(pwmPinR, 49);
 				}
 				else {
-					softPwmWrite(pwmPinL, right/right_init*50);
+					if (new_right < 30)
+						softPwmWrite(pwmPinL, 48);
+					else
+						softPwmWrite(pwmPinL, 49);
 					softPwmWrite(pwmPinR, 50);
 				}
 			}
 		}
-		else if (right > 100){
+		else if (right > 100 && left < 100){
 			left_init = left;
-			while (get_distance(handle0, 0x2c) > 100 && get_distance(handle0, 0x2a) > 40 && getPacbot() == pacbot_init){
+			while (get_distance(handle0, 0x2c) > 100 && get_distance(handle0, 0x2a) > 40 && pacbot_init == getPacbot()){
 				new_left = get_distance(handle0, 0x2b);
-				if (new_left > left_init){
+				if (new_left > left_init || new_left > 44){
 					softPwmWrite(pwmPinR, 50);
-					digitalWrite(polarPinR, LOW);
-					softPwmWrite(pwmPinL, left_init/new_left*50);
-					digitalWrite(polarPinL, HIGH);
+					softPwmWrite(pwmPinL, 49);
 				}
 				else {
 					softPwmWrite(pwmPinL, 50);
-					digitalWrite(polarPinL, HIGH);
-					softPwmWrite(pwmPinR, new_left/left_init*50);
-					digitalWrite(polarPinR, LOW);
+					if (new_left < 30)
+						softPwmWrite(pwmPinR, 48);
+					else
+						softPwmWrite(pwmPinR, 49);
 				}
 			}
+		}
+		else{
+			softPwmWrite(pwmPinL, 49);
+			softPwmWrite(pwmPinR, 50);
 		}
 	}
-	void forward_half;
+
+	void forward_half();
 	softPwmWrite(pwmPinL, 0);
 	softPwmWrite(pwmPinR, 0);
+}
+
+void forward_half(){
+	left_count = 0;
+	digitalWrite(polarPinL, LOW);
+	digitalWrite(polarPinR, LOW);
+	while (left_count < 60){
+		softPwmWrite(pwmPinL, 50);
+		softPwmWrite(pwmPinR, 50);
+	}
+	digitalWrite(pwmPinL, 0);
+	digitalWrite(pwmPinR, 0);
 }
 
 void left_add_count(){

@@ -56,7 +56,7 @@ typedef struct sca_node {
 
 void insert_head(sca_node* n);
 
-void insert_sca_tail(sca_node* n, sca_node* legal_successors_tail, sca_node* legal_successors_head);
+void insert_sca_tail(sca_node* n, sca_node* legal_successors_head);
 
 void remove_node(sca_node* n);
 
