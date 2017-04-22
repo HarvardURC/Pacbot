@@ -108,6 +108,7 @@ void ghost_flood(/*ghost_dir* direcs*/){
 		head_fringe->depth = 0;
         head_fringe->direction = direc[i]; 
         head_fringe->next_flood_node = NULL;
+        rintf("%d\n", head_fringe->direction);
 		while (1) {
             flood_node *cur_node;
 			if(head_fringe == NULL) {
