@@ -44,8 +44,17 @@ int main(int argc, char **arg) {
         return -1;
     }
     createGrid();
+    int direc[4];
+    direc[0] = 1;
+    direc[1] = 4;
+    direc[2] = 3;
+    direc[3] = 1;
 
-    //ghost_flood();
+    directions->blink_dir = direc[0];
+    directions->ink_dir = direc[1];
+    directions->pink_dir = direc[2];
+    directions->clyde_dir = direc[3];
+    ghost_flood(directions);
 
     cell_pos start_pos;
     cell_pos goal_pos;
@@ -67,8 +76,7 @@ int main(int argc, char **arg) {
         printf("%d\n", actionbuffer[i]);
     }
 
-
-    /*
+    
     for(int i =0; i<31; i++) {
         for (int j = 0; j < 28; j++)
         {
@@ -76,7 +84,7 @@ int main(int argc, char **arg) {
         }
         printf("\n");
     }
-    */
+    
     /*pollState();
     cell_pos blink_cur = getBlinky();
     cell_pos ink_cur = getInky();
