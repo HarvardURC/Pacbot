@@ -8,7 +8,7 @@
 #include <assert.h>
 #include <time.h>
 #include <sys/time.h>
-//#include "network.h"
+#include "network.h"
 #include "AStar.h"
 #include "state.h"
 #include "grid.h"
