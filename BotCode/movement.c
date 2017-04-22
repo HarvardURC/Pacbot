@@ -68,9 +68,10 @@ void setupMovement() {
 
 	wiringPiISR(EncL, INT_EDGE_RISING, *left_add_count);
 
-	initialise_irs()
-	softPwmCreate(pwmPinL, 0, 100);
+	initialise_irs();
+    softPwmCreate(pwmPinL, 0, 100);
 	softPwmCreate(pwmPinR, 0, 100);
+
 };
 
 void turn_right() {
