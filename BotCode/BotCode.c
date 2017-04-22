@@ -8,6 +8,7 @@
 #include <assert.h>
 #include <time.h>
 #include <sys/time.h>
+#include "movement.h"
 #include "network.h"
 #include "AStar.h"
 #include "state.h"
@@ -37,10 +38,10 @@ int main(int argc, char **arg) {
 
     ghost_dir* directions = (ghost_dir*)malloc(sizeof(ghost_dir));
 
-    //setupMovement();
+    setupMovement();
 
-    // softPwmCreate(pwmPinL, 0, 100);
-    // softPwmCreate(pwmPinR, 0, 100);
+    softPwmCreate(pwmPinL, 0, 100);
+    softPwmCreate(pwmPinR, 0, 100);
     
     latest_state = malloc(sizeof(state_response));
     if(latest_state == NULL) {
