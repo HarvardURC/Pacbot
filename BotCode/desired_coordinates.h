@@ -12,6 +12,5 @@
 
 void desired_coordinates(cell_pos *max1, cell_pos *max2, cell_pos *max3);
 int get_distance(cell_pos *a, cell_pos *b);
-int dirNodeLength(dir_node* head);
 
 #endif /* _NETWORK_H_*/

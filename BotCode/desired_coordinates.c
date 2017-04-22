@@ -33,20 +33,9 @@ int get_distance(cell_pos *a, cell_pos *b) {
 }
 
 
-//returns length of a dirNode list
-int dirNodeLength(dir_node* head){
-	int length = 0;
-	dir_node* track = head; 
-	while (track != NULL)
-	{
-		length++;
-		track = track->next; 
-	}
-	return length; 
-}
 
 //returns the action sequence required to move to the nearest ghost to pacbot
-dir_node* frightAction(){
+int frightAction() {
 	//note new function wil be written that doesn't account ghost positions
 	/*
     dir_node* ClydeAction = getActionList(getPacbot(), getClyde()); 
