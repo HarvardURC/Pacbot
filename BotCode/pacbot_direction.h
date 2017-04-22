@@ -3,9 +3,8 @@
 
 #include "network.h"
 
-
 //int pacbot_direction();
 int pacbot_getnext(int* start);
-int pacbot_execute(uint8_t* start_array);
+int pacbot_execute(uint8_t* start_array, int current_direction);
 
 #endif /* _PACBOT_DIRECTION_H_*/

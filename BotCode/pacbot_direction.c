@@ -39,8 +39,7 @@ int current_direction;
 	return direction;
 }*/
 
-/*int pacbot_execute(uint8_t* start_array){
-	//int cur_direction = pacbot_direction();
+int pacbot_execute(uint8_t* start_array, int current_direction){
 	if (start_array[0] == 0)
 		return current_direction;
 	if (start_array[0] != current_direction){
@@ -67,4 +66,4 @@ int current_direction;
 		current_direction = start_array[i];
 	}
 	return current_direction;
-}*/
+}

@@ -22,6 +22,8 @@
 // Initialize connection with camera
 //Must have two modes 
 
+#define START_DIRECTION 4
+
 // GLOBALS 
 free_cell* grid; 
 state_response* latest_state;
@@ -64,10 +66,10 @@ int main(int argc, char **arg) {
     cell_pos start_pos;
     cell_pos goal_pos;
     cell_pos init_pos;
-    start_pos.cp_x = 1;
-    start_pos.cp_y = 1;
-    goal_pos.cp_x = 29;
-    goal_pos.cp_y = 26;
+    //start_pos.cp_x = 1;
+    //start_pos.cp_y = 1;
+    //goal_pos.cp_x = 29;
+    //goal_pos.cp_y = 26;
     // init_pos.cp_x = 23;
     // init_pos.cp_y = 13;
     uint8_t actionbuffer[200];
@@ -98,12 +100,11 @@ int main(int argc, char **arg) {
     cell_pos pink_cur = getPinky();
     cell_pos clyde_cur = getClyde();
     cell_pos pacbot_cur = getPacbot();
-    state_response state;
     cell_pos blink_last;
     cell_pos ink_last;
     cell_pos pink_last;
     cell_pos clyde_last;
-    uint8_t a = 0;
+    int pac_direction = START_DIRECTION;
     while(getGameStatus() != P_STOPPED) {
         blink_last = blink_cur;
         ink_last = ink_cur;
@@ -131,13 +132,13 @@ int main(int argc, char **arg) {
         ghost_flood(directions);
 
         
-        if (getActionList(pacbot_cur, pacbot_execute(&a), *max1, 0, &(actionbuffer[0])) == 1){
+        if (getActionList(pacbot_cur, pac_direction, *max1, 0, &(actionbuffer[0])) == 1){
 
-            if (getActionList(pacbot_cur, pacbot_execute(&a), *max2, 0, &(actionbuffer[0])) == 1){
+            if (getActionList(pacbot_cur, pac_direction, *max2, 0, &(actionbuffer[0])) == 1){
 
-                if (getActionList(pacbot_cur, pacbot_execute(&a), *max3, 0, &(actionbuffer[0])) == 1){
+                if (getActionList(pacbot_cur, pac_direction, *max3, 0, &(actionbuffer[0])) == 1){
 
-                    while (getActionList(pacbot_cur, pacbot_execute(&a), random_cell_pos, 0, &(actionbuffer[0])) == 1) {
+                    while (getActionList(pacbot_cur, pac_direction, random_cell_pos, 0, &(actionbuffer[0])) == 1) {
 
                         random_cell_pos.cp_x = rand() % 30; 
                         random_cell_pos.cp_y = rand() % 28; 
@@ -148,15 +149,18 @@ int main(int argc, char **arg) {
             }
         }
 
-        pacbot_execute(&(actionbuffer[0]));
+        pac_direction = pacbot_execute(&(actionbuffer[0]));
     
     }
 
     getActionList(pacbot_cur, pacbot_execute(&a), init_pos, 1, &(actionbuffer[0]));
-    pacbot_execute(&(actionbuffer[0]));
-    uint8_t zero = 0;
-    while (pacbot_execute(&zero) != WEST){
+    pac_direction = pacbot_execute(&(actionbuffer[0])); 
+    while (pac_direction != START_DIRECTION){
         turn_left();
+        pac_direction++;
+        if (pac_direction > 4) {
+            pac_direction = 1;
+        }
     }
     lives--;
 
