@@ -80,7 +80,7 @@ void ghost_flood(){
 	for(int i=0; i<4; i++){
 		flood_node * head_fringe;
 		//flood_node * head_closed;
-		flood_node * current_node; 
+		flood_node* current_node; 
 		grid[ghosts[i].cp_x + 28*ghosts[i].cp_y].ghost_danger = 0;
 		current_node->current_cell = grid[ghosts[i].cp_x + 28*ghosts[i].cp_y];
 		push_flood_node(current_node, head_fringe);
@@ -90,7 +90,7 @@ void ghost_flood(){
 				break; 
 			}
 			free_cell cell = pop_flood_node(head_fringe);
-			flood_node * successors_head = get_legal_successors(cell, depth);
+			flood_node* successors_head = get_legal_successors(cell, depth);
 			if(successors_head!=NULL){
 				push_flood_node(successors_head, head_fringe);
 			}

@@ -12,6 +12,7 @@
 #include "AStar.h"
 #include "state.h"
 #include "grid.h"
+#include "movement.h"
 //#include <wiringPi.h>
 //#include <Direction.c> 
 // Initialize connection with camera
@@ -23,6 +24,7 @@ state_response* latest_state;
 
 int main(int argc, char **arg) {
 
+    all_init();
     latest_state = malloc(sizeof(state_response));
     if(latest_state == NULL) {
         return -1;
