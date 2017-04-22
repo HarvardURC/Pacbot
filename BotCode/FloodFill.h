@@ -12,19 +12,18 @@
 
 //Queue for fringe, also used for the closed list and successor list
 typedef struct flood_node{
-	struct flood_node * next_flood_node;
+	struct flood_node *next_flood_node;
 	free_cell current_cell;  
-}flood_node; 
+    int depth;
+} flood_node; 
 
-//Add a node to the end of 
-void push_flood_node(flood_node* n, flood_node * current_node); 
+
 //Returns the head node and moves head pointer to next node
-free_cell pop_flood_node(flood_node* head);
-//returns 0 if our list does not contain pos 1 if it does 
-int  closed_contains(free_cell cell, flood_node * n);
+int pop_flood_node(flood_node **head, flood_node **tail, flood_node **ret);
+
 //returns up to four possible next moves
-flood_node * get_legal_successors(free_cell cell, int depth); 
-//set the ghost danger of every square to max_int
+void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited, flood_node **head, flood_node **tail);
+
 void clear_ghost_danger();
 //on new ghost position update, change the main grid danger variable to match distance from ghosts
 void ghost_flood();  
