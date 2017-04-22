@@ -37,7 +37,6 @@ void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited,
 	free_cell adjacent_cell;
 	for(int i=0; i<4; i++){
 		adjacent_cell = grid[28*pos.adj_cell[i].cp_x +pos.adj_cell[i].cp_y];  
-            printf("%s\n", "check" ); 
 		if( (adjacent_cell.food_opt != 'w') && 
                 !(new_depth == 1 && opposite(g_dir, i+1)) &&
                 (*(visited+28*pos.adj_cell[i].cp_x + pos.adj_cell[i].cp_y) != 1)) {
