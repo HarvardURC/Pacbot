@@ -22,10 +22,10 @@ typedef struct flood_node{
 int pop_flood_node(flood_node **head, flood_node **tail, flood_node **ret);
 
 //returns up to four possible next moves
-void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited, flood_node **head, flood_node **tail);
+void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited, flood_node **head, flood_node **tail, int direc);
 
 void clear_ghost_danger();
 //on new ghost position update, change the main grid danger variable to match distance from ghosts
-void ghost_flood();  
+void ghost_flood(/*ghost_dir* direcs*/);  
 
 #endif /* _FLOOD_FILL_H_ */

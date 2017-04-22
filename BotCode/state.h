@@ -27,6 +27,12 @@ typedef struct game_state {
 	int dir; 
 } game_state;
 
+typedef struct ghost_dir{
+    int blink_dir;
+    int ink_dir;
+    int pink_dir;
+    int clyde_dir;
+} ghost_dir;
 
 //food opt = pellet =1, big pellet =  2 ; empty= 3; fruit = 4
 typedef struct free_cell {
