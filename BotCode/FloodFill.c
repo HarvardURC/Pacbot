@@ -14,6 +14,7 @@ direc[0] = 1;
 direc[1] = 2;
 direc[2] = 3;
 direc[3] = 1;
+
 //Returns the head node and moves head pointer to next node
 int pop_flood_node(flood_node **head, flood_node **tail, flood_node **ret){
 	if(*head == NULL) {
@@ -110,11 +111,6 @@ void ghost_flood(/*ghost_dir* direcs*/){
 		head_fringe->depth = 0;
         head_fringe->direction = direc[i]; 
         head_fringe->next_flood_node = NULL;
-<<<<<<< HEAD
-
-=======
-        printf("%d\n", head_fringe->direction);
->>>>>>> 25d572fe106a4b4cc8029b88fee0ce918150c8ef
 		while (1) {
             flood_node *cur_node;
 			if(head_fringe == NULL) {
