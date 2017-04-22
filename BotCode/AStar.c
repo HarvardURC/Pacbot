@@ -128,6 +128,10 @@ int getActionList(cell_pos pac_pos, int pac_dir, cell_pos target_pos,
                 (cur_dat->cell.coordinates.cp_y == target_pos.cp_y)){
             memcpy(res, &cur_dat->actions[0], sizeof(uint8_t) * 200);
             *(res + cur_dat->next_action) = 5;
+            while (fringe->len != 0){
+                cur_dat = pop(fringe);
+                free(cur_dat);
+            }
             free(fringe->nodes);
             free(fringe);
             return 0;
