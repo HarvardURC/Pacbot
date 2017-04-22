@@ -29,7 +29,7 @@ void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited,
 		adjacent_cell = grid[28*pos.adj_cell[i].cp_x +pos.adj_cell[i].cp_y];  
             printf("%s\n", "check" ); 
 		if( (adjacent_cell.food_opt != 'w') && 
-                !(new_depth == 1 && ((i+1 - g_dir) % 4) == 2) &&
+                !(new_depth == 1 && (i+1) == g_dir) &&
                 (*(visited+28*pos.adj_cell[i].cp_x + pos.adj_cell[i].cp_y) != 1)) {
             *(visited+28*pos.adj_cell[i].cp_x + pos.adj_cell[i].cp_y) = 1;
 			flood_node *new_flood_node = malloc(sizeof(flood_node));
