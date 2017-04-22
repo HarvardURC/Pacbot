@@ -40,7 +40,7 @@ int main(int argc, char **arg) {
     for(int i =0; i<31; i++) {
         for (int j = 0; j < 28; j++)
         {
-            printf("%d\t ", grid[j+ i*28].ghost_danger);
+            printf("%d\t", grid[j+ i*28].ghost_danger);
         }
         printf("\n");
     }
