@@ -38,7 +38,7 @@ def sleep( secs ):
         _root_window.after( int( 10*secs ), _root_window.quit )
         _root_window.mainloop()
 
-def begin_graphics( width=640, height=480, color=formatColor(0,0,0), title=None ):
+def begin_graphics( width=600, height=480, color=formatColor(0,0,0), title=None ):
 
     global _root_window, _canvas, _canvas_x, _canvas_y, _canvas_xs, _canvas_ys
 
@@ -57,7 +57,7 @@ def begin_graphics( width=640, height=480, color=formatColor(0,0,0), title=None 
     _root_window.protocol( 'WM_DELETE_WINDOW', _destroy_window )
     _root_window.title( title or 'Graphics Window' )
     _root_window.resizable( 0, 0 )
-    _root_window.geometry('%dx%d+%d+%d' % (width, height, 0, 250))
+    _root_window.geometry('%dx%d+%d+%d' % (width, height, -105, 210))
 
     # Create the canvas object
     try:

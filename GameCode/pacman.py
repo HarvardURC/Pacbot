@@ -62,7 +62,7 @@ def getFormattedGameData():
         return {'stop': True}
 
 def xBee():
-    xbee = Serial('/dev/cu.usbserial-DA00VDM1', 9600)
+    xbee = Serial('/dev/cu.usbserial-00002014', 9600)
     m = "$" + dumps(getFormattedGameData()) + "#"
     while True:
         try:
@@ -87,7 +87,7 @@ def main():
     # scatter_on()
     Thread(target = handleInput).start()
     Thread(target = appRunner).start()
-    # Thread(target = xBee).start()
+    Thread(target = xBee).start()
     Thread(target = trackerUpdate).start()
     Thread(target = gameUpdate(graphics)).start()
     

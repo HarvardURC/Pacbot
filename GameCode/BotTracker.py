@@ -2,10 +2,10 @@ import numpy as np
 import cv2
 
 # Tune constaxnts for grid
-LEFT_EDGE = 280
-RIGHT_EDGE = 1122
-TOP_EDGE = -35
-BOTTOM_EDGE = 700
+LEFT_EDGE = 210
+RIGHT_EDGE = 1046
+TOP_EDGE = -12
+BOTTOM_EDGE = 751
 
 #28 grid spaces across
 class BotTracker:
