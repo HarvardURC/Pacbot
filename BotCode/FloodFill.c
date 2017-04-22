@@ -90,7 +90,6 @@ void ghost_flood(){
 		head_fringe->depth = 0;
         head_fringe->next_flood_node = NULL;
 		while (1) {
-            printf("%d\n", i);
             flood_node *cur_node;
 			if(head_fringe == NULL) {
 				break; 
