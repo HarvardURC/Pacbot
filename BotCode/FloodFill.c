@@ -21,6 +21,16 @@ int pop_flood_node(flood_node **head, flood_node **tail, flood_node **ret){
 	return 0;
 }
 
+static int opposite(int a_dir, int b_dir) {
+    if ((a_dir == 1 && b_dir == 3) ||
+        (a_dir == 2 && b_dir == 4) ||
+        (a_dir == 3 && b_dir == 1) ||
+        (a_dir == 4 && b_dir == 2)) {
+        return 1;
+    }
+    return 0;
+}
+
 //returns up to four possible next moves
 void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited,
         flood_node **head, flood_node **tail, int g_dir) {
@@ -29,7 +39,7 @@ void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited,
 		adjacent_cell = grid[28*pos.adj_cell[i].cp_x +pos.adj_cell[i].cp_y];  
             printf("%s\n", "check" ); 
 		if( (adjacent_cell.food_opt != 'w') && 
-                !(new_depth == 1 && (i+1) == g_dir) &&
+                !(new_depth == 1 && opposite(g_dir, i+1)) &&
                 (*(visited+28*pos.adj_cell[i].cp_x + pos.adj_cell[i].cp_y) != 1)) {
             *(visited+28*pos.adj_cell[i].cp_x + pos.adj_cell[i].cp_y) = 1;
 			flood_node *new_flood_node = malloc(sizeof(flood_node));
