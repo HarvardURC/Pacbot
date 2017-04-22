@@ -85,11 +85,12 @@ int main(int argc, char **arg) {
         printf("\n");
     }
     
-    /*pollState();
+    pollState();
     cell_pos blink_cur = getBlinky();
     cell_pos ink_cur = getInky();
     cell_pos pink_cur = getPinky();
     cell_pos clyde_cur = getClyde();
+    cell_pos pacbot_cur = getPacbot();
     state_response state;
     cell_pos blink_last;
     cell_pos ink_last;
@@ -105,6 +106,7 @@ int main(int argc, char **arg) {
         ink_cur = getInky();
         pink_cur = getPinky();
         clyde_cur = getClyde();
+        pacbot_cur = getPacbot();
 
         if (getDirectionGhost(*blink_last, *blink_cur) != 0){
             directions->blink_dir = getDirectionGhost(*blink_last, *blink_cur);
@@ -112,12 +114,36 @@ int main(int argc, char **arg) {
             directions->pink_dir = getDirectionGhost(*pink_last, *pink_cur);
             directions->clyde_dir = getDirectionGhost(*clyde_last, *clyde_cur);
         }
+        cell_pos random_cell_pos; 
+        random_cell_pos.cp_x = rand() % 30; 
+        random_cell_pos.cp_y = rand() % 28; 
 
+        desired_coordinates(cell_pos *max1, cell_pos *max2, cell_pos *max3);
+
+        ghost_flood(directions);
         
+        if (getActionList(pacbot_cur, pacbot_execute(0), *max1, &(actionbuffer[0])) == 1){
+
+            if (getActionList(pacbot_cur, pacbot_execute(0), *max2, &(actionbuffer[0])) == 1){
+
+                if (getActionList(pacbot_cur, pacbot_execute(0), *max3, &(actionbuffer[0])) == 1){
+
+                    while (getActionList(pacbot_cur, pacbot_execute(0), random_cell_pos, &(actionbuffer[0])) == 1) {
+
+                        random_cell_pos.cp_x = rand() % 30; 
+                        random_cell_pos.cp_y = rand() % 28; 
+
+                    }
+                }
+
+            }
+        }
+    
+        }
         //call flood then immediately a*
         (directions);
 
-    }*/
+    }
         
     free(grid);
     return 0; 
