@@ -110,7 +110,7 @@ sca_node* get_legal_successors(sca current_node){
             new_sca_node.state.cell = adjacent_cell;
             new_sca_node.state.cost = get_transition_cost(current_node.last_dir, i) + current_node.cost;
             new_sca_node.state.last_dir = i;
-            new_sca_node.action_list = append_to_action_list(i, current_node.action_list)
+            new_sca_node.action_list = append_to_action_list(i, current_node.action_list);
             insert_sca_tail(new_sca_node, legal_successors_tail, legal_successors_head);
         }
 
@@ -129,11 +129,15 @@ int manhattanDistance(cell_pos pos1, cell_pos pos2){
 }
 
 
-int contains(node * head, sca tar_sca){
-    node * cur_sca = head; 
+int contains(sca_node * head, sca tar_sca){
+    sca_node * cur_sca = head; 
     while(cur_sca !=NULL){
-        if(cur_sca->state == tar_sca)
+        if((cur_sca->cell == tar_sca) && (tar_sca.cost > cur_sca->cost)){
+            return 1;
+        }
+        cur_sca = 
     }
+    return 0;
 }
 //Use A* to get best next move in a sequence of moves
 
@@ -153,6 +157,7 @@ dir_node * getActionList(cell_pos pac_pos, int pac_dir, cell_pos target_pos){
                 break; 
         }
         *current_node = pop(fringe);
+        if 
 
     }
 }
