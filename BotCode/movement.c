@@ -69,21 +69,9 @@ void setupMovement() {
 	wiringPiISR(EncL, INT_EDGE_RISING, *left_add_count);
 
 	initialise_irs()
-};
-
-int main() {	
-    
-    setupMovement();
-
 	softPwmCreate(pwmPinL, 0, 100);
 	softPwmCreate(pwmPinR, 0, 100);
-
-	//while(1){
-		go_straight();
-		//turn_left();
-	//}
-
-}
+};
 
 void turn_right() {
 	while (left_count < 121){
