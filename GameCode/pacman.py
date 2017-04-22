@@ -12,23 +12,11 @@ from flask import Flask, jsonify
 from serial import Serial 
 from json import dumps
 import copy
-import signal
-from threading import Thread, Lock
+from threading import Thread, Lock, Timer
 import time
-
-
-restart = False
-
-
 lock = Lock()
 
-from apscheduler.schedulers.background import BackgroundScheduler
-
-sched = BackgroundScheduler()
-sched.start()
-
-
-
+restart = False
 lay = layout.getLayout("pacbotLayout.lay")
 pacbot = PacBot((23,13), "right")
 game = GameState(copy.deepcopy(grid), lay, pacbot)
@@ -36,92 +24,53 @@ botTracker = BotTracker()
 graphics = None
 session = True
 
+
+
 app = Flask("Pacman")
 
 @app.route('/pac-bot')
 def pacBot():
-    # if game.game_on:
-    #     response = {}
-    #     # response['pacbot'] = {
-    #     #     'x': game.pacbot.pos['current'][0],
-    #     #     'y': game.pacbot.pos['current'][1]
-    #     # }
-    #     response['ghost1'] = {
-    #         'x': game.red.pos['current'][0],
-    #         'y': game.red.pos['current'][1]
-    #     }
-    #     response['ghost2'] = {
-    #         'x': game.pink.pos['current'][0],
-    #         'y': game.pink.pos['current'][1]
-    #     }
-    #     response['ghost3'] = {
-    #         'x': game.orange.pos['current'][0],
-    #         'y': game.orange.pos['current'][1]
-    #     }
-    #     response['ghost4'] = {
-    #         'x': game.blue.pos['current'][0],
-    #         'y': game.blue.pos['current'][1]
-    #     }
-    #     if (game.state == frightened):
-    #         response['specialTimer'] = game.frightened_counter
-    #     return jsonify(response)
-    # else:
-    #     return jsonify({'stop': True})
     return jsonify(getFormattedGameData())
 
 def getFormattedGameData():
     if game.game_on:
         response = {}
-        # response['pacbot'] = {
-        #     'x': game.pacbot.pos['current'][0],
-        #     'y': game.pacbot.pos['current'][1]
-        # }
-        response['ghost1'] = {
+        response['pacbot'] = {
+            'x': game.pacbot.pos[0],
+            'y': game.pacbot.pos[1]
+        }
+        response['blinky'] = {
             'x': game.red.pos['current'][0],
             'y': game.red.pos['current'][1]
         }
-        response['ghost2'] = {
+        response['pinky'] = {
             'x': game.pink.pos['current'][0],
             'y': game.pink.pos['current'][1]
         }
-        response['ghost3'] = {
+        response['clyde'] = {
             'x': game.orange.pos['current'][0],
             'y': game.orange.pos['current'][1]
         }
-        response['ghost4'] = {
+        response['inky'] = {
             'x': game.blue.pos['current'][0],
             'y': game.blue.pos['current'][1]
         }
         if (game.state == frightened):
-            response['specialTimer'] = game.frightened_counter
+            response['specialTimer'] = game.frightened_counter * 0.77
         return response
     else:
         return {'stop': True}
 
 def xBee():
     xbee = Serial('/dev/cu.usbserial-DA00VDM1', 9600)
-    m = dumps(getFormattedGameData())
+    m = "$" + dumps(getFormattedGameData()) + "#"
     while True:
         try:
             xbee.write(m)
-            time.sleep(.1)
         except KeyboardInterrupt:
             break
     xbee.halt
     xbee.close()
-
-# def callback():
-#     callbacks = q.get(False) #doesn't block
-#     if callbacks == "hi":
-#         lay = layout.getLayout("pacbotLayout.lay")
-#         pacbot = PacBot((23,13), "right")
-#         game = GameState(copy.deepcopy(grid), lay, pacbot)
-
-#         graphics = PacmanGraphics(0.5)
-
-#         graphics.initialize(game.gstate)
-#         print("hi")
-    
 
 def main():
     global lay, pacbot, game, botTracker, graphics
@@ -134,13 +83,16 @@ def main():
     position = botTracker.get_bot_location()
     direction = botTracker.get_bot_direction()
     pacbot.update(position, direction)
-    
-    # sched.add_job(callback, 'interval', seconds = 5)
+    # times = Timer(100.0, scatter_on)
+    # scatter_on()
     Thread(target = handleInput).start()
     Thread(target = appRunner).start()
     # Thread(target = xBee).start()
-    Thread(target = gameUpdate(graphics)).start()
     Thread(target = trackerUpdate).start()
+<<<<<<< HEAD
+=======
+    Thread(target = gameUpdate(graphics)).start()
+>>>>>>> 43ef2812c5c7de6761e9c9d140fc4db5fa6c332a
     
 
 def appRunner():
@@ -158,68 +110,72 @@ def trackerUpdate():
                     direction = botTracker.get_bot_direction()
                     pacbot.update(position, direction)
                     game.game_go(pacbot)
-                    # if game.grid[position[0]][position[1]] != I and game.grid[position[0]][position[1]] != n:
-                    #     print("true")
-                    # else:
-                    #     print("false")
-                    # print(str(game.pacbot.pos[0]) + " " + str(game.pacbot.pos[1]))
                 finally:
                     lock.release()
-                time.sleep(.1)
+                time.sleep(.05)
             except KeyboardInterrupt:
                 break
                 
 
 
 def gameUpdate(graphics):
-    global game , play, pacbot, lay  , restart  
+    global game , play, pacbot, lay  , restart
     # display start postions
     # display_game(game.pacbot,game.red,game.pink,game.orange,game.blue,game.score,game.lives,game.state,game.grid)
     
-
     if game.grid[game.pacbot.pos[0]][game.pacbot.pos[1]] == o:
         game.grid[game.pacbot.pos[0]][game.pacbot.pos[1]] = e
         game.score += 1
     
-    counter = 1
+
     while session:
-        if game.play:
+        if game.respawn:
+            mode_changed = True
+            while mode_changed:
+                lock.acquire()
+                try:   
+                    game.respawn = False
+                    mode_changed = False
+                finally:
+                    lock.release()
             
-         
-            # time.sleep(.1)
-        
-            # if counter < 2:
-            #     graphics.update(game.gstate)
-            #     counter += 1
-            # else:
-            #     counter = 1
+            graphics.update(game.gstate)
+            # scatter_no = 0
+            # scatter_on()
+
+        if game.play:
             position = botTracker.get_bot_location()
             direction = botTracker.get_bot_direction()
 
+
             lock.acquire()
-            try:
-                
+            try:   
                 pacbot.update(position, direction)
                 game.game_go(pacbot, False)
-
             finally:
                 lock.release()
             graphics.update(game.gstate)
+
         elif restart:
             restart = False
-            lay = layout.getLayout("pacbotLayout.lay")
-            pacbot = PacBot((23,13), "right")
-            game = GameState(copy.deepcopy(grid), lay, pacbot)
 
-            graphics = PacmanGraphics(0.5)
-            graphics.initialize(game.gstate)
-            graphics.update(game.gstate)
+            mode_changed = True
+            while mode_changed:
+                lock.acquire()
+                try:   
+                    lay = layout.getLayout("pacbotLayout.lay")
+                    pacbot = PacBot((23,13), "right")
+                    game = GameState(copy.deepcopy(grid), lay, pacbot)
 
-
-
-        
-        # print(str(pacbot.pos[0]) + ' ' + str(pacbot.pos[1]))
-
+                    graphics = PacmanGraphics(0.95)
+                    graphics.initialize(game.gstate)
+                    graphics.update(game.gstate)
+                    mode_changed = False
+                finally:
+                    lock.release()
+            
+            # scatter_no = 0
+            # scatter_on()
 
 def handleInput():
     global game, pacbot, lay, play, restart
@@ -239,29 +195,47 @@ def handleInput():
             cleanup_stop_thread()
             sys.exit()
 
-
-
         time.sleep(1)
         sys.stdout.flush()
 
-# def restart():
-#     global lay, game, graphics, pacbot
-
+# def scatter_on():
+#     global game, scatter_no, times
+#     mode_changed = True
+#     while mode_changed:
+#         lock.acquire()
+#         try:   
+#             game.state = scatter
+#             mode_changed = False
+#             scatter_no += 1
+#         finally:
+#             lock.release()
+#     times.cancel()
+#     times = Timer(15.0, scatter_off)
+#     times.start()
+#     print("scatter")
     
-#     pacbot = PacBot((23,13), "right")
-#     game = GameState(copy.deepcopy(grid), lay, pacbot)
 
-#     graphics = PacmanGraphics(q, 0.5)
-
-#     graphics.initialize(game.gstate)
-#     print("hi")
-
+# def scatter_off():
+#     global game, scatter_no, times
+#     mode_changed = True
+#     while mode_changed:
+#         lock.acquire()
+#         try:   
+#             game.state = chase
+#             mode_changed = False
+#         finally:
+#             lock.release()
+#     print("chase")
     
+#     if scatter_no < 4:
+#         times.cancel()
+#         times = Timer(20.0, scatter_on)
+#         times.start()
+
+#     else:
+#         times.cancel()
+
 
 
 if __name__ == "__main__":
     main()
-
-
-
-

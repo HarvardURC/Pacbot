@@ -2,10 +2,10 @@ import numpy as np
 import cv2
 
 # Tune constaxnts for grid
-LEFT_EDGE = 270
-RIGHT_EDGE = 1112
-TOP_EDGE = -20
-BOTTOM_EDGE = 735
+LEFT_EDGE = 280
+RIGHT_EDGE = 1122
+TOP_EDGE = -35
+BOTTOM_EDGE = 700
 
 #28 grid spaces across
 class BotTracker:
@@ -44,7 +44,7 @@ class BotTracker:
 
 		# cv2.imshow('Grid', hsv)
 		# cv2.waitKey(1)
-		# # box around target pixel for testing
+		# box around target pixel for testing
 		# pt = (350, 600)
 		# cv2.circle(hsv, pt, 3, draw_col, thickness =1)
 		# print hsv[600][350]
