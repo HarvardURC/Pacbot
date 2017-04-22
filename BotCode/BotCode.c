@@ -60,11 +60,11 @@ int main(int argc, char **arg) {
     cell_pos goal_pos;
     start_pos.cp_x = 1;
     start_pos.cp_y = 1;
-    goal_pos.cp_x = 29;
-    goal_pos.cp_y = 26;
+    goal_pos.cp_x = 6;
+    goal_pos.cp_y = 9;
     uint8_t actionbuffer[200];
 
-    int test = getActionList(start_pos, 1, goal_pos, 1, &(actionbuffer[0]));
+    int test = getActionList(start_pos, 1, goal_pos, 0, &(actionbuffer[0]));
     if (test) {
         printf("failed\n");
     } else {
