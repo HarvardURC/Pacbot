@@ -45,8 +45,6 @@ int main(int argc, char **arg) {
     }
     createGrid();
 
-
-    
     ghost_flood();
 
     cell_pos start_pos;
@@ -58,12 +56,19 @@ int main(int argc, char **arg) {
     uint8_t actionbuffer[200];
 
     int test = getActionList(start_pos, 1, goal_pos, 1, &(actionbuffer[0]));
-    for(int i = 0; i < 200; i++){
+    if (test) {
+        printf("failed\n");
+    } else {
+        int i = 0;
+        while(actionbuffer[i] != 5) {
+            printf("%d, ", actionbuffer[i]);
+            i++;
+        }
         printf("%d\n", actionbuffer[i]);
     }
 
 
-
+    /*
     for(int i =0; i<31; i++) {
         for (int j = 0; j < 28; j++)
         {
@@ -71,6 +76,7 @@ int main(int argc, char **arg) {
         }
         printf("\n");
     }
+    */
     /*pollState();
     cell_pos blink_cur = getBlinky();
     cell_pos ink_cur = getInky();
