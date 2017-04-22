@@ -1,3 +1,6 @@
+#ifndef _FLOOD_FILL_H_
+#define _FLOOD_FILL_H_
+
 #include <math.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -24,4 +27,6 @@ flood_node * get_legal_successors(free_cell cell, int depth);
 //set the ghost danger of every square to max_int
 void clear_ghost_danger();
 //on new ghost position update, change the main grid danger variable to match distance from ghosts
-void ghost_flood(state_response state);  
+void ghost_flood();  
+
+#endif /* _FLOOD_FILL_H_ */
