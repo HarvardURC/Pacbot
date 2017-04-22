@@ -47,7 +47,21 @@ int main(int argc, char **arg) {
 
 
     
-    ghost_flood(); 
+    ghost_flood();
+
+    cell_pos start_pos;
+    cell_pos goal_pos;
+    start_pos.cp_x = 1;
+    start_pos.cp_y = 1;
+    goal_pos.cp_x = 29;
+    goal_pos.cp_y = 26;
+    uint8_t actionbuffer[200];
+
+    int test = getActionList(start_pos, 1, goal_pos, 1, &(actionbuffer[0]));
+    for(int i = 0; i < 200; i++){
+        printf("%d\n", actionbuffer[i]);
+    }
+
 
 
     for(int i =0; i<31; i++) {

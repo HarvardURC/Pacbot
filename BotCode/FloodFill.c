@@ -27,7 +27,7 @@ void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited, flood_
 	for(int i=0; i<4; i++){
 		adjacent_cell = grid[28*pos.adj_cell[i].cp_x +pos.adj_cell[i].cp_y];  
 		if( (adjacent_cell.food_opt != 'w') &&
-                (*(visited+28*pos.adj_cell[i].cp_x + pos.adj_cell[i].cp_y) != 1) && direc != (i + 3) % 4) {
+                (*(visited+28*pos.adj_cell[i].cp_x + pos.adj_cell[i].cp_y) != 1) && direc != (i + 2) % 4) {
             *(visited+28*pos.adj_cell[i].cp_x + pos.adj_cell[i].cp_y) = 1;
 			flood_node *new_flood_node = malloc(sizeof(flood_node)); 
             if (new_flood_node == NULL) {
@@ -66,18 +66,18 @@ void ghost_flood(/*ghost_dir* direcs*/){
 	ghosts[2] = getPinky();
 	ghosts[3] = getClyde();
     */
-    ghosts[0].cp_x = 9;//getInky();
-	ghosts[0].cp_y = 14; 
-	ghosts[1].cp_x = 15;//getBlinky();
-	ghosts[1].cp_y = 8;
-	ghosts[2].cp_x = 21; 
-	ghosts[2].cp_y = 26;  //getPinky();
+    ghosts[0].cp_x = 8;//getInky();
+	ghosts[0].cp_y = 15; 
+	ghosts[1].cp_x = 14;//getBlinky();
+	ghosts[1].cp_y = 9;
+	ghosts[2].cp_x = 26; 
+	ghosts[2].cp_y = 21;  //getPinky();
 	ghosts[3].cp_x = 1;
 	ghosts[3].cp_y = 1; //getClyde();
     int direc[4];
-    direc[0] = 4;
+    direc[0] = 1;
     direc[1] = 1;
-    direc[2] = 3;
+    direc[2] = 1;
     direc[3] = 1;
     uint8_t visited[868];
 	clear_ghost_danger();
@@ -114,6 +114,7 @@ void ghost_flood(/*ghost_dir* direcs*/){
             if (empty) {
                 printf("should not reach here!\n");
             }
+
 			add_legal_successors(cur_node->depth+1, cur_node->current_cell, &visited[0], &head_fringe, &tail, direc[i]);
             if (grid[28*cur_node->current_cell.coordinates.cp_x + cur_node->current_cell.coordinates.cp_y].ghost_danger > cur_node->depth) {
 			    grid[28*cur_node->current_cell.coordinates.cp_x + cur_node->current_cell.coordinates.cp_y].ghost_danger = cur_node->depth; 
