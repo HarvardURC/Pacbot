@@ -63,7 +63,15 @@ def getFormattedGameData():
 
 def xBee():
     xbee = Serial('/dev/cu.usbserial-DA00VDM1', 9600)
-    m = "$" + dumps(getFormattedGameData()) + "#"
+    if (game.state == frightened):
+        m = ("$" + string(game.pacbot.pos[0]) + "#" + string(game.pacbot.pos[1]) + "#" + 
+            string(game.red.pos[0]) + "#" +string(game.red.pos[1]) + "#" + 
+            string(game.pink.pos[0]) + "#" +string(game.pink.pos[1]) + "#" +
+            string(game.blue.pos[0]) + "#" +string(game.blue.pos[1]) + "#")
+        if (game.state == frightened):
+            m = m + string(int(game.frightened_counter * 0.77))
+    else:
+        m = "s"
     while True:
         try:
             xbee.write(m)
