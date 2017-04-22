@@ -129,11 +129,15 @@ int manhattanDistance(cell_pos pos1, cell_pos pos2){
 }
 
 
-int contains(node * head, sca tar_sca){
-    node * cur_sca = head; 
+int contains(sca_node * head, sca tar_sca){
+    sca_node * cur_sca = head; 
     while(cur_sca !=NULL){
-        if(cur_sca->state == tar_sca)
+        if((cur_sca->cell == tar_sca) && (tar_sca.cost > cur_sca->cost)){
+            return 1;
+        }
+        cur_sca = 
     }
+    return 0;
 }
 //Use A* to get best next move in a sequence of moves
 
@@ -153,6 +157,7 @@ dir_node * getActionList(cell_pos pac_pos, int pac_dir, cell_pos target_pos){
                 break; 
         }
         *current_node = pop(fringe);
+        if 
 
     }
 }
