@@ -27,9 +27,6 @@
 // GLOBALS 
 free_cell* grid; 
 state_response* latest_state;
-cell_pos *max1;
-cell_pos *max2;
-cell_pos *max3;
 
 int getDirectionGhost(cell_pos* init, cell_pos* final);
 
@@ -104,6 +101,11 @@ int main(int argc, char **arg) {
     cell_pos ink_last;
     cell_pos pink_last;
     cell_pos clyde_last;
+    cell_pos max1;
+    cell_pos max2;
+    cell_pos max3;
+    setupMovement();
+
     int pac_direction = START_DIRECTION;
     while(getGameStatus() != P_STOPPED) {
         blink_last = blink_cur;
@@ -127,16 +129,16 @@ int main(int argc, char **arg) {
         random_cell_pos.cp_x = rand() % 30; 
         random_cell_pos.cp_y = rand() % 28; 
 
-        desired_coordinates(*max1, *max2, *max3);
+        desired_coordinates(&max1, &max2, &max3);
 
         ghost_flood(directions);
 
         
-        if (getActionList(pacbot_cur, pac_direction, *max1, 0, &(actionbuffer[0])) == 1){
+        if (getActionList(pacbot_cur, pac_direction, max1, 0, &(actionbuffer[0])) == 1){
 
-            if (getActionList(pacbot_cur, pac_direction, *max2, 0, &(actionbuffer[0])) == 1){
+            if (getActionList(pacbot_cur, pac_direction, max2, 0, &(actionbuffer[0])) == 1){
 
-                if (getActionList(pacbot_cur, pac_direction, *max3, 0, &(actionbuffer[0])) == 1){
+                if (getActionList(pacbot_cur, pac_direction, max3, 0, &(actionbuffer[0])) == 1){
 
                     while (getActionList(pacbot_cur, pac_direction, random_cell_pos, 0, &(actionbuffer[0])) == 1) {
 
