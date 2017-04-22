@@ -113,6 +113,7 @@ int main(int argc, char **arg) {
             directions->clyde_dir = getDirectionGhost(*clyde_last, *clyde_cur);
         }
 
+        
         //call flood then immediately a*
         (directions);
 
