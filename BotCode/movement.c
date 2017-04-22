@@ -7,8 +7,13 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+<<<<<<< HEAD
 //#include "vl6180_pi.h"
+=======
+#include <movement.h>
+>>>>>>> cfcd90c4ee5367a918f3edbbc1b29da2de63ed50
 #include "state.h"
+#include "network.h"
 
 #define RIGHT_MAX 99;
 #define LEFT_MAX 100;
@@ -136,7 +141,13 @@ void correct_rot() {
 
 	softPwmWrite(pwmPinL, 0);
 	softPwmWrite(pwmPinR, 0);
-	return 0;
+}
+
+static int same_square(cell_pos a, cell_pos b) {
+    if (a.cp_x == b.cp_x && a.cp_y == b.cp_y) {
+        return 1;
+    }
+    return 0;
 }
 
 void go_straight() {
@@ -147,16 +158,15 @@ void go_straight() {
     int new_right;
     int left_init;
     int new_left;
-    state_response state = NULL;
-	get_state(*state);
 
 	cell_pos pacbot_current;
-	poll_state();
+	pollState();
 	cell_pos pacbot_init = getPacbot();
 
 	digitalWrite(polarPinL, LOW);
 	digitalWrite(polarPinR, LOW);
-	while(get_distance(handle0, 0x2a) > 31 && pacbot_init == getPacbot()){
+	while(get_distance(handle0, 0x2a) > 31 &&
+            same_square(pacbot_init, getPacbot())){
 		
 		left = get_distance(handle0, 0x2b);
 		right = get_distance(handle0, 0x2c);
@@ -179,7 +189,9 @@ void go_straight() {
 		else if (left > 100 && right < 100){
 			//printf("left gap\n");
 			right_init = right;
-			while (get_distance(handle0, 0x2b) > 100 && get_distance(handle0, 0x2a) > 40 && pacbot_init == getPacbot()){
+			while (get_distance(handle0, 0x2b) > 100 &&
+                    get_distance(handle0, 0x2a) > 40 &&
+                    same_square(pacbot_init, getPacbot())){
 				new_right = get_distance(handle0, 0x2c);
 				if (new_right > right_init || new_right > 44){
 					softPwmWrite(pwmPinL, 50);
@@ -196,7 +208,9 @@ void go_straight() {
 		}
 		else if (right > 100 && left < 100){
 			left_init = left;
-			while (get_distance(handle0, 0x2c) > 100 && get_distance(handle0, 0x2a) > 40 && pacbot_init == getPacbot()){
+			while (get_distance(handle0, 0x2c) > 100 &&
+                    get_distance(handle0, 0x2a) > 40 &&
+                    same_square(pacbot_init, getPacbot())){
 				new_left = get_distance(handle0, 0x2b);
 				if (new_left > left_init || new_left > 44){
 					softPwmWrite(pwmPinR, 50);
@@ -217,7 +231,7 @@ void go_straight() {
 		}
 	}
 
-	void forward_half();
+	forward_half();
 	softPwmWrite(pwmPinL, 0);
 	softPwmWrite(pwmPinR, 0);
 }
