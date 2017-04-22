@@ -41,7 +41,7 @@ sca *pop (heap_t *h);
 
 sca * get_legal_successors(sca current_node);
 
-double get_transition_cost(int pac_dir, int intended_dir)
+double get_transition_cost(int pac_dir, int intended_dir);
 
 int manhattanDistance(cell_pos pos1, cell_pos pos2);
 
@@ -54,11 +54,11 @@ typedef struct sca_node {
     struct sca state;
 } sca_node;
 
-void insert_head(node* n);
+void insert_head(sca_node* n);
 
-void insert_sca_tail(sca_node* n, sca_node* legal_successors_tail, sca_node* legal_successors_head)
+void insert_sca_tail(sca_node* n, sca_node* legal_successors_tail, sca_node* legal_successors_head);
 
-void remove_node(node* n);
+void remove_node(sca_node* n);
 
 dir_node * getActionList(cell_pos pac_pos, int pac_dir, cell_pos target_pos);
 

@@ -1,6 +1,6 @@
 #include "AStar.h"
 #include "state.h"
-#include <math.h>
+//#include <math.h>
 #include <stdlib.h>
 
 void push (heap_t *h, int priority, sca*data) {
@@ -105,12 +105,12 @@ sca_node* get_legal_successors(sca current_node){
     free_cell adjacent_cell; 
     for(int i = 0; i<4; i++){
         adjacent_cell = grid[current_node.cell.adj_cell[i].cp_x + 28*current_node.cell.adj_cell[i].cp_y];  
-        if((adjacent_cell.food_opt != 'w') && (adjacent_cell.ghost_danger > get_transition_cost(current_node.last_dir, i) + current_node.cost){                  
+        if((adjacent_cell.food_opt != 'w') && (adjacent_cell.ghost_danger > get_transition_cost(current_node.last_dir, i) + current_node.cost)){                  
             sca_node * new_sca_node; 
             new_sca_node.state.cell = adjacent_cell;
             new_sca_node.state.cost = get_transition_cost(current_node.last_dir, i) + current_node.cost;
             new_sca_node.state.last_dir = i;
-            new_sca_node.action_list = append_to_action_list(i, current_node.action_list)
+            new_sca_node.action_list = append_to_action_list(i, current_node.action_list);
             insert_sca_tail(new_sca_node, legal_successors_tail, legal_successors_head);
         }
 

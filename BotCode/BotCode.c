@@ -8,7 +8,7 @@
 #include <assert.h>
 #include <time.h>
 #include <sys/time.h>
-#include "network.h"
+//#include "network.h"
 #include "AStar.h"
 #include "state.h"
 #include "grid.h"
@@ -20,7 +20,8 @@
 // GLOBALS 
 free_cell* grid; 
 state_response* latest_state;
-int main(int argc, char** arg) {
+
+int main(int argc, char **arg) {
 
     latest_state = malloc(sizeof(state_response));
     if(latest_state == NULL) {
@@ -30,8 +31,8 @@ int main(int argc, char** arg) {
 
     struct state_response state;
     while(1) {
-        getState(&state);
-        printState(&state);
+        //getState(&state);
+        //printState(&state);
     }
         
     free(grid);

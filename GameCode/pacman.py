@@ -89,10 +89,7 @@ def main():
     Thread(target = appRunner).start()
     # Thread(target = xBee).start()
     Thread(target = trackerUpdate).start()
-<<<<<<< HEAD
-=======
     Thread(target = gameUpdate(graphics)).start()
->>>>>>> 43ef2812c5c7de6761e9c9d140fc4db5fa6c332a
     
 
 def appRunner():

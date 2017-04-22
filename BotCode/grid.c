@@ -1,7 +1,8 @@
-#include "grid.h"
-#include "state.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
+#include "grid.h"
+#include "state.h"
 
 void createGrid(){
 	grid = (free_cell*) malloc(868*sizeof(free_cell)); 
