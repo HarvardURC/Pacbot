@@ -31,8 +31,8 @@ int main(int argc, char **arg) {
 
     struct state_response state;
     while(1) {
-        //getState(&state);
-        //printState(&state);
+        getState(&state);
+        printState(&state);
     }
         
     free(grid);
