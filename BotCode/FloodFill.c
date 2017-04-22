@@ -26,10 +26,11 @@ void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited, flood_
 	free_cell adjacent_cell;
 	for(int i=0; i<4; i++){
 		adjacent_cell = grid[28*pos.adj_cell[i].cp_x +pos.adj_cell[i].cp_y];  
+            printf("%s\n", "check" ); 
 		if( (adjacent_cell.food_opt != 'w') &&
-                (*(visited+28*pos.adj_cell[i].cp_x + pos.adj_cell[i].cp_y) != 1) && direc != (i + 2) % 4) {
+                (*(visited+28*pos.adj_cell[i].cp_x + pos.adj_cell[i].cp_y) != 1) && direc != (i + 3) % 4) {
             *(visited+28*pos.adj_cell[i].cp_x + pos.adj_cell[i].cp_y) = 1;
-			flood_node *new_flood_node = malloc(sizeof(flood_node)); 
+			flood_node *new_flood_node = malloc(sizeof(flood_node));
             if (new_flood_node == NULL) {
                 printf("EOM. can't handle\n");
                 exit(1);
@@ -37,6 +38,7 @@ void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited, flood_
 			new_flood_node->current_cell = adjacent_cell; 
 			new_flood_node->next_flood_node = NULL; 
             new_flood_node->depth = new_depth;
+            new_flood_node->direction = i+1; 
             if (*head == NULL) {
                 *head = new_flood_node;
                 *tail = *head;
@@ -76,8 +78,8 @@ void ghost_flood(/*ghost_dir* direcs*/){
 	ghosts[3].cp_y = 1; //getClyde();
     int direc[4];
     direc[0] = 1;
-    direc[1] = 1;
-    direc[2] = 1;
+    direc[1] = 2;
+    direc[2] = 3;
     direc[3] = 1;
     uint8_t visited[868];
 	clear_ghost_danger();
@@ -104,6 +106,7 @@ void ghost_flood(/*ghost_dir* direcs*/){
 		head_fringe->current_cell =  temp;
         *(visited+28*ghosts[i].cp_x + ghosts[i].cp_y) = 1;
 		head_fringe->depth = 0;
+        head_fringe->direction = direc[i]; 
         head_fringe->next_flood_node = NULL;
 		while (1) {
             flood_node *cur_node;
@@ -114,8 +117,8 @@ void ghost_flood(/*ghost_dir* direcs*/){
             if (empty) {
                 printf("should not reach here!\n");
             }
-
-			add_legal_successors(cur_node->depth+1, cur_node->current_cell, &visited[0], &head_fringe, &tail, direc[i]);
+            printf("%d\n", head_fringe->depth);
+			add_legal_successors(cur_node->depth+1, cur_node->current_cell, &visited[0], &head_fringe, &tail, head_fringe->direction);
             if (grid[28*cur_node->current_cell.coordinates.cp_x + cur_node->current_cell.coordinates.cp_y].ghost_danger > cur_node->depth) {
 			    grid[28*cur_node->current_cell.coordinates.cp_x + cur_node->current_cell.coordinates.cp_y].ghost_danger = cur_node->depth; 
             }

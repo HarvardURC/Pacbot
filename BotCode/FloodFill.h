@@ -15,6 +15,7 @@ typedef struct flood_node{
 	struct flood_node *next_flood_node;
 	free_cell current_cell;  
     int depth;
+    int direction; 
 } flood_node; 
 
 
