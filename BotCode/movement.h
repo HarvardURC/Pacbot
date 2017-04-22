@@ -1,3 +1,6 @@
+#ifndef _MOVEMENT_H_
+#define _MOVEMENT_H_
+
 #include "vl6180_pi.h"
 
 #define RIGHT_MAX 99;
@@ -14,3 +17,7 @@ void turn_around();
 void forward_half();
 void setupMovement();
 void all_init();
+
+
+
+#endif /* _MOVEMENT_H_*/
