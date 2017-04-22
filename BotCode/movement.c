@@ -32,7 +32,8 @@ const int EncR = 18;
 const int EncL = 24;
 
 void initialise_irs(){
-    return; /*
+    return; // remove this and uncomment below
+    /*
 	digitalWrite(20, HIGH);
 	digitalWrite(22, HIGH);
 	digitalWrite(27, HIGH);
@@ -55,6 +56,7 @@ void initialise_irs(){
 }
 
 void setupMovement() {
+    return; // remove this and uncomment below
     /*
     wiringPiSetup();
 	wiringPiSetupGpio();
@@ -75,13 +77,12 @@ void setupMovement() {
 
 	initialise_irs();
     */
-    return;
 };
 
 void all_init() {	
     
     setupMovement();
-    /*
+    /* uncomment
 	softPwmCreate(pwmPinL, 0, 100);
 	softPwmCreate(pwmPinR, 0, 100);
     */
@@ -93,6 +94,7 @@ void all_init() {
 }
 
 void turn_right() {
+    return; // remove this and uncomment below
     /*
 	while (left_count < 123){
 		digitalWrite(polarPinL, LOW);
@@ -104,10 +106,10 @@ void turn_right() {
 	softPwmWrite(pwmPinL, 0);
 	softPwmWrite(pwmPinR, 0);
     */
-    return;
 }
 
 void turn_left() {
+    return; // remove this and uncomment below
     /*
 	left_count = 0;
 	while (left_count < 115){
@@ -120,7 +122,6 @@ void turn_left() {
 	softPwmWrite(pwmPinL, 0);
 	softPwmWrite(pwmPinR, 0);
     */
-    return;
 }
 
 void turn_around(){
@@ -129,6 +130,7 @@ void turn_around(){
 }
 
 void correct_rot() {
+    return; // remove this and uncomment below
     /*
 	if(get_distance(handle0, 0x2b) < 42){
 		digitalWrite(polarPinL, HIGH);
@@ -150,7 +152,6 @@ void correct_rot() {
 	softPwmWrite(pwmPinL, 0);
 	softPwmWrite(pwmPinR, 0);
     */
-    return;
 }
 
 static int same_square(cell_pos a, cell_pos b) {
@@ -161,6 +162,7 @@ static int same_square(cell_pos a, cell_pos b) {
 }
 
 void go_straight() {
+    return; // remove this and uncomment below
      /*
     int left;
     int right;
@@ -246,10 +248,10 @@ void go_straight() {
 	softPwmWrite(pwmPinL, 0);
 	softPwmWrite(pwmPinR, 0);
     */
-    return;
 }
 
 void forward_half(){
+    return; // remove this and uncomment below
     /*
 	left_count = 0;
 	digitalWrite(polarPinL, LOW);
@@ -261,7 +263,6 @@ void forward_half(){
 	digitalWrite(pwmPinL, 0);
 	digitalWrite(pwmPinR, 0);
     */
-    return;
 }
 
 void left_add_count(){
