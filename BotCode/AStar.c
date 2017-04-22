@@ -21,7 +21,7 @@ void push (heap_t *h, int priority, sca* data) {
         j = j / 2;
     }
     h->nodes[i].priority = priority;
-    h->nodes[i].data->state = *state;
+    //h->nodes[i].data->state = *state;
     h->len++;
 }
  
@@ -59,7 +59,7 @@ LINKED LIST CODE
 
 void insert_sca_tail(sca_node* n, sca_node* legal_successors_head){
     n->next_sca_node = NULL;
-    current_transverse = legal_successors_head; 
+    sca_node* current_transverse = legal_successors_head; 
     while(current_transverse->next_sca_node != NULL){
         current_transverse = current_transverse->next_sca_node; 
     }
@@ -72,13 +72,13 @@ void insert_sca_tail(sca_node* n, sca_node* legal_successors_head){
 
 double get_transition_cost(int pac_dir, int intended_dir){
     if (pac_dir == intended_dir){
-        return 1.0
+        return 1.0;
     }
     else if ((pac_dir - intended_dir)%4 == 2) {
-        return 3.0
+        return 3.0;
     }
     else {
-        return 2.0
+        return 2.0; 
     }
 }
 
@@ -109,10 +109,10 @@ sca_node* as_get_legal_successors(sca current_node){
         adjacent_cell = grid[current_node.cell.adj_cell[i].cp_x + 28*current_node.cell.adj_cell[i].cp_y];  
         if((adjacent_cell.food_opt != 'w') && (SPEED_RATIO * adjacent_cell.ghost_danger > (get_transition_cost(current_node.last_dir, i+1) + current_node.cost))){                  
             sca_node * new_sca_node = (sca_node*)malloc(sizeof(sca_node)); 
-            new_sca_node.state.cell = adjacent_cell;
-            new_sca_node.state.cost = get_transition_cost(current_node.last_dir, i + 1) + current_node.cost;
-            new_sca_node.state.last_dir = i + 1;
-            new_sca_node.action_list = append_to_action_list( i + 1, current_node.action_list);
+            new_sca_node->state.cell = adjacent_cell;
+            new_sca_node->state.cost = get_transition_cost(current_node.last_dir, i + 1) + current_node.cost;
+            new_sca_node->state.last_dir = i + 1;
+            new_sca_node->action_list = append_to_action_list( i + 1, current_node.action_list);
             insert_sca_tail(new_sca_node, legal_successors_head);
         }
 
@@ -134,8 +134,8 @@ int manhattanDistance(cell_pos pos1, cell_pos pos2){
 int contains(sca_node * head, sca tar_sca){
     sca_node * cur_sca = head; 
     while(cur_sca !=NULL){
-        if((cur_sca->cell.coordinates.cp_x == tar_sca.cell.coordinates.cp_x) && (cur_sca->cell.coordinates.cp_y == tar_sca.cell.coordinates.cp_y)
-         && (tar_sca.cost > cur_sca->cost)){
+        if((cur_sca->state.cell.coordinates.cp_x == tar_sca->state.cell.coordinates.cp_x) && (cur_sca->state.cell.coordinates.cp_y == tar_sca.cell.coordinates.cp_y)
+         && (tar_sca.cost > cur_sca->state.cost)){
             return 1;
         }
         cur_sca = head->next_sca_node;
@@ -150,13 +150,14 @@ void print_action_list(dir_node * action_list_head){
         printf("%d ",temp->dir);
         temp = temp->next;
     }
-    printf("%s\n");  
+    printf("%s\n", "");  
 }
 //Function that transveres trough a linked list and free its nodes
-void freer_function(flood_node* head){
-    flood_node* new_head; 
-    while(head->next_flood_node != NULL){
-        new_head = head->next_flood_node; 
+void freer_function(sca_node* head){
+    sca_node* new_head; 
+    while(head->next_sca_node != NULL){
+        new_head = head->next_sca_node;
+        new_head->prev_sca_node = NULL;  
         free(head); 
     }
     free(new_head);
@@ -169,14 +170,14 @@ void set_ghost_danger(){
 }
 //Use A* to get best next move in a sequence of moves
 dir_node * getActionList(cell_pos pac_pos, int pac_dir, cell_pos target_pos){
-    node_t * head_closed = (node_t*)malloc(sizeof(node_t));
+    sca_node* head_closed = (node_t*)malloc(sizeof(node_t));
     //Store all nodes on the tree fringe as a priority queue
     heap_t *fringe = (heap_t *)calloc(1, sizeof (heap_t));
-    sca* current_node = (sca*)malloc(sizeof(sca));
-    current_node->cell = grid[pac_pos.cp_x + 28*pac_pos.cp_y];
-    current_node->cost = 0.0;
-    current_node->action_list = NULL; 
-    current_node->last_dir = pac_dir;
+    sca_node* current_node = (sca*)malloc(sizeof(sca));
+    current_node->state.cell = grid[pac_pos.cp_x + 28*pac_pos.cp_y];
+    current_node->state.cost = 0.0;
+    current_node->state.action_list = NULL; 
+    current_node->state.last_dir = pac_dir;
     int prio = current_node->cost + manhattanDistance(pac_pos, target_pos);
     push(fringe, prio, current_node);
     while(1){
@@ -184,10 +185,10 @@ dir_node * getActionList(cell_pos pac_pos, int pac_dir, cell_pos target_pos){
             return NULL; 
         }
         current_node = pop(fringe);
-        if ((current_node->cell.coordinates.cp_x == target_pos.x) && (current_node->cell.coordinates.cp_y == target_pos.y)){
-            return current_node.action_list;
+        if ((current_node->cell.coordinates.cp_x == target_pos.cp_x) && (current_node->cell.coordinates.cp_y == target_pos.cp_y)){
+            return current_node->action_list;
         }
-        if (!contains(head_closed, current_node)){
+        if (!contains(head_closed, *current_node)){
             insert_sca_tail(current_node, head_closed);
             sca_node* successors = (sca_node*)malloc(sizeof(sca_node));
             successors = as_get_legal_successors(current_node);
