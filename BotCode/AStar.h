@@ -8,7 +8,7 @@ typedef struct dir_node
 {
     int dir; 
     struct dir_node * next; 
-}dir_node;
+} dir_node;
 
 void append_to_action_list(int i, dir_node * action_list);
 
@@ -39,7 +39,7 @@ void push (heap_t *h, int priority, sca * data);
 
 sca *pop (heap_t *h);
 
-sca * get_legal_successors(sca current_node);
+sca * as_get_legal_successors(sca current_node);
 
 double get_transition_cost(int pac_dir, int intended_dir);
 

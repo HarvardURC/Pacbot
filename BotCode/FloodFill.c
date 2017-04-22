@@ -100,12 +100,4 @@ void ghost_flood(state_response state){
 		
 	}
 }
-// int main(){
-// 	createGrid(); 
-// 	for(int i = 0; i<31; i++){
-// 		for(int j = 0; j<28; j++){
-// 			printf("%d ",grid[j + i*28].ghost_danger);	
-// 		}
-// 	}
-// 	return 0;
-// }
+

@@ -99,7 +99,7 @@ void append_to_action_list(int i, dir_node* action_list){
     current_node = new_node;  
 }
 //N=1, E=2 S=3 W=4
-sca_node* get_legal_successors(sca current_node){
+sca_node* as_get_legal_successors(sca current_node){
     sca_node* legal_successors_head; 
     sca_node* legal_successors_tail; 
     free_cell adjacent_cell; 

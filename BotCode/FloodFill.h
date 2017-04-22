@@ -1,11 +1,10 @@
-#include "AStar.h"
-#include "state.h"
 #include <math.h>
 #include <stdlib.h>
 #include <limits.h>
-#include "grid.h"
 #include <stdio.h>
 #include "state.h"
+#include "grid.h"
+#include "AStar.h"
 
 
 //Queue for fringe, also used for the closed list and successor list
@@ -13,6 +12,7 @@ typedef struct flood_node{
 	struct flood_node * next_flood_node;
 	free_cell current_cell;  
 }flood_node; 
+
 //Add a node to the end of 
 void push_flood_node(flood_node* n, flood_node * current_node); 
 //Returns the head node and moves head pointer to next node
