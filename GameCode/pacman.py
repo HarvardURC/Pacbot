@@ -62,12 +62,12 @@ def getFormattedGameData():
         return {'stop': True}
 
 def xBee():
-    xbee = Serial('/dev/cu.usbserial-DA00VDM1', 9600)
+    xbee = Serial('/dev/cu.usbserial-00002014', 9600)
     if (game.game_on):
-        m = ("$" + string(game.pacbot.pos[0]) + "#" + string(game.pacbot.pos[1]) + "#" + 
-            string(game.red.pos[0]) + "#" +string(game.red.pos[1]) + "#" + 
-            string(game.pink.pos[0]) + "#" +string(game.pink.pos[1]) + "#" +
-            string(game.blue.pos[0]) + "#" +string(game.blue.pos[1]) + "#")
+        m = "$" + string(game.pacbot.pos[0]) + "#" + string(game.pacbot.pos[1]) + "#" 
+        m = m + string(game.red.pos[0]) + "#" +string(game.red.pos[1]) + "#" 
+        m = m + string(game.pink.pos[0]) + "#" +string(game.pink.pos[1]) + "#" 
+        m = m + string(game.blue.pos[0]) + "#" +string(game.blue.pos[1]) + "#"
         if (game.state == frightened):
             m = m + string(int(game.frightened_counter * 0.77))
     else:
@@ -131,7 +131,7 @@ def gameUpdate(graphics):
     
     if game.grid[game.pacbot.pos[0]][game.pacbot.pos[1]] == o:
         game.grid[game.pacbot.pos[0]][game.pacbot.pos[1]] = e
-        game.score += 1
+        game.score += 10
     
 
     while session:

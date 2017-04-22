@@ -7,7 +7,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include "vl6180_pi.h"
+//#include "vl6180_pi.h"
 #include "state.h"
 
 #define RIGHT_MAX 99;

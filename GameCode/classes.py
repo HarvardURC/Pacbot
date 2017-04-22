@@ -200,9 +200,9 @@ class GameState:
             if self.state == scatter:
                 # if self.scatter_counter == 1:
                 #     self.change_state(chase)
-
-                if self.scattered:
-                    self.scattered = not self.scattered
+                if not fast:
+                    if self.scattered:
+                        self.scattered = not self.scattered
 
                 # if not fast:
                 #     self.scatter_counter -= 1
@@ -228,7 +228,7 @@ class GameState:
                     else:
                         self.play = False
                         self.respawn = True
-                        print("Success")
+                        print("Success: " + str(self.score) )
                         self.game_on = False
                 
                 else:
@@ -259,8 +259,9 @@ class GameState:
                     self.counter += 1
 
             elif self.state == frightened:
-                if self.scattered:
-                    self.scattered = not self.scattered
+                if not fast:
+                    if self.scattered:
+                        self.scattered = not self.scattered
 
                 if self.red.pos["current"] == self.pacbot.pos:
                     self.red.send_home()
@@ -318,7 +319,7 @@ class GameState:
                     else:
                         self.play = False
                         self.respawn = True
-                        print("Success")
+                        print("Success: " + str(self.score) )
                         self.game_on = False
                 
                 else:
