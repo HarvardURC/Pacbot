@@ -1,4 +1,4 @@
-//#include "vl6180_pi.h"
+#include "vl6180_pi.h"
 
 #define RIGHT_MAX 99;
 #define LEFT_MAX 100;
@@ -11,3 +11,4 @@ void initialise_irs();
 void turn_right();
 void turn_left();
 void setupMovement();
+void all_init();

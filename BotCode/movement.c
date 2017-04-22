@@ -71,7 +71,7 @@ void setupMovement() {
 	initialise_irs()
 };
 
-int main() {	
+void all_init() {	
     
     setupMovement();
 
