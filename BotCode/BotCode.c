@@ -185,7 +185,7 @@ int main(int argc, char **arg) {
     
     }
 
-    getActionList(pacbot_cur, pacbot_execute(&(actionbuffer[0])), init_pos, 1, &(actionbuffer[0]));
+    getActionList(pacbot_cur, pac_direction, init_pos, 1, &(actionbuffer[0]));
     pac_direction = pacbot_execute(&(actionbuffer[0]), pac_direction); 
     while (pac_direction != START_DIRECTION){
         turn_left();
