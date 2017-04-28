@@ -1,13 +1,13 @@
 #include <stdlib.h>
 #include "grid.h"
-// #include "movement.h"
+#include "movement.h"
 #include "AStar.h"
 #include "desired_coordinates.h"
 
 void desired_coordinates(cell_pos *max1, cell_pos *max2, cell_pos *max3) {
-	cur_max1 = NULL;
-	cur_max2 = NULL;
-	cur_max3 = NULL;
+	cell_pos *cur_max1 = NULL;
+	cell_pos *cur_max2 = NULL;
+	cell_pos *cur_max3 = NULL;
 	cell_pos pacbot = getPacbot();
 	for (int i = 0; i < 868; i++){
 		if (grid[i].food_opt == 'p'){
