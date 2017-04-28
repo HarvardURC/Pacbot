@@ -7,7 +7,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-//#include "vl6180_pi.h"
+#include "vl6180_pi.h"
 #include "movement.h"
 #include "state.h"
 #include "network.h"
