@@ -8,5 +8,5 @@ OBJ = BotCode.c network.o grid.o FloodFill.o state.o desired_coordinates.o AStar
 
 
 BotCode: $(OBJ)
-	gcc -o $@ $^ movement.o $(CFLAGS) -l wiringPi
+	gcc -o $@ $^ movement.o network.o state.o $(CFLAGS) -l wiringPi
 	
