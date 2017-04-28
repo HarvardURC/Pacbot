@@ -1,7 +1,7 @@
 #ifndef _MOVEMENT_H_
 #define _MOVEMENT_H_
 
-//#include "vl6180_pi.h"
+#include "vl6180_pi.h"
 #include "state.h"
 #include "pacbot_direction.h"
 

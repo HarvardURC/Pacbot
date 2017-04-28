@@ -7,4 +7,5 @@ OBJ = BotCode.c network.o grid.o FloodFill.o state.o desired_coordinates.o AStar
 	$(CC) -c -o $@ $< $(CFLAGS) -l wiringPi
 
 BotCode: $(OBJ)
-	gcc -o $@ $^ $(CFLAGS)
+	gcc -o $@ $^ $(CFLAGS) -l wiringPi
+	
