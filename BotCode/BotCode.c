@@ -65,8 +65,8 @@ int main(int argc, char **arg) {
     //start_pos.cp_y = 1;
     //goal_pos.cp_x = 29;
     //goal_pos.cp_y = 26;
-    // init_pos.cp_x = 23;
-    // init_pos.cp_y = 13;
+    init_pos.cp_x = 23;
+    init_pos.cp_y = 13;
     uint8_t actionbuffer[200];
 
     /*int test = getActionList(start_pos, 1, goal_pos, 1, &(actionbuffer[0]));
@@ -185,7 +185,7 @@ int main(int argc, char **arg) {
     
     }
 
-    getActionList(pacbot_cur, pacbot_execute(&a), init_pos, 1, &(actionbuffer[0]));
+    getActionList(pacbot_cur, pacbot_execute(&(actionbuffer[0])), init_pos, 1, &(actionbuffer[0]));
     pac_direction = pacbot_execute(&(actionbuffer[0])); 
     while (pac_direction != START_DIRECTION){
         turn_left();
