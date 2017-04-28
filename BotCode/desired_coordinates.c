@@ -9,7 +9,8 @@ void desired_coordinates(cell_pos *max1, cell_pos *max2, cell_pos *max3) {
 	cell_pos *cur_max2 = NULL;
 	cell_pos *cur_max3 = NULL;
 	cell_pos pacbot = getPacbot();
-	for (int i = 0; i < 868; i++){
+    int i;
+	for (i = 0; i < 868; i++){
 		if (grid[i].food_opt == 'p'){
 			if (get_distance(cur_max1, &pacbot)  < get_distance(&grid[i].coordinates, &pacbot)){
 				*cur_max3 = *cur_max2;

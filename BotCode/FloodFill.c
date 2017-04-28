@@ -35,7 +35,8 @@ static int opposite(int a_dir, int b_dir) {
 void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited,
         flood_node **head, flood_node **tail, int g_dir) {
 	free_cell adjacent_cell;
-	for(int i=0; i<4; i++){
+    int i;
+	for(i=0; i<4; i++){
 		adjacent_cell = grid[28*pos.adj_cell[i].cp_x +pos.adj_cell[i].cp_y];  
 		if( (adjacent_cell.food_opt != 'w') && 
                 !(new_depth == 1 && opposite(g_dir, i+1)) &&
@@ -64,7 +65,8 @@ void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited,
 }
 
 void clear_ghost_danger(){
-	for(int i=0; i<868; i++){
+    int i;
+	for(i=0; i<868; i++){
 		grid[i].ghost_danger = 255; 
 	}
 }
@@ -93,7 +95,8 @@ void ghost_flood(ghost_dir *direcs) {
     directions[3] = direcs->clyde_dir;
     uint8_t visited[868];
 	clear_ghost_danger();
-	for(int i=0; i<4; i++) {
+    int i;
+	for(i=0; i<4; i++) {
         memset(&visited[0], 0, sizeof(uint8_t) * 868); 
 		flood_node *head_fringe = (flood_node*) malloc(sizeof(flood_node));
         if (head_fringe == NULL) {
