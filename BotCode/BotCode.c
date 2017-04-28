@@ -8,15 +8,15 @@
 #include <assert.h>
 #include <time.h>
 #include <sys/time.h>
-//#include <wiringPi.h>
+#include <wiringPi.h>
 #include "network.h"
 #include "AStar.h"
 #include "state.h"
 #include "grid.h"
 #include "FloodFill.h"
 #include "pacbot_direction.h"
+#include "desired_coordinates.h"
 #include "movement.h"
-//#include "movement.h"
 //
 //#include <Direction.c> 
 // Initialize connection with camera
