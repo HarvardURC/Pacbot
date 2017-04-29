@@ -75,20 +75,20 @@ int main(int argc, char **arg) {
     } else {
         int i = 0;
         while(actionbuffer[i] != 5) {
-            printf("%d, ", actionbuffer[i]);
+            //printf("%d, ", actionbuffer[i]);
             i++;
         }
         printf("%d\n", actionbuffer[i]);
     }
     int i;
     int j;
-    for(i =0; i<31; i++) {
+    /*for(i =0; i<31; i++) {
         for (j = 0; j < 28; j++)
         {
             printf("%03d ", grid[j+ i*28].ghost_danger);
         }
         printf("\n");
-    }
+    }*/
  
     /*pollState();
     cell_pos blink_cur = getBlinky();
