@@ -61,15 +61,15 @@ int main(int argc, char **arg) {
     cell_pos start_pos;
     cell_pos goal_pos;
     cell_pos init_pos;
-    //start_pos.cp_x = 1;
-    //start_pos.cp_y = 1;
-    //goal_pos.cp_x = 29;
-    //goal_pos.cp_y = 26;
+    start_pos.cp_x = 1;
+    start_pos.cp_y = 1;
+    goal_pos.cp_x = 29;
+    goal_pos.cp_y = 26;
     init_pos.cp_x = 23;
     init_pos.cp_y = 13;
     uint8_t actionbuffer[200];
 
-    /*int test = getActionList(start_pos, 1, goal_pos, 1, &(actionbuffer[0]));
+    int test = getActionList(start_pos, 1, goal_pos, 1, &(actionbuffer[0]));
     if (test) {
         printf("failed\n");
     } else {
@@ -79,17 +79,17 @@ int main(int argc, char **arg) {
             i++;
         }
         printf("%d\n", actionbuffer[i]);
-    }*/
+    }
 
-    /*for(int i =0; i<31; i++) {
+    for(int i =0; i<31; i++) {
         for (int j = 0; j < 28; j++)
         {
             printf("%03d ", grid[j+ i*28].ghost_danger);
         }
         printf("\n");
-    }*/
+    }
  
-    pollState();
+    /*pollState();
     cell_pos blink_cur = getBlinky();
     cell_pos ink_cur = getInky();
     cell_pos pink_cur = getPinky();
@@ -98,7 +98,7 @@ int main(int argc, char **arg) {
     cell_pos blink_last;
     cell_pos ink_last;
     cell_pos pink_last;
-    cell_pos clyde_last;
+    cell_pos clyde_last;*/
     cell_pos max1;
     cell_pos max2;
     cell_pos max3;
@@ -106,7 +106,7 @@ int main(int argc, char **arg) {
 
     int pac_direction = START_DIRECTION;
     while(getGameStatus() != P_STOPPED) {
-        blink_last = blink_cur;
+        /*blink_last = blink_cur;
         ink_last = ink_cur;
         pink_last = pink_cur;
         clyde_last = clyde_cur;
@@ -179,13 +179,13 @@ int main(int argc, char **arg) {
 
             }
 
-        }
+        }*/
 
         pac_direction = pacbot_execute(&(actionbuffer[0]), pac_direction);
     
-    }
+    //}
 
-    getActionList(pacbot_cur, pac_direction, init_pos, 1, &(actionbuffer[0]));
+    //getActionList(pacbot_cur, pac_direction, init_pos, 1, &(actionbuffer[0]));
     pac_direction = pacbot_execute(&(actionbuffer[0]), pac_direction); 
     while (pac_direction != START_DIRECTION){
         turn_left();
