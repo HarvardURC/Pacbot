@@ -37,15 +37,15 @@ void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited,
     printf("Entered add_legal_successors\n");
 	free_cell adjacent_cell;
     printf("Declared adjacent_cell\n");
-    int j;
+    int i;
     printf("Declared int i\n");
-	for(j=0; j<4; j++){
+	for(i=0; i<4; i++){
         printf("Entered for loop");
-		adjacent_cell = grid[28*pos.adj_cell[j].cp_x +pos.adj_cell[j].cp_y];  
+		adjacent_cell = grid[28*pos.adj_cell[i].cp_x +pos.adj_cell[i].cp_y];  
 		if( (adjacent_cell.food_opt != 'w') && 
-                !(new_depth == 1 && opposite(g_dir, j+1)) &&
-                (*(visited+28*pos.adj_cell[j].cp_x + pos.adj_cell[j].cp_y) != 1)) {
-            *(visited+28*pos.adj_cell[j].cp_x + pos.adj_cell[j].cp_y) = 1;
+                !(new_depth == 1 && opposite(g_dir, i+1)) &&
+                (*(visited+28*pos.adj_cell[i].cp_x + pos.adj_cell[i].cp_y) != 1)) {
+            *(visited+28*pos.adj_cell[i].cp_x + pos.adj_cell[i].cp_y) = 1;
 			flood_node *new_flood_node = malloc(sizeof(flood_node));
             if (new_flood_node == NULL) {
                 printf("EOM. can't handle\n");
