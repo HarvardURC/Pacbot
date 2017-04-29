@@ -36,6 +36,7 @@ void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited,
         flood_node **head, flood_node **tail, int g_dir) {
     printf("Entered add_legal_successors\n");
 	free_cell adjacent_cell;
+    printf("Declared adjacent_cell\n");
     int i;
 	for(i=0; i<4; i++){
         printf("Entered for loop");
