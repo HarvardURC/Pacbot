@@ -34,19 +34,19 @@ static int opposite(int a_dir, int b_dir) {
 //returns up to four possible next moves
 void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited,
         flood_node **head, flood_node **tail, int g_dir) {
-    printf("Entered add_legal_successors\n");
+    //printf("Entered add_legal_successors\n");
 	free_cell adjacent_cell;
-    printf("Declared adjacent_cell\n");
+    //printf("Declared adjacent_cell\n");
     int i;
-    printf("Declared int i\n");
+    //printf("Declared int i\n");
 	for(i=0; i<4; i++){
-        printf("Entered for loop\n");
-        int x_coord = pos.adj_cell[i].cp_x;
-        int y_coord = pos.adj_cell[i].cp_y;
-        printf("X Coordinate to access: %d \n", x_coord);
-        printf("Y Coordinate to access: %d \n", y_coord);
+        //printf("Entered for loop\n");
+        //int x_coord = pos.adj_cell[i].cp_x;
+        //int y_coord = pos.adj_cell[i].cp_y;
+        //printf("X Coordinate to access: %d \n", x_coord);
+        //printf("Y Coordinate to access: %d \n", y_coord);
 		adjacent_cell = grid[28*pos.adj_cell[i].cp_x +pos.adj_cell[i].cp_y];  
-        printf("Initialized adjacent_cell\n");
+        //printf("Initialized adjacent_cell\n");
 		if( (adjacent_cell.food_opt != 'w') && 
                 !(new_depth == 1 && opposite(g_dir, i+1)) &&
                 (*(visited+28*pos.adj_cell[i].cp_x + pos.adj_cell[i].cp_y) != 1)) {
@@ -58,7 +58,6 @@ void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited,
             }
 			new_flood_node->current_cell = adjacent_cell; 
 			new_flood_node->next_flood_node = NULL; 
-            printf("Did some more stuff\n");
             new_flood_node->depth = new_depth;
             if (*head == NULL) {
                 *head = new_flood_node;
