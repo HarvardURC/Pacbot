@@ -80,9 +80,10 @@ int main(int argc, char **arg) {
         }
         printf("%d\n", actionbuffer[i]);
     }
-
-    for(int i =0; i<31; i++) {
-        for (int j = 0; j < 28; j++)
+    int i;
+    int j;
+    for(i =0; i<31; i++) {
+        for (j = 0; j < 28; j++)
         {
             printf("%03d ", grid[j+ i*28].ghost_danger);
         }
