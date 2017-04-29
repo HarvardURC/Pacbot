@@ -138,7 +138,7 @@ static int same_square(cell_pos a, cell_pos b) {
 
 void go_straight() {
 
-    int left;
+    /*int left;
     int right;
     int front;
     int right_init;
@@ -214,7 +214,8 @@ void go_straight() {
 			softPwmWrite(pwmPinL, 49);
 			softPwmWrite(pwmPinR, 50);
 		}
-	}
+	}*/
+	forward_half();
 	forward_half();
 	softPwmWrite(pwmPinL, 0);
 	softPwmWrite(pwmPinR, 0);
