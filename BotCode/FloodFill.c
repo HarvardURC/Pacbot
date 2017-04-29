@@ -37,9 +37,9 @@ void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited,
     printf("Entered add_legal_successors\n");
 	free_cell adjacent_cell;
     printf("Declared adjacent_cell\n");
-    //int i;
-    //printf("Declared int i\n");
-	for(int i=0; i<4; i++){
+    int i;
+    printf("Declared int i\n");
+	for(i=0; i<4; i+=1){
         printf("Entered for loop");
 		adjacent_cell = grid[28*pos.adj_cell[i].cp_x +pos.adj_cell[i].cp_y];  
 		if( (adjacent_cell.food_opt != 'w') && 
