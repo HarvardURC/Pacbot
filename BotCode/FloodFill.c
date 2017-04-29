@@ -42,6 +42,7 @@ void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited,
 	for(i=0; i<4; i++){
         printf("Entered for loop\n");
 		adjacent_cell = grid[28*pos.adj_cell[i].cp_x +pos.adj_cell[i].cp_y];  
+        printf("Initialized adjacent_cell\n");
 		if( (adjacent_cell.food_opt != 'w') && 
                 !(new_depth == 1 && opposite(g_dir, i+1)) &&
                 (*(visited+28*pos.adj_cell[i].cp_x + pos.adj_cell[i].cp_y) != 1)) {
@@ -53,6 +54,7 @@ void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited,
             }
 			new_flood_node->current_cell = adjacent_cell; 
 			new_flood_node->next_flood_node = NULL; 
+            printf("Did some more stuff\n");
             new_flood_node->depth = new_depth;
             if (*head == NULL) {
                 *head = new_flood_node;
