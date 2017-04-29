@@ -38,6 +38,7 @@ void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited,
 	free_cell adjacent_cell;
     printf("Declared adjacent_cell\n");
     int i;
+    printf("Declared int i\n");
 	for(i=0; i<4; i++){
         printf("Entered for loop");
 		adjacent_cell = grid[28*pos.adj_cell[i].cp_x +pos.adj_cell[i].cp_y];  
