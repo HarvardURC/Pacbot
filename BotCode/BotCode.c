@@ -105,7 +105,7 @@ int main(int argc, char **arg) {
     cell_pos max3;
     all_init();
 
-    int pac_direction = START_DIRECTION;
+    int pac_direction = 1;
     while(getGameStatus() != P_STOPPED) {
         /*blink_last = blink_cur;
         ink_last = ink_cur;
