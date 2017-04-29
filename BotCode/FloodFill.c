@@ -41,8 +41,8 @@ void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited,
     printf("Declared int i\n");
 	for(i=0; i<4; i++){
         printf("Entered for loop\n");
-        x_coord = pos.adj_cell[i].cp_x;
-        y_coord = pos.adj_cell[i].cp_y;
+        int x_coord = pos.adj_cell[i].cp_x;
+        int y_coord = pos.adj_cell[i].cp_y;
         printf("X Coordinate to access: %d \n", x_coord);
         printf("Y Coordinate to access: %d \n", y_coord);
 		adjacent_cell = grid[28*pos.adj_cell[i].cp_x +pos.adj_cell[i].cp_y];  
