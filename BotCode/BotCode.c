@@ -142,5 +142,88 @@ int main(int argc, char **arg) {
                             }
                         } else {
                             while (getActionList(pacbot_cur, pac_direction, random_cell_pos, 0, &(actionbuffer[0])) == 1) {
+                                random_cell_pos.cp_x = rand() % 30;   
+                                random_cell_pos.cp_y = rand() % 28; 		
+		
+                            }		
+                        }		
+                    }		
+                } else {		
+                    while (getActionList(pacbot_cur, pac_direction, random_cell_pos, 0, &(actionbuffer[0])) == 1) {		
+		
+                        random_cell_pos.cp_x = rand() % 30; 		
+                        random_cell_pos.cp_y = rand() % 28; 		
+		
+                    }		
+		
+                }		
+            }		
+        } else {		
+		
+            while (getActionList(pacbot_cur, pac_direction, random_cell_pos, 0, &(actionbuffer[0])) == 1) {		
+		
+                random_cell_pos.cp_x = rand() % 30; 		
+                random_cell_pos.cp_y = rand() % 28; 		
+		
+            }		
+		
+        }
 
+        int i = 0;
+        while(actionbuffer[i] != 5) {
+            printf("%d, ", actionbuffer[i]);
+            i++;
+        }
+        printf("%d\n", actionbuffer[i]);
+
+		
+        pac_direction = pacbot_execute(&(actionbuffer[0]), pac_direction);		
+    		
+    }
+
+    getActionList(pacbot_cur, pac_direction, init_pos, 1, &(actionbuffer[0]));		
+    pac_direction = pacbot_execute(&(actionbuffer[0]), pac_direction); 		
+    while (pac_direction != START_DIRECTION){		
+        turn_left();		
+        pac_direction++;		
+        if (pac_direction > 4) {		
+            pac_direction = 1;		
+        }		
+    }		
+    lives--;		
+		
+		
+    if (lives == 0) {		
+        free(grid);		
+        return 0; 		
+    }    		
+}		
+ 		
+int getDirectionGhost(cell_pos* init, cell_pos* final){		
+    int ghost_direc;		
+		
+    if (init->cp_x != final->cp_x){		
+        if (init->cp_x < final->cp_x){		
+            ghost_direc = SOUTH;		
+        }		
+        else{		
+            ghost_direc = NORTH;		
+        }		
+		
+    return ghost_direc;		
+    }		
+    else if (init->cp_y != final->cp_y){		
+        if (init->cp_y < final->cp_y){		
+            ghost_direc = EAST;		
+        }		
+		
+        else{		
+            ghost_direc = WEST;		
+        }		
+    return ghost_direc;		
+    }		
+    else{		
+        return 0;		
+    }		
+}
   
