@@ -7,7 +7,7 @@ static int getResponse(char* response, size_t resLen)
 {
     /* first what are we going to send and where are we going to send it? */
     int portno =        8080;
-    char *host =        "192.168.0.103";
+    char *host =        "192.168.0.102";
     char *message = "GET /pac-bot HTTP/1.0\r\n\r\n";
 
     struct hostent *server;

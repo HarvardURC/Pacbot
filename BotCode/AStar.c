@@ -112,7 +112,7 @@ int getActionList(cell_pos pac_pos, int pac_dir, cell_pos target_pos,
     //Store all nodes on the tree fringe as a priority queue
     heap_t *fringe = (heap_t *)calloc(1, sizeof (heap_t));
     sca* cur_dat = malloc(sizeof(sca));
-    cur_dat->cell = grid[pac_pos.cp_x + 28*pac_pos.cp_y];
+    cur_dat->cell = grid[pac_pos.cp_y + 28*pac_pos.cp_x];
     cur_dat->cost = 0.0;
     cur_dat->actions[0] = pac_dir;
     cur_dat->next_action = 1;

@@ -37,9 +37,6 @@ int main(int argc, char **arg) {
     int lives = 3;
 
     ghost_dir* directions = (ghost_dir*)malloc(sizeof(ghost_dir));
-
-    //softPwmCreate(pwmPinL, 0, 100);
-    //softPwmCreate(pwmPinR, 0, 100);
     
     latest_state = malloc(sizeof(state_response));
     if(latest_state == NULL) {
@@ -61,36 +58,31 @@ int main(int argc, char **arg) {
     cell_pos start_pos;
     cell_pos goal_pos;
     cell_pos init_pos;
-    start_pos.cp_x = 1;
-    start_pos.cp_y = 1;
-    goal_pos.cp_x = 29;
-    goal_pos.cp_y = 26;
     init_pos.cp_x = 23;
-    init_pos.cp_y = 13;
+    init_pos.cp_y = 12;
     uint8_t actionbuffer[200];
 
-    int test = getActionList(start_pos, 1, goal_pos, 1, &(actionbuffer[0]));
+    /*int test = getActionList(start_pos, 1, goal_pos, 1, &(actionbuffer[0]));
     if (test) {
         printf("failed\n");
     } else {
         int i = 0;
         while(actionbuffer[i] != 5) {
-            //printf("%d, ", actionbuffer[i]);
+            printf("%d, ", actionbuffer[i]);
             i++;
         }
         printf("%d\n", actionbuffer[i]);
     }
     int i;
     int j;
-    /*for(i =0; i<31; i++) {
+    for(i =0; i<31; i++) {
         for (j = 0; j < 28; j++)
         {
             printf("%03d ", grid[j+ i*28].ghost_danger);
         }
         printf("\n");
     }*/
- 
-    /*pollState();
+    pollState();
     cell_pos blink_cur = getBlinky();
     cell_pos ink_cur = getInky();
     cell_pos pink_cur = getPinky();
@@ -99,15 +91,14 @@ int main(int argc, char **arg) {
     cell_pos blink_last;
     cell_pos ink_last;
     cell_pos pink_last;
-    cell_pos clyde_last;*/
+    cell_pos clyde_last;
     cell_pos max1;
     cell_pos max2;
     cell_pos max3;
     all_init();
-
     int pac_direction = 1;
     while(getGameStatus() != P_STOPPED) {
-        /*blink_last = blink_cur;
+        blink_last = blink_cur;
         ink_last = ink_cur;
         pink_last = pink_cur;
         clyde_last = clyde_cur;
@@ -127,12 +118,9 @@ int main(int argc, char **arg) {
         cell_pos random_cell_pos; 
         random_cell_pos.cp_x = rand() % 30; 
         random_cell_pos.cp_y = rand() % 28; 
-
         desired_coordinates(&max1, &max2, &max3);
 
         ghost_flood(directions);
-
-        
         if (max1.cp_x != 111) {
             
             if (getActionList(pacbot_cur, pac_direction, max1, 0, &(actionbuffer[0])) == 1) {
@@ -155,79 +143,4 @@ int main(int argc, char **arg) {
                         } else {
                             while (getActionList(pacbot_cur, pac_direction, random_cell_pos, 0, &(actionbuffer[0])) == 1) {
 
-                                random_cell_pos.cp_x = rand() % 30; 
-                                random_cell_pos.cp_y = rand() % 28; 
-
-                            }
-                        }
-                    }
-                } else {
-                    while (getActionList(pacbot_cur, pac_direction, random_cell_pos, 0, &(actionbuffer[0])) == 1) {
-
-                        random_cell_pos.cp_x = rand() % 30; 
-                        random_cell_pos.cp_y = rand() % 28; 
-
-                    }
-
-                }
-            }
-        } else {
-
-            while (getActionList(pacbot_cur, pac_direction, random_cell_pos, 0, &(actionbuffer[0])) == 1) {
-
-                random_cell_pos.cp_x = rand() % 30; 
-                random_cell_pos.cp_y = rand() % 28; 
-
-            }
-
-        }*/
-
-        pac_direction = pacbot_execute(&(actionbuffer[0]), pac_direction);
-    
-    }
-
-    //getActionList(pacbot_cur, pac_direction, init_pos, 1, &(actionbuffer[0]));
-    pac_direction = pacbot_execute(&(actionbuffer[0]), pac_direction); 
-    while (pac_direction != START_DIRECTION){
-        turn_left();
-        pac_direction++;
-        if (pac_direction > 4) {
-            pac_direction = 1;
-        }
-    }
-    lives--;
-
-
-    if (lives == 0) {
-        free(grid);
-        return 0; 
-    }    
-}
- 
-int getDirectionGhost(cell_pos* init, cell_pos* final){
-    int ghost_direc;
-
-    if (init->cp_x != final->cp_x){
-        if (init->cp_x < final->cp_x){
-            ghost_direc = SOUTH;
-        }
-        else{
-            ghost_direc = NORTH;
-        }
-
-    return ghost_direc;
-    }
-    else if (init->cp_y != final->cp_y){
-        if (init->cp_y < final->cp_y){
-            ghost_direc = EAST;
-        }
-
-        else{
-            ghost_direc = WEST;
-        }
-    return ghost_direc;
-    }
-    else{
-        return 0;
-    }
-}
+  

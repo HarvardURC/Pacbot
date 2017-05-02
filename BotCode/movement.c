@@ -65,6 +65,7 @@ void setupMovement() {
 	pinMode(EncL, INPUT);
 	wiringPiISR(EncL, INT_EDGE_RISING, *left_add_count);
 	initialise_irs();
+	delay(500);
     
 };
 
@@ -138,7 +139,7 @@ static int same_square(cell_pos a, cell_pos b) {
 
 void go_straight() {
 
-    /*int left;
+    int left;
     int right;
     int front;
     int right_init;
@@ -150,7 +151,7 @@ void go_straight() {
 	cell_pos pacbot_init = getPacbot();
 	digitalWrite(polarPinL, LOW);
 	digitalWrite(polarPinR, LOW);
-	while(get_ir_distance(handle0, 0x2a) > 31 &&
+	while(get_ir_distance(handle0, 0x2a) > 37 &&
             same_square(pacbot_init, getPacbot())){
 		
 		left = get_ir_distance(handle0, 0x2b);
@@ -159,17 +160,17 @@ void go_straight() {
 			//printf("turn right\n");
 			softPwmWrite(pwmPinL,50);
 			if (left > 30)
-				softPwmWrite(pwmPinR, 44 + 6*left/right);
+				softPwmWrite(pwmPinR, 48 + 2*left/right);
 			else
-				softPwmWrite(pwmPinR, 40 + 10*left/right);
+				softPwmWrite(pwmPinR, 46 + 4*left/right);
 		}
 		else if (left > right && left < 100){
 			//printf("turn left\n");
 			softPwmWrite(pwmPinR, 50);
 			if (right > 30)
-				softPwmWrite(pwmPinL, 44 + 6*right/left);
+				softPwmWrite(pwmPinL, 48 + 2*right/left);
 			else
-				softPwmWrite(pwmPinL, 40 + 10*right/left);
+				softPwmWrite(pwmPinL, 46 + 4*right/left);
 		}
 		else if (left > 100 && right < 100){
 			//printf("left gap\n");
@@ -214,11 +215,10 @@ void go_straight() {
 			softPwmWrite(pwmPinL, 49);
 			softPwmWrite(pwmPinR, 50);
 		}
-	}*/
-	forward_half();
-	forward_half();
+	}
 	softPwmWrite(pwmPinL, 0);
 	softPwmWrite(pwmPinR, 0);
+	forward_half();
 }
 
 void forward_half(){
