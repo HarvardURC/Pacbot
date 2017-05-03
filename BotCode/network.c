@@ -173,20 +173,20 @@ static int parseResponse(char* response, state_response *s_resp) {
             }
 
             if (strcmp(&keyBuf[0], inky) == 0) {
-                (&s_resp->sr_inky)->cp_x = y;
-                (&s_resp->sr_inky)->cp_y = x;
+                (&s_resp->sr_inky)->cp_x = x;
+                (&s_resp->sr_inky)->cp_y = y;
             } else if (strcmp(&keyBuf[0], blinky) == 0) {
-                (&s_resp->sr_blinky)->cp_x = y;
-                (&s_resp->sr_blinky)->cp_y = x;
+                (&s_resp->sr_blinky)->cp_x = x;
+                (&s_resp->sr_blinky)->cp_y = y;
             } else if (strcmp(&keyBuf[0], pinky) == 0) {
-                (&s_resp->sr_pinky)->cp_x = y;
-                (&s_resp->sr_pinky)->cp_y = x;
+                (&s_resp->sr_pinky)->cp_x = x;
+                (&s_resp->sr_pinky)->cp_y = y;
             } else if (strcmp(&keyBuf[0], clyde) == 0) {
-                (&s_resp->sr_clyde)->cp_x = y;
-                (&s_resp->sr_clyde)->cp_y = x;
+                (&s_resp->sr_clyde)->cp_x = x;
+                (&s_resp->sr_clyde)->cp_y = y;
             } else if (strcmp(&keyBuf[0], pacbot) == 0) {
-                (&s_resp->sr_pacbot)->cp_x = y;
-                (&s_resp->sr_pacbot)->cp_y = x;
+                (&s_resp->sr_pacbot)->cp_x = x;
+                (&s_resp->sr_pacbot)->cp_y = y;
             }
         }
     }
