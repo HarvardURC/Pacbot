@@ -27,8 +27,6 @@ state_response* latest_state;
 
 int getDirectionGhost(cell_pos* init, cell_pos* final);
 
-
-
 int main(int argc, char **arg) {
 
     int lives = 3;
@@ -51,15 +49,19 @@ int main(int argc, char **arg) {
     directions->pink_dir = direc[2];
     directions->clyde_dir = direc[3];
     ghost_flood(directions);
-
+    
     cell_pos start_pos;
     cell_pos goal_pos;
     cell_pos init_pos;
     init_pos.cp_x = 23;
     init_pos.cp_y = 14;
     uint8_t actionbuffer[200];
-
-    /*int test = getActionList(start_pos, 1, goal_pos, 1, &(actionbuffer[0]));
+    /*
+    start_pos.cp_x = 23;
+    start_pos.cp_y = 14;
+    goal_pos.cp_x = 16;
+    goal_pos.cp_y = 21;
+    int test = getActionList(start_pos, START_DIRECTION, goal_pos, 1, &(actionbuffer[0]));
     if (test) {
         printf("failed\n");
     } else {
@@ -70,16 +72,10 @@ int main(int argc, char **arg) {
         }
         printf("%d\n", actionbuffer[i]);
     }
-    int i;
-    int j;
-    for(i =0; i<31; i++) {
-        for (j = 0; j < 28; j++)
-        {
-            printf("%03d ", grid[j+ i*28].ghost_danger);
-        }
-        printf("\n");
-    }*/
-    pollState();
+    */ 
+
+    
+    //pollState();
     cell_pos blink_cur = getBlinky();
     cell_pos ink_cur = getInky();
     cell_pos pink_cur = getPinky();
@@ -89,21 +85,21 @@ int main(int argc, char **arg) {
     cell_pos ink_last;
     cell_pos pink_last;
     cell_pos clyde_last;
-    cell_pos max1;
-    cell_pos max2;
-    cell_pos max3;
+    cell_pos max[3];
     all_init();
     int pac_direction = START_DIRECTION;
-    // wait until gmae starts
+    // wait until game starts
     while(getGameStatus() == P_STOPPED) {
         pollState();
     }
-    while(getGameStatus() != P_STOPPED) {
-        blink_last = blink_cur;
-        ink_last = ink_cur;
-        pink_last = pink_cur;
-        clyde_last = clyde_cur;
+    while(1||getGameStatus() != P_STOPPED) {
+        blink_last = blink_cur = cor;
+        ink_last = ink_cur = cor;
+        pink_last = pink_cur = cor;
+        clyde_last = clyde_cur = cor;
         pollState();
+
+        
         blink_cur = getBlinky();
         ink_cur = getInky();
         pink_cur = getPinky();
@@ -119,55 +115,28 @@ int main(int argc, char **arg) {
         cell_pos random_cell_pos; 
         random_cell_pos.cp_x = rand() % 30; 
         random_cell_pos.cp_y = rand() % 28; 
-        desired_coordinates(&max1, &max2, &max3);
+        desired_coordinates(&max[0], &max[1], &max[2]);
+        printf("max1: %d, %d\nmax2: %d, %d\nmax3: %d, %d\n", max[0].cp_x, max[0].cp_y,max[1].cp_x, max[1].cp_y,max[2].cp_x, max[2].cp_y);
 
         ghost_flood(directions);
-        if (max1.cp_x != 111) {
-            
-            if (getActionList(pacbot_cur, pac_direction, max1, 0, &(actionbuffer[0])) == 1) {
-
-                if (max2.cp_x != 111) {
-
-                    if (getActionList(pacbot_cur, pac_direction, max2, 0, &(actionbuffer[0])) == 1){
-
-                        if (max3.cp_x != 111) {
-
-                            if (getActionList(pacbot_cur, pac_direction, max3, 0, &(actionbuffer[0])) == 1){
-
-                                while (getActionList(pacbot_cur, pac_direction, random_cell_pos, 0, &(actionbuffer[0])) == 1) {
-
-                                    random_cell_pos.cp_x = rand() % 30; 
-                                    random_cell_pos.cp_y = rand() % 28; 
-
-                                }
-                            }
-                        } else {
-                            while (getActionList(pacbot_cur, pac_direction, random_cell_pos, 0, &(actionbuffer[0])) == 1) {
-                                random_cell_pos.cp_x = rand() % 30;   
-                                random_cell_pos.cp_y = rand() % 28; 		
-		
-                            }		
-                        }		
-                    }		
-                } else {		
-                    while (getActionList(pacbot_cur, pac_direction, random_cell_pos, 0, &(actionbuffer[0])) == 1) {		
-		
-                        random_cell_pos.cp_x = rand() % 30; 		
-                        random_cell_pos.cp_y = rand() % 28; 		
-		
-                    }		
-		
-                }		
-            }		
-        } else {		
-		
+        int cur_max_index = 0;
+        int found = 0;
+        while (max[cur_max_index].cp_x != 111) {
+            if (getActionList(pacbot_cur, pac_direction, max[cur_max_index], 0, &(actionbuffer[0])) == 1) {
+                cur_max_index++;
+                if (cur_max_index > 2) {
+                    break;
+                }
+            } else {
+                found = 1;
+                break;
+            }
+        }
+        if (found == 0) {
             while (getActionList(pacbot_cur, pac_direction, random_cell_pos, 0, &(actionbuffer[0])) == 1) {		
-		
-                random_cell_pos.cp_x = rand() % 30; 		
-                random_cell_pos.cp_y = rand() % 28; 		
-		
+                    random_cell_pos.cp_x = rand() % 30; 		
+                    random_cell_pos.cp_y = rand() % 28; 		
             }		
-		
         }
 
         int i = 0;
@@ -177,7 +146,6 @@ int main(int argc, char **arg) {
         }
         printf("%d\n", actionbuffer[i]);
 
-		
         pac_direction = pacbot_execute(&(actionbuffer[0]), pac_direction);		
     		
     }

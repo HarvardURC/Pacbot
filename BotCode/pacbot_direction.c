@@ -1,4 +1,5 @@
 #include "pacbot_direction.h"
+#include "movement.h"
 
 typedef struct directions{
 	int direc;
@@ -17,25 +18,18 @@ int pacbot_execute(uint8_t* start_array, int current_direction){
 			break;
 		if (start_array[i] == current_direction) {
 			go_straight();
-            printf("went straight\n");
         }
 		else if ((start_array[i] - current_direction) % 4 == 2 || (start_array[i] - current_direction) % 4 == -2){
 			turn_around();
-            printf("turned around\n");
 			go_straight();
-            printf("went straight\n");
 		}
 		else if ((start_array[i] - current_direction) % 4 == 3 || (start_array[i] - current_direction) % 4 == -1){
 			turn_left();
-            printf("turned left\n");
 			go_straight();
-            printf("went straight\n");
 		}
 		else if ((start_array[i] - current_direction) % 4 == 1 || (start_array[i] - current_direction) % 4 == -3){
 			turn_right();
-            printf("turned right\n");
 			go_straight();
-            printf("went straight\n");
 		}
 		current_direction = start_array[i];
         i++;
