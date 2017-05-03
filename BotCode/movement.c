@@ -201,7 +201,9 @@ void correct_rot(){
 	return;
 }
 
-static int same_square(cell_pos a, cell_pos b) {
+static int same_square(cell_pos a) {
+    pollState();
+    cell_pos b = getPacbot();
     if (a.cp_x == b.cp_x && a.cp_y == b.cp_y) {
         return 1;
     }
@@ -218,7 +220,7 @@ void go_straight(){
 	digitalWrite(polarPinL, LOW);
 	digitalWrite(polarPinR, LOW);
 	// as long as there's not a wall in front
-	while(same_square(pacbot_init, getPacbot())){
+	while(same_square(pacbot_init)){
 		// Check distance from neighboring walls
 		left = get_distance(handle0, 0x2b);
 		right = get_distance(handle0, 0x2c);
@@ -243,7 +245,7 @@ void go_straight(){
 		else if (left > 100 && right < 75){
 			right_init = right;
 			while (get_distance(handle0, 0x2b) > 100 &&
-                    same_square(pacbot_init, getPacbot())){
+                    same_square(pacbot_init)){
 				new_right = get_distance(handle0, 0x2c);
 				off = new_right - 42;
 				if (abs(off) < 5)
@@ -264,7 +266,7 @@ void go_straight(){
 		else if (right > 100 && left < 75){
 			left_init = left;
 			while (get_distance(handle0, 0x2c) > 100 &&
-                    same_square(pacbot_init, getPacbot())){
+                    same_square(pacbot_init)){
 				new_left = get_distance(handle0, 0x2b);
 				off = 42 - new_left;
 				if (abs(off) < 5)
