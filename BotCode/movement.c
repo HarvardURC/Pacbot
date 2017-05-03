@@ -32,6 +32,7 @@ int right_init;
 int new_right;
 int left_init;
 int new_left;
+int off;
 
 const int max_thresh = 100;
 const int front_thresh = 31;
@@ -175,11 +176,11 @@ void turn_around(){
 // Correct for misalignment, didn't end up using this function
 void correct_rot(){
 	// check if the front of the bot is too close to left wall
-	if(get_distance(handle0, 0x2b) < 42){
+	if(get_ir_distance (handle0, 0x2b) < 42){
 		digitalWrite(polarPinL, HIGH);
 		digitalWrite(polarPinR, LOW);
 		// turn until not too close to wall
-		while(get_distance(handle0, 0x2b) < 42){
+		while(get_ir_distance (handle0, 0x2b) < 42){
 			softPwmWrite(pwmPinL, 20);
 			softPwmWrite(pwmPinR, 20);
 		}
@@ -189,7 +190,7 @@ void correct_rot(){
 	else{
 		digitalWrite(polarPinL, LOW);
 		digitalWrite(polarPinR, HIGH);
-		while(get_distance(handle0, 0x2b) > 42){
+		while(get_ir_distance (handle0, 0x2b) > 42){
 			softPwmWrite(pwmPinL, 20);
 			softPwmWrite(pwmPinR, 20);
 		}
@@ -201,7 +202,9 @@ void correct_rot(){
 	return;
 }
 
-static int same_square(cell_pos a, cell_pos b) {
+static int same_square(cell_pos a) {
+    pollState();
+    cell_pos b = getPacbot();
     if (a.cp_x == b.cp_x && a.cp_y == b.cp_y) {
         return 1;
     }
@@ -212,16 +215,15 @@ static int same_square(cell_pos a, cell_pos b) {
 void go_straight(){
 
 	// create I variable of PID
-	int off;
     cell_pos pacbot_init = getPacbot(); 
 	// set motor polarities
 	digitalWrite(polarPinL, LOW);
 	digitalWrite(polarPinR, LOW);
 	// as long as there's not a wall in front
-	while(same_square(pacbot_init, getPacbot())){
+	while(same_square(pacbot_init)){
 		// Check distance from neighboring walls
-		left = get_distance(handle0, 0x2b);
-		right = get_distance(handle0, 0x2c);
+		left = get_ir_distance (handle0, 0x2b);
+		right = get_ir_distance (handle0, 0x2c);
 		
 		// If closer to left wall and not at a gap (aka walls on both sides)
 		if (right > left && right < 100){
@@ -242,9 +244,9 @@ void go_straight(){
 		}
 		else if (left > 100 && right < 75){
 			right_init = right;
-			while (get_distance(handle0, 0x2b) > 100 &&
-                    same_square(pacbot_init, getPacbot())){
-				new_right = get_distance(handle0, 0x2c);
+			while (get_ir_distance (handle0, 0x2b) > 100 &&
+                    same_square(pacbot_init)){
+				new_right = get_ir_distance (handle0, 0x2c);
 				off = new_right - 42;
 				if (abs(off) < 5)
 					error = 0;
@@ -263,9 +265,9 @@ void go_straight(){
 		}
 		else if (right > 100 && left < 75){
 			left_init = left;
-			while (get_distance(handle0, 0x2c) > 100 &&
-                    same_square(pacbot_init, getPacbot())){
-				new_left = get_distance(handle0, 0x2b);
+			while (get_ir_distance (handle0, 0x2c) > 100 &&
+                    same_square(pacbot_init)){
+				new_left = get_ir_distance (handle0, 0x2b);
 				off = 42 - new_left;
 				if (abs(off) < 5)
 					error = 0;
@@ -295,7 +297,84 @@ void go_straight(){
 		if (abs(left - right) < 5 && left < 100)
 			error = 0;
 	}
-    forward_half();
+	left_count = 0;
+    while(left_count < 60){
+		// Check distance from neighboring walls
+		left = get_ir_distance (handle0, 0x2b);
+		right = get_ir_distance (handle0, 0x2c);
+		
+		// If closer to left wall and not at a gap (aka walls on both sides)
+		if (right > left && right < 100){
+			off = (right - left)/2;
+			softPwmWrite(pwmPinL,49);
+			error += off;
+			error = MIN(33, error);
+			error = MAX(-33, error);
+			softPwmWrite(pwmPinR, MAX(47, MIN(50, 50 - 0.1 * off - 0.03*error)));
+		}
+		else if (left > right && left < 100){
+			off = (right - left)/2;
+			error += off;
+			error = MIN(33, error);
+			error = MAX(-33, error);
+			softPwmWrite(pwmPinR, 50);
+			softPwmWrite(pwmPinL, MAX(47, MIN(50 + 0.1 * off + 0.03*error,50)));
+		}
+		else if (left > 100 && right < 75){
+			right_init = right;
+			while (get_ir_distance (handle0, 0x2b) > 100 &&
+                    left_count < 60){
+				new_right = get_ir_distance (handle0, 0x2c);
+				off = new_right - 42;
+				if (abs(off) < 5)
+					error = 0;
+				error += off;
+				error = MIN(33, error);
+				error = MAX(-33, error);
+				if (off > 0){
+					softPwmWrite(pwmPinL, 49);
+					softPwmWrite(pwmPinR, MAX(47, MIN(50 - 0.1 * off - 0.03*error, 50)));
+				}
+				else {
+					softPwmWrite(pwmPinL, MAX(47, MIN(50 + 0.1*off + 0.03*error, 50))); 
+					softPwmWrite(pwmPinR, 50);
+				}
+			}
+		}
+		else if (right > 100 && left < 75){
+			left_init = left;
+			while (get_ir_distance (handle0, 0x2c) > 100 &&
+                    left_count < 60){
+				new_left = get_ir_distance (handle0, 0x2b);
+				off = 42 - new_left;
+				if (abs(off) < 5)
+					error = 0;
+				error += off;
+				error = MIN(33, error);
+				error = MAX(-33, error);
+				if (off < 0){
+					softPwmWrite(pwmPinR, 50);
+					softPwmWrite(pwmPinL, MAX(47, MIN(50, 50 + 0.1*off + 0.03*error)));
+				}
+				else {
+					softPwmWrite(pwmPinL, 49);
+					softPwmWrite(pwmPinR, MAX(47, MIN(50, 50 - 0.1*off - 0.03*error)));
+				}
+			}
+		}
+		else {
+			if (off < 0){
+				softPwmWrite(pwmPinL, MAX(48, MIN(50, 50 + 0.03 * off)));
+				softPwmWrite(pwmPinR, 50);
+			}
+			else {
+				softPwmWrite(pwmPinR, MAX(48, MIN(50, 50 - 0.05 * off)));
+				softPwmWrite(pwmPinL, 49);
+			}
+		}
+		if (abs(left - right) < 5 && left < 100)
+			error = 0;
+	}
 	softPwmWrite(pwmPinL, 0);
 	softPwmWrite(pwmPinR, 0);
 	return;
@@ -313,8 +392,14 @@ void forward_half(){
 
 	// until you've gone 60 clicks, go forward
 	while (left_count < 60){
-		softPwmWrite(pwmPinL, 50);
-		softPwmWrite(pwmPinR, 50);
+		if (off < 0){
+				softPwmWrite(pwmPinL, MAX(48, MIN(50, 50 + 0.03 * off)));
+				softPwmWrite(pwmPinR, 50);
+			}
+		else {
+				softPwmWrite(pwmPinR, MAX(48, MIN(50, 50 - 0.05 * off)));
+				softPwmWrite(pwmPinL, 49);
+		}
 	}
 
 	// cut power to motors;

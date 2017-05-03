@@ -18,18 +18,23 @@ void desired_coordinates(cell_pos *max1, cell_pos *max2, cell_pos *max3) {
     int i;
 	for (i = 0; i < 868; i++){
 		if (grid[i].food_opt == 'p'){
-			if (get_distance(&cur_max1, &pacbot)  < get_distance(&grid[i].coordinates, &pacbot)){
+			if (get_distance(&cur_max1, &pacbot)  < get_distance(&grid[i].coordinates, &pacbot) &&
+                    get_distance(&grid[i].coordinates, &pacbot) < 15){
 				cur_max3 = cur_max2;
 				cur_max2 = cur_max1;
 				cur_max1 = grid[i].coordinates;
 			}
 			else if (get_distance(&cur_max2, &pacbot)  < get_distance(&grid[i].coordinates, &pacbot) &&
-				get_distance(&grid[i].coordinates, &pacbot)  < get_distance(&cur_max1, &pacbot) + 15){
+				    get_distance(&cur_max1, &grid[i].coordinates) > 10 &&
+                    (cur_max3.cp_x == -1 || get_distance(&cur_max3, &grid[i].coordinates) > 10) &&
+                    get_distance(&grid[i].coordinates, &pacbot) < 15){
 				cur_max3 = cur_max2;
 				cur_max2 = grid[i].coordinates;
 			}
 			else if (get_distance(&cur_max3, &pacbot) < get_distance(&grid[i].coordinates, &pacbot) &&
-				get_distance(&grid[i].coordinates, &pacbot) < get_distance(&cur_max2, &pacbot) + 7){
+				get_distance(&cur_max2, &grid[i].coordinates) > 7 &&
+                get_distance(&cur_max1, &grid[i].coordinates) > 7 &&
+                get_distance(&grid[i].coordinates, &pacbot) < 15){
 				cur_max3 = grid[i].coordinates;
 			}
 		}
@@ -52,8 +57,11 @@ void desired_coordinates(cell_pos *max1, cell_pos *max2, cell_pos *max3) {
 }
 
 int get_distance(cell_pos *a, cell_pos *b) {
-    if (a == NULL || b == NULL || a->cp_x == -1 || b->cp_x == -1)  return -1;
-	return abs(a->cp_x - b->cp_x) + abs (a->cp_y - b->cp_y);
+    if (a == NULL || b == NULL || a->cp_x == -1 || b->cp_x == -1) {
+        return -1;
+    }
+	int dist = abs(a->cp_x - b->cp_x) + abs (a->cp_y - b->cp_y);
+    return dist;
 }
 
 
