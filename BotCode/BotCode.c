@@ -17,9 +17,6 @@
 #include "pacbot_direction.h"
 #include "desired_coordinates.h"
 #include "movement.h"
-//
-//#include <Direction.c> 
-// Initialize connection with camera
 //Must have two modes 
 
 #define START_DIRECTION 4
@@ -97,6 +94,8 @@ int main(int argc, char **arg) {
     cell_pos max3;
     all_init();
     int pac_direction = 1;
+    // wait until gmae starts
+    while(getGameStatus() == P_STOPPED);
     while(getGameStatus() != P_STOPPED) {
         blink_last = blink_cur;
         ink_last = ink_cur;
