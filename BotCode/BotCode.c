@@ -56,7 +56,7 @@ int main(int argc, char **arg) {
     cell_pos goal_pos;
     cell_pos init_pos;
     init_pos.cp_x = 23;
-    init_pos.cp_y = 12;
+    init_pos.cp_y = 14;
     uint8_t actionbuffer[200];
 
     /*int test = getActionList(start_pos, 1, goal_pos, 1, &(actionbuffer[0]));
@@ -93,9 +93,11 @@ int main(int argc, char **arg) {
     cell_pos max2;
     cell_pos max3;
     all_init();
-    int pac_direction = 1;
+    int pac_direction = START_DIRECTION;
     // wait until gmae starts
-    while(getGameStatus() == P_STOPPED);
+    while(getGameStatus() == P_STOPPED) {
+        pollState();
+    }
     while(getGameStatus() != P_STOPPED) {
         blink_last = blink_cur;
         ink_last = ink_cur;
@@ -180,6 +182,7 @@ int main(int argc, char **arg) {
     		
     }
 
+    pacbot_cur = getPacbot();
     getActionList(pacbot_cur, pac_direction, init_pos, 1, &(actionbuffer[0]));		
     pac_direction = pacbot_execute(&(actionbuffer[0]), pac_direction); 		
     while (pac_direction != START_DIRECTION){		
