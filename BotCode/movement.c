@@ -129,7 +129,7 @@ void all_init() {
 }
 
 // Turn right function	
-int turn_right(void){
+int turn_right(){
 	// initialize counter
 	left_count = 0;
 
@@ -173,7 +173,7 @@ void turn_around(){
 }
 
 // Correct for misalignment, didn't end up using this function
-int correct_rot(void){
+int correct_rot(){
 	// check if the front of the bot is too close to left wall
 	if(get_distance(handle0, 0x2b) < 42){
 		digitalWrite(polarPinL, HIGH);
@@ -293,7 +293,7 @@ void go_straight() {
 }
 
 // for when you need to go straight
-int go_straight(void){
+int go_straight(){
 
 	// create I variable of PID
 	int off;
