@@ -33,7 +33,7 @@ def pacBot():
     return jsonify(getFormattedGameData())
 
 def getFormattedGameData():
-    if game.game_on:
+    if game.play:
         response = {}
         response['pacbot'] = {
             'x': game.pacbot.pos[0],
@@ -96,7 +96,7 @@ def main():
     # scatter_on()
     Thread(target = handleInput).start()
     Thread(target = appRunner).start()
-    Thread(target = xBee).start()
+    #Thread(target = xBee).start()
     Thread(target = trackerUpdate).start()
     Thread(target = gameUpdate(graphics)).start()
     

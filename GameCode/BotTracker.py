@@ -2,10 +2,10 @@ import numpy as np
 import cv2
 
 # Tune constaxnts for grid
-LEFT_EDGE = 210
-RIGHT_EDGE = 1046
-TOP_EDGE = -12
-BOTTOM_EDGE = 751
+LEFT_EDGE = 342
+RIGHT_EDGE = 1185
+TOP_EDGE = -8
+BOTTOM_EDGE = 749
 
 #28 grid spaces across
 class BotTracker:
@@ -94,7 +94,7 @@ class BotTracker:
 			return (x, y)
 
 
-	def __init__(self, cam_number=0):
+	def __init__(self, cam_number=1):
 		self.cap = cv2.VideoCapture(cam_number) # set camera
 		self.cap.set(3, 1280) # set frame width
 		self.cap.set(4, 720) # set frame height
