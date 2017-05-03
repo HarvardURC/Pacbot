@@ -129,7 +129,7 @@ void all_init() {
 }
 
 // Turn right function	
-int turn_right(){
+void turn_right(){
 	// initialize counter
 	left_count = 0;
 
@@ -148,11 +148,11 @@ int turn_right(){
 	digitalWrite(pwmPinL, 0);
 	digitalWrite(pwmPinR, 0);
 	error = 0;
-	return 0;
+	return;
 }
 
 // Same idea as above
-int turn_left(void){
+void turn_left(void){
 	left_count = 0;
 	while (left_count < 133){
 		digitalWrite(polarPinL, HIGH);
@@ -164,7 +164,7 @@ int turn_left(void){
 	softPwmWrite(pwmPinL, 0);
 	softPwmWrite(pwmPinR, 0);
 	error = 0;
-	return 0;
+	return; 
 }
 
 void turn_around(){
@@ -173,7 +173,7 @@ void turn_around(){
 }
 
 // Correct for misalignment, didn't end up using this function
-int correct_rot(){
+void correct_rot(){
 	// check if the front of the bot is too close to left wall
 	if(get_distance(handle0, 0x2b) < 42){
 		digitalWrite(polarPinL, HIGH);
@@ -198,7 +198,7 @@ int correct_rot(){
 	// cut power to motors
 	softPwmWrite(pwmPinL, 0);
 	softPwmWrite(pwmPinR, 0);
-	return 0;
+	return;
 }
 
 static int same_square(cell_pos a, cell_pos b) {
@@ -208,92 +208,8 @@ static int same_square(cell_pos a, cell_pos b) {
     return 0;
 }
 
-void go_straight() {
-
-    int left;
-    int right;
-    int front;
-    int right_init;
-    int new_right;
-    int left_init;
-    int new_left;
-	cell_pos pacbot_current;
-	pollState();
-	cell_pos pacbot_init = getPacbot();
-	digitalWrite(polarPinL, LOW);
-	digitalWrite(polarPinR, LOW);
-	while(get_ir_distance(handle0, 0x2a) > 37 &&
-            same_square(pacbot_init, getPacbot())){
-		
-		left = get_ir_distance(handle0, 0x2b);
-		right = get_ir_distance(handle0, 0x2c);
-		if (right > left && right < 100){
-			//printf("turn right\n");
-			softPwmWrite(pwmPinL,50);
-			if (left > 30)
-				softPwmWrite(pwmPinR, 48 + 2*left/right);
-			else
-				softPwmWrite(pwmPinR, 46 + 4*left/right);
-		}
-		else if (left > right && left < 100){
-			//printf("turn left\n");
-			softPwmWrite(pwmPinR, 50);
-			if (right > 30)
-				softPwmWrite(pwmPinL, 48 + 2*right/left);
-			else
-				softPwmWrite(pwmPinL, 46 + 4*right/left);
-		}
-		else if (left > 100 && right < 100){
-			//printf("left gap\n");
-			right_init = right;
-			while (get_ir_distance(handle0, 0x2b) > 100 &&
-                    get_ir_distance(handle0, 0x2a) > 40 &&
-                    same_square(pacbot_init, getPacbot())){
-				new_right = get_ir_distance(handle0, 0x2c);
-				if (new_right > right_init || new_right > 44){
-					softPwmWrite(pwmPinL, 50);
-					softPwmWrite(pwmPinR, 49);
-				}
-				else {
-					if (new_right < 30)
-						softPwmWrite(pwmPinL, 48);
-					else
-						softPwmWrite(pwmPinL, 49);
-					softPwmWrite(pwmPinR, 50);
-				}
-			}
-		}
-		else if (right > 100 && left < 100){
-			left_init = left;
-			while (get_ir_distance(handle0, 0x2c) > 100 &&
-                    get_ir_distance(handle0, 0x2a) > 40 &&
-                    same_square(pacbot_init, getPacbot())){
-				new_left = get_ir_distance(handle0, 0x2b);
-				if (new_left > left_init || new_left > 44){
-					softPwmWrite(pwmPinR, 50);
-					softPwmWrite(pwmPinL, 49);
-				}
-				else {
-					softPwmWrite(pwmPinL, 50);
-					if (new_left < 30)
-						softPwmWrite(pwmPinR, 48);
-					else
-						softPwmWrite(pwmPinR, 49);
-				}
-			}
-		}
-		else{
-			softPwmWrite(pwmPinL, 49);
-			softPwmWrite(pwmPinR, 50);
-		}
-	}
-	softPwmWrite(pwmPinL, 0);
-	softPwmWrite(pwmPinR, 0);
-	forward_half();
-}
-
 // for when you need to go straight
-int go_straight(){
+void go_straight(){
 
 	// create I variable of PID
 	int off;

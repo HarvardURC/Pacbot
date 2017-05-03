@@ -19,6 +19,5 @@ void turn_around();
 void forward_half();
 void setupMovement();
 void all_init();
-int did_change(cell_pos* a, cell_pos* b);
 
 #endif /* _MOVEMENT_H_*/
