@@ -1,0 +1,12 @@
+CC=gcc
+CFLAGS= -g -I. 
+DEPS = network.h state.h grid.h FloodFill.h movement.h desired_coordinates.h AStar.h pacbot_direction.h 
+OBJ = BotCode.c network.o grid.o FloodFill.o movement.o state.o desired_coordinates.o AStar.o pacbot_direction.o 
+
+%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS) 
+
+
+BotCode: $(OBJ)
+	gcc -o $@ $^ $(CFLAGS) 
+	

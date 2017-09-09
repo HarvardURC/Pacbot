@@ -1,0 +1,197 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+CC	Makefile	/^CC=gcc$/;"	m
+CC	vl6180/Makefile	/^CC      ?= gcc$/;"	m
+CFLAGS	Makefile	/^CFLAGS=-I. $/;"	m
+DEPS	Makefile	/^DEPS = network.h state.h grid.h FloodFill.h movement.h desired_coordinates.h AStar.h pacbot_direction.h$/;"	m
+EAST	state.h	51;"	d
+EXEEXT	vl6180/Makefile	/^EXEEXT    =$/;"	m
+EncL	r_movement.c	/^const int EncL = 24;$/;"	v
+EncR	r_movement.c	/^const int EncR = 18;$/;"	v
+LEFT_MAX	movement.h	9;"	d
+LEFT_MAX	r_movement.c	16;"	d	file:
+LIBEXT	vl6180/Makefile	/^LIBEXT    = .so$/;"	m
+NORTH	state.h	50;"	d
+OBJ	Makefile	/^OBJ = BotCode.c network.o grid.o FloodFill.o movement.o state.o desired_coordinates.o AStar.o pacbot_direction.o $/;"	m
+PACKAGE	vl6180/Makefile	/^PACKAGE = vl6180_pi$/;"	m
+P_POWER	state.h	/^    P_POWER,$/;"	e	enum:__anon1
+P_REGULAR	state.h	/^    P_REGULAR$/;"	e	enum:__anon1
+P_STOPPED	state.h	/^    P_STOPPED,$/;"	e	enum:__anon1
+RIGHT_MAX	movement.h	8;"	d
+RIGHT_MAX	r_movement.c	15;"	d	file:
+SOUTH	state.h	52;"	d
+SPEED_RATIO	AStar.c	11;"	d	file:
+START_DIRECTION	BotCode.c	25;"	d	file:
+STATEXT	vl6180/Makefile	/^STATEXT   = .a$/;"	m
+VERSION	vl6180/Makefile	/^VERSION = 0.0.1$/;"	m
+WEST	state.h	53;"	d
+_ASTAR_H_	AStar.h	2;"	d
+_DESIREDCOORDINATES_H_	desired_coordinates.h	2;"	d
+_FLOOD_FILL_H_	FloodFill.h	2;"	d
+_GRID_H_	grid.h	2;"	d
+_MOVEMENT_H_	movement.h	2;"	d
+_NETWORK_H_	network.h	2;"	d
+_PACBOT_DIRECTION_H_	pacbot_direction.h	2;"	d
+_STATE_H_	state.h	2;"	d
+_VL6180_	vl6180_pi.h	2;"	d
+_WIRINGPII2C_	wiringPiI2C.h	25;"	d
+actions	AStar.h	/^    uint8_t actions[200]; $/;"	m	struct:sca
+add_legal_successors	FloodFill.c	/^void add_legal_successors(int new_depth, free_cell pos, uint8_t *visited,$/;"	f
+adj_cell	state.h	/^ 	cell_pos adj_cell[4]; $/;"	m	struct:free_cell
+all_init	movement.c	/^void all_init() {	$/;"	f
+all_init	r_movement.c	/^void all_init() {	$/;"	f
+as_add_legal_successors	AStar.c	/^static void as_add_legal_successors(sca* current_node, heap_t *fringe,$/;"	f	file:
+blink_dir	state.h	/^    int blink_dir;$/;"	m	struct:ghost_dir
+cell	AStar.h	/^    free_cell cell; $/;"	m	struct:sca
+cell_pos	state.h	/^typedef struct cell_pos {$/;"	s
+cell_pos	state.h	/^} cell_pos;$/;"	t	typeref:struct:cell_pos
+change_address	vl6180_pi.c	/^int change_address(vl6180 handle, char new_addr){$/;"	f
+clear_ghost_danger	FloodFill.c	/^void clear_ghost_danger(){$/;"	f
+clear_interrupts	vl6180/src/vl6180_pi.c	/^void clear_interrupts(vl6180 handle) {$/;"	f
+clear_interrupts	vl6180_pi.c	/^void clear_interrupts(vl6180 handle) {$/;"	f
+clyde_dir	state.h	/^    int clyde_dir;$/;"	m	struct:ghost_dir
+coordinates	state.h	/^    cell_pos coordinates; $/;"	m	struct:free_cell
+correct_rot	movement.c	/^void correct_rot() {$/;"	f
+correct_rot	r_movement.c	/^void correct_rot() {$/;"	f
+cost	AStar.h	/^    double cost; $/;"	m	struct:sca
+cp_x	state.h	/^    int cp_x;$/;"	m	struct:cell_pos
+cp_y	state.h	/^    int cp_y;$/;"	m	struct:cell_pos
+createGrid	grid.c	/^void createGrid(){$/;"	f
+cur_pos	state.h	/^	cell_pos cur_pos; $/;"	m	struct:game_state
+current_cell	FloodFill.h	/^	free_cell current_cell;  $/;"	m	struct:flood_node
+data	AStar.h	/^    sca * data;$/;"	m	struct:node_t
+deps	vl6180/Makefile	/^deps  = $(patsubst %.c, %.d, $(lib_src))$/;"	m
+depth	FloodFill.h	/^    int depth;$/;"	m	struct:flood_node
+desired_coordinates	desired_coordinates.c	/^void desired_coordinates(cell_pos *max1, cell_pos *max2, cell_pos *max3) {$/;"	f
+dir	state.h	/^	int dir; $/;"	m	struct:game_state
+direc	pacbot_direction.c	/^	int direc;$/;"	m	struct:directions	file:
+directions	pacbot_direction.c	/^typedef struct directions{$/;"	s	file:
+directions	pacbot_direction.c	/^} directions;$/;"	t	typeref:struct:directions	file:
+directions	state.h	/^    int directions[4]; $/;"	m	struct:free_cell
+dist_files	vl6180/Makefile	/^dist_files = $(headers) $(lib_hdr) $(lib_src) $(test_hdr) $(test_src) $(extra_dist)$/;"	m
+error	network.c	/^static void error(const char *msg) { perror(msg); exit(0); }$/;"	f	file:
+extra_dist	vl6180/Makefile	/^extra_dist = Makefile README.md$/;"	m
+flood_node	FloodFill.h	/^typedef struct flood_node{$/;"	s
+flood_node	FloodFill.h	/^} flood_node; $/;"	t	typeref:struct:flood_node
+food_opt	state.h	/^    char food_opt; $/;"	m	struct:free_cell
+forward_half	movement.c	/^void forward_half(){$/;"	f
+forward_half	r_movement.c	/^void forward_half(){$/;"	f
+free_cell	state.h	/^typedef struct free_cell {$/;"	s
+free_cell	state.h	/^} free_cell;$/;"	t	typeref:struct:free_cell
+frightAction	desired_coordinates.c	/^int frightAction() {$/;"	f
+game_state	state.h	/^typedef struct game_state {$/;"	s
+game_state	state.h	/^} game_state;$/;"	t	typeref:struct:game_state
+game_status	state.h	/^} game_status;$/;"	t	typeref:enum:__anon1
+getActionList	AStar.c	/^int getActionList(cell_pos pac_pos, int pac_dir, cell_pos target_pos,$/;"	f
+getBlinky	state.c	/^cell_pos getBlinky() {$/;"	f
+getClyde	state.c	/^cell_pos getClyde() {$/;"	f
+getDirectionGhost	BotCode.c	/^int getDirectionGhost(cell_pos* init, cell_pos* final){		$/;"	f
+getGameStatus	state.c	/^game_status getGameStatus() {$/;"	f
+getInky	state.c	/^cell_pos getInky() {$/;"	f
+getPacbot	state.c	/^cell_pos getPacbot() {$/;"	f
+getPinky	state.c	/^cell_pos getPinky() {$/;"	f
+getPowerCoutner	state.c	/^int getPowerCoutner() {$/;"	f
+getResponse	network.c	/^static int getResponse(char* response, size_t resLen)$/;"	f	file:
+getState	network.c	/^int getState(state_response *state) {$/;"	f
+get_distance	desired_coordinates.c	/^int get_distance(cell_pos *a, cell_pos *b) {$/;"	f
+get_distance	vl6180/src/vl6180_pi.c	/^int get_distance(vl6180 handle){$/;"	f
+get_ir_distance	vl6180_pi.c	/^int get_ir_distance(vl6180 handle, char addr){$/;"	f
+get_transition_cost	AStar.c	/^static double get_transition_cost(int pac_dir, int intended_dir){$/;"	f	file:
+ghost_danger	state.h	/^    int ghost_danger;$/;"	m	struct:free_cell
+ghost_dir	state.h	/^typedef struct ghost_dir{$/;"	s
+ghost_dir	state.h	/^} ghost_dir;$/;"	t	typeref:struct:ghost_dir
+ghost_flood	FloodFill.c	/^void ghost_flood(ghost_dir *direcs) {$/;"	f
+go_straight	movement.c	/^void go_straight() {$/;"	f
+go_straight	r_movement.c	/^void go_straight() {$/;"	f
+grid	BotCode.c	/^free_cell* grid; $/;"	v
+handle0	r_movement.c	/^vl6180 handle0;$/;"	v
+headers	vl6180/Makefile	/^headers    = $(wildcard include\/*.h)$/;"	m
+heap_t	AStar.h	/^typedef struct heap_t{$/;"	s
+heap_t	AStar.h	/^} heap_t;$/;"	t	typeref:struct:heap_t
+init0	vl6180_pi.c	/^int init0 = 0;$/;"	v
+init1	vl6180_pi.c	/^int init1 = 0;$/;"	v
+init2	vl6180_pi.c	/^int init2 = 0;$/;"	v
+initialise_irs	movement.c	/^void initialise_irs(){$/;"	f
+initialise_irs	r_movement.c	/^void initialise_irs(){$/;"	f
+ink_dir	state.h	/^    int ink_dir;$/;"	m	struct:ghost_dir
+latest_state	BotCode.c	/^state_response* latest_state;$/;"	v
+left_add_count	movement.c	/^void left_add_count(){$/;"	f
+left_add_count	r_movement.c	/^void left_add_count(){$/;"	f
+left_count	r_movement.c	/^int left_count = 0;$/;"	v
+len	AStar.h	/^    int len;$/;"	m	struct:heap_t
+lib_hdr	vl6180/Makefile	/^lib_hdr    = $(wildcard src\/*.h)$/;"	m
+lib_libs	vl6180/Makefile	/^lib_libs   = $/;"	m
+lib_src	vl6180/Makefile	/^lib_src    = $(wildcard src\/*.c)$/;"	m
+main	BotCode.c	/^int main(int argc, char **arg) {$/;"	f
+main	vl6180/test/test.c	/^int main(){$/;"	f
+manhattanDistance	AStar.c	/^int manhattanDistance(cell_pos pos1, cell_pos pos2) {$/;"	f
+next_action	AStar.h	/^    uint8_t next_action;$/;"	m	struct:sca
+next_flood_node	FloodFill.h	/^	struct flood_node *next_flood_node;$/;"	m	struct:flood_node	typeref:struct:flood_node::flood_node
+node_t	AStar.h	/^typedef struct node_t{$/;"	s
+node_t	AStar.h	/^} node_t;$/;"	t	typeref:struct:node_t
+nodes	AStar.h	/^    node_t *nodes;$/;"	m	struct:heap_t
+opposite	FloodFill.c	/^static int opposite(int a_dir, int b_dir) {$/;"	f	file:
+pacbot_execute	pacbot_direction.c	/^int pacbot_execute(uint8_t* start_array, int current_direction){$/;"	f
+pacman_pos	state.h	/^    int pacman_pos;$/;"	m	struct:free_cell
+parseResponse	network.c	/^static int parseResponse(char* response, state_response *s_resp) {$/;"	f	file:
+pink_dir	state.h	/^    int pink_dir;$/;"	m	struct:ghost_dir
+point	pacbot_direction.c	/^	int* point;$/;"	m	struct:directions	file:
+polarPinL	r_movement.c	/^const int polarPinL = 19;$/;"	v
+polarPinR	r_movement.c	/^const int polarPinR = 6;$/;"	v
+pollState	network.c	/^void pollState() {$/;"	f
+poll_range	vl6180/src/vl6180_pi.c	/^void poll_range(vl6180 handle) {$/;"	f
+poll_range	vl6180_pi.c	/^void poll_range(vl6180 handle, char addr) {$/;"	f
+pop	AStar.c	/^static sca *pop (heap_t *h) {$/;"	f	file:
+pop_flood_node	FloodFill.c	/^int pop_flood_node(flood_node **head, flood_node **tail, flood_node **ret){$/;"	f
+prefix	vl6180/Makefile	/^prefix   ?= \/usr$/;"	m
+printState	network.c	/^void printState(state_response *state) {$/;"	f
+priority	AStar.h	/^    int priority;$/;"	m	struct:node_t
+push	AStar.c	/^static void push (heap_t *h, int priority, sca* data) {$/;"	f	file:
+pwmPinL	r_movement.c	/^const int pwmPinL = 26;$/;"	v
+pwmPinR	r_movement.c	/^const int pwmPinR = 13;$/;"	v
+read_byte	vl6180/src/vl6180_pi.c	/^int read_byte(vl6180 handle, int reg){$/;"	f
+read_byte	vl6180_pi.c	/^int read_byte(vl6180 handle, int reg){$/;"	f
+right_count	r_movement.c	/^int right_count = 0;$/;"	v
+same_square	movement.c	/^static int same_square(cell_pos a, cell_pos b) {$/;"	f	file:
+same_square	r_movement.c	/^static int same_square(cell_pos a, cell_pos b) {$/;"	f	file:
+sca	AStar.h	/^typedef struct sca{$/;"	s
+sca	AStar.h	/^} sca; $/;"	t	typeref:struct:sca
+set_scaling	vl6180/src/vl6180_pi.c	/^void set_scaling(vl6180 handle, int new_scaling){$/;"	f
+set_scaling	vl6180_pi.c	/^void set_scaling(vl6180 handle, int new_scaling){$/;"	f
+setupMovement	movement.c	/^void setupMovement() {$/;"	f
+setupMovement	r_movement.c	/^void setupMovement() {$/;"	f
+size	AStar.h	/^    int size;$/;"	m	struct:heap_t
+sr_blinky	state.h	/^    cell_pos sr_blinky;$/;"	m	struct:state_response
+sr_clyde	state.h	/^    cell_pos sr_clyde;$/;"	m	struct:state_response
+sr_inky	state.h	/^    cell_pos sr_inky;$/;"	m	struct:state_response
+sr_pacbot	state.h	/^    cell_pos sr_pacbot;$/;"	m	struct:state_response
+sr_pinky	state.h	/^    cell_pos sr_pinky;$/;"	m	struct:state_response
+sr_power_counter	state.h	/^    int sr_power_counter;$/;"	m	struct:state_response
+sr_state	state.h	/^    game_status sr_state; $/;"	m	struct:state_response
+start_range	vl6180/src/vl6180_pi.c	/^void start_range(vl6180 handle) {$/;"	f
+start_range	vl6180_pi.c	/^void start_range(vl6180 handle) {$/;"	f
+state_response	state.h	/^typedef struct state_response {$/;"	s
+state_response	state.h	/^} state_response;$/;"	t	typeref:struct:state_response
+temp	state.c	/^int temp;$/;"	v
+test_hdr	vl6180/Makefile	/^test_hdr   = $(wildcard test\/*.h)$/;"	m
+test_libs	vl6180/Makefile	/^test_libs  = $(lib_libs)$/;"	m
+test_src	vl6180/Makefile	/^test_src   = $(wildcard test\/*.c)$/;"	m
+thresh	r_movement.c	/^const int thresh = 100;$/;"	v
+turn_around	movement.c	/^void turn_around(){$/;"	f
+turn_around	r_movement.c	/^void turn_around(){$/;"	f
+turn_left	movement.c	/^void turn_left() {$/;"	f
+turn_left	r_movement.c	/^void turn_left() {$/;"	f
+turn_right	movement.c	/^void turn_right() {$/;"	f
+turn_right	r_movement.c	/^void turn_right() {$/;"	f
+vl6180	vl6180/include/vl6180_pi.h	/^typedef int vl6180;$/;"	t
+vl6180	vl6180_pi.h	/^typedef int vl6180;$/;"	t
+vl6180_initialise	vl6180/src/vl6180_pi.c	/^vl6180 vl6180_initialise(int device){$/;"	f
+vl6180_initialise	vl6180_pi.c	/^vl6180 vl6180_initialise(int device, int loc){$/;"	f
+write_byte	vl6180/src/vl6180_pi.c	/^void write_byte(vl6180 handle, int reg,char data) {$/;"	f
+write_byte	vl6180_pi.c	/^void write_byte(vl6180 handle, int reg,char data) {$/;"	f
+write_two_bytes	vl6180/src/vl6180_pi.c	/^void write_two_bytes(vl6180 handle, int reg,int data) {$/;"	f
+write_two_bytes	vl6180_pi.c	/^void write_two_bytes(vl6180 handle, int reg,int data) {$/;"	f
