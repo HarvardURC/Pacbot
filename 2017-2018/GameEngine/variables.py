@@ -1,4 +1,4 @@
-# Directions
+# Direction enums
 right = 0
 left = 1
 up = 2
@@ -15,3 +15,17 @@ n = 5
 scatter = 1
 chase = 2
 frightened = 3
+
+# color enums
+red = 1
+orange = 2
+pink = 3
+blue = 4
+
+# game Params
+starting_lives = 3
+frightened_length = 35
+pellet_score = 10
+power_pellet_score = 50
+ghost_score = 200
+state_swap_times = [35, 135, 170, 270, 295, 395, 420]

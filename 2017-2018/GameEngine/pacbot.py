@@ -7,11 +7,11 @@ class PacBot:
         self.direction = pacbot_direction
 
     def respawn(self):
-        self.pos = (23,14)
+        self.pos = (14,7)
         self.direction = left
 
     def update(self,position, direction):
-    	if position[0] <= 30 and position[0] >= 0 and position[1] <= 27 and position[1] >= 0:
+    	if position[0] <= 27 and position[0] >= 0 and position[1] <= 30 and position[1] >= 0:
         	self.pos = position
         	self.direction = direction
         else:
