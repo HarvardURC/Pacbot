@@ -1,49 +1,65 @@
 import sys
 from variables import *
+import pacmanState_pb2
+import time
 
-class TerminalPrinter:
+def get_game_state():
+    # TODO: Get game state through a socket
+    return pacmanState_pb2.PacmanState()
 
-    def __init__(self):
-        return
+def parse_game_mode(mode):
+    if mode == pacmanState_pb2.PacmanState.FRIGHTENED:
+        return 'frightened'
+    elif mode == pacmanState_pb2.PacmanState.CHASE:
+        return 'chase'
+    elif mode == pacmanState_pb2.PacmanState.SCATTER:
+        return 'scatter'
+    else:
+        return 'undefined'
 
-    def _parse_game_state(self, state):
-        if state == frightened:
-            return 'frightened'
-        elif state == chase:
-            return 'chase'
-        elif state == scatter:
-            return 'scatter'
-        else:
-            return 'undefined'
+def clear_rows(rows_count):
+    for row in range(rows_count):
+        sys.stdout.write("\033[F") #back to previous line
+        sys.stdout.write("\033[K")
 
-    def _clear_rows(self, rows_count):
-        for row in range(rows_count+40):
-            sys.stdout.write("\033[F") #back to previous line
-            sys.stdout.write("\033[K")
+def display_game(state):
+    clear_rows(100)
+    mode = parse_game_mode(state.mode)
+    print("Pacman  Score: " + str(state.score) + "  State: " + str(mode) + "  Lives: " + str(state.lives))
+    displayBuf = []
+    row_index = 0
+    col_index = 0
+    cur_row = []
+    for el in enumerate(state.grid):
+        if (row_index,col_index) == (state.pacman.x, state.pacman.y)
+            cur_row.append('P')
+        elif (row_index,col_index) == (state.red_ghost.x, state.red_ghost.y) or (row_index,col_index) == (state.orange_ghost.x, state.orange_ghost.y) or (row_index,col_index) == (state.pink_ghost.x, state.pink_ghost.y) or (row_index,col_index) == (state.blue_ghost.x, state.blue_ghost.y):
+            cur_row.append('G')
+        elif el == pacmanState_pb2.PacmanState.PELLET
+            cur_row.append('.')
+        elif el == pacmanState_pb2.PacmanState.POWER_PELLET
+            cur_row.append('o')
+        elif el == pacmanState_pb2.PacmanState.EMPTY
+            cur_row.append(' ')
+        elif el == pacmanState_pb2.PacmanState.WALL
+            cur_row.append('0')
+        col_index += 1
+        if col_index >= state.grid_columns:
+            col_index = 0
+            row_index += 1
+            displayBuf.append(cur_row)
+            cur_row = []
+    inverted = zip(*displayBuf)
+    for row in reversed(list(inverted)):
+        for el in row:
+            print(el, end='')
+        print()
 
-    def display_game(self, game_state):
-        self._clear_rows(len(game_state.grid[0]))
-        state = self._parse_game_state(game_state.state)
-        print("Pacman  Score: " + str(game_state.score) + "  State: " + str(state) + "  Lives: " + str(game_state.lives))
-        displayBuf = []
-        for row_index, row in enumerate(game_state.grid):
-            curRow = []
-            for col in range(len(row)):
-                if (row_index,col) == game_state.pacbot.pos:
-                    curRow.append('P')
-                elif (row_index,col) == game_state.red.pos["current"] or (row_index,col) == game_state.pink.pos["current"] or (row_index,col) == game_state.orange.pos["current"] or (row_index,col) == game_state.blue.pos["current"]:
-                    curRow.append('G')
-                elif game_state.grid[row_index][col] == o:
-                    curRow.append('.')
-                elif game_state.grid[row_index][col] == O:
-                    curRow.append('o')
-                elif game_state.grid[row_index][col] == e or game_state.grid[row_index][col] == n:
-                    curRow.append(' ')
-                elif game_state.grid[row_index][col] == I:
-                    curRow.append('0')
-            displayBuf.append(curRow)
-        inverted = zip(*displayBuf)
-        for row in reversed(list(inverted)):
-            for el in row:
-                print(el, end='')
-            print()
+def main():
+    while True:
+        state = get_game_state()
+        display_game(state)
+        time.sleep(1.0/10)
+
+if __name__ == "__main__":
+    main()

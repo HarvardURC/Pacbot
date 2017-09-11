@@ -3,14 +3,14 @@ from threading import Thread, Timer
 from variables import *
 from terminalPrinter import *
 import time
-import sys
+from stateConverter import *
 
 input_signal = sig_normal
 game = GameState()
+state_buffer = StateConverter.convert_game_state_to_proto(game)
 
-def terminalPrinterThread():
-    global game, input_signal
-
+def run_game():
+    global game, input_signal, state_buffer
     while True:
         if input_signal == sig_quit:
             cleanup_stop_thread()
@@ -21,10 +21,18 @@ def terminalPrinterThread():
         elif game.play:
             update_pacbot_pos()
             game.next_step()
+            state_buffer = StateConverter.convert_game_state_to_proto(game)
         time.sleep(1.0/game_frequency)
 
-def handleInput():
-    global game, input_signal
+def update_pacbot_pos():
+    global game
+    return
+    #TODO: Add logic for getting pacbot position and direction from the computer vision plugin
+
+def main():
+    global game, input_signal, state_buffer
+
+    Thread(target = run_game).start()
 
     while True:
         line = sys.stdin.readline()
@@ -43,30 +51,6 @@ def handleInput():
 
         time.sleep(0.2)
         sys.stdout.flush()
-
-def update_pacbot_pos():
-    global game
-    return
-    #TODO: Add logic for getting pacbot position and direction from the computer vision plugin
-
-def main():
-    global game, input_signal
-
-    if len(sys.argv) > 1:
-        if sys.argv[1] == '-t':
-            Thread(target = terminalPrinterThread).start()
-
-    Thread(target = handleInput).start()
-
-    printer = TerminalPrinter()
-    while True:
-        if input_signal == sig_quit:
-            cleanup_stop_thread()
-            sys.exit()
-
-        printer.display_game(game)
-        time.sleep(1.0/5)
-
 
 if __name__ == "__main__":
     main()

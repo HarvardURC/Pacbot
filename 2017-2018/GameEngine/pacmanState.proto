@@ -1,0 +1,35 @@
+syntax = "proto2";
+
+package gameEngine;
+
+message PacmanState {
+
+  message Position {
+    required int32 x = 1;
+    required int32 y = 2;
+  }
+  required Position pacman = 1;
+  required Position red_ghost = 2;
+  required Position pink_ghost = 3;
+  required Position orange_ghost = 4;
+  required Position blue_ghost = 5;
+  required GameMode mode = 6;
+  required int32 frightened_timer = 7;
+  required int32 score = 8;
+  repeated GridElement grid = 9;
+  required int32 grid_columns = 10;
+  required int32 lives = 11;
+
+  enum GameMode {
+    CHASE = 0;
+    SCATTER = 1;
+    FRIGHTENED = 2;
+  }
+
+  enum GridElement {
+    WALL = 0;
+    PELLET = 1;
+    POWER_PELLET = 2;
+    EMPTY = 3;
+  }
+}
