@@ -15,7 +15,7 @@ class GameState:
         self.blue = ghostAgent(blue_init_pos[0], blue_init_pos[1], blue_init_npos[0], blue_init_npos[1], blue, blue_init_dir, self, blue_start_path, blue_scatter_pos)
         self.restart()
 
-    def __become_frightened__(self):
+    def _become_frightened(self):
         if state == frightened:
             self.old_state = self.state
             self.frightened_counter = frightened_length
@@ -24,48 +24,48 @@ class GameState:
             self.orange.become_frightened()
             self.blue.become_frightened()
 
-    def __end_frightened__(self):
+    def _end_frightened(self):
         self.state = self.old_state
         self.frightened_multiplier = 1
 
-    def __update_ghosts__(self):
+    def _update_ghosts(self):
         self.red.update()
         self.orange.update()
         self.pink.update()
         self.blue.update()
 
-    def __is_eating_pellet__():
+    def _is_eating_pellet():
         return self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] == o
 
-    def __is_eating_power_pellet__():
+    def _is_eating_power_pellet():
         return self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] == O
 
-    def __eat_pellet__():
+    def _eat_pellet():
         self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] = e
         self.score += pellet_score
 
-    def __eat_power_pellet():
+    def _eat_power_pellet():
         self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] = e
         self.score += power_pellet_score
         self.__change_state__(frightened)
 
-    def __update_score__(self):
-        if self.__is_eating_pellet__():
-            self.__eat_pellet__()
+    def _update_score(self):
+        if self._is_eating_pellet():
+            self._eat_pellet()
 
-        if self.__is_eating_power_pellet__():
-            self.__eat_power_pellet__()
+        if self._is_eating_power_pellet():
+            self._eat_power_pellet()
 
-    def __respawn_agents__(self):
+    def _respawn_agents(self):
         self.pacbot.respawn()
         self.red.respawn()
         self.pink.respawn()
         self.orange.respawn()
         self.blue.respawn()
 
-    def __die__(self):
+    def _die(self):
         if self.lives > 1:
-            self.__respawn_agents__()
+            self._respawn_agents()
             self.start_counter = 0
             self.state_counter =
             self.lives -= 1
@@ -74,30 +74,30 @@ class GameState:
             self.frightened_counter = 0
             self.frightened_multiplier = 1
             self.play = False
-            self.__update_score__()
+            self._update_score()
         else:
             self.play = False
             print("Success: " + str(self.score))
 
-    def __should_die__(self):
+    def _should_die(self):
         return (self.red.pos["current"] == self.pacbot.pos and self.red.frightened_counter == 0) or
         (self.pink.pos["current"] == self.pacbot.pos and self.pink.frightened_counter == 0) or
         (self.orange.pos["current"] == self.pacbot.pos and self.orange.frightened_counter == 0) or
         (self.blue.pos["current"] == self.pacbot.pos and self.blue.frightened_counter == 0)
 
-    def __check_if_ghosts_eaten__(self):
-        self.__check_if_ghost_eaten__(self.red)
-        self.__check_if_ghost_eaten__(self.pink)
-        self.__check_if_ghost_eaten__(self.orange)
-        self.__check_if_ghost_eaten__(self.blue)
+    def _check_if_ghosts_eaten(self):
+        self._check_if_ghost_eaten(self.red)
+        self._check_if_ghost_eaten(self.pink)
+        self._check_if_ghost_eaten(self.orange)
+        self._check_if_ghost_eaten(self.blue)
 
-    def __check_if_ghost_eaten__(self, ghost):
+    def _check_if_ghost_eaten(self, ghost):
         if ghost.pos["current"] == self.pacbot.pos and ghost.frightened_counter > 0:
             ghost.send_home()
             self.score += ghost_score * self.frightened_multiplier
             self.frightened_multiplier += 1
 
-    def __swap_state_if_necessary__(self):
+    def _swap_state_if_necessary(self):
         if self.state_counter in state_swap_times:
             if self.state == chase:
                 self.state = scatter
@@ -105,22 +105,22 @@ class GameState:
                 self.state = chase
 
     def next_step(self):
-        self.__update_ghosts__()
+        self._update_ghosts()
 
-        if self.__should_die__():
-            self.__die__()
+        if self._should_die():
+            self._die()
         else:
-            self.__check_if_ghosts_eaten__()
+            self._check_if_ghosts_eaten()
             if self.state == frightened:
                 if self.frightened_counter == 1:
-                    self.__end_frightened__()
+                    self._end_frightened()
                 self.frightened_counter -= 1
             else:
                 self.state_counter += 1
 
-            self.__swap_state_if_necessary__()
+            self._swap_state_if_necessary()
 
-            self.__update_score__()
+            self._update_score()
             self.start_counter += 1
 
     def restart(self):
@@ -129,10 +129,10 @@ class GameState:
         self.state = scatter
         self.frightened_counter = 0
         self.frightened_multiplier = 1
-        self.__respawn_agents__()
+        self._respawn_agents()
         self.score = 0
         self.play = False
         self.start_counter = 0
         self.state_counter = 0
         self.lives = starting_lives
-        self.__update_score__():
+        self._update_score():
