@@ -1,5 +1,4 @@
 from variables import *
-from solver import *
 from ghostpaths import *
 from ghostAgent import *
 from pacbot import *
@@ -9,10 +8,10 @@ import copy
 class GameState:
     def __init__(self):
         self.pacbot = PacBot()
-        self.red = ghostAgent(red_init_pos[0], red_init_pos[1], red_init_npos[0], red_init_npos[1], red, red_init_dir, self, [], red_scatter_pos)
-        self.pink = ghostAgent(pink_init_pos[0], pink_init_pos[1], pink_init_npos[0], pink_init_npos[1], pink, pink_init_dir, self, pink_start_path. pink_scatter_pos)
-        self.orange = ghostAgent(orange_init_pos[0], orange_init_pos[1], orange_init_npos[0], orange_init_npos[1], orange, red_init_dir, self, orange_start_path, orange_scatter_pos)
-        self.blue = ghostAgent(blue_init_pos[0], blue_init_pos[1], blue_init_npos[0], blue_init_npos[1], blue, blue_init_dir, self, blue_start_path, blue_scatter_pos)
+        self.red = GhostAgent(red_init_pos[0], red_init_pos[1], red_init_npos[0], red_init_npos[1], red, red_init_dir, self, [], red_scatter_pos)
+        self.pink = GhostAgent(pink_init_pos[0], pink_init_pos[1], pink_init_npos[0], pink_init_npos[1], pink, pink_init_dir, self, pink_start_path, pink_scatter_pos)
+        self.orange = GhostAgent(orange_init_pos[0], orange_init_pos[1], orange_init_npos[0], orange_init_npos[1], orange, red_init_dir, self, orange_start_path, orange_scatter_pos)
+        self.blue = GhostAgent(blue_init_pos[0], blue_init_pos[1], blue_init_npos[0], blue_init_npos[1], blue, blue_init_dir, self, blue_start_path, blue_scatter_pos)
         self.restart()
 
     def _become_frightened(self):
@@ -34,17 +33,17 @@ class GameState:
         self.pink.update()
         self.blue.update()
 
-    def _is_eating_pellet():
+    def _is_eating_pellet(self):
         return self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] == o
 
-    def _is_eating_power_pellet():
+    def _is_eating_power_pellet(self):
         return self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] == O
 
-    def _eat_pellet():
+    def _eat_pellet(self):
         self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] = e
         self.score += pellet_score
 
-    def _eat_power_pellet():
+    def _eat_power_pellet(self):
         self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] = e
         self.score += power_pellet_score
         self.__change_state__(frightened)
@@ -67,7 +66,7 @@ class GameState:
         if self.lives > 1:
             self._respawn_agents()
             self.start_counter = 0
-            self.state_counter =
+            self.state_counter = 0
             self.lives -= 1
             self.old_state = chase
             self.state = scatter
@@ -80,10 +79,10 @@ class GameState:
             print("Success: " + str(self.score))
 
     def _should_die(self):
-        return (self.red.pos["current"] == self.pacbot.pos and self.red.frightened_counter == 0) or
+        return ((self.red.pos["current"] == self.pacbot.pos and self.red.frightened_counter == 0) or
         (self.pink.pos["current"] == self.pacbot.pos and self.pink.frightened_counter == 0) or
         (self.orange.pos["current"] == self.pacbot.pos and self.orange.frightened_counter == 0) or
-        (self.blue.pos["current"] == self.pacbot.pos and self.blue.frightened_counter == 0)
+        (self.blue.pos["current"] == self.pacbot.pos and self.blue.frightened_counter == 0))
 
     def _check_if_ghosts_eaten(self):
         self._check_if_ghost_eaten(self.red)
@@ -135,4 +134,4 @@ class GameState:
         self.start_counter = 0
         self.state_counter = 0
         self.lives = starting_lives
-        self._update_score():
+        self._update_score()

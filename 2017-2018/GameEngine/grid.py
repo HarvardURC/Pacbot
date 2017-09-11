@@ -1,3 +1,5 @@
+from variables import *
+
 grid = [[I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I], # 0
         [I,o,o,o,o,I,I,O,o,o,o,I,I,I,I,I,I,I,I,I,I,I,o,o,o,o,o,O,o,o,I],
         [I,o,I,I,o,I,I,o,I,I,o,I,I,I,I,I,I,I,I,I,I,I,o,I,I,o,I,I,I,o,I],

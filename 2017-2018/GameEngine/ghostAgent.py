@@ -15,9 +15,9 @@ class GhostAgent:
         self.frightened_counter = 0
 
     def _is_move_legal(self, move):
-        return move != self.pos["current"] and
+        return (move != self.pos["current"] and
             self.game_state.grid[move[0]][move[1]] != I and
-            self.game_state.grid[move[0]][move[1]] != n:
+            self.game_state.grid[move[0]][move[1]] != n)
 
     def _find_possible_moves(self):
         (x,y) = self.pos['next']
@@ -34,7 +34,7 @@ class GhostAgent:
             possible.append(self.pos["current"])
         return possible
 
-    def _get_direction(pos_prev, pos_new):
+    def _get_direction(self, pos_prev, pos_new):
         if pos_new[0] > pos_prev[0]:
             return right
         elif pos_new[0] < pos_prev[0]:
@@ -61,7 +61,7 @@ class GhostAgent:
 
         return self._get_move_based_on_target((x,y))
 
-    def _get_next_pink_chase_move():
+    def _get_next_pink_chase_move(self):
         (x,y) = (0,0)
 
         if self.game_state.pacbot.direction == up:
@@ -79,16 +79,17 @@ class GhostAgent:
 
         return self._get_move_based_on_target((x,y))
 
-    def _get_next_red_chase_move():
+    def _get_next_red_chase_move(self):
         return self._get_move_based_on_target(self.game_state.pacbot.pos)
 
-    def _get_next_orange_chase_move():
+    def _get_next_orange_chase_move(self):
         if self._get_euclidian_distance(self.pos["current"], self.game_state.pacbot.pos) > 8:
             return self._get_next_scatter_move()
         return self._get_move_based_on_target(self.game_state.pacbot.pos)
 
     def _get_move_based_on_target(self, target):
         possible = self._find_possible_moves()
+        distances = []
         for tile in possible:
             distances.append(self._get_euclidian_distance(target, tile))
         (min_distance,index) = min((min_distance,index) for (index,min_distance) in enumerate(distances))
@@ -98,9 +99,9 @@ class GhostAgent:
     def _get_next_chase_move(self):
         if self.color == blue:
             return self._get_next_blue_chase_move()
-        elif ghost.color == pink:
+        elif self.color == pink:
             return self._get_next_pink_chase_move()
-        elif ghost.color == red:
+        elif self.color == red:
             return self._get_next_red_chase_move()
         else:
             return self._get_next_orange_chase_move()
@@ -116,12 +117,12 @@ class GhostAgent:
     def _get_next_state_move(self):
         if self.frightened_counter > 0:
             return self._get_next_frightened_move()
-        elif state == chase:
+        elif self.game_state.state == chase:
             return self._get_next_chase_move()
-        else
+        else:
             return self._get_next_scatter_move()
 
-    def _get_euclidian_distance(pos_a, pos_b):
+    def _get_euclidian_distance(self, pos_a, pos_b):
         return math.hypot(int(pos_a[0])-int(pos_b[0]), int(pos_a[1])-int(pos_b[1]))
 
     def _should_follow_starting_path(self):
@@ -136,7 +137,7 @@ class GhostAgent:
 
     def _decide_next_moves(self):
         if self._should_follow_starting_path():
-            return self.start_path[self.start_counter]
+            return self.start_path[self.game_state.start_counter]
         elif self._should_follow_respawn_path():
             self.respawn_counter += 1
             return respawn_path[self.respawn_counter]
