@@ -22,6 +22,11 @@ orange = 2
 pink = 3
 blue = 4
 
+# input signal enums
+sig_normal = 0
+sig_quit = 1
+sig_restart = 2
+
 # game Params
 starting_lives = 3
 frightened_length = 35
@@ -29,3 +34,6 @@ pellet_score = 10
 power_pellet_score = 50
 ghost_score = 200
 state_swap_times = [35, 135, 170, 270, 295, 395, 420]
+pacbot_starting_pos = (14,7)
+pacbot_starting_dir = left
+game_frequency = 30

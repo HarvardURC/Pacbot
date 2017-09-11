@@ -2,12 +2,13 @@ from variables import *
 from solver import *
 from ghostpaths import *
 from ghostAgent import *
+from pacbot import *
 from grid import grid
 import copy
 
 class GameState:
-    def __init__(self, pacbot):
-        self.pacbot = pacbot
+    def __init__(self):
+        self.pacbot = PacBot()
         self.red = ghostAgent(red_init_pos[0], red_init_pos[1], red_init_npos[0], red_init_npos[1], red, red_init_dir, self, [], red_scatter_pos)
         self.pink = ghostAgent(pink_init_pos[0], pink_init_pos[1], pink_init_npos[0], pink_init_npos[1], pink, pink_init_dir, self, pink_start_path. pink_scatter_pos)
         self.orange = ghostAgent(orange_init_pos[0], orange_init_pos[1], orange_init_npos[0], orange_init_npos[1], orange, red_init_dir, self, orange_start_path, orange_scatter_pos)

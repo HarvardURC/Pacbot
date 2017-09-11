@@ -1,59 +1,53 @@
 #High Level Game code for PacGhosts
-from variables import *
 from gameState import *
-from display import *
-from pacbot import *
-import random
-from json import dumps
-import copy
-from threading import Thread, Lock, Timer
+from threading import Thread, Timer
+from variables import *
 import time
 
-restart = False
-game = GameState(PacBot((23,13), "right"))
+input_signal = sig_normal
+game = GameState()
 
 def handleInput():
-    global game, restart
+    global game, input_signal
 
     while True:
         line = sys.stdin.readline()
         print(line)
         if line.strip() == 'r' :
             game.play = False
-            restart = True
+            input_signal = sig_restart
 
         elif line.strip() == 'p' :
             game.play = not game.play
 
-        elif line.strip() == 'e' :
+        elif line.strip() == 'q' :
+            input_signal = sig_quit
             cleanup_stop_thread()
             sys.exit()
 
-        time.sleep(1)
+        time.sleep(0.2)
         sys.stdout.flush()
 
 def update_pacbot_pos():
+    global game
     #TODO: Add logic for getting pacbot position and direction from the computer vision plugin
 
-def step_callback():
-    global game, restart
-
-    if restart:
-        game.restart()
-        restart = False
-    elif game.play:
-        update_pacbot_pos()
-        game.next_step()
-
-    #TODO: Add callback to step_callback
-
 def main():
-    global game, restart
+    global game, input_signal
 
     Thread(target = handleInput).start()
 
-    #TODO: Add callback to step_callback
-
+    while True:
+        if input_signal == sig_quit:
+            cleanup_stop_thread()
+            sys.exit()
+        if input_signal == sig_restart:
+            game.restart()
+            input_signal = sig_normal
+        elif game.play:
+            update_pacbot_pos()
+            game.next_step()
+        time.sleep(1.0/game_frequency)
 
 if __name__ == "__main__":
     main()
