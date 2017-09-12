@@ -1,56 +1,64 @@
-from gameState import *
-from threading import Thread, Timer
-from variables import *
-from terminalPrinter import *
-import time
-from stateConverter import *
+from gameState import GameState
+import time, os, sys
+import asyncio # minimum Python 3.4, changed in 3.5.1
+from stateConverter import StateConverter
+from variables import game_frequency
 
-input_signal = sig_normal
-game = GameState()
-state_buffer = StateConverter.convert_game_state_to_proto(game)
+ADDRESS = os.environ.get("BIND_ADDRESS","")
+PORT = os.environ.get("BIND_PORT", 11297)
 
-def run_game():
-    global game, input_signal, state_buffer
-    while True:
-        if input_signal == sig_quit:
-            cleanup_stop_thread()
-            sys.exit()
-        if input_signal == sig_restart:
-            game.restart()
-            input_signal = sig_normal
-        elif game.play:
-            update_pacbot_pos()
-            game.next_step()
-            state_buffer = StateConverter.convert_game_state_to_proto(game)
-        time.sleep(1.0/game_frequency)
+class GameEngine:
+    def __init__(self, loop):
+        self.game = GameState()
+        self.playing = False
+        self.loop = loop
+        
+        self.loop.add_reader(sys.stdin, self.keypress)
+        self.loop.call_soon(self.game_tick)
+        
+    def game_tick(self):
+        if self.playing:
+            # update_pacbot_pos
+            # This will become asynchronous
+            self.game.next_step()
+            self._write_state()
+        self.loop.call_later(1.0/game_frequency, self.game_tick)
 
-def update_pacbot_pos():
-    global game
-    return
-    #TODO: Add logic for getting pacbot position and direction from the computer vision plugin
+    def quit(self):
+        # self.cleanup()
+        self.loop.stop()
 
+    def restart(self):
+        self.playing = False
+        self.game.restart()
+
+    def _write_state(self):
+        protobuf = StateConverter.convert_game_state_to_proto(self.game)
+
+    def keypress(self):
+        char = sys.stdin.read(1)
+        if char == "r":
+            self.restart()
+        elif char == "p":
+            self.playing = not self.playing
+        elif char == "q":
+            self.quit()
+        
 def main():
-    global game, input_signal, state_buffer
+    loop = asyncio.get_event_loop()
+    engine = GameEngine(loop)
 
-    Thread(target = run_game).start()
+    if os.name != "nt" and os.environ.get("CURSES", False):
+        # Make the input reading nicer if not on windows
+        import curses, atexit
+        curses.initscr()
+        curses.cbreak()
+        curses.noecho()
+        atexit.register(lambda: (curses.nocbreak(),
+                                 curses.echo(),
+                                 curses.endwin()))
 
-    while True:
-        line = sys.stdin.readline()
-        print(line)
-        if line.strip() == 'r' :
-            game.play = False
-            input_signal = sig_restart
-
-        elif line.strip() == 'p' :
-            game.play = not game.play
-
-        elif line.strip() == 'q' :
-            input_signal = sig_quit
-            cleanup_stop_thread()
-            sys.exit()
-
-        time.sleep(0.2)
-        sys.stdout.flush()
+    loop.run_forever()
 
 if __name__ == "__main__":
     main()
