@@ -31,17 +31,17 @@ def display_game(state):
     col_index = 0
     cur_row = []
     for el in enumerate(state.grid):
-        if (row_index,col_index) == (state.pacman.x, state.pacman.y)
+        if (row_index,col_index) == (state.pacman.x, state.pacman.y):
             cur_row.append('P')
         elif (row_index,col_index) == (state.red_ghost.x, state.red_ghost.y) or (row_index,col_index) == (state.orange_ghost.x, state.orange_ghost.y) or (row_index,col_index) == (state.pink_ghost.x, state.pink_ghost.y) or (row_index,col_index) == (state.blue_ghost.x, state.blue_ghost.y):
             cur_row.append('G')
-        elif el == pacmanState_pb2.PacmanState.PELLET
+        elif el == pacmanState_pb2.PacmanState.PELLET:
             cur_row.append('.')
-        elif el == pacmanState_pb2.PacmanState.POWER_PELLET
+        elif el == pacmanState_pb2.PacmanState.POWER_PELLET:
             cur_row.append('o')
-        elif el == pacmanState_pb2.PacmanState.EMPTY
+        elif el == pacmanState_pb2.PacmanState.EMPTY:
             cur_row.append(' ')
-        elif el == pacmanState_pb2.PacmanState.WALL
+        elif el == pacmanState_pb2.PacmanState.WALL:
             cur_row.append('0')
         col_index += 1
         if col_index >= state.grid_columns:
