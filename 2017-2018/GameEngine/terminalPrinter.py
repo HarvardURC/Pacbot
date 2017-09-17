@@ -1,11 +1,11 @@
-import sys
+import sys, os
 from variables import *
 import pacmanState_pb2
 import time
+from client import EngineClient
 
-def get_game_state():
-    # TODO: Get game state through a socket
-    return pacmanState_pb2.PacmanState()
+ADDRESS = os.environ.get("SERVER_ADDRESS","127.0.0.1")
+PORT = os.environ.get("SERVER_PORT", 11297)
 
 def parse_game_mode(mode):
     if mode == pacmanState_pb2.PacmanState.FRIGHTENED:
@@ -56,10 +56,20 @@ def display_game(state):
         print()
 
 def main():
-    while True:
-        state = get_game_state()
-        display_game(state)
-        time.sleep(1.0/10)
+    # The client definition now resides in another file
+    # This is a pretty accurate demonstration of normal usage
+    s = EngineClient(addr=ADDRESS, port=PORT)
+    # "with" uses the context managers to automatically handle connecting
+    # and disconnecting the socket cleanly
+    with s:
+        while True:
+            # this will wait until a message has been read
+            msg = s.read_msg()
+            # but it can return none if there is an error, so check here
+            if msg:
+                display_game(msg)
+            # this may be unnecessary now, tbd
+            time.sleep(1.0/10)
 
 if __name__ == "__main__":
     main()
