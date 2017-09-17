@@ -68,8 +68,6 @@ def main():
             # but it can return none if there is an error, so check here
             if msg:
                 display_game(msg)
-            # this may be unnecessary now, tbd
-            #time.sleep(1.0/10)
 
 if __name__ == "__main__":
     main()
