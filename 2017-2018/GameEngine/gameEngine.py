@@ -44,10 +44,8 @@ class GameEngine:
         self.loop.call_later(1.0/game_frequency, self.game_tick)
 
     def quit(self):
-        self.loop.stop()
         self.server.close()
-        self.loop.run_until_complete(self.server.wait_closed())
-        self.loop.close()
+        self.loop.stop()
 
     def _write_state(self):
         protobuf = StateConverter.convert_game_state_to_proto(self.game)
