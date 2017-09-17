@@ -64,7 +64,12 @@ class GameEngine:
         char = sys.stdin.read(1)
         if char == "r":
             self.game.restart()
+            self._write_state()
         elif char == "p":
+            if (self.game.play):
+                print('Game is paused')
+            else:
+                print('Game resumed')
             self.game.play = not self.game.play
         elif char == "q":
             self.quit()
@@ -72,6 +77,11 @@ class GameEngine:
 def main():
     loop = asyncio.get_event_loop()
     engine = GameEngine(loop)
+    print('Game is paused.')
+    print('Controls:')
+    print('    r - restart')
+    print('    p - (un)pause')
+    print('    q - quit')
 
     if os.name != "nt" and os.environ.get("CURSES", False):
         # Make the input reading nicer if not on windows

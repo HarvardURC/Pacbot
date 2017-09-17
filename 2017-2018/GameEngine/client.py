@@ -59,7 +59,7 @@ class EngineClient:
         try:
             msg.ParseFromString(self.__read_data(length))
             return msg
-        except proto_message.Error:
+        except pacmanState_pb2.proto_message.Error:
             return
 
     # Whee, context managers
