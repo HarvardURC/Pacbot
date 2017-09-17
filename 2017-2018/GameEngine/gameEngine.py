@@ -1,5 +1,5 @@
 from gameState import GameState
-import time, os, sys, struct
+import time, os, sys, struct, logging
 import asyncio # minimum Python 3.4, changed in 3.5.1
 from stateConverter import StateConverter
 from variables import game_frequency
@@ -60,19 +60,30 @@ class GameEngine:
 
     def keypress(self):
         char = sys.stdin.read(1)
+        # For some reason I couldn't quite get this to do what I wanted
+        # Still it's a bit cleaner than otherwise
+        sys.stdout.write("\033[F")
+        sys.stdout.write("\033[K")
+        sys.stdout.flush()
         if char == "r":
+            logging.info("Restarting...")
             self.game.restart()
             self._write_state()
         elif char == "p":
             if (self.game.play):
-                print('Game is paused')
+                logging.info('Game is paused')
             else:
-                print('Game resumed')
+                logging.info('Game resumed')
             self.game.play = not self.game.play
         elif char == "q":
+            logging.info("Quitting...")
             self.quit()
         
 def main():
+    # logger automatically adds timestamps
+    # I wanted it to print each sequentially but it did not want to
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s: %(message)s',
+                        datefmt="%I:%M:%S %p")
     loop = asyncio.get_event_loop()
     engine = GameEngine(loop)
     print('Game is paused.')
@@ -80,17 +91,6 @@ def main():
     print('    r - restart')
     print('    p - (un)pause')
     print('    q - quit')
-
-    if os.name != "nt" and os.environ.get("CURSES", False):
-        # Make the input reading nicer if not on windows
-        # This pretty much breaks any output, though
-        import curses, atexit
-        curses.initscr()
-        curses.cbreak()
-        curses.noecho()
-        atexit.register(lambda: (curses.nocbreak(),
-                                 curses.echo(),
-                                 curses.endwin()))
 
     engine.run()
 
