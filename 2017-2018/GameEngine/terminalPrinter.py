@@ -1,5 +1,4 @@
 import sys, os
-from variables import *
 import pacmanState_pb2
 import time
 from client import EngineClient
