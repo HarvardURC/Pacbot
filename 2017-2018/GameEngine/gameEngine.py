@@ -1,5 +1,5 @@
 from gameState import GameState
-import time, os, sys, struct
+import time, os, sys, struct, logging
 import asyncio # minimum Python 3.4, changed in 3.5.1
 from stateConverter import StateConverter
 from variables import game_frequency
@@ -44,10 +44,8 @@ class GameEngine:
         self.loop.call_later(1.0/game_frequency, self.game_tick)
 
     def quit(self):
-        self.loop.stop()
         self.server.close()
-        self.loop.run_until_complete(self.server.wait_closed())
-        self.loop.close()
+        self.loop.stop()
 
     def _write_state(self):
         protobuf = StateConverter.convert_game_state_to_proto(self.game)
@@ -62,27 +60,37 @@ class GameEngine:
 
     def keypress(self):
         char = sys.stdin.read(1)
+        # For some reason I couldn't quite get this to do what I wanted
+        # Still it's a bit cleaner than otherwise
+        sys.stdout.write("\033[F")
+        sys.stdout.write("\033[K")
+        sys.stdout.flush()
         if char == "r":
+            logging.info("Restarting...")
             self.game.restart()
+            self._write_state()
         elif char == "p":
+            if (self.game.play):
+                logging.info('Game is paused')
+            else:
+                logging.info('Game resumed')
             self.game.play = not self.game.play
         elif char == "q":
+            logging.info("Quitting...")
             self.quit()
         
 def main():
+    # logger automatically adds timestamps
+    # I wanted it to print each sequentially but it did not want to
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s: %(message)s',
+                        datefmt="%I:%M:%S %p")
     loop = asyncio.get_event_loop()
     engine = GameEngine(loop)
-
-    if os.name != "nt" and os.environ.get("CURSES", False):
-        # Make the input reading nicer if not on windows
-        # This pretty much breaks any output, though
-        import curses, atexit
-        curses.initscr()
-        curses.cbreak()
-        curses.noecho()
-        atexit.register(lambda: (curses.nocbreak(),
-                                 curses.echo(),
-                                 curses.endwin()))
+    print('Game is paused.')
+    print('Controls:')
+    print('    r - restart')
+    print('    p - (un)pause')
+    print('    q - quit')
 
     engine.run()
 

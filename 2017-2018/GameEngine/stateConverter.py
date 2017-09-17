@@ -28,7 +28,7 @@ class StateConverter:
         proto.mode = StateConverter._parse_game_mode(game_state.state)
         proto.frightened_timer = game_state.frightened_counter
         proto.score = game_state.score
-        proto.grid_columns = len(game_state.grid)
+        proto.grid_columns = len(game_state.grid[0])
         proto.lives = game_state.lives
 
         #proto.red_ghost = pacmanState_pb2.Position()

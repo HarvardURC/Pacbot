@@ -56,11 +56,8 @@ class EngineClient:
             self.connect()
             return
         msg = pacmanState_pb2.PacmanState()
-        try:
-            msg.ParseFromString(self.__read_data(length))
-            return msg
-        except proto_message.Error:
-            return
+        msg.ParseFromString(self.__read_data(length))
+        return msg
 
     # Whee, context managers
     __enter__ = connect
