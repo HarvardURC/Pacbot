@@ -1,7 +1,6 @@
 import sys, os
 from variables import *
 import pacmanState_pb2
-from google.protobuf import message as proto_message
 import time
 from client import EngineClient
 
