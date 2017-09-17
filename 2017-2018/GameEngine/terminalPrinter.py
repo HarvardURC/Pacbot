@@ -2,12 +2,11 @@ import sys, os
 from variables import *
 import pacmanState_pb2
 from google.protobuf import message as proto_message
-import time, struct, socket
+import time
+from client import EngineClient
 
 ADDRESS = os.environ.get("SERVER_ADDRESS","127.0.0.1")
 PORT = os.environ.get("SERVER_PORT", 11297)
-MAGIC_HEADER = 11297
-SIZE_HEADER = struct.Struct("!HH")
 
 def parse_game_mode(mode):
     if mode == pacmanState_pb2.PacmanState.FRIGHTENED:
@@ -57,66 +56,20 @@ def display_game(state):
             print(el, end='')
         print()
 
-class FancySocket:
-    def __init__(self, addr=ADDRESS, port=PORT):
-        self.addr = addr
-        self.port = port
-
-    def connect(self):
-        self.s = socket.socket()
-        self.s.connect((self.addr, self.port))
-        self.s.setblocking(False)
-
-    def __read_data(self, size):
-        data = b""
-        while len(data) < size:
-            try:
-                data += self.s.recv(size - len(data))
-            except BlockingIOError:
-                time.sleep(0.05)
-        return data
-        
-    def read_msg(self):
-        """
-        Read a message from the socket and return it.
-        This function is allowed to return None if it cannot read a message.
-
-        This function is currently blocking, i.e. it will not return until
-        it has read a message or reached an error condition.
-
-        It is important to call this function often, otherwise messages may
-        overflow the socket's buffer.
-
-        Currently, the biggest downside of this implmentation is that it does
-        not detect if the connection is dropped, it just waits forever.
-        """
-        magic, length = SIZE_HEADER.unpack(self.__read_data(SIZE_HEADER.size))
-        if magic != MAGIC_HEADER:
-            # Uh oh, what happened?
-            self.s.close()
-            print("Magic number mismatched, reconnecting...",
-                  file=sys.stderr)
-            self.connect()
-            return
-        msg = pacmanState_pb2.PacmanState()
-        try:
-            msg.ParseFromString(self.__read_data(length))
-            return msg
-        except proto_message.Error:
-            return
-
-    # Whee, context managers
-    __enter__ = connect
-    def __exit__(self, *args):
-        self.s.close()
-
 def main():
-    s = FancySocket()
+    # The client definition now resides in another file
+    # This is a pretty accurate demonstration of normal usage
+    s = EngineClient(addr=ADDRESS, port=PORT)
+    # "with" uses the context managers to automatically handle connecting
+    # and disconnecting the socket cleanly
     with s:
         while True:
+            # this will wait until a message has been read
             msg = s.read_msg()
+            # but it can return none if there is an error, so check here
             if msg:
                 display_game(msg)
+            # this may be unnecessary now, tbd
             time.sleep(1.0/10)
 
 if __name__ == "__main__":
