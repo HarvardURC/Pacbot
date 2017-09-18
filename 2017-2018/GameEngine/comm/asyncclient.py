@@ -12,7 +12,7 @@ class AsyncClient(asyncio.Protocol):
         
         Do not do long-running operations in the update function without
         using asynchronous methods. It will be called once for each received
-        message, possibly multiple times a tick.
+        message, possibly multiple times a "tick".
         """
         super().__init__()
         self.loop = loop or asyncio.get_event_loop()
@@ -21,29 +21,37 @@ class AsyncClient(asyncio.Protocol):
         self.update = cb
         
     def connect(self):
-        coro = asyncio.create_connection(lambda: self, self.addr, self.port)
-        self.loop.run_until_complete(coro)
+        coro = self.loop.create_connection(lambda: self, self.addr, self.port)
+
+        # this part is a little messy I'm not sure what's up with it
+        # I can't promise it works if the loop is already running, which would
+        # be the case if the connection dropped and tried to reconnect
+        # the client can always be manually restarted though, of course.
+        if not self.loop.is_running():
+            self.loop.run_until_complete(coro)
 
     def connection_made(self, transport):
+        #print("Connection made")
         self.__length = 0
         self.__buffer = b""
         self.transport = transport
 
     def connection_lost(self, exception):
+        #print("Connection lost")
         if exception:
             print(repr(exception))
-        self.loop.call_soon(self.connect)
 
     def data_received(self, data):
         self.__buffer += data
 
         while self.__buffer:
             if not self.__length and len(self.__buffer) > SIZE_HEADER.size:
-                magic, length = SIZE_HEADER.unpack(
+                magic, self.__length = SIZE_HEADER.unpack(
                     self.__buffer[:SIZE_HEADER.size])
-                self.__buffer = self.__buffer[SIZE_HEADER:]
-                if magic != MAGIC_NUMBER:
+                self.__buffer = self.__buffer[SIZE_HEADER.size:]
+                if magic != MAGIC_HEADER:
                     self.transport.close()
+                    self.loop.call_soon(self.connect)
                     return
             elif self.__length and len(self.__buffer) >= self.__length:
                 msg = PacmanState()
