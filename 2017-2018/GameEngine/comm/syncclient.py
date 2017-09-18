@@ -1,10 +1,12 @@
+from __future__ import print_function
+
 import socket, struct, sys, time
-import pacmanState_pb2
+from .pacmanState_pb2 import PacmanState
 
 MAGIC_HEADER = 11297
 SIZE_HEADER = struct.Struct("!HH")
 
-class EngineClient:
+class SyncClient:
     """
     socket-based client for the game engine
     """
@@ -55,7 +57,7 @@ class EngineClient:
                   file=sys.stderr)
             self.connect()
             return
-        msg = pacmanState_pb2.PacmanState()
+        msg = PacmanState()
         msg.ParseFromString(self.__read_data(length))
         return msg
 

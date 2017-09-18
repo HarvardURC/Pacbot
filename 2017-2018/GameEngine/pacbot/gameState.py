@@ -1,8 +1,8 @@
-from variables import *
-from ghostpaths import *
-from ghostAgent import *
-from pacbot import *
-from grid import grid
+from .variables import *
+from .ghostpaths import *
+from .ghostAgent import *
+from .pacbot import *
+from .grid import grid
 import copy
 
 class GameState:

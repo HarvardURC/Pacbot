@@ -1,17 +1,21 @@
+#!/usr/bin/env python3
+
+from __future__ import print_function
+
 import sys, os
-import pacmanState_pb2
+from comm.pacmanState_pb2 import PacmanState
 import time
-from client import EngineClient
+from comm import SyncClient
 
 ADDRESS = os.environ.get("SERVER_ADDRESS","127.0.0.1")
 PORT = os.environ.get("SERVER_PORT", 11297)
 
 def parse_game_mode(mode):
-    if mode == pacmanState_pb2.PacmanState.FRIGHTENED:
+    if mode == PacmanState.FRIGHTENED:
         return 'frightened'
-    elif mode == pacmanState_pb2.PacmanState.CHASE:
+    elif mode == PacmanState.CHASE:
         return 'chase'
-    elif mode == pacmanState_pb2.PacmanState.SCATTER:
+    elif mode == PacmanState.SCATTER:
         return 'scatter'
     else:
         return 'undefined'
@@ -34,13 +38,13 @@ def display_game(state):
             cur_row.append('P')
         elif (col_index, row_index) == (state.red_ghost.x, state.red_ghost.y) or (col_index, row_index) == (state.orange_ghost.x, state.orange_ghost.y) or (col_index, row_index) == (state.pink_ghost.x, state.pink_ghost.y) or (col_index, row_index) == (state.blue_ghost.x, state.blue_ghost.y):
             cur_row.append('G')
-        elif el == pacmanState_pb2.PacmanState.PELLET:
+        elif el == PacmanState.PELLET:
             cur_row.append('.')
-        elif el == pacmanState_pb2.PacmanState.POWER_PELLET:
+        elif el == PacmanState.POWER_PELLET:
             cur_row.append('o')
-        elif el == pacmanState_pb2.PacmanState.EMPTY:
+        elif el == PacmanState.EMPTY:
             cur_row.append(' ')
-        elif el == pacmanState_pb2.PacmanState.WALL:
+        elif el == PacmanState.WALL:
             cur_row.append('0')
         row_index += 1
         if row_index >= state.grid_columns:
@@ -57,7 +61,7 @@ def display_game(state):
 def main():
     # The client definition now resides in another file
     # This is a pretty accurate demonstration of normal usage
-    s = EngineClient(addr=ADDRESS, port=PORT)
+    s = SyncClient(addr=ADDRESS, port=PORT)
     # "with" uses the context managers to automatically handle connecting
     # and disconnecting the socket cleanly
     with s:

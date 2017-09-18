@@ -1,6 +1,6 @@
-from ghostpaths import *
+from .ghostpaths import *
 import math
-from variables import *
+from .variables import *
 
 class GhostAgent:
 

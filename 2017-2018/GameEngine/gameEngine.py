@@ -1,8 +1,10 @@
-from gameState import GameState
+#!/usr/bin/env python3
+
+from pacbot.gameState import GameState
 import time, os, sys, struct, logging
 import asyncio # minimum Python 3.4, changed in 3.5.1
-from stateConverter import StateConverter
-from variables import game_frequency
+from comm.stateConverter import StateConverter
+from pacbot.variables import game_frequency
 
 ADDRESS = os.environ.get("BIND_ADDRESS","")
 PORT = os.environ.get("BIND_PORT", 11297)
