@@ -1,5 +1,5 @@
-from variables import *
-import pacmanState_pb2
+from pacbot.variables import *
+from . import pacmanState_pb2
 
 class StateConverter:
     @classmethod

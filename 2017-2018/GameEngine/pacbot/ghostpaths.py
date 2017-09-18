@@ -1,4 +1,4 @@
-from variables import *
+from .variables import *
 
 pink_start_path = [((14,17),up),((14,18),up),((14,19),up)]
 
