@@ -1,22 +1,18 @@
 #!/usr/bin/env python3
 
 from pacbot.gameState import GameState
-import time, os, sys, struct, logging
+import time, os, sys, logging
 import asyncio # minimum Python 3.4, changed in 3.5.1
 from comm.stateConverter import StateConverter
+from comm.asyncproto import AsyncProto
+from comm import pack_msg
 from pacbot.variables import game_frequency
 
 ADDRESS = os.environ.get("BIND_ADDRESS","")
 PORT = os.environ.get("BIND_PORT", 11297)
+INPUT_PORT = os.environ.get("INPUT_PORT", 11295)
 
-# Message sizes are communicated as a single unsigned short
-# encoded using network byte-order (big-endian).
-# receiving libraries will need to account for this properly.
-# The header also includes a magic number (also a short) for verification
-MAGIC_HEADER = 11297
-SIZE_HEADER = struct.Struct("!HH")
-
-class GameEngine:
+class GameEngine(AsyncProto):
     def __init__(self, loop):
         self.game = GameState()
         self.loop = loop
@@ -24,10 +20,21 @@ class GameEngine:
         
         coro = asyncio.start_server(self._add_client, ADDRESS, PORT)
         self.server = loop.run_until_complete(coro)
+        coro = loop.create_server(lambda: self, ADDRESS, INPUT_PORT)
+        self.input_server = loop.run_until_complete(coro)
         
         self.loop.add_reader(sys.stdin, self.keypress)
         self.loop.call_soon(self.game_tick)
 
+    def msg_received(self, data):
+        """
+        This function will be called with the raw binary data when a new
+        message is received from the vision client.
+        """
+        # parse data into a message
+        self.game.state # = new state stuff
+        logging.warn(data)
+        
     def run(self):
         try:
             self.loop.run_forever()
@@ -51,13 +58,11 @@ class GameEngine:
 
     def _write_state(self):
         protobuf = StateConverter.convert_game_state_to_proto(self.game)
-        msg = protobuf.SerializeToString()
-        length = SIZE_HEADER.pack(MAGIC_HEADER, len(msg))
+        msg = pack_msg(protobuf.SerializeToString())
         for i in self.clients:
             if i.transport.is_closing():
                 self.clients.remove(i)
             else:
-                i.write(length)
                 i.write(msg)
 
     def keypress(self):

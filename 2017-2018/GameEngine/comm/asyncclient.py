@@ -2,10 +2,9 @@
 from .pacmanState_pb2 import PacmanState
 import struct, asyncio
 
-MAGIC_HEADER = 11297
-SIZE_HEADER = struct.Struct("!HH")
+from .asyncproto import AsyncProto
 
-class AsyncClient(asyncio.Protocol):
+class AsyncClient(AsyncProto):
     def __init__(self, addr, port, cb, loop=None):
         """
         cb must be a function that takes a single argument and processes it
@@ -30,40 +29,11 @@ class AsyncClient(asyncio.Protocol):
         if not self.loop.is_running():
             self.loop.run_until_complete(coro)
 
-    def connection_made(self, transport):
-        #print("Connection made")
-        self.__length = 0
-        self.__buffer = b""
-        self.transport = transport
-
-    def connection_lost(self, exception):
-        #print("Connection lost")
-        if exception:
-            print(repr(exception))
-
-    def data_received(self, data):
-        self.__buffer += data
-
-        while self.__buffer:
-            if not self.__length and len(self.__buffer) > SIZE_HEADER.size:
-                magic, self.__length = SIZE_HEADER.unpack(
-                    self.__buffer[:SIZE_HEADER.size])
-                self.__buffer = self.__buffer[SIZE_HEADER.size:]
-                if magic != MAGIC_HEADER:
-                    self.transport.close()
-                    self.loop.call_soon(self.connect)
-                    return
-            elif self.__length and len(self.__buffer) >= self.__length:
-                msg = PacmanState()
-                msg.ParseFromString(self.__buffer[:self.__length])
-                self.__buffer = self.__buffer[self.__length:]
-                self.__length = 0
-                self.update(msg)
-            else:
-                # Not enough data has been buffered and read to form a complete
-                # header or message
-                return
-
+    def msg_received(self, data):
+        msg = PacmanState()
+        msg.ParseFromString(data)
+        self.update(msg)
+            
     # Yay also a context manager
     __enter__ = connect
     def __exit__(self, *args):
