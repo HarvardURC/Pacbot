@@ -1,5 +1,5 @@
 import pygame, asyncio
-from .pacmanState_pb2 import PacmanState
+from comm.pacmanState_pb2 import PacmanState
 from .variables import *
 from .spriteStripAnim import *
 
