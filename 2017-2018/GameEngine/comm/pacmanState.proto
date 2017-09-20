@@ -7,6 +7,7 @@ message PacmanState {
   message Position {
     required int32 x = 1;
     required int32 y = 2;
+    required Direction direction = 3;
   }
   required Position pacman = 1;
   required Position red_ghost = 2;
@@ -31,5 +32,12 @@ message PacmanState {
     PELLET = 1;
     POWER_PELLET = 2;
     EMPTY = 3;
+  }
+
+  enum Direction {
+    UP = 0;
+    DOWN = 1;
+    LEFT = 2;
+    RIGHT = 3;
   }
 }

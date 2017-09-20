@@ -36,4 +36,4 @@ ghost_score = 200
 state_swap_times = [35, 135, 170, 270, 295, 395, 420]
 pacbot_starting_pos = (14,7)
 pacbot_starting_dir = left
-game_frequency = 10
+game_frequency = 8
