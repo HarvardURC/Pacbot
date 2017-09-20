@@ -33,10 +33,6 @@ class StateConverter:
         else:
             return pacmanState_pb2.PacmanState.DOWN
 
-
-
-
-
     @classmethod
     def convert_game_state_to_proto(cls, game_state):
         proto = pacmanState_pb2.PacmanState()
