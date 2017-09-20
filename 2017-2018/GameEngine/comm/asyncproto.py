@@ -23,7 +23,8 @@ class AsyncProto(asyncio.Protocol):
                 self.__buffer = self.__buffer[SIZE_HEADER.size:]
                 if magic != MAGIC_HEADER:
                     self.transport.close()
-                    self.loop.call_soon(self.connect)
+                    if hasattr(self, "connect"):
+                        self.loop.call_soon(self.connect)
                     return
             elif self.__length and len(self.__buffer) >= self.__length:
                 self.msg_received(self.__buffer[:self.__length])
