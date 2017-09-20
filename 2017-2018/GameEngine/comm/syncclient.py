@@ -1,10 +1,9 @@
 from __future__ import print_function
 
-import socket, struct, sys, time
+import socket, sys, time
 from .pacmanState_pb2 import PacmanState
 
-MAGIC_HEADER = 11297
-SIZE_HEADER = struct.Struct("!HH")
+from .constants import MAGIC_HEADER, SIZE_HEADER
 
 class SyncClient:
     """
