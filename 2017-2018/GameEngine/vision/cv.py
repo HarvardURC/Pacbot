@@ -1,5 +1,4 @@
 
-# the opencv import prevents this module from being loaded and used for me
 import asyncio, opencv
 
 class MovementProcessor:
