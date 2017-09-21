@@ -206,7 +206,10 @@ class Visualizer:
         # This call is still necessarily to make the window manager happy
         # This has to be called regularly once the window is open or the
         # system will think the program has frozen.
-        pygame.event.pump()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.loop.call_soon(pygame.quit)
+                self.loop.stop()
 
         if self.state:
             state = self.state

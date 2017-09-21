@@ -1,3 +1,2 @@
-In order to regenerate the protobuffers run the following in this folder:
-"protoc -I=./ --python_out=./ ./pacmanState.proto"
 
+Use GNU make to rebuild the protocol buffer python file

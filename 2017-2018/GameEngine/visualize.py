@@ -12,7 +12,7 @@ def main():
     walls = ('-w' in sys.argv or os.environ.get("WALLS",False))
     pacman = ('-p' in sys.argv or os.environ.get("PACMAN",False))
     loop = asyncio.get_event_loop()
-    visualizer = Visualizer(walls, pacman)
+    visualizer = Visualizer(walls, pacman, loop)
     client = AsyncClient(ADDRESS, PORT, visualizer.update, loop)
 
     with client:
