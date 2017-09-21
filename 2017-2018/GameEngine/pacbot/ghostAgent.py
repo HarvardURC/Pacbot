@@ -137,7 +137,6 @@ class GhostAgent:
             return self.start_path[self.game_state.start_counter]
         elif self._should_follow_respawn_path():
             self.respawn_counter += 1
-            print('{}-{}:{}'.format(self.color, self.respawn_counter, len(respawn_path)))
             return respawn_path[self.respawn_counter-1]
         else:
             return self._get_next_state_move()
