@@ -1,11 +1,15 @@
-
+from enum import Enum
 from .pacmanState_pb2 import PacmanState
 import struct, asyncio
 
 from .asyncproto import AsyncProto
 
+class MessageType(Enum):
+    FULL_STATE = 0
+    POS = 1
+
 class AsyncClient(AsyncProto):
-    def __init__(self, addr, port, cb, loop=None):
+    def __init__(self, addr, port, cb, loop=None, msg_type=MessageType.FULL_STATE):
         """
         cb must be a function that takes a single argument and processes it
         
@@ -18,6 +22,7 @@ class AsyncClient(AsyncProto):
         self.addr = addr
         self.port = port
         self.update = cb
+        self.msg_type = msg_type
         
     def connect(self):
         coro = self.loop.create_connection(lambda: self, self.addr, self.port)
@@ -30,7 +35,10 @@ class AsyncClient(AsyncProto):
             self.loop.run_until_complete(coro)
 
     def msg_received(self, data):
-        msg = PacmanState()
+        if self.msg_type == MessageType.FULL_STATE:
+            msg = PacmanState()
+        else:
+            msg = PacmanState.Position()
         msg.ParseFromString(data)
         self.update(msg)
             

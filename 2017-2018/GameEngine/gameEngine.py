@@ -5,6 +5,7 @@ import time, os, sys, logging
 import asyncio # minimum Python 3.4, changed in 3.5.1
 from comm.stateConverter import StateConverter
 from comm.asyncproto import AsyncProto
+from comm.pacmanState_pb2 import PacmanState
 from comm import pack_msg
 from pacbot.variables import game_frequency
 
@@ -32,8 +33,9 @@ class GameEngine(AsyncProto):
         message is received from the vision client.
         """
         # parse data into a message
-        self.game.state # = new state stuff
-        logging.warn(data)
+        pos = PacmanState.Position()
+        pos.ParseFromString(data)
+        self.game.pacbot.update((pos.x, pos.y))
         
     def run(self):
         try:
