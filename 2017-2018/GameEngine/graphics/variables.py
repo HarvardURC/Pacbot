@@ -1,3 +1,5 @@
+from enum import Enum
+
 DISPLAY_FREQUENCY = 1/60 # 60 Hz
 SPRITE_FREQUENCY = 6
 GRID_SIZE = (28, 31)
