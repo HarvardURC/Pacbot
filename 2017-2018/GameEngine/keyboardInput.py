@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import asyncio, sys, os
+import asyncio, sys, os, curses
 
 from comm import pack_msg
 
@@ -39,7 +39,7 @@ class InputClient:
 def main():
     loop = asyncio.get_event_loop()
     client = InputClient(loop)
-    client.run()
+    curses.wrapper(lambda scr: client.run())
 
 if __name__ == "__main__":
     main()
