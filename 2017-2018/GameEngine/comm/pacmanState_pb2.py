@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='pacmanState.proto',
   package='gameEngine',
   syntax='proto2',
-  serialized_pb=_b('\n\x11pacmanState.proto\x12\ngameEngine\"\xcb\x05\n\x0bPacmanState\x12\x30\n\x06pacman\x18\x01 \x02(\x0b\x32 .gameEngine.PacmanState.Position\x12\x33\n\tred_ghost\x18\x02 \x02(\x0b\x32 .gameEngine.PacmanState.Position\x12\x34\n\npink_ghost\x18\x03 \x02(\x0b\x32 .gameEngine.PacmanState.Position\x12\x36\n\x0corange_ghost\x18\x04 \x02(\x0b\x32 .gameEngine.PacmanState.Position\x12\x34\n\nblue_ghost\x18\x05 \x02(\x0b\x32 .gameEngine.PacmanState.Position\x12.\n\x04mode\x18\x06 \x02(\x0e\x32 .gameEngine.PacmanState.GameMode\x12\x18\n\x10\x66rightened_timer\x18\x07 \x02(\x05\x12\r\n\x05score\x18\x08 \x02(\x05\x12\x31\n\x04grid\x18\t \x03(\x0e\x32#.gameEngine.PacmanState.GridElement\x12\x14\n\x0cgrid_columns\x18\n \x02(\x05\x12\r\n\x05lives\x18\x0b \x02(\x05\x1aV\n\x08Position\x12\t\n\x01x\x18\x01 \x02(\x05\x12\t\n\x01y\x18\x02 \x02(\x05\x12\x34\n\tdirection\x18\x03 \x02(\x0e\x32!.gameEngine.PacmanState.Direction\"2\n\x08GameMode\x12\t\n\x05\x43HASE\x10\x00\x12\x0b\n\x07SCATTER\x10\x01\x12\x0e\n\nFRIGHTENED\x10\x02\"@\n\x0bGridElement\x12\x08\n\x04WALL\x10\x00\x12\n\n\x06PELLET\x10\x01\x12\x10\n\x0cPOWER_PELLET\x10\x02\x12\t\n\x05\x45MPTY\x10\x03\"2\n\tDirection\x12\x06\n\x02UP\x10\x00\x12\x08\n\x04\x44OWN\x10\x01\x12\x08\n\x04LEFT\x10\x02\x12\t\n\x05RIGHT\x10\x03')
+  serialized_pb=_b('\n\x11pacmanState.proto\x12\ngameEngine\"\xff\x05\n\x0bPacmanState\x12\x32\n\x06pacman\x18\x01 \x02(\x0b\x32\".gameEngine.PacmanState.AgentState\x12\x35\n\tred_ghost\x18\x02 \x02(\x0b\x32\".gameEngine.PacmanState.AgentState\x12\x36\n\npink_ghost\x18\x03 \x02(\x0b\x32\".gameEngine.PacmanState.AgentState\x12\x38\n\x0corange_ghost\x18\x04 \x02(\x0b\x32\".gameEngine.PacmanState.AgentState\x12\x36\n\nblue_ghost\x18\x05 \x02(\x0b\x32\".gameEngine.PacmanState.AgentState\x12.\n\x04mode\x18\x06 \x02(\x0e\x32 .gameEngine.PacmanState.GameMode\x12\x18\n\x10\x66rightened_timer\x18\x07 \x02(\x05\x12\r\n\x05score\x18\x08 \x02(\x05\x12\x31\n\x04grid\x18\t \x03(\x0e\x32#.gameEngine.PacmanState.GridElement\x12\x14\n\x0cgrid_columns\x18\n \x02(\x05\x12\r\n\x05lives\x18\x0b \x02(\x05\x1at\n\nAgentState\x12\t\n\x01x\x18\x01 \x02(\x05\x12\t\n\x01y\x18\x02 \x02(\x05\x12\x34\n\tdirection\x18\x03 \x02(\x0e\x32!.gameEngine.PacmanState.Direction\x12\x1a\n\x12\x66rightened_counter\x18\x04 \x01(\x05\">\n\x08GameMode\x12\t\n\x05\x43HASE\x10\x00\x12\x0b\n\x07SCATTER\x10\x01\x12\x0e\n\nFRIGHTENED\x10\x02\x12\n\n\x06PAUSED\x10\x03\"@\n\x0bGridElement\x12\x08\n\x04WALL\x10\x00\x12\n\n\x06PELLET\x10\x01\x12\x10\n\x0cPOWER_PELLET\x10\x02\x12\t\n\x05\x45MPTY\x10\x03\"2\n\tDirection\x12\x06\n\x02UP\x10\x00\x12\x08\n\x04\x44OWN\x10\x01\x12\x08\n\x04LEFT\x10\x02\x12\t\n\x05RIGHT\x10\x03')
 )
 
 
@@ -42,11 +42,15 @@ _PACMANSTATE_GAMEMODE = _descriptor.EnumDescriptor(
       name='FRIGHTENED', index=2, number=2,
       options=None,
       type=None),
+    _descriptor.EnumValueDescriptor(
+      name='PAUSED', index=3, number=3,
+      options=None,
+      type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=581,
-  serialized_end=631,
+  serialized_start=621,
+  serialized_end=683,
 )
 _sym_db.RegisterEnumDescriptor(_PACMANSTATE_GAMEMODE)
 
@@ -75,8 +79,8 @@ _PACMANSTATE_GRIDELEMENT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=633,
-  serialized_end=697,
+  serialized_start=685,
+  serialized_end=749,
 )
 _sym_db.RegisterEnumDescriptor(_PACMANSTATE_GRIDELEMENT)
 
@@ -105,36 +109,43 @@ _PACMANSTATE_DIRECTION = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=699,
-  serialized_end=749,
+  serialized_start=751,
+  serialized_end=801,
 )
 _sym_db.RegisterEnumDescriptor(_PACMANSTATE_DIRECTION)
 
 
-_PACMANSTATE_POSITION = _descriptor.Descriptor(
-  name='Position',
-  full_name='gameEngine.PacmanState.Position',
+_PACMANSTATE_AGENTSTATE = _descriptor.Descriptor(
+  name='AgentState',
+  full_name='gameEngine.PacmanState.AgentState',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='x', full_name='gameEngine.PacmanState.Position.x', index=0,
+      name='x', full_name='gameEngine.PacmanState.AgentState.x', index=0,
       number=1, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='y', full_name='gameEngine.PacmanState.Position.y', index=1,
+      name='y', full_name='gameEngine.PacmanState.AgentState.y', index=1,
       number=2, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='direction', full_name='gameEngine.PacmanState.Position.direction', index=2,
+      name='direction', full_name='gameEngine.PacmanState.AgentState.direction', index=2,
       number=3, type=14, cpp_type=8, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='frightened_counter', full_name='gameEngine.PacmanState.AgentState.frightened_counter', index=3,
+      number=4, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -151,8 +162,8 @@ _PACMANSTATE_POSITION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=493,
-  serialized_end=579,
+  serialized_start=503,
+  serialized_end=619,
 )
 
 _PACMANSTATE = _descriptor.Descriptor(
@@ -242,7 +253,7 @@ _PACMANSTATE = _descriptor.Descriptor(
   ],
   extensions=[
   ],
-  nested_types=[_PACMANSTATE_POSITION, ],
+  nested_types=[_PACMANSTATE_AGENTSTATE, ],
   enum_types=[
     _PACMANSTATE_GAMEMODE,
     _PACMANSTATE_GRIDELEMENT,
@@ -255,16 +266,16 @@ _PACMANSTATE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=34,
-  serialized_end=749,
+  serialized_end=801,
 )
 
-_PACMANSTATE_POSITION.fields_by_name['direction'].enum_type = _PACMANSTATE_DIRECTION
-_PACMANSTATE_POSITION.containing_type = _PACMANSTATE
-_PACMANSTATE.fields_by_name['pacman'].message_type = _PACMANSTATE_POSITION
-_PACMANSTATE.fields_by_name['red_ghost'].message_type = _PACMANSTATE_POSITION
-_PACMANSTATE.fields_by_name['pink_ghost'].message_type = _PACMANSTATE_POSITION
-_PACMANSTATE.fields_by_name['orange_ghost'].message_type = _PACMANSTATE_POSITION
-_PACMANSTATE.fields_by_name['blue_ghost'].message_type = _PACMANSTATE_POSITION
+_PACMANSTATE_AGENTSTATE.fields_by_name['direction'].enum_type = _PACMANSTATE_DIRECTION
+_PACMANSTATE_AGENTSTATE.containing_type = _PACMANSTATE
+_PACMANSTATE.fields_by_name['pacman'].message_type = _PACMANSTATE_AGENTSTATE
+_PACMANSTATE.fields_by_name['red_ghost'].message_type = _PACMANSTATE_AGENTSTATE
+_PACMANSTATE.fields_by_name['pink_ghost'].message_type = _PACMANSTATE_AGENTSTATE
+_PACMANSTATE.fields_by_name['orange_ghost'].message_type = _PACMANSTATE_AGENTSTATE
+_PACMANSTATE.fields_by_name['blue_ghost'].message_type = _PACMANSTATE_AGENTSTATE
 _PACMANSTATE.fields_by_name['mode'].enum_type = _PACMANSTATE_GAMEMODE
 _PACMANSTATE.fields_by_name['grid'].enum_type = _PACMANSTATE_GRIDELEMENT
 _PACMANSTATE_GAMEMODE.containing_type = _PACMANSTATE
@@ -275,10 +286,10 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 PacmanState = _reflection.GeneratedProtocolMessageType('PacmanState', (_message.Message,), dict(
 
-  Position = _reflection.GeneratedProtocolMessageType('Position', (_message.Message,), dict(
-    DESCRIPTOR = _PACMANSTATE_POSITION,
+  AgentState = _reflection.GeneratedProtocolMessageType('AgentState', (_message.Message,), dict(
+    DESCRIPTOR = _PACMANSTATE_AGENTSTATE,
     __module__ = 'pacmanState_pb2'
-    # @@protoc_insertion_point(class_scope:gameEngine.PacmanState.Position)
+    # @@protoc_insertion_point(class_scope:gameEngine.PacmanState.AgentState)
     ))
   ,
   DESCRIPTOR = _PACMANSTATE,
@@ -286,7 +297,7 @@ PacmanState = _reflection.GeneratedProtocolMessageType('PacmanState', (_message.
   # @@protoc_insertion_point(class_scope:gameEngine.PacmanState)
   ))
 _sym_db.RegisterMessage(PacmanState)
-_sym_db.RegisterMessage(PacmanState.Position)
+_sym_db.RegisterMessage(PacmanState.AgentState)
 
 
 # @@protoc_insertion_point(module_scope)
