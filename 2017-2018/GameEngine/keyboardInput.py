@@ -11,48 +11,53 @@ from pacbot.grid import *
 ADDRESS = os.environ.get("SERVER_ADDRESS","127.0.0.1")
 INPUT_PORT = os.environ.get("INPUT_PORT", 11295)
 BIND_PORT = os.environ.get("BIND_PORT", 11297)
+SPEED = 1.2
 
 class InputClient:
     def __init__(self, loop):
         self.loop = loop
         coro = asyncio.open_connection(ADDRESS, INPUT_PORT, loop=loop)
-        self.readClient = AsyncClient(ADDRESS, BIND_PORT, self._update_state, loop)
+        self.read_client = AsyncClient(ADDRESS, BIND_PORT, self._update_state, loop)
         _, self.writer = loop.run_until_complete(coro)
         self.loop.add_reader(sys.stdin, self.keypress)
-        self.pacbot_pos = [pacbot_starting_pos[0]*1.0, pacbot_starting_pos[1]*1.0]
+        self.pacbot_pos = [pacbot_starting_pos[0], pacbot_starting_pos[1]]
         self.cur_dir = right
         self.next_dir = right
         self.state = PacmanState()
         self.state.mode = PacmanState.PAUSED
-        self.loop.call_later(1/(5*game_frequency), self.game_tick)
-        with self.readClient:
-            loop.run_forever()
+        self.lives = starting_lives
+        self.clicks = 0
+        self.loop.call_later(1/(SPEED*game_frequency), self.game_tick)
 
     def _update_state(self, msg):
         self.state = msg
+        if self.state.lives != self.lives:
+            self.lives = self.state.lives
+            self.pacbot_pos = [pacbot_starting_pos[0], pacbot_starting_pos[1]]
 
-    def _move_if_valid_dir(self, direction, round_x, round_y):
-        if direction == right and grid[round_x + 1][round_y] not in [I, n]:
-            self.pacbot_pos[0] += 1.0/5
+    def _move_if_valid_dir(self, direction, x, y):
+        if direction == right and grid[x + 1][y] not in [I, n]:
+            self.pacbot_pos[0] += 1
             self.cur_dir = direction
             return True
-        elif direction == left and grid[round_x - 1][round_y] not in [I, n]:
-            self.pacbot_pos[0] -= 1.0/5
+        elif direction == left and grid[x - 1][y] not in [I, n]:
+            self.pacbot_pos[0] -= 1
             self.cur_dir = direction
             return True
-        elif direction == up and grid[round_x][round_y + 1] not in [I, n]:
-            self.pacbot_pos[1] += 1.0/5
+        elif direction == up and grid[x][y + 1] not in [I, n]:
+            self.pacbot_pos[1] += 1
             self.cur_dir = direction
             return True
-        elif direction == down and grid[round_x][round_y - 1] not in [I, n]:
-            self.pacbot_pos[1] -= 1.0/5
+        elif direction == down and grid[x][y - 1] not in [I, n]:
+            self.pacbot_pos[1] -= 1
             self.cur_dir = direction
             return True
         return False
 
     def run(self):
         try:
-            self.loop.run_forever()
+            with self.read_client:
+                self.loop.run_forever()
         except KeyboardInterrupt:
             self.quit()
 
@@ -64,18 +69,15 @@ class InputClient:
         self.writer.write(pack_msg(msg))
 
     def game_tick(self):
-        round_x = round(self.pacbot_pos[0])
-        round_y = round(self.pacbot_pos[1])
         if self.state.mode != PacmanState.PAUSED:
-            if not self._move_if_valid_dir(self.next_dir, round_x, round_y):
-                self._move_if_valid_dir(self.cur_dir, round_x, round_y)
-
-        pos_buf = PacmanState.Position()
-        pos_buf.x = round(self.pacbot_pos[0])
-        pos_buf.y = round(self.pacbot_pos[1])
+            if not self._move_if_valid_dir(self.next_dir, self.pacbot_pos[0], self.pacbot_pos[1]):
+                self._move_if_valid_dir(self.cur_dir, self.pacbot_pos[0], self.pacbot_pos[1])
+        pos_buf = PacmanState.AgentState()
+        pos_buf.x = self.pacbot_pos[0]
+        pos_buf.y = self.pacbot_pos[1]
         pos_buf.direction = self.cur_dir
         self.write(pos_buf.SerializeToString())
-        self.loop.call_later(1/(5*game_frequency), self.game_tick)
+        self.loop.call_later(1/(SPEED*game_frequency), self.game_tick)
 
     def keypress(self):
         char = sys.stdin.read(1)

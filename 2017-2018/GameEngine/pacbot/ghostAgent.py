@@ -1,6 +1,7 @@
 from .ghostpaths import *
-import math
 from .variables import *
+import random
+import math
 
 class GhostAgent:
 

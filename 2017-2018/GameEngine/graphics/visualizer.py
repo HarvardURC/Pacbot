@@ -87,6 +87,17 @@ class Visualizer:
         lives_surf_2 = self.font.render('{}'.format(lives), True, dark_blue_color)
         self.surface.blit(lives_surf_2, (SQUARE_SIZE*23.5, SQUARE_SIZE*15))
 
+    def _is_ghost_frightened(self, color):
+        if color == Ghosts.RED:
+            return self.state.red_ghost.frightened_counter > 0
+        elif color == Ghosts.BLUE:
+            return self.state.blue_ghost.frightened_counter > 0
+        elif color == Ghosts.ORANGE:
+            return self.state.orange_ghost.frightened_counter > 0
+        elif color == Ghosts.PINK:
+            return self.state.pink_ghost.frightened_counter > 0
+        else:
+            return False
 
     def _print_ghost(self, mode, color, direction, col_idx, row_idx):
         if color == Ghosts.RED:
@@ -99,7 +110,7 @@ class Visualizer:
             sprite_set = self.sprites['blue']
         x = int(col_idx * SQUARE_SIZE)
         y = int(row_idx * SQUARE_SIZE)
-        if mode == PacmanState.FRIGHTENED:
+        if self._is_ghost_frightened(color):
             self.surface.blit(pygame.transform.scale(self.sprites['frightened']['r'].next(), (SQUARE_SIZE, SQUARE_SIZE)), (x,y))
         elif direction == PacmanState.LEFT:
             self.surface.blit(pygame.transform.scale(sprite_set['l'].next(), (SQUARE_SIZE, SQUARE_SIZE)), (x,y))

@@ -15,13 +15,13 @@ class GameState:
         self.restart()
 
     def _become_frightened(self):
-        if state == frightened:
-            self.old_state = self.state
-            self.frightened_counter = frightened_length
-            self.red.become_frightened()
-            self.pink.become_frightened()
-            self.orange.become_frightened()
-            self.blue.become_frightened()
+        self.old_state = self.state
+        self.state = frightened
+        self.frightened_counter = frightened_length
+        self.red.become_frightened()
+        self.pink.become_frightened()
+        self.orange.become_frightened()
+        self.blue.become_frightened()
 
     def _end_frightened(self):
         self.state = self.old_state
@@ -46,7 +46,7 @@ class GameState:
     def _eat_power_pellet(self):
         self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] = e
         self.score += power_pellet_score
-        self.__change_state__(frightened)
+        self._become_frightened()
 
     def _update_score(self):
         if self._is_eating_pellet():
@@ -104,23 +104,25 @@ class GameState:
                 self.state = chase
 
     def next_step(self):
-        self._update_ghosts()
-
         if self._should_die():
             self._die()
         else:
             self._check_if_ghosts_eaten()
-            if self.state == frightened:
-                if self.frightened_counter == 1:
-                    self._end_frightened()
-                self.frightened_counter -= 1
-            else:
-                self.state_counter += 1
+            if self.update_clicks % updates_per_click == 0:
+                self._update_ghosts()
+                self._check_if_ghosts_eaten()
+                if self.state == frightened:
+                    if self.frightened_counter == 1:
+                        self._end_frightened()
+                    self.frightened_counter -= 1
+                else:
+                    self.state_counter += 1
+                self.start_counter += 1
 
             self._swap_state_if_necessary()
 
             self._update_score()
-            self.start_counter += 1
+            self.update_clicks += 1
 
     def restart(self):
         self.grid = copy.deepcopy(grid)
@@ -133,5 +135,6 @@ class GameState:
         self.play = False
         self.start_counter = 0
         self.state_counter = 0
+        self.update_clicks = 0
         self.lives = starting_lives
         self._update_score()

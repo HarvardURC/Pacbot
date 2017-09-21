@@ -6,13 +6,13 @@ from .asyncproto import AsyncProto
 
 class MessageType(Enum):
     FULL_STATE = 0
-    POS = 1
+    AGENT = 1
 
 class AsyncClient(AsyncProto):
     def __init__(self, addr, port, cb, loop=None, msg_type=MessageType.FULL_STATE):
         """
         cb must be a function that takes a single argument and processes it
-        
+
         Do not do long-running operations in the update function without
         using asynchronous methods. It will be called once for each received
         message, possibly multiple times a "tick".
@@ -23,7 +23,7 @@ class AsyncClient(AsyncProto):
         self.port = port
         self.update = cb
         self.msg_type = msg_type
-        
+
     def connect(self):
         coro = self.loop.create_connection(lambda: self, self.addr, self.port)
 
@@ -38,10 +38,10 @@ class AsyncClient(AsyncProto):
         if self.msg_type == MessageType.FULL_STATE:
             msg = PacmanState()
         else:
-            msg = PacmanState.Position()
+            msg = PacmanState.AgentState()
         msg.ParseFromString(data)
         self.update(msg)
-            
+
     # Yay also a context manager
     __enter__ = connect
     def __exit__(self, *args):

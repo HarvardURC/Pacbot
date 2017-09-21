@@ -2,7 +2,7 @@ from pacbot.variables import *
 from . import pacmanState_pb2
 
 class StateConverter:
-    
+
     _directions = {}
     _directions[right] = pacmanState_pb2.PacmanState.RIGHT
     _directions[left] = pacmanState_pb2.PacmanState.LEFT
@@ -43,18 +43,22 @@ class StateConverter:
         proto.red_ghost.x = game_state.red.pos['current'][0]
         proto.red_ghost.y = game_state.red.pos['current'][1]
         proto.red_ghost.direction = StateConverter._directions[game_state.red.direction]
+        proto.red_ghost.frightened_counter = game_state.red.frightened_counter
 
         proto.pink_ghost.x = game_state.pink.pos['current'][0]
         proto.pink_ghost.y = game_state.pink.pos['current'][1]
         proto.pink_ghost.direction = StateConverter._directions[game_state.pink.direction]
+        proto.pink_ghost.frightened_counter = game_state.pink.frightened_counter
 
         proto.orange_ghost.x = game_state.orange.pos['current'][0]
         proto.orange_ghost.y = game_state.orange.pos['current'][1]
         proto.orange_ghost.direction = StateConverter._directions[game_state.orange.direction]
+        proto.orange_ghost.frightened_counter = game_state.orange.frightened_counter
 
         proto.blue_ghost.x = game_state.blue.pos['current'][0]
         proto.blue_ghost.y = game_state.blue.pos['current'][1]
         proto.blue_ghost.direction = StateConverter._directions[game_state.blue.direction]
+        proto.blue_ghost.frightened_counter = game_state.blue.frightened_counter
 
         proto.pacman.x = game_state.pacbot.pos[0]
         proto.pacman.y = game_state.pacbot.pos[1]

@@ -18,6 +18,6 @@ class PacBot:
             self.direction = left
         elif position[1] > self.pos[1]:
             self.direction = up
-        else:
+        elif position[1] < self.pos[1]:
             self.direction = down
         self.pos = position
