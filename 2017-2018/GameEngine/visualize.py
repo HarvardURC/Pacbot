@@ -9,12 +9,8 @@ ADDRESS = os.environ.get("SERVER_ADDRESS","127.0.0.1")
 PORT = os.environ.get("SERVER_PORT", 11297)
 
 def main():
-    walls = False
-    pacman = False
-    if '-w' in sys.argv:
-        walls = True
-    if '-p' in sys.argv:
-        pacman = True
+    walls = ('-w' in sys.argv or os.environ.get("WALLS",False))
+    pacman = ('-p' in sys.argv or os.environ.get("PACMAN",False))
     loop = asyncio.get_event_loop()
     visualizer = Visualizer(walls, pacman)
     client = AsyncClient(ADDRESS, PORT, visualizer.update, loop)
