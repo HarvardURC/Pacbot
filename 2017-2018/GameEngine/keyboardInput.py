@@ -11,7 +11,7 @@ from pacbot.grid import *
 ADDRESS = os.environ.get("SERVER_ADDRESS","127.0.0.1")
 INPUT_PORT = os.environ.get("INPUT_PORT", 11295)
 BIND_PORT = os.environ.get("BIND_PORT", 11297)
-SPEED = 1.2
+SPEED = 1.0
 
 class InputClient:
     def __init__(self, loop):
