@@ -51,7 +51,7 @@ class GameEngine(AsyncProto):
             # update_pacbot_pos
             # This will become asynchronous
             self.game.next_step()
-            self._write_state()
+        self._write_state()
         self.loop.call_later(1.0/game_frequency, self.game_tick)
 
     def quit(self):

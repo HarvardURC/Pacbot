@@ -25,6 +25,7 @@ message PacmanState {
     CHASE = 0;
     SCATTER = 1;
     FRIGHTENED = 2;
+    PAUSED = 3;
   }
 
   enum GridElement {

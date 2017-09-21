@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='pacmanState.proto',
   package='gameEngine',
   syntax='proto2',
-  serialized_pb=_b('\n\x11pacmanState.proto\x12\ngameEngine\"\xcb\x05\n\x0bPacmanState\x12\x30\n\x06pacman\x18\x01 \x02(\x0b\x32 .gameEngine.PacmanState.Position\x12\x33\n\tred_ghost\x18\x02 \x02(\x0b\x32 .gameEngine.PacmanState.Position\x12\x34\n\npink_ghost\x18\x03 \x02(\x0b\x32 .gameEngine.PacmanState.Position\x12\x36\n\x0corange_ghost\x18\x04 \x02(\x0b\x32 .gameEngine.PacmanState.Position\x12\x34\n\nblue_ghost\x18\x05 \x02(\x0b\x32 .gameEngine.PacmanState.Position\x12.\n\x04mode\x18\x06 \x02(\x0e\x32 .gameEngine.PacmanState.GameMode\x12\x18\n\x10\x66rightened_timer\x18\x07 \x02(\x05\x12\r\n\x05score\x18\x08 \x02(\x05\x12\x31\n\x04grid\x18\t \x03(\x0e\x32#.gameEngine.PacmanState.GridElement\x12\x14\n\x0cgrid_columns\x18\n \x02(\x05\x12\r\n\x05lives\x18\x0b \x02(\x05\x1aV\n\x08Position\x12\t\n\x01x\x18\x01 \x02(\x05\x12\t\n\x01y\x18\x02 \x02(\x05\x12\x34\n\tdirection\x18\x03 \x02(\x0e\x32!.gameEngine.PacmanState.Direction\"2\n\x08GameMode\x12\t\n\x05\x43HASE\x10\x00\x12\x0b\n\x07SCATTER\x10\x01\x12\x0e\n\nFRIGHTENED\x10\x02\"@\n\x0bGridElement\x12\x08\n\x04WALL\x10\x00\x12\n\n\x06PELLET\x10\x01\x12\x10\n\x0cPOWER_PELLET\x10\x02\x12\t\n\x05\x45MPTY\x10\x03\"2\n\tDirection\x12\x06\n\x02UP\x10\x00\x12\x08\n\x04\x44OWN\x10\x01\x12\x08\n\x04LEFT\x10\x02\x12\t\n\x05RIGHT\x10\x03')
+  serialized_pb=_b('\n\x11pacmanState.proto\x12\ngameEngine\"\xd7\x05\n\x0bPacmanState\x12\x30\n\x06pacman\x18\x01 \x02(\x0b\x32 .gameEngine.PacmanState.Position\x12\x33\n\tred_ghost\x18\x02 \x02(\x0b\x32 .gameEngine.PacmanState.Position\x12\x34\n\npink_ghost\x18\x03 \x02(\x0b\x32 .gameEngine.PacmanState.Position\x12\x36\n\x0corange_ghost\x18\x04 \x02(\x0b\x32 .gameEngine.PacmanState.Position\x12\x34\n\nblue_ghost\x18\x05 \x02(\x0b\x32 .gameEngine.PacmanState.Position\x12.\n\x04mode\x18\x06 \x02(\x0e\x32 .gameEngine.PacmanState.GameMode\x12\x18\n\x10\x66rightened_timer\x18\x07 \x02(\x05\x12\r\n\x05score\x18\x08 \x02(\x05\x12\x31\n\x04grid\x18\t \x03(\x0e\x32#.gameEngine.PacmanState.GridElement\x12\x14\n\x0cgrid_columns\x18\n \x02(\x05\x12\r\n\x05lives\x18\x0b \x02(\x05\x1aV\n\x08Position\x12\t\n\x01x\x18\x01 \x02(\x05\x12\t\n\x01y\x18\x02 \x02(\x05\x12\x34\n\tdirection\x18\x03 \x02(\x0e\x32!.gameEngine.PacmanState.Direction\">\n\x08GameMode\x12\t\n\x05\x43HASE\x10\x00\x12\x0b\n\x07SCATTER\x10\x01\x12\x0e\n\nFRIGHTENED\x10\x02\x12\n\n\x06PAUSED\x10\x03\"@\n\x0bGridElement\x12\x08\n\x04WALL\x10\x00\x12\n\n\x06PELLET\x10\x01\x12\x10\n\x0cPOWER_PELLET\x10\x02\x12\t\n\x05\x45MPTY\x10\x03\"2\n\tDirection\x12\x06\n\x02UP\x10\x00\x12\x08\n\x04\x44OWN\x10\x01\x12\x08\n\x04LEFT\x10\x02\x12\t\n\x05RIGHT\x10\x03')
 )
 
 
@@ -42,11 +42,15 @@ _PACMANSTATE_GAMEMODE = _descriptor.EnumDescriptor(
       name='FRIGHTENED', index=2, number=2,
       options=None,
       type=None),
+    _descriptor.EnumValueDescriptor(
+      name='PAUSED', index=3, number=3,
+      options=None,
+      type=None),
   ],
   containing_type=None,
   options=None,
   serialized_start=581,
-  serialized_end=631,
+  serialized_end=643,
 )
 _sym_db.RegisterEnumDescriptor(_PACMANSTATE_GAMEMODE)
 
@@ -75,8 +79,8 @@ _PACMANSTATE_GRIDELEMENT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=633,
-  serialized_end=697,
+  serialized_start=645,
+  serialized_end=709,
 )
 _sym_db.RegisterEnumDescriptor(_PACMANSTATE_GRIDELEMENT)
 
@@ -105,8 +109,8 @@ _PACMANSTATE_DIRECTION = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=699,
-  serialized_end=749,
+  serialized_start=711,
+  serialized_end=761,
 )
 _sym_db.RegisterEnumDescriptor(_PACMANSTATE_DIRECTION)
 
@@ -255,7 +259,7 @@ _PACMANSTATE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=34,
-  serialized_end=749,
+  serialized_end=761,
 )
 
 _PACMANSTATE_POSITION.fields_by_name['direction'].enum_type = _PACMANSTATE_DIRECTION

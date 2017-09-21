@@ -10,8 +10,10 @@ class StateConverter:
     _directions[down] = pacmanState_pb2.PacmanState.DOWN
 
     @classmethod
-    def _parse_game_mode(cls, mode):
-        if mode == scatter:
+    def _parse_game_mode(cls, mode, play):
+        if not play:
+            return pacmanState_pb2.PacmanState.PAUSED
+        elif mode == scatter:
             return  pacmanState_pb2.PacmanState.SCATTER
         elif mode == chase:
             return  pacmanState_pb2.PacmanState.CHASE
@@ -32,7 +34,7 @@ class StateConverter:
     @classmethod
     def convert_game_state_to_proto(cls, game_state):
         proto = pacmanState_pb2.PacmanState()
-        proto.mode = StateConverter._parse_game_mode(game_state.state)
+        proto.mode = StateConverter._parse_game_mode(game_state.state, game_state.play)
         proto.frightened_timer = game_state.frightened_counter
         proto.score = game_state.score
         proto.grid_columns = len(game_state.grid[0])
