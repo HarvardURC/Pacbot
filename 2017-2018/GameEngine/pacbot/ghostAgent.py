@@ -9,7 +9,7 @@ class GhostAgent:
         self.color = color
         self.init_direction = direction
         self.init_moves = [x1, y1, x2, y2]
-        self.respawn_counter = len(respawn_path)
+        self.respawn_counter = 0 
         self.game_state = game_state
         self.start_path = start_path
         self.scatter_pos = scatter_pos
@@ -132,16 +132,13 @@ class GhostAgent:
     def _should_follow_respawn_path(self):
         return self.respawn_counter < len(respawn_path)
 
-    def _follow_respawn_path(self):
-        self.update(respawn_path[self.respawn_counter])
-        self.respawn_counter += 1
-
     def _decide_next_moves(self):
         if self._should_follow_starting_path():
             return self.start_path[self.game_state.start_counter]
         elif self._should_follow_respawn_path():
             self.respawn_counter += 1
-            return respawn_path[self.respawn_counter]
+            print('{}-{}:{}'.format(self.color, self.respawn_counter, len(respawn_path)))
+            return respawn_path[self.respawn_counter-1]
         else:
             return self._get_next_state_move()
 
@@ -157,7 +154,7 @@ class GhostAgent:
         self.pos['current'] = ghost_home_pos
         self.pos['next'] = (ghost_home_pos[0], ghost_home_pos[1]+1)
         self.direction = up
-        self.respawn_path = 0
+        self.respawn_counter = 0
         self.frightened_counter = 0
 
     def become_frightened(self):

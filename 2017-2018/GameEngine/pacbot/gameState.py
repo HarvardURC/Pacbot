@@ -15,7 +15,8 @@ class GameState:
         self.restart()
 
     def _become_frightened(self):
-        self.old_state = self.state
+        if self.state != frightened:
+            self.old_state = self.state
         self.state = frightened
         self.frightened_counter = frightened_length
         self.red.become_frightened()
@@ -116,10 +117,10 @@ class GameState:
                         self._end_frightened()
                     self.frightened_counter -= 1
                 else:
+                    self._swap_state_if_necessary()
                     self.state_counter += 1
                 self.start_counter += 1
 
-            self._swap_state_if_necessary()
 
             self._update_score()
             self.update_clicks += 1
