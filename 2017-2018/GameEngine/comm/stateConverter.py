@@ -2,6 +2,13 @@ from pacbot.variables import *
 from . import pacmanState_pb2
 
 class StateConverter:
+    
+    _directions = {}
+    _directions[right] = pacmanState_pb2.PacmanState.RIGHT
+    _directions[left] = pacmanState_pb2.PacmanState.LEFT
+    _directions[up] = pacmanState_pb2.PacmanState.UP
+    _directions[down] = pacmanState_pb2.PacmanState.DOWN
+
     @classmethod
     def _parse_game_mode(cls, mode):
         if mode == scatter:
@@ -23,17 +30,6 @@ class StateConverter:
             return pacmanState_pb2.PacmanState.EMPTY
 
     @classmethod
-    def _parse_direction(cls, direction):
-        if direction == right:
-            return pacmanState_pb2.PacmanState.RIGHT
-        elif direction == left:
-            return pacmanState_pb2.PacmanState.LEFT
-        elif direction == up:
-            return pacmanState_pb2.PacmanState.UP
-        else:
-            return pacmanState_pb2.PacmanState.DOWN
-
-    @classmethod
     def convert_game_state_to_proto(cls, game_state):
         proto = pacmanState_pb2.PacmanState()
         proto.mode = StateConverter._parse_game_mode(game_state.state)
@@ -44,23 +40,23 @@ class StateConverter:
 
         proto.red_ghost.x = game_state.red.pos['current'][0]
         proto.red_ghost.y = game_state.red.pos['current'][1]
-        proto.red_ghost.direction = StateConverter._parse_direction(game_state.red.direction)
+        proto.red_ghost.direction = StateConverter._directions[game_state.red.direction]
 
         proto.pink_ghost.x = game_state.pink.pos['current'][0]
         proto.pink_ghost.y = game_state.pink.pos['current'][1]
-        proto.pink_ghost.direction = StateConverter._parse_direction(game_state.pink.direction)
+        proto.pink_ghost.direction = StateConverter._directions[game_state.pink.direction]
 
         proto.orange_ghost.x = game_state.orange.pos['current'][0]
         proto.orange_ghost.y = game_state.orange.pos['current'][1]
-        proto.orange_ghost.direction = StateConverter._parse_direction(game_state.orange.direction)
+        proto.orange_ghost.direction = StateConverter._directions[game_state.orange.direction]
 
         proto.blue_ghost.x = game_state.blue.pos['current'][0]
         proto.blue_ghost.y = game_state.blue.pos['current'][1]
-        proto.blue_ghost.direction = StateConverter._parse_direction(game_state.blue.direction)
+        proto.blue_ghost.direction = StateConverter._directions[game_state.blue.direction]
 
         proto.pacman.x = game_state.pacbot.pos[0]
         proto.pacman.y = game_state.pacbot.pos[1]
-        proto.pacman.direction = StateConverter._parse_direction(game_state.pacbot.direction)
+        proto.pacman.direction = StateConverter._directions[game_state.pacbot.direction]
 
         for col in game_state.grid:
             for el in col:

@@ -4,10 +4,11 @@ GRID_SIZE = (28, 31)
 SQUARE_SIZE = 30
 
 # ghost enums:
-RED = 0
-BLUE = 1
-PINK = 2
-ORANGE = 3
+class Ghosts(Enum):
+    RED = 0
+    BLUE = 1
+    PINK = 2
+    ORANGE = 3
 
 # colors:
 red_color = (255, 0, 0)

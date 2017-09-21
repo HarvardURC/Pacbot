@@ -89,11 +89,11 @@ class Visualizer:
 
 
     def _print_ghost(self, mode, color, direction, col_idx, row_idx):
-        if color == RED:
+        if color == Ghosts.RED:
             sprite_set = self.sprites['red']
-        elif color == ORANGE:
+        elif color == Ghosts.ORANGE:
             sprite_set = self.sprites['orange']
-        elif color == PINK:
+        elif color == Ghosts.PINK:
             sprite_set = self.sprites['pink']
         else:
             sprite_set = self.sprites['blue']
@@ -228,16 +228,16 @@ class Visualizer:
             for el in state.grid:
                 # ghosts
                 if (col_idx, row_idx) == (state.red_ghost.x, state.red_ghost.y):
-                    self._print_ghost(state.mode, RED, state.red_ghost.direction, col_idx, GRID_SIZE[1] - row_idx - 1)
+                    self._print_ghost(state.mode, Ghosts.RED, state.red_ghost.direction, col_idx, GRID_SIZE[1] - row_idx - 1)
 
                 elif (col_idx, row_idx) == (state.orange_ghost.x, state.orange_ghost.y):
-                    self._print_ghost(state.mode, ORANGE, state.orange_ghost.direction, col_idx, GRID_SIZE[1] - row_idx - 1)
+                    self._print_ghost(state.mode, Ghosts.ORANGE, state.orange_ghost.direction, col_idx, GRID_SIZE[1] - row_idx - 1)
 
                 elif (col_idx, row_idx) == (state.blue_ghost.x, state.blue_ghost.y):
-                    self._print_ghost(state.mode, BLUE, state.blue_ghost.direction, col_idx, GRID_SIZE[1] - row_idx - 1)
+                    self._print_ghost(state.mode, Ghosts.BLUE, state.blue_ghost.direction, col_idx, GRID_SIZE[1] - row_idx - 1)
 
                 elif (col_idx, row_idx) == (state.pink_ghost.x, state.pink_ghost.y):
-                    self._print_ghost(state.mode, PINK, state.pink_ghost.direction, col_idx, GRID_SIZE[1] - row_idx - 1)
+                    self._print_ghost(state.mode, Ghosts.PINK, state.pink_ghost.direction, col_idx, GRID_SIZE[1] - row_idx - 1)
 
                 elif (col_idx, row_idx) == (state.pacman.x, state.pacman.y) and self.print_pacman:
                     self._print_pacman(state.pacman.direction, col_idx, GRID_SIZE[1] - row_idx - 1)
