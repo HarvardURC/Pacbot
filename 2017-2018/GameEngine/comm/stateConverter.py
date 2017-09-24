@@ -39,6 +39,8 @@ class StateConverter:
         proto.score = game_state.score
         proto.grid_columns = len(game_state.grid[0])
         proto.lives = game_state.lives
+        proto.update_ticks = (game_state.update_ticks - 1) % ticks_per_update
+        proto.ticks_per_update = ticks_per_update 
 
         proto.red_ghost.x = game_state.red.pos['current'][0]
         proto.red_ghost.y = game_state.red.pos['current'][1]
