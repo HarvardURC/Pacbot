@@ -159,6 +159,9 @@ class GhostAgent:
     def become_frightened(self):
         self.frightened_counter = frightened_length
 
+    def is_frightened(self):
+        return self.frightened_counter > 0
+
     def respawn(self):
         self.pos = {
             'current' : (self.init_moves[0], self.init_moves[1]),
