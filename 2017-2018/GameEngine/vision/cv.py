@@ -10,7 +10,7 @@ class MovementProcessor:
         self.client = client
         self.loop = loop or asyncio.get_event_loop()
         self.loop.call_soon(self.tick)
-        self.edges = edges if not edges == None else {'l':342, 'r':1185,'u':-8,'d':749}
+        self.edges = edges or {'l':342, 'r':1185,'u':-8,'d':749}
         self.cap = cv2.VideoCapture(cam_number) # set camera
         self.cap.set(3, 1280) # set frame width
         self.cap.set(4, 720) # set frame height
@@ -28,7 +28,6 @@ class MovementProcessor:
         return self.cap.read()[1]
 
     def _process_image(self, image):
-
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         hsv = cv2.medianBlur(hsv, 5)
         draw_col = (0,0,255)
@@ -54,7 +53,6 @@ class MovementProcessor:
         return hsv
 
     def _detect_bot(self, hsv_image):
-
         BOT_MIN = np.array([28,8,100], np.uint8)
         BOT_MAX = np.array([32,255,255], np.uint8)
 
@@ -93,7 +91,7 @@ class MovementProcessor:
         return game_loc
 
     def _display_grid_image(self):
-        while(True):
+        while True:
             image = self._capture_image()
             image = self._process_image(image)
             cv2.imshow('Grid Reference', image)

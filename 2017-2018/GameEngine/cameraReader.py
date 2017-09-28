@@ -30,7 +30,7 @@ class InputClient:
 def main():
     loop = asyncio.get_event_loop()
     client = InputClient(loop)
-    processor = MovementProcessor(client, None, 0, loop)
+    processor = MovementProcessor(client, loop=loop)
     client.run()
 
 if __name__ == "__main__":
