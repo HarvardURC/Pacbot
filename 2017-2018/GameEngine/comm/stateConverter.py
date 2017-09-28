@@ -1,5 +1,6 @@
 from pacbot.variables import *
 from . import pacmanState_pb2
+import time
 
 class StateConverter:
 
@@ -65,6 +66,10 @@ class StateConverter:
         proto.pacman.x = game_state.pacbot.pos[0]
         proto.pacman.y = game_state.pacbot.pos[1]
         proto.pacman.direction = StateConverter._directions[game_state.pacbot.direction]
+        proto.elapsed_time = game_state.elapsed_time 
+
+        if game_state.play:
+            proto.elapsed_time += time.time() - game_state.previous_start
 
         for col in game_state.grid:
             for el in col:
