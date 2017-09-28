@@ -11,7 +11,7 @@ class Visualizer:
         self.state = None
         self.print_walls = print_walls
         self.print_pacman = print_pacman
-        self.last_tick = 999
+        self.last_tick = float('inf')
 
         self.dirs = {
             'red': [None, None],
@@ -29,37 +29,37 @@ class Visualizer:
 
         self.sprites = {
             'pacman': {
-                'r': SpriteStripAnim('graphics/pac_t.bmp', (453,0,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'l': SpriteStripAnim('graphics/pac_t.bmp', (455,16,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'u': SpriteStripAnim('graphics/pac_t.bmp', (456,32,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'd': SpriteStripAnim('graphics/pac_t.bmp', (455,47,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
+                'r': SpriteStripAnim(SPRITE_FILE, (453,0,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'l': SpriteStripAnim(SPRITE_FILE, (455,16,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'u': SpriteStripAnim(SPRITE_FILE, (456,32,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'd': SpriteStripAnim(SPRITE_FILE, (455,47,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
             },
             'red': {
-                'r': SpriteStripAnim('graphics/pac_t.bmp', (456,64,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'l': SpriteStripAnim('graphics/pac_t.bmp', (487,64,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'u': SpriteStripAnim('graphics/pac_t.bmp', (520,64,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'd': SpriteStripAnim('graphics/pac_t.bmp', (552,64,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
+                'r': SpriteStripAnim(SPRITE_FILE, (456,64,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'l': SpriteStripAnim(SPRITE_FILE, (487,64,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'u': SpriteStripAnim(SPRITE_FILE, (520,64,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'd': SpriteStripAnim(SPRITE_FILE, (552,64,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
             },
             'orange': {
-                'r': SpriteStripAnim('graphics/pac_t.bmp', (456,112,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'l': SpriteStripAnim('graphics/pac_t.bmp', (487,112,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'u': SpriteStripAnim('graphics/pac_t.bmp', (520,112,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'd': SpriteStripAnim('graphics/pac_t.bmp', (552,112,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
+                'r': SpriteStripAnim(SPRITE_FILE, (456,112,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'l': SpriteStripAnim(SPRITE_FILE, (487,112,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'u': SpriteStripAnim(SPRITE_FILE, (520,112,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'd': SpriteStripAnim(SPRITE_FILE, (552,112,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
             },
             'pink': {
-                'r': SpriteStripAnim('graphics/pac_t.bmp', (456,80,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'l': SpriteStripAnim('graphics/pac_t.bmp', (487,80,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'u': SpriteStripAnim('graphics/pac_t.bmp', (520,80,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'd': SpriteStripAnim('graphics/pac_t.bmp', (552,80,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
+                'r': SpriteStripAnim(SPRITE_FILE, (456,80,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'l': SpriteStripAnim(SPRITE_FILE, (487,80,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'u': SpriteStripAnim(SPRITE_FILE, (520,80,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'd': SpriteStripAnim(SPRITE_FILE, (552,80,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
             },
             'blue': {
-                'r': SpriteStripAnim('graphics/pac_t.bmp', (456,96,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'l': SpriteStripAnim('graphics/pac_t.bmp', (487,96,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'u': SpriteStripAnim('graphics/pac_t.bmp', (520,96,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'd': SpriteStripAnim('graphics/pac_t.bmp', (552,96,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
+                'r': SpriteStripAnim(SPRITE_FILE, (456,96,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'l': SpriteStripAnim(SPRITE_FILE, (487,96,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'u': SpriteStripAnim(SPRITE_FILE, (520,96,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'd': SpriteStripAnim(SPRITE_FILE, (552,96,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
             },
             'frightened': {
-                'r': SpriteStripAnim('graphics/pac_t.bmp', (584,64,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
+                'r': SpriteStripAnim(SPRITE_FILE, (584,64,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
             }
         }
 
@@ -123,13 +123,13 @@ class Visualizer:
         if direction == None:
            return (col_idx * SQUARE_SIZE, row_idx * SQUARE_SIZE)
         elif direction == PacmanState.LEFT:
-            return (self._get_interpolated_pos(col_idx, -1), row_idx * SQUARE_SIZE) 
+            return (self._get_interpolated_pos(col_idx, -1), row_idx * SQUARE_SIZE)
         elif direction == PacmanState.RIGHT:
-            return (self._get_interpolated_pos(col_idx, 1), row_idx * SQUARE_SIZE) 
+            return (self._get_interpolated_pos(col_idx, 1), row_idx * SQUARE_SIZE)
         elif direction == PacmanState.UP:
-            return (col_idx * SQUARE_SIZE, self._get_interpolated_pos(row_idx, -1)) 
+            return (col_idx * SQUARE_SIZE, self._get_interpolated_pos(row_idx, -1))
         else:
-            return (col_idx * SQUARE_SIZE, self._get_interpolated_pos(row_idx, 1)) 
+            return (col_idx * SQUARE_SIZE, self._get_interpolated_pos(row_idx, 1))
 
 
     def _get_draw_pos(self, col_idx, row_idx, old_dir, new_dir):
