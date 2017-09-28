@@ -43,10 +43,12 @@ class GameState:
     def _eat_pellet(self):
         self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] = e
         self.score += pellet_score
+        self.pellets -= 1
 
     def _eat_power_pellet(self):
         self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] = e
         self.score += power_pellet_score
+        self.power_pellets -= 1
         self._become_frightened()
 
     def _update_score(self):
@@ -63,6 +65,10 @@ class GameState:
         self.orange.respawn()
         self.blue.respawn()
 
+    def _end_game(self):
+        self.play = False
+        print("Success: " + str(self.score))
+
     def _die(self):
         if self.lives > 1:
             self._respawn_agents()
@@ -76,8 +82,7 @@ class GameState:
             self.play = False
             self._update_score()
         else:
-            self.play = False
-            print("Success: " + str(self.score))
+            self._end_game() 
 
     def _should_die(self):
         return ((self.red.pos["current"] == self.pacbot.pos and self.red.frightened_counter == 0) or
@@ -97,6 +102,17 @@ class GameState:
             self.score += ghost_score * self.frightened_multiplier
             self.frightened_multiplier += 1
 
+    def _are_all_pellets_eaten(self):
+        return self.pellets == 0 and self.power_pellets == 0
+
+
+    def _is_game_over(self):
+        return (self._are_all_pellets_eaten() and
+                not (self.red.is_frightened() or
+                    self.red.is_frightened() or
+                    self.red.is_frightened() or
+                    self.red.is_frightened()))
+
     def _swap_state_if_necessary(self):
         if self.state_counter in state_swap_times:
             if self.state == chase:
@@ -105,6 +121,8 @@ class GameState:
                 self.state = chase
 
     def next_step(self):
+        if self._is_game_over():
+            self._end_game()
         if self._should_die():
             self._die()
         else:
@@ -127,6 +145,8 @@ class GameState:
 
     def restart(self):
         self.grid = copy.deepcopy(grid)
+        self.pellets = sum([col.count(o) for col in self.grid])
+        self.power_pellets = sum([col.count(O) for col in self.grid])
         self.old_state = chase
         self.state = scatter
         self.frightened_counter = 0
