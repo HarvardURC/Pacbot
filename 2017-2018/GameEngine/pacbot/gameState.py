@@ -109,7 +109,7 @@ class GameState:
             self._die()
         else:
             self._check_if_ghosts_eaten()
-            if self.update_clicks % updates_per_click == 0:
+            if self.update_ticks % ticks_per_update == 0:
                 self._update_ghosts()
                 self._check_if_ghosts_eaten()
                 if self.state == frightened:
@@ -123,7 +123,7 @@ class GameState:
 
 
             self._update_score()
-            self.update_clicks += 1
+            self.update_ticks += 1
 
     def restart(self):
         self.grid = copy.deepcopy(grid)
@@ -136,6 +136,6 @@ class GameState:
         self.play = False
         self.start_counter = 0
         self.state_counter = 0
-        self.update_clicks = 0
+        self.update_ticks = 0
         self.lives = starting_lives
         self._update_score()

@@ -1,4 +1,3 @@
-
 from .syncclient import SyncClient
 
 from .constants import MAGIC_HEADER, SIZE_HEADER

@@ -7,7 +7,7 @@ from comm.stateConverter import StateConverter
 from comm.asyncproto import AsyncProto
 from comm.pacmanState_pb2 import PacmanState
 from comm import pack_msg
-from pacbot.variables import game_frequency, updates_per_click
+from pacbot.variables import game_frequency, ticks_per_update
 
 ADDRESS = os.environ.get("BIND_ADDRESS","")
 PORT = os.environ.get("BIND_PORT", 11297)
@@ -47,12 +47,12 @@ class GameEngine(AsyncProto):
         self.clients.append(writer)
 
     def game_tick(self):
+        self.loop.call_later(1.0/(ticks_per_update*game_frequency), self.game_tick)
         if self.game.play:
             # update_pacbot_pos
             # This will become asynchronous
             self.game.next_step()
         self._write_state()
-        self.loop.call_later(1.0/(updates_per_click*game_frequency), self.game_tick)
 
     def quit(self):
         self.server.close()

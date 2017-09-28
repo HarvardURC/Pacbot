@@ -11,6 +11,15 @@ class Visualizer:
         self.state = None
         self.print_walls = print_walls
         self.print_pacman = print_pacman
+        self.last_tick = float('inf')
+
+        self.dirs = {
+            'red': [None, None],
+            'pink': [None, None],
+            'orange': [None, None],
+            'blue': [None, None],
+            'pacman': [None, None]
+        }
 
         pygame.init()
         # Set up the surface to draw on
@@ -20,37 +29,37 @@ class Visualizer:
 
         self.sprites = {
             'pacman': {
-                'r': SpriteStripAnim('graphics/pac.bmp', (453,0,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'l': SpriteStripAnim('graphics/pac.bmp', (455,16,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'u': SpriteStripAnim('graphics/pac.bmp', (456,32,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'd': SpriteStripAnim('graphics/pac.bmp', (455,47,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
+                'r': SpriteStripAnim(SPRITE_FILE, (453,0,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'l': SpriteStripAnim(SPRITE_FILE, (455,16,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'u': SpriteStripAnim(SPRITE_FILE, (456,32,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'd': SpriteStripAnim(SPRITE_FILE, (455,47,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
             },
             'red': {
-                'r': SpriteStripAnim('graphics/pac.bmp', (456,64,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'l': SpriteStripAnim('graphics/pac.bmp', (487,64,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'u': SpriteStripAnim('graphics/pac.bmp', (520,64,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'd': SpriteStripAnim('graphics/pac.bmp', (552,64,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
+                'r': SpriteStripAnim(SPRITE_FILE, (456,64,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'l': SpriteStripAnim(SPRITE_FILE, (487,64,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'u': SpriteStripAnim(SPRITE_FILE, (520,64,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'd': SpriteStripAnim(SPRITE_FILE, (552,64,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
             },
             'orange': {
-                'r': SpriteStripAnim('graphics/pac.bmp', (456,112,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'l': SpriteStripAnim('graphics/pac.bmp', (487,112,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'u': SpriteStripAnim('graphics/pac.bmp', (520,112,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'd': SpriteStripAnim('graphics/pac.bmp', (552,112,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
+                'r': SpriteStripAnim(SPRITE_FILE, (456,112,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'l': SpriteStripAnim(SPRITE_FILE, (487,112,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'u': SpriteStripAnim(SPRITE_FILE, (520,112,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'd': SpriteStripAnim(SPRITE_FILE, (552,112,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
             },
             'pink': {
-                'r': SpriteStripAnim('graphics/pac.bmp', (456,80,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'l': SpriteStripAnim('graphics/pac.bmp', (487,80,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'u': SpriteStripAnim('graphics/pac.bmp', (520,80,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'd': SpriteStripAnim('graphics/pac.bmp', (552,80,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
+                'r': SpriteStripAnim(SPRITE_FILE, (456,80,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'l': SpriteStripAnim(SPRITE_FILE, (487,80,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'u': SpriteStripAnim(SPRITE_FILE, (520,80,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'd': SpriteStripAnim(SPRITE_FILE, (552,80,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
             },
             'blue': {
-                'r': SpriteStripAnim('graphics/pac.bmp', (456,96,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'l': SpriteStripAnim('graphics/pac.bmp', (487,96,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'u': SpriteStripAnim('graphics/pac.bmp', (520,96,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
-                'd': SpriteStripAnim('graphics/pac.bmp', (552,96,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
+                'r': SpriteStripAnim(SPRITE_FILE, (456,96,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'l': SpriteStripAnim(SPRITE_FILE, (487,96,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'u': SpriteStripAnim(SPRITE_FILE, (520,96,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
+                'd': SpriteStripAnim(SPRITE_FILE, (552,96,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
             },
             'frightened': {
-                'r': SpriteStripAnim('graphics/pac.bmp', (584,64,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
+                'r': SpriteStripAnim(SPRITE_FILE, (584,64,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
             }
         }
 
@@ -65,13 +74,21 @@ class Visualizer:
         This is also a similar model for how the engine will receive data
         from the computer vision.
         """
-        # print("UPDATE:",__import__("time").asctime())
         self.state = msg
 
     def _update_sprites(self):
         for key in self.sprites:
             for dir_key in self.sprites[key]:
                 self.sprites[key][dir_key].iter()
+
+    def _update_dirs(self):
+        for key in self.dirs:
+            self.dirs[key][0] = self.dirs[key][1]
+        self.dirs['red'][1] = self.state.red_ghost.direction
+        self.dirs['pink'][1] = self.state.pink_ghost.direction
+        self.dirs['orange'][1] = self.state.orange_ghost.direction
+        self.dirs['blue'][1] = self.state.blue_ghost.direction
+        self.dirs['pacman'][1] = self.state.pacman.direction
 
     def _clear_screen(self):
         self.surface.fill((0,0,0))
@@ -99,17 +116,42 @@ class Visualizer:
         else:
             return False
 
-    def _print_ghost(self, mode, color, direction, col_idx, row_idx):
+    def _get_interpolated_pos(self, idx, inc):
+        return (idx + inc * (self.state.update_ticks - self.state.ticks_per_update/2.) / self.state.ticks_per_update) * SQUARE_SIZE
+
+    def _get_draw_pos_by_dir(self, col_idx, row_idx, direction):
+        if direction == None:
+           return (col_idx * SQUARE_SIZE, row_idx * SQUARE_SIZE)
+        elif direction == PacmanState.LEFT:
+            return (self._get_interpolated_pos(col_idx, -1), row_idx * SQUARE_SIZE)
+        elif direction == PacmanState.RIGHT:
+            return (self._get_interpolated_pos(col_idx, 1), row_idx * SQUARE_SIZE)
+        elif direction == PacmanState.UP:
+            return (col_idx * SQUARE_SIZE, self._get_interpolated_pos(row_idx, -1))
+        else:
+            return (col_idx * SQUARE_SIZE, self._get_interpolated_pos(row_idx, 1))
+
+
+    def _get_draw_pos(self, col_idx, row_idx, old_dir, new_dir):
+        if self.state.update_ticks > self.state.ticks_per_update/2:
+            return self._get_draw_pos_by_dir(col_idx, row_idx, new_dir)
+        else:
+            return self._get_draw_pos_by_dir(col_idx, row_idx, old_dir)
+
+    def _print_ghost(self, color, direction, col_idx, row_idx):
         if color == Ghosts.RED:
             sprite_set = self.sprites['red']
+            (x, y) = self._get_draw_pos(col_idx, row_idx, self.dirs['red'][0], self.dirs['red'][1])
         elif color == Ghosts.ORANGE:
             sprite_set = self.sprites['orange']
+            (x, y) = self._get_draw_pos(col_idx, row_idx, self.dirs['orange'][0], self.dirs['orange'][1])
         elif color == Ghosts.PINK:
             sprite_set = self.sprites['pink']
+            (x, y) = self._get_draw_pos(col_idx, row_idx, self.dirs['pink'][0], self.dirs['pink'][1])
         else:
             sprite_set = self.sprites['blue']
-        x = int(col_idx * SQUARE_SIZE)
-        y = int(row_idx * SQUARE_SIZE)
+            (x, y) = self._get_draw_pos(col_idx, row_idx, self.dirs['blue'][0], self.dirs['blue'][1])
+
         if self._is_ghost_frightened(color):
             self.surface.blit(pygame.transform.scale(self.sprites['frightened']['r'].next(), (SQUARE_SIZE, SQUARE_SIZE)), (x,y))
         elif direction == PacmanState.LEFT:
@@ -122,8 +164,8 @@ class Visualizer:
             self.surface.blit(pygame.transform.scale(sprite_set['d'].next(), (SQUARE_SIZE, SQUARE_SIZE)), (x,y))
 
     def _print_pacman(self, direction, col_idx, row_idx):
-        x = int(col_idx * SQUARE_SIZE)
-        y = int(row_idx * SQUARE_SIZE)
+        (x, y) = (col_idx * SQUARE_SIZE, row_idx * SQUARE_SIZE)
+
         if direction == PacmanState.LEFT:
             self.surface.blit(pygame.transform.scale(self.sprites['pacman']['l'].next(), (SQUARE_SIZE, SQUARE_SIZE)), (x,y))
         elif direction == PacmanState.RIGHT:
@@ -213,6 +255,8 @@ class Visualizer:
 
         if self.state:
             state = self.state
+            if self.state.update_ticks < self.last_tick:
+                self._update_dirs()
             ## DRAW STUFF HERE
             # reference the internal state last saved by update
             # It could be None before the client receives its first message
@@ -242,16 +286,16 @@ class Visualizer:
             for el in state.grid:
                 # ghosts
                 if (col_idx, row_idx) == (state.red_ghost.x, state.red_ghost.y):
-                    self._print_ghost(state.mode, Ghosts.RED, state.red_ghost.direction, col_idx, GRID_SIZE[1] - row_idx - 1)
+                    self._print_ghost(Ghosts.RED, state.red_ghost.direction, col_idx, GRID_SIZE[1] - row_idx - 1)
 
                 elif (col_idx, row_idx) == (state.orange_ghost.x, state.orange_ghost.y):
-                    self._print_ghost(state.mode, Ghosts.ORANGE, state.orange_ghost.direction, col_idx, GRID_SIZE[1] - row_idx - 1)
+                    self._print_ghost(Ghosts.ORANGE, state.orange_ghost.direction, col_idx, GRID_SIZE[1] - row_idx - 1)
 
                 elif (col_idx, row_idx) == (state.blue_ghost.x, state.blue_ghost.y):
-                    self._print_ghost(state.mode, Ghosts.BLUE, state.blue_ghost.direction, col_idx, GRID_SIZE[1] - row_idx - 1)
+                    self._print_ghost(Ghosts.BLUE, state.blue_ghost.direction, col_idx, GRID_SIZE[1] - row_idx - 1)
 
                 elif (col_idx, row_idx) == (state.pink_ghost.x, state.pink_ghost.y):
-                    self._print_ghost(state.mode, Ghosts.PINK, state.pink_ghost.direction, col_idx, GRID_SIZE[1] - row_idx - 1)
+                    self._print_ghost(Ghosts.PINK, state.pink_ghost.direction, col_idx, GRID_SIZE[1] - row_idx - 1)
 
                 elif (col_idx, row_idx) == (state.pacman.x, state.pacman.y) and self.print_pacman:
                     self._print_pacman(state.pacman.direction, col_idx, GRID_SIZE[1] - row_idx - 1)
@@ -270,6 +314,6 @@ class Visualizer:
 
             self._print_score_and_lives(state.score, state.lives)
 
-
             # Yay flipping the entire display all at once for performance!
             pygame.display.flip()
+            self.last_tick = self.state.update_ticks

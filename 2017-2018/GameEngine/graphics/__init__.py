@@ -1,1 +1,4 @@
-from .visualizer import *
+from .visualizer import Visualizer
+
+__all__ = ["Visualizer"]
+
