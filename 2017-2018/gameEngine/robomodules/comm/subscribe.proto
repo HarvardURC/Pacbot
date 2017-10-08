@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+package mateROV;
+
+message Subscribe {
+  repeated int32 msg_types = 1;
+  required Direction dir = 2;
+
+  enum Direction {
+    SUBSCRIBE = 0;
+    UNSUBSCRIBE = 1;
+  }
+}

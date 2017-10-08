@@ -1,15 +1,11 @@
-from enum import Enum
-from .pacmanState_pb2 import PacmanState
 import struct, asyncio
-
-from .asyncproto import AsyncProto
-
-class MessageType(Enum):
-    FULL_STATE = 0
-    AGENT = 1
+from enum import Enum
+from .asyncProto import AsyncProto
+from .subscribe_pb2 import Subscribe
+from .constants import _SUBSCRIBE
 
 class AsyncClient(AsyncProto):
-    def __init__(self, addr, port, cb, loop=None, msg_type=MessageType.FULL_STATE):
+    def __init__(self, addr, port, cb, message_buffers, MsgType, subscriptions, loop=None):
         """
         cb must be a function that takes a single argument and processes it
 
@@ -21,8 +17,10 @@ class AsyncClient(AsyncProto):
         self.loop = loop or asyncio.get_event_loop()
         self.addr = addr
         self.port = port
+        self.subscriptions = subscriptions
         self.update = cb
-        self.msg_type = msg_type
+        self.MsgType = MsgType
+        self.message_buffers = message_buffers
 
     def connect(self):
         coro = self.loop.create_connection(lambda: self, self.addr, self.port)
@@ -34,13 +32,27 @@ class AsyncClient(AsyncProto):
         if not self.loop.is_running():
             self.loop.run_until_complete(coro)
 
-    def msg_received(self, data):
-        if self.msg_type == MessageType.FULL_STATE:
-            msg = PacmanState()
-        else:
-            msg = PacmanState.AgentState()
-        msg.ParseFromString(data)
-        self.update(msg)
+    def connection_made(self, transport):
+        super().connection_made(transport)
+        if len(self.subscriptions) > 0:
+            self.subscribe(self.subscriptions, Subscribe.SUBSCRIBE)
+
+    def msg_received(self, data, msg_type):
+        if msg_type != _SUBSCRIBE:
+            msg = self.message_buffers[self.MsgType(msg_type)]()
+            msg.ParseFromString(data)
+            self.update(msg, self.MsgType(msg_type))
+
+    def write(self, msg, msg_type):
+        super().write(msg, msg_type)
+
+    def subscribe(self, msg_types, direction):
+        msg = Subscribe()
+        for msg_type in msg_types:
+            msg.msg_types.append(msg_type.value)
+        msg.dir = direction
+        self.write(msg.SerializeToString(), _SUBSCRIBE)
+
 
     # Yay also a context manager
     __enter__ = connect

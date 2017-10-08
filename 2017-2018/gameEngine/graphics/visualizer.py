@@ -1,12 +1,12 @@
-import pygame, asyncio
-from comm.pacmanState_pb2 import PacmanState
+import robomodules as rm
+from messages import *
 from .variables import *
 from .spriteStripAnim import *
 
-class Visualizer:
-    def __init__(self, print_walls, print_pacman, loop=None):
-        self.loop = loop or asyncio.get_event_loop()
-        self.loop.call_soon(self.draw)
+class Visualizer(rm.ProtoModule):
+    def __init__(self, addr, port, print_walls, print_pacman):
+        self.subscriptions = [MsgType.FULL_STATE]
+        super().__init__(addr, port, message_buffers, MsgType, self.subscriptions)
 
         self.state = None
         self.print_walls = print_walls
@@ -26,7 +26,12 @@ class Visualizer:
         # This should also be used in Visualizer.draw()
         self.surface = pygame.display.set_mode((GRID_SIZE[0]*SQUARE_SIZE, GRID_SIZE[1]*SQUARE_SIZE))
         pygame.display.set_caption("PACBOT")
+        self.font = pygame.font.Font('graphics/crackman.ttf', int(SQUARE_SIZE))
 
+        self._init_sprites()
+
+
+    def _init_sprites(self):
         self.sprites = {
             'pacman': {
                 'r': SpriteStripAnim(SPRITE_FILE, (453,0,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY))),
@@ -62,19 +67,6 @@ class Visualizer:
                 'r': SpriteStripAnim(SPRITE_FILE, (584,64,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
             }
         }
-
-        self.font = pygame.font.Font('graphics/crackman.ttf', int(SQUARE_SIZE))
-
-    def update(self, msg):
-        """
-        This will be called when a new message is received.
-
-        It should update internal state but not *do* anything.
-
-        This is also a similar model for how the engine will receive data
-        from the computer vision.
-        """
-        self.state = msg
 
     def _update_sprites(self):
         for key in self.sprites:
@@ -242,17 +234,21 @@ class Visualizer:
             pygame.draw.rect(self.surface, pygame.Color(*black_color), pygame.Rect(x+int(SQUARE_SIZE/4),
                 y+int(SQUARE_SIZE/4), int(SQUARE_SIZE/2)+1, int(SQUARE_SIZE/2)+1))
 
-    def draw(self):
-        self.loop.call_later(DISPLAY_FREQUENCY, self.draw)
-        # I'm assuming we don't need to process any input via pygame here
-        # This call is still necessarily to make the window manager happy
-        # This has to be called regularly once the window is open or the
-        # system will think the program has frozen.
+
+    def msg_received(self, msg, msg_type):
+        # This gets called whenever any message is received
+        if msg_type == MsgType.FULL_STATE:
+            self.state = msg
+
+    def tick(self):
+        # this function will get called in a loop with FREQUENCY frequency
+        self.loop.call_later(1.0/DISPLAY_FREQUENCY, self.tick)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.loop.call_soon(pygame.quit)
                 self.loop.stop()
-
+        
         if self.state:
             state = self.state
             if self.state.update_ticks < self.last_tick:

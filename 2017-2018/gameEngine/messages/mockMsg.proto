@@ -1,0 +1,8 @@
+syntax = "proto2";
+
+package mateROV;
+
+message MockMsg {
+
+  required int32 mockValue = 1;
+}
