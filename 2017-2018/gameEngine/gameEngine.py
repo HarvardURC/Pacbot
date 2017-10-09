@@ -51,9 +51,10 @@ class GameEngine(rm.ProtoModule):
         elif char == "p":
             if (self.game.play):
                 logging.info('Game is paused')
+                self.game.pause()
             else:
                 logging.info('Game resumed')
-            self.game.play = not self.game.play
+                self.game.unpause()
         elif char == "q":
             logging.info("Quitting...")
             self.quit() 
