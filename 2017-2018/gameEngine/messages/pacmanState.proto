@@ -23,6 +23,7 @@ message PacmanState {
   required int32 lives = 11;
   required int32 update_ticks = 12;
   required int32 ticks_per_update = 13;
+  optional float elapsed_time = 14;
 
   enum GameMode {
     CHASE = 0;

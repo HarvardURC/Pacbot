@@ -1,5 +1,6 @@
 from .variables import *
 from messages.pacmanState_pb2 import PacmanState
+import time
 
 class StateConverter:
 
@@ -41,6 +42,10 @@ class StateConverter:
         proto.lives = game_state.lives
         proto.update_ticks = (game_state.update_ticks - 1) % ticks_per_update
         proto.ticks_per_update = ticks_per_update 
+        proto.elapsed_time = game_state.elapsed_time
+
+        if game_state.play:
+            proto.elapsed_time += time.time() - game_state.previous_start
 
         proto.red_ghost.x = game_state.red.pos['current'][0]
         proto.red_ghost.y = game_state.red.pos['current'][1]
