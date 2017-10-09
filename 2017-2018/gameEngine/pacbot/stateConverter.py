@@ -1,39 +1,39 @@
-from pacbot.variables import *
-from . import pacmanState_pb2
+from .variables import *
+from messages.pacmanState_pb2 import PacmanState
 
 class StateConverter:
 
     _directions = {}
-    _directions[right] = pacmanState_pb2.PacmanState.RIGHT
-    _directions[left] = pacmanState_pb2.PacmanState.LEFT
-    _directions[up] = pacmanState_pb2.PacmanState.UP
-    _directions[down] = pacmanState_pb2.PacmanState.DOWN
+    _directions[right] = PacmanState.RIGHT
+    _directions[left] = PacmanState.LEFT
+    _directions[up] = PacmanState.UP
+    _directions[down] = PacmanState.DOWN
 
     @classmethod
     def _parse_game_mode(cls, mode, play):
         if not play:
-            return pacmanState_pb2.PacmanState.PAUSED
+            return PacmanState.PAUSED
         elif mode == scatter:
-            return  pacmanState_pb2.PacmanState.SCATTER
+            return  PacmanState.SCATTER
         elif mode == chase:
-            return  pacmanState_pb2.PacmanState.CHASE
+            return  PacmanState.CHASE
         else:
-            return  pacmanState_pb2.PacmanState.FRIGHTENED
+            return  PacmanState.FRIGHTENED
 
     @classmethod
     def _parse_grid_element(cls, el):
         if el == I:
-            return pacmanState_pb2.PacmanState.WALL
+            return PacmanState.WALL
         elif el == o:
-            return pacmanState_pb2.PacmanState.PELLET
+            return PacmanState.PELLET
         elif el == O:
-            return pacmanState_pb2.PacmanState.POWER_PELLET
+            return PacmanState.POWER_PELLET
         else:
-            return pacmanState_pb2.PacmanState.EMPTY
+            return PacmanState.EMPTY
 
     @classmethod
     def convert_game_state_to_proto(cls, game_state):
-        proto = pacmanState_pb2.PacmanState()
+        proto = PacmanState()
         proto.mode = StateConverter._parse_game_mode(game_state.state, game_state.play)
         proto.frightened_timer = game_state.frightened_counter
         proto.score = game_state.score

@@ -1,28 +1,20 @@
 import numpy as np
+import cv2
+import robomodules as rm
 from pacbot.grid import grid
-from comm.pacmanState_pb2 import PacmanState
-import asyncio, cv2
+from messages import *
 
 FREQUENCY = 60
 
-class MovementProcessor:
-    def __init__(self, client, edges=None, cam_number=0, loop=None):
-        self.client = client
-        self.loop = loop or asyncio.get_event_loop()
-        self.loop.call_soon(self.tick)
+class MovementProcessor(rm.ProtoModule):
+    def __init__(self, addr, port):
+        self.subscriptions = []
+        super().__init__(addr, port, message_buffers, MsgType, self.subscriptions)
+
         self.edges = edges or {'l':342, 'r':1185,'u':-8,'d':749}
         self.cap = cv2.VideoCapture(cam_number) # set camera
         self.cap.set(3, 1280) # set frame width
         self.cap.set(4, 720) # set frame height
-
-    def tick(self):
-        bot_loc = self._get_bot_location()
-        buf = PacmanState.AgentState()
-        buf.x = bot_loc[0]
-        buf.y = bot_loc[1]
-        self.client.write(buf.SerializeToString())
-        self._display_grid_image()
-        self.loop.call_later(1/FREQUENCY, self.tick)
 
     def _capture_image(self):
         return self.cap.read()[1]
@@ -99,3 +91,20 @@ class MovementProcessor:
                 break
         cap.release()
         cv2.destroyAllWindows()
+
+    def msg_received(self, msg, msg_type):
+        # This gets called whenever any message is received
+        # This module only sends data, so we ignore incoming messages
+        return
+
+
+    def tick(self):
+        self.loop.call_later(1.0/FREQUENCY, self.tick)
+        bot_loc = self._get_bot_location()
+        buf = PacmanState.AgentState()
+        buf.x = bot_loc[0]
+        buf.y = bot_loc[1]
+        self.client.write(buf.SerializeToString(), MsgType.PACMAN_LOCATION)
+        self._display_grid_image()
+
+
