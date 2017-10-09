@@ -1,2 +1,2 @@
-protobuf: mockMsg.proto
-	protoc -I=./ --python_out=./ ./mockMsg.proto
+protobuf: pacmanState.proto
+	protoc -I=./ --python_out=./ ./pacmanState.proto
