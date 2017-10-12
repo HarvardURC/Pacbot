@@ -85,16 +85,22 @@ class Visualizer(rm.ProtoModule):
     def _clear_screen(self):
         self.surface.fill((0,0,0))
 
-    def _print_score_and_lives(self, score, lives):
-        score_surf_1 = self.font.render('score:', True, dark_blue_color)
-        self.surface.blit(score_surf_1, (SQUARE_SIZE*23.5, SQUARE_SIZE*11))
+    def _print_score_lives_time(self, score, lives, time):
+        score_surf_1 = self.font.render('Score:', True, dark_blue_color)
+        self.surface.blit(score_surf_1, (SQUARE_SIZE*23.5, SQUARE_SIZE*10))
         score_surf_2 = self.font.render('{}'.format(score), True, dark_blue_color)
-        self.surface.blit(score_surf_2, (SQUARE_SIZE*23.5, SQUARE_SIZE*12))
+        self.surface.blit(score_surf_2, (SQUARE_SIZE*23.5, SQUARE_SIZE*11))
 
-        lives_surf_1 = self.font.render('lives:', True, dark_blue_color)
-        self.surface.blit(lives_surf_1, (SQUARE_SIZE*23.5, SQUARE_SIZE*14))
+        lives_surf_1 = self.font.render('Lives:', True, dark_blue_color)
+        self.surface.blit(lives_surf_1, (SQUARE_SIZE*23.5, SQUARE_SIZE*13))
         lives_surf_2 = self.font.render('{}'.format(lives), True, dark_blue_color)
-        self.surface.blit(lives_surf_2, (SQUARE_SIZE*23.5, SQUARE_SIZE*15))
+        self.surface.blit(lives_surf_2, (SQUARE_SIZE*23.5, SQUARE_SIZE*14))
+
+        time_surf_1 = self.font.render('Time:', True, dark_blue_color)
+        self.surface.blit(time_surf_1, (SQUARE_SIZE*23.5, SQUARE_SIZE*16))
+        time_surf_2 = self.font.render('{0:.2f}s'.format(time), True, dark_blue_color)
+        self.surface.blit(time_surf_2, (SQUARE_SIZE*23.5, SQUARE_SIZE*17))
+
 
     def _is_ghost_frightened(self, color):
         if color == Ghosts.RED:
@@ -306,7 +312,7 @@ class Visualizer(rm.ProtoModule):
                     row_idx = 0
                     col_idx += 1
 
-            self._print_score_and_lives(state.score, state.lives)
+            self._print_score_lives_time(state.score, state.lives, state.elapsed_time)
 
             # Yay flipping the entire display all at once for performance!
             pygame.display.flip()

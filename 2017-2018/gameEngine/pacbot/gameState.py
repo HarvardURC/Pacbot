@@ -3,7 +3,7 @@ from .ghostpaths import *
 from .ghostAgent import *
 from .pacbot import *
 from .grid import grid
-import copy
+import copy, time
 
 class GameState:
     def __init__(self):
@@ -67,7 +67,8 @@ class GameState:
 
     def _end_game(self):
         self.play = False
-        print("Success: " + str(self.score))
+        print("Sore: " + str(self.score))
+        print("Time: " + str(self.elapsed_time))
 
     def _die(self):
         if self.lives > 1:
@@ -79,7 +80,7 @@ class GameState:
             self.state = scatter
             self.frightened_counter = 0
             self.frightened_multiplier = 1
-            self.play = False
+            seld.pause()
             self._update_score()
         else:
             self._end_game() 
@@ -120,6 +121,14 @@ class GameState:
             else:
                 self.state = chase
 
+    def pause(self):
+        self.elapsed_time += time.time() - self.previous_start
+        self.play = False
+
+    def unpause(self):
+        self.previous_start = time.time()
+        self.play = True
+
     def next_step(self):
         if self._is_game_over():
             self._end_game()
@@ -158,4 +167,5 @@ class GameState:
         self.state_counter = 0
         self.update_ticks = 0
         self.lives = starting_lives
+        self.elapsed_time = 0
         self._update_score()
