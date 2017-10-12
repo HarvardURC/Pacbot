@@ -15,7 +15,7 @@ FREQUENCY = SPEED * game_frequency
 class InputModule(rm.ProtoModule):
     def __init__(self, addr, port):
         self.subscriptions = [MsgType.FULL_STATE]
-        super().__init__(addr, port, message_buffers, MsgType, self.subscriptions)
+        super().__init__(addr, port, message_buffers, MsgType, FREQUENCY, self.subscriptions)
 
         self.loop.add_reader(sys.stdin, self.keypress)
         self.pacbot_pos = [pacbot_starting_pos[0], pacbot_starting_pos[1]]
@@ -59,8 +59,6 @@ class InputModule(rm.ProtoModule):
 
     def tick(self):
         # this function will get called in a loop with FREQUENCY frequency
-        self.loop.call_later(1.0/FREQUENCY, self.tick)
-
         if self.state.mode != PacmanState.PAUSED:
             if not self._move_if_valid_dir(self.next_dir, self.pacbot_pos[0], self.pacbot_pos[1]):
                 self._move_if_valid_dir(self.cur_dir, self.pacbot_pos[0], self.pacbot_pos[1])

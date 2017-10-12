@@ -8,8 +8,7 @@ FREQUENCY = 60
 
 class MovementProcessor(rm.ProtoModule):
     def __init__(self, addr, port):
-        self.subscriptions = []
-        super().__init__(addr, port, message_buffers, MsgType, self.subscriptions)
+        super().__init__(addr, port, message_buffers, MsgType, FREQUENCY)
 
         self.edges = edges or {'l':342, 'r':1185,'u':-8,'d':749}
         self.cap = cv2.VideoCapture(cam_number) # set camera
@@ -99,7 +98,6 @@ class MovementProcessor(rm.ProtoModule):
 
 
     def tick(self):
-        self.loop.call_later(1.0/FREQUENCY, self.tick)
         bot_loc = self._get_bot_location()
         buf = PacmanState.AgentState()
         buf.x = bot_loc[0]

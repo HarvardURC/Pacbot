@@ -6,7 +6,7 @@ from .spriteStripAnim import *
 class Visualizer(rm.ProtoModule):
     def __init__(self, addr, port, print_walls, print_pacman):
         self.subscriptions = [MsgType.FULL_STATE]
-        super().__init__(addr, port, message_buffers, MsgType, self.subscriptions)
+        super().__init__(addr, port, message_buffers, MsgType, DISPLAY_FRQUENCY, self.subscriptions)
 
         self.state = None
         self.print_walls = print_walls
@@ -241,9 +241,7 @@ class Visualizer(rm.ProtoModule):
             self.state = msg
 
     def tick(self):
-        # this function will get called in a loop with FREQUENCY frequency
-        self.loop.call_later(1.0/DISPLAY_FREQUENCY, self.tick)
-
+        # this function will get called in a loop with DISPLAY_FREQUENCY frequency
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.loop.call_soon(pygame.quit)
