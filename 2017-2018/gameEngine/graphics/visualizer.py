@@ -6,7 +6,7 @@ from .spriteStripAnim import *
 class Visualizer(rm.ProtoModule):
     def __init__(self, addr, port, print_walls, print_pacman):
         self.subscriptions = [MsgType.FULL_STATE]
-        super().__init__(addr, port, message_buffers, MsgType, DISPLAY_FRQUENCY, self.subscriptions)
+        super().__init__(addr, port, message_buffers, MsgType,DISPLAY_FREQUENCY, self.subscriptions)
 
         self.state = None
         self.print_walls = print_walls
