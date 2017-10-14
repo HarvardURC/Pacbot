@@ -1,3 +1,6 @@
 [submodule "2017-2018/gameEngine/robomodules"]
 	path = 2017-2018/gameEngine/robomodules
 	url = https://github.com/HarvardURC/robomodules.git
+[submodule "2017-2018/botCode/robomodules"]
+	path = 2017-2018/botCode/robomodules
+	url = https://github.com/HarvardURC/robomodules.git

@@ -20,8 +20,11 @@ class GameEngine(rm.ProtoModule):
         self.game = GameState()
 
     def _write_state(self):
-        protobuf = StateConverter.convert_game_state_to_proto(self.game)
-        self.write(protobuf.SerializeToString(), MsgType.FULL_STATE)
+        full_state = StateConverter.convert_game_state_to_full(self.game)
+        self.write(full_state.SerializeToString(), MsgType.FULL_STATE)
+
+        light_state = StateConverter.convert_game_state_to_light(self.game)
+        self.write(light_state.SerializeToString(), MsgType.LIGHT_STATE)
 
     def msg_received(self, msg, msg_type):
         if msg_type == MsgType.PACMAN_LOCATION:

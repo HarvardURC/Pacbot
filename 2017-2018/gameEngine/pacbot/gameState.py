@@ -80,7 +80,7 @@ class GameState:
             self.state = scatter
             self.frightened_counter = 0
             self.frightened_multiplier = 1
-            seld.pause()
+            self.pause()
             self._update_score()
         else:
             self._end_game() 
