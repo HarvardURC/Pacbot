@@ -17,16 +17,16 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='lightState.proto',
-  package='gameEngine',
+  package='botCode',
   syntax='proto2',
-  serialized_pb=_b('\n\x10lightState.proto\x12\ngameEngine\"\x8e\x04\n\nLightState\x12\x31\n\x06pacman\x18\x01 \x02(\x0b\x32!.gameEngine.LightState.AgentState\x12\x34\n\tred_ghost\x18\x02 \x02(\x0b\x32!.gameEngine.LightState.AgentState\x12\x35\n\npink_ghost\x18\x03 \x02(\x0b\x32!.gameEngine.LightState.AgentState\x12\x37\n\x0corange_ghost\x18\x04 \x02(\x0b\x32!.gameEngine.LightState.AgentState\x12\x35\n\nblue_ghost\x18\x05 \x02(\x0b\x32!.gameEngine.LightState.AgentState\x12-\n\x04mode\x18\x06 \x02(\x0e\x32\x1f.gameEngine.LightState.GameMode\x12\r\n\x05score\x18\x08 \x02(\x05\x12\r\n\x05lives\x18\x0b \x02(\x05\x1aT\n\nAgentState\x12\t\n\x01x\x18\x01 \x02(\x05\x12\t\n\x01y\x18\x02 \x02(\x05\x12\x30\n\x05state\x18\x04 \x01(\x0e\x32!.gameEngine.LightState.GhostState\"#\n\x08GameMode\x12\x0b\n\x07RUNNING\x10\x00\x12\n\n\x06PAUSED\x10\x01\"(\n\nGhostState\x12\n\n\x06NORMAL\x10\x00\x12\x0e\n\nFRIGHTENED\x10\x01')
+  serialized_pb=_b('\n\x10lightState.proto\x12\x07\x62otCode\"\xf9\x03\n\nLightState\x12.\n\x06pacman\x18\x01 \x02(\x0b\x32\x1e.botCode.LightState.AgentState\x12\x31\n\tred_ghost\x18\x02 \x02(\x0b\x32\x1e.botCode.LightState.AgentState\x12\x32\n\npink_ghost\x18\x03 \x02(\x0b\x32\x1e.botCode.LightState.AgentState\x12\x34\n\x0corange_ghost\x18\x04 \x02(\x0b\x32\x1e.botCode.LightState.AgentState\x12\x32\n\nblue_ghost\x18\x05 \x02(\x0b\x32\x1e.botCode.LightState.AgentState\x12*\n\x04mode\x18\x06 \x02(\x0e\x32\x1c.botCode.LightState.GameMode\x12\r\n\x05score\x18\x08 \x02(\x05\x12\r\n\x05lives\x18\x0b \x02(\x05\x1aQ\n\nAgentState\x12\t\n\x01x\x18\x01 \x02(\x05\x12\t\n\x01y\x18\x02 \x02(\x05\x12-\n\x05state\x18\x04 \x01(\x0e\x32\x1e.botCode.LightState.GhostState\"#\n\x08GameMode\x12\x0b\n\x07RUNNING\x10\x00\x12\n\n\x06PAUSED\x10\x01\"(\n\nGhostState\x12\n\n\x06NORMAL\x10\x00\x12\x0e\n\nFRIGHTENED\x10\x01')
 )
 
 
 
 _LIGHTSTATE_GAMEMODE = _descriptor.EnumDescriptor(
   name='GameMode',
-  full_name='gameEngine.LightState.GameMode',
+  full_name='botCode.LightState.GameMode',
   filename=None,
   file=DESCRIPTOR,
   values=[
@@ -41,14 +41,14 @@ _LIGHTSTATE_GAMEMODE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=482,
-  serialized_end=517,
+  serialized_start=458,
+  serialized_end=493,
 )
 _sym_db.RegisterEnumDescriptor(_LIGHTSTATE_GAMEMODE)
 
 _LIGHTSTATE_GHOSTSTATE = _descriptor.EnumDescriptor(
   name='GhostState',
-  full_name='gameEngine.LightState.GhostState',
+  full_name='botCode.LightState.GhostState',
   filename=None,
   file=DESCRIPTOR,
   values=[
@@ -63,35 +63,35 @@ _LIGHTSTATE_GHOSTSTATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=519,
-  serialized_end=559,
+  serialized_start=495,
+  serialized_end=535,
 )
 _sym_db.RegisterEnumDescriptor(_LIGHTSTATE_GHOSTSTATE)
 
 
 _LIGHTSTATE_AGENTSTATE = _descriptor.Descriptor(
   name='AgentState',
-  full_name='gameEngine.LightState.AgentState',
+  full_name='botCode.LightState.AgentState',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='x', full_name='gameEngine.LightState.AgentState.x', index=0,
+      name='x', full_name='botCode.LightState.AgentState.x', index=0,
       number=1, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='y', full_name='gameEngine.LightState.AgentState.y', index=1,
+      name='y', full_name='botCode.LightState.AgentState.y', index=1,
       number=2, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='state', full_name='gameEngine.LightState.AgentState.state', index=2,
+      name='state', full_name='botCode.LightState.AgentState.state', index=2,
       number=4, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -109,68 +109,68 @@ _LIGHTSTATE_AGENTSTATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=396,
-  serialized_end=480,
+  serialized_start=375,
+  serialized_end=456,
 )
 
 _LIGHTSTATE = _descriptor.Descriptor(
   name='LightState',
-  full_name='gameEngine.LightState',
+  full_name='botCode.LightState',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='pacman', full_name='gameEngine.LightState.pacman', index=0,
+      name='pacman', full_name='botCode.LightState.pacman', index=0,
       number=1, type=11, cpp_type=10, label=2,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='red_ghost', full_name='gameEngine.LightState.red_ghost', index=1,
+      name='red_ghost', full_name='botCode.LightState.red_ghost', index=1,
       number=2, type=11, cpp_type=10, label=2,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='pink_ghost', full_name='gameEngine.LightState.pink_ghost', index=2,
+      name='pink_ghost', full_name='botCode.LightState.pink_ghost', index=2,
       number=3, type=11, cpp_type=10, label=2,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='orange_ghost', full_name='gameEngine.LightState.orange_ghost', index=3,
+      name='orange_ghost', full_name='botCode.LightState.orange_ghost', index=3,
       number=4, type=11, cpp_type=10, label=2,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='blue_ghost', full_name='gameEngine.LightState.blue_ghost', index=4,
+      name='blue_ghost', full_name='botCode.LightState.blue_ghost', index=4,
       number=5, type=11, cpp_type=10, label=2,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='mode', full_name='gameEngine.LightState.mode', index=5,
+      name='mode', full_name='botCode.LightState.mode', index=5,
       number=6, type=14, cpp_type=8, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='score', full_name='gameEngine.LightState.score', index=6,
+      name='score', full_name='botCode.LightState.score', index=6,
       number=8, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='lives', full_name='gameEngine.LightState.lives', index=7,
+      name='lives', full_name='botCode.LightState.lives', index=7,
       number=11, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -190,8 +190,8 @@ _LIGHTSTATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=33,
-  serialized_end=559,
+  serialized_start=30,
+  serialized_end=535,
 )
 
 _LIGHTSTATE_AGENTSTATE.fields_by_name['state'].enum_type = _LIGHTSTATE_GHOSTSTATE
@@ -212,12 +212,12 @@ LightState = _reflection.GeneratedProtocolMessageType('LightState', (_message.Me
   AgentState = _reflection.GeneratedProtocolMessageType('AgentState', (_message.Message,), dict(
     DESCRIPTOR = _LIGHTSTATE_AGENTSTATE,
     __module__ = 'lightState_pb2'
-    # @@protoc_insertion_point(class_scope:gameEngine.LightState.AgentState)
+    # @@protoc_insertion_point(class_scope:botCode.LightState.AgentState)
     ))
   ,
   DESCRIPTOR = _LIGHTSTATE,
   __module__ = 'lightState_pb2'
-  # @@protoc_insertion_point(class_scope:gameEngine.LightState)
+  # @@protoc_insertion_point(class_scope:botCode.LightState)
   ))
 _sym_db.RegisterMessage(LightState)
 _sym_db.RegisterMessage(LightState.AgentState)
