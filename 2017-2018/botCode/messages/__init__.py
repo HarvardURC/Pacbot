@@ -1,7 +1,7 @@
 from enum import Enum
 from .lightState_pb2 import LightState
-from .pacmanState.proto import PacmanState
-from .pacmanCommand.proto import PacmanCommand
+from .pacmanState_pb2 import PacmanState
+from .pacmanCommand_pb2 import PacmanCommand
 
 
 class MsgType(Enum):

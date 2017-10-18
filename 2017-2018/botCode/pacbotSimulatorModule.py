@@ -4,15 +4,15 @@ import os
 import robomodules as rm
 from messages import MsgType, message_buffers, PacmanState
 
-ADDRESS = os.environ.get("BIND_ADDRESS","localhost")
-PORT = os.environ.get("BIND_PORT", 11297)
+ADDRESS = os.environ.get("LOCAL_ADDRESS","localhost")
+PORT = os.environ.get("LOCAL_PORT", 11295)
 
-class PacbotSimulatorModule(rm.protoModule):
+
+class PacbotSimulatorModule(rm.ProtoModule):
     def __init__(self, addr, port):
         self.subscriptions = [MsgType.PACMAN_COMMAND]
         super().__init__(addr, port, message_buffers, MsgType, self.subscriptions)  # Frequency is 0 by default
         self.current_location = (14, 7)  # I can't figure out how to import the starting location of pacbot
-
 
     def msg_received(self, msg, msg_type):
         if msg_type == MsgType.PacmanCommand:
