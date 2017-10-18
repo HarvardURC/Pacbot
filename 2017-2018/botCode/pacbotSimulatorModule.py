@@ -7,7 +7,7 @@ from messages import MsgType, message_buffers, PacmanState
 ADDRESS = os.environ.get("BIND_ADDRESS","localhost")
 PORT = os.environ.get("BIND_PORT", 11297)
 
-class pacbotSimulatorModule(rm.protoModule):
+class PacbotSimulatorModule(rm.protoModule):
     def __init__(self, addr, port):
         self.subscriptions = [MsgType.PACMAN_COMMAND]
         super().__init__(addr, port, message_buffers, MsgType, self.subscriptions)  # Frequency is 0 by default
@@ -38,3 +38,10 @@ class pacbotSimulatorModule(rm.protoModule):
 
     def tick(self):
         return
+
+def main():
+    module = PacbotSimulatorModule(ADDRESS, PORT)
+    module.run()
+
+if __name__ == "__main__":
+    main()
