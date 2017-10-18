@@ -4,8 +4,8 @@ from .lightState_pb2 import LightState
 
 class MsgType(Enum):
     LIGHT_STATE = 0
-    FULL_STATE = 1
-    PACMAN_LOCATION = 2
+    PACMAN_LOCATION = 1
+    FULL_STATE = 2
 
 message_buffers = {
     MsgType.FULL_STATE: PacmanState,
