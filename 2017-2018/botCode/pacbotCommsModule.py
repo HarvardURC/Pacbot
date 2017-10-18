@@ -40,7 +40,7 @@ class PacbotCommsModule(rm.ProtoModule):
 
     def msg_received(self, msg, msg_type):
         # This gets called whenever any message is received
-        return 
+        return
 
     def tick(self):
         # Get state from the server
