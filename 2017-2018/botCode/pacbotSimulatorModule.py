@@ -24,8 +24,8 @@ class PacbotSimulatorModule(rm.ProtoModule):
             self.current_command = msg.Direction
 
     def tick(self):
-        curr_x = self.current_location[1]
-        curr_y = self.current_location[2]
+        curr_x = self.current_location[0]
+        curr_y = self.current_location[1]
         # Update Pacman's location based on the command
         if self.current_command == 1:
             self.current_location = (curr_x, curr_y + 1)
@@ -38,8 +38,8 @@ class PacbotSimulatorModule(rm.ProtoModule):
 
         # Create a new PacmanState message and broadcast the new location
         new_msg = PacmanState.AgentState()
-        new_msg.x = self.current_location[1]
-        new_msg.y = self.current_location[2]
+        new_msg.x = self.current_location[0]
+        new_msg.y = self.current_location[1]
         self.current_message = new_msg
         self.write(self.current_message.SerializeToString(), MsgType.PACMAN_LOCATION)
 
