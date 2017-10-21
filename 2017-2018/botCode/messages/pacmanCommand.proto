@@ -4,6 +4,8 @@ package botCode;
 
 message PacmanCommand {
 
+  required Direction dir = 1;
+
   enum Direction {
     STOP = 0;
     NORTH = 1;
