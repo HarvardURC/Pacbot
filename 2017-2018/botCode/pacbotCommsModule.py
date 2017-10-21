@@ -33,14 +33,15 @@ class PacbotServerClient(rm.ProtoModule):
 
 class PacbotCommsModule(rm.ProtoModule):
     def __init__(self, server_addr, server_port, local_addr, local_port):
-        self.subscriptions = []
+        self.subscriptions = [MsgType.PACMAN_LOCATION]
         super().__init__(local_addr, local_port, message_buffers, MsgType, LOCAL_FREQUENCY, self.subscriptions)
         self.server_module = PacbotServerClient(server_addr, server_port, self.loop)
         self.server_module.connect()
 
     def msg_received(self, msg, msg_type):
         # This gets called whenever any message is received
-        return
+        if msg_type == MsgType.PACMAN_LOCATION:
+            self.server_module.write(msg.SerializeToString(), MsgType.PACMAN_LOCATION)
 
     def tick(self):
         # Get state from the server

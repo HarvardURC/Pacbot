@@ -2,9 +2,9 @@
 
 import os, copy
 import robomodules as rm
-import variables as var
-from .grid import grid
-from .search import bfs
+from variables import *
+from grid import grid
+from search import bfs
 from messages import MsgType, message_buffers, LightState, PacmanCommand
 
 ADDRESS = os.environ.get("LOCAL_ADDRESS","localhost")
@@ -23,14 +23,14 @@ class BasicHighLevelModule(rm.ProtoModule):
     def _get_direction(self, pac_loc, next_loc):
         if pac_loc.x == next_loc[0]:
             if pac_loc.y < next_loc[1]:
-                return PacmanCommand.Direction.NORTH
+                return PacmanCommand.NORTH
             else:
-                return PacmanCommand.Direction.SOUTH
+                return PacmanCommand.SOUTH
         else:
             if pac_loc.x < next_loc[0]:
-                return PacmanCommand.Direction.EAST
+                return PacmanCommand.EAST
             else:
-                return PacmanCommand.Direction.WEST
+                return PacmanCommand.WEST
 
 
     def msg_received(self, msg, msg_type):
@@ -38,25 +38,26 @@ class BasicHighLevelModule(rm.ProtoModule):
             self.state = msg
 
     def tick(self):
-        if self.state and self.state.mode == LightState.GameMode.RUNNING:
+        if self.state and self.state.mode == LightState.RUNNING:
 
             # update game state
             if self.grid[self.state.pacman.x][self.state.pacman.y] in [o, O]:
                 self.grid[self.state.pacman.x][self.state.pacman.y] = e
 
             path = bfs(self.grid, self.state, [o, O])
+            print(path)
 
             if path != None:
                 next_loc = path[1]
                 # Figure out position we need to move
                 new_msg = PacmanCommand()
                 new_msg.dir = self._get_direction(self.state.pacman, next_loc)
-                self.write(new_msg.SerializeToString, PACMAN_COMMAND)
+                self.write(new_msg.SerializeToString(), MsgType.PACMAN_COMMAND)
                 return
 
         new_msg = PacmanCommand()
-        new_msg.dir = PacmanCommand.Direction.STOP
-        self.write(new_msg.SerializeToString(), PACMAN_COMMAND)
+        new_msg.dir = PacmanCommand.STOP
+        self.write(new_msg.SerializeToString(), MsgType.PACMAN_COMMAND)
 
 
 def main():

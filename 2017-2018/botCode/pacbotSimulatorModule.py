@@ -3,12 +3,12 @@
 import os
 import robomodules as rm
 import variables as var
-from messages import MsgType, message_buffers, PacmanState
+from messages import MsgType, message_buffers, PacmanState, PacmanCommand
 
 ADDRESS = os.environ.get("LOCAL_ADDRESS","localhost")
 PORT = os.environ.get("LOCAL_PORT", 11295)
 
-FREQUENCY = .5
+FREQUENCY = 2
 
 
 class PacbotSimulatorModule(rm.ProtoModule):
@@ -20,27 +20,29 @@ class PacbotSimulatorModule(rm.ProtoModule):
 
 
     def msg_received(self, msg, msg_type):
-        if msg_type == MsgType.PacmanCommand:
+        if msg_type == MsgType.PACMAN_COMMAND:
             self.current_command = msg.dir
 
     def tick(self):
-        curr_x = self.current_location[0]
-        curr_y = self.current_location[1]
-        # Update Pacman's location based on the command
-        if self.current_command == PacmanCommand.Direction.NORTH:
-            self.current_location = (curr_x, curr_y + 1)
-        elif self.current_command == PacmanCommand.Direction.SOUTH:
-            self.current_location = (curr_x, curr_y - 1)
-        elif self.current_command == PacmanCommand.Direction.EAST:
-            self.current_location = (curr_x + 1, curr_y)
-        elif self.current_command == PacmanCommand.Direction.WEST:
-            self.current_location = (curr_x - 1, curr_y)
+        if self.current_command:
+            curr_x = self.current_location[0]
+            curr_y = self.current_location[1]
+            # Update Pacman's location based on the command
+            if self.current_command == PacmanCommand.NORTH:
+                self.current_location = (curr_x, curr_y + 1)
+            elif self.current_command == PacmanCommand.SOUTH:
+                self.current_location = (curr_x, curr_y - 1)
+            elif self.current_command == PacmanCommand.EAST:
+                self.current_location = (curr_x + 1, curr_y)
+            elif self.current_command == PacmanCommand.WEST:
+                self.current_location = (curr_x - 1, curr_y)
 
-        # Create a new PacmanState message and broadcast the new location
-        new_msg = PacmanState.AgentState()
-        new_msg.x = self.current_location[0]
-        new_msg.y = self.current_location[1]
-        self.write(new_msg.SerializeToString(), MsgType.PACMAN_LOCATION)
+            # Create a new PacmanState message and broadcast the new location
+            new_msg = PacmanState.AgentState()
+            new_msg.x = self.current_location[0]
+            new_msg.y = self.current_location[1]
+            self.write(new_msg.SerializeToString(), MsgType.PACMAN_LOCATION)
+            self.current_command = None
 
 
 def main():

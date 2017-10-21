@@ -21,7 +21,6 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto2',
   serialized_pb=_b('\n\x11pacmanState.proto\x12\x07\x62otCode\"\xad\x06\n\x0bPacmanState\x12/\n\x06pacman\x18\x01 \x02(\x0b\x32\x1f.botCode.PacmanState.AgentState\x12\x32\n\tred_ghost\x18\x02 \x02(\x0b\x32\x1f.botCode.PacmanState.AgentState\x12\x33\n\npink_ghost\x18\x03 \x02(\x0b\x32\x1f.botCode.PacmanState.AgentState\x12\x35\n\x0corange_ghost\x18\x04 \x02(\x0b\x32\x1f.botCode.PacmanState.AgentState\x12\x33\n\nblue_ghost\x18\x05 \x02(\x0b\x32\x1f.botCode.PacmanState.AgentState\x12+\n\x04mode\x18\x06 \x02(\x0e\x32\x1d.botCode.PacmanState.GameMode\x12\x18\n\x10\x66rightened_timer\x18\x07 \x02(\x05\x12\r\n\x05score\x18\x08 \x02(\x05\x12.\n\x04grid\x18\t \x03(\x0e\x32 .botCode.PacmanState.GridElement\x12\x14\n\x0cgrid_columns\x18\n \x02(\x05\x12\r\n\x05lives\x18\x0b \x02(\x05\x12\x14\n\x0cupdate_ticks\x18\x0c \x02(\x05\x12\x18\n\x10ticks_per_update\x18\r \x02(\x05\x12\x14\n\x0c\x65lapsed_time\x18\x0e \x01(\x02\x1aq\n\nAgentState\x12\t\n\x01x\x18\x01 \x02(\x05\x12\t\n\x01y\x18\x02 \x02(\x05\x12\x31\n\tdirection\x18\x03 \x01(\x0e\x32\x1e.botCode.PacmanState.Direction\x12\x1a\n\x12\x66rightened_counter\x18\x04 \x01(\x05\">\n\x08GameMode\x12\t\n\x05\x43HASE\x10\x00\x12\x0b\n\x07SCATTER\x10\x01\x12\x0e\n\nFRIGHTENED\x10\x02\x12\n\n\x06PAUSED\x10\x03\"@\n\x0bGridElement\x12\x08\n\x04WALL\x10\x00\x12\n\n\x06PELLET\x10\x01\x12\x10\n\x0cPOWER_PELLET\x10\x02\x12\t\n\x05\x45MPTY\x10\x03\"2\n\tDirection\x12\x06\n\x02UP\x10\x00\x12\x08\n\x04\x44OWN\x10\x01\x12\x08\n\x04LEFT\x10\x02\x12\t\n\x05RIGHT\x10\x03')
 )
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -304,6 +303,7 @@ _PACMANSTATE_GAMEMODE.containing_type = _PACMANSTATE
 _PACMANSTATE_GRIDELEMENT.containing_type = _PACMANSTATE
 _PACMANSTATE_DIRECTION.containing_type = _PACMANSTATE
 DESCRIPTOR.message_types_by_name['PacmanState'] = _PACMANSTATE
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 PacmanState = _reflection.GeneratedProtocolMessageType('PacmanState', (_message.Message,), dict(
 
