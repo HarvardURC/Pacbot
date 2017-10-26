@@ -4,11 +4,13 @@ package botCode;
 
 message PacmanCommand {
 
+  required Direction dir = 1;
+
   enum Direction {
-    STOP = 0;
-    NORTH = 1;
-    SOUTH = 2;
-    EAST = 3;
-    WEST = 4;
+    STOP = 1;
+    NORTH = 2;
+    SOUTH = 3;
+    EAST = 4;
+    WEST = 5;
   }
 }

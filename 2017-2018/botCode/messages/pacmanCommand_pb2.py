@@ -19,9 +19,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='pacmanCommand.proto',
   package='botCode',
   syntax='proto2',
-  serialized_pb=_b('\n\x13pacmanCommand.proto\x12\x07\x62otCode\"P\n\rPacmanCommand\"?\n\tDirection\x12\x08\n\x04STOP\x10\x00\x12\t\n\x05NORTH\x10\x01\x12\t\n\x05SOUTH\x10\x02\x12\x08\n\x04\x45\x41ST\x10\x03\x12\x08\n\x04WEST\x10\x04')
+  serialized_pb=_b('\n\x13pacmanCommand.proto\x12\x07\x62otCode\"\x7f\n\rPacmanCommand\x12-\n\x03\x64ir\x18\x01 \x02(\x0e\x32 .botCode.PacmanCommand.Direction\"?\n\tDirection\x12\x08\n\x04STOP\x10\x01\x12\t\n\x05NORTH\x10\x02\x12\t\n\x05SOUTH\x10\x03\x12\x08\n\x04\x45\x41ST\x10\x04\x12\x08\n\x04WEST\x10\x05')
 )
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -32,30 +31,30 @@ _PACMANCOMMAND_DIRECTION = _descriptor.EnumDescriptor(
   file=DESCRIPTOR,
   values=[
     _descriptor.EnumValueDescriptor(
-      name='STOP', index=0, number=0,
+      name='STOP', index=0, number=1,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='NORTH', index=1, number=1,
+      name='NORTH', index=1, number=2,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='SOUTH', index=2, number=2,
+      name='SOUTH', index=2, number=3,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='EAST', index=3, number=3,
+      name='EAST', index=3, number=4,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='WEST', index=4, number=4,
+      name='WEST', index=4, number=5,
       options=None,
       type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=49,
-  serialized_end=112,
+  serialized_start=96,
+  serialized_end=159,
 )
 _sym_db.RegisterEnumDescriptor(_PACMANCOMMAND_DIRECTION)
 
@@ -67,6 +66,13 @@ _PACMANCOMMAND = _descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+    _descriptor.FieldDescriptor(
+      name='dir', full_name='botCode.PacmanCommand.dir', index=0,
+      number=1, type=14, cpp_type=8, label=2,
+      has_default_value=False, default_value=1,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -81,11 +87,13 @@ _PACMANCOMMAND = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=32,
-  serialized_end=112,
+  serialized_end=159,
 )
 
+_PACMANCOMMAND.fields_by_name['dir'].enum_type = _PACMANCOMMAND_DIRECTION
 _PACMANCOMMAND_DIRECTION.containing_type = _PACMANCOMMAND
 DESCRIPTOR.message_types_by_name['PacmanCommand'] = _PACMANCOMMAND
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 PacmanCommand = _reflection.GeneratedProtocolMessageType('PacmanCommand', (_message.Message,), dict(
   DESCRIPTOR = _PACMANCOMMAND,

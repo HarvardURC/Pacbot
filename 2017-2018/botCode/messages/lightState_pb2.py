@@ -21,7 +21,6 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto2',
   serialized_pb=_b('\n\x10lightState.proto\x12\x07\x62otCode\"\xf9\x03\n\nLightState\x12.\n\x06pacman\x18\x01 \x02(\x0b\x32\x1e.botCode.LightState.AgentState\x12\x31\n\tred_ghost\x18\x02 \x02(\x0b\x32\x1e.botCode.LightState.AgentState\x12\x32\n\npink_ghost\x18\x03 \x02(\x0b\x32\x1e.botCode.LightState.AgentState\x12\x34\n\x0corange_ghost\x18\x04 \x02(\x0b\x32\x1e.botCode.LightState.AgentState\x12\x32\n\nblue_ghost\x18\x05 \x02(\x0b\x32\x1e.botCode.LightState.AgentState\x12*\n\x04mode\x18\x06 \x02(\x0e\x32\x1c.botCode.LightState.GameMode\x12\r\n\x05score\x18\x08 \x02(\x05\x12\r\n\x05lives\x18\x0b \x02(\x05\x1aQ\n\nAgentState\x12\t\n\x01x\x18\x01 \x02(\x05\x12\t\n\x01y\x18\x02 \x02(\x05\x12-\n\x05state\x18\x04 \x01(\x0e\x32\x1e.botCode.LightState.GhostState\"#\n\x08GameMode\x12\x0b\n\x07RUNNING\x10\x00\x12\n\n\x06PAUSED\x10\x01\"(\n\nGhostState\x12\n\n\x06NORMAL\x10\x00\x12\x0e\n\nFRIGHTENED\x10\x01')
 )
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -206,6 +205,7 @@ _LIGHTSTATE.fields_by_name['mode'].enum_type = _LIGHTSTATE_GAMEMODE
 _LIGHTSTATE_GAMEMODE.containing_type = _LIGHTSTATE
 _LIGHTSTATE_GHOSTSTATE.containing_type = _LIGHTSTATE
 DESCRIPTOR.message_types_by_name['LightState'] = _LIGHTSTATE
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 LightState = _reflection.GeneratedProtocolMessageType('LightState', (_message.Message,), dict(
 
