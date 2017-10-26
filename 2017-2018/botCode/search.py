@@ -1,10 +1,9 @@
 from variables import *
 import copy
 
-def bfs(grid, state, targets):
-    pac_loc = (state.pacman.x, state.pacman.y)
+def bfs(grid, start, state, targets):
     visited = []
-    queue = [(pac_loc, [])]
+    queue = [(start, [])]
 
     while len(queue) > 0:
         nxt = queue.pop(0)
@@ -15,13 +14,13 @@ def bfs(grid, state, targets):
         if grid[loc[0]][loc[1]] in targets:
             return new_path
 
-        if grid[loc[0] + 1][loc[1]] in [o, e, O]:
+        if grid[loc[0] + 1][loc[1]] in [o, e, O] and (loc[0] + 1, loc[1]) not in visited:
             queue.append(((loc[0] + 1, loc[1]),new_path))
-        if grid[loc[0] - 1][loc[1]] in [o, e, O]:
+        if grid[loc[0] - 1][loc[1]] in [o, e, O] and (loc[0] - 1, loc[1]) not in visited:
             queue.append(((loc[0] - 1, loc[1]),new_path))
-        if grid[loc[0]][loc[1] + 1] in [o, e, O]:
+        if grid[loc[0]][loc[1] + 1] in [o, e, O] and (loc[0], loc[1] + 1) not in visited:
             queue.append(((loc[0], loc[1] + 1),new_path))
-        if grid[loc[0]][loc[1] - 1] in [o, e, O]:
+        if grid[loc[0]][loc[1] - 1] in [o, e, O] and (loc[0], loc[1] - 1) not in visited:
             queue.append(((loc[0], loc[1] - 1),new_path))
 
     return None
