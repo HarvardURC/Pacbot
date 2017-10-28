@@ -14,7 +14,7 @@ PORT = os.environ.get("LOCAL_PORT", 11295)
 FREQUENCY = 30
 PELLET_WEIGHT = 0.65
 GHOST_WEIGHT = 0.35
-GHOST_CUTOFF = 4
+GHOST_CUTOFF = 10
 
 class HeuristicHighLevelModule(rm.ProtoModule):
     def __init__(self, addr, port):
@@ -54,8 +54,24 @@ class HeuristicHighLevelModule(rm.ProtoModule):
     def _is_power_pellet_closer(self, path):
         return O in path
 
+    def _get_num_turns(self, p_dir, n_dir):
+        lat = [PacmanCommand.WEST, PacmanCommand.EAST]
+        lng = [PacmanCommand.SOUTH, PacmanCommand.NORTH]
+
+        if p_dir == n_dir:
+            return 0
+        elif (p_dir in lat and n_dir in lat) or (p_dir in lng and n_dir in lng):
+            return 2
+        else:
+            return 1
+
+    def _get_target_with_min_turning_direction(self, mins):
+        turns = [(self._get_num_turns(self.direction, direct), targ) for direct, targ in mins]
+        return min(turns, key=itemgetter(0))[1]
+
     def _find_best_target(self, p_loc):
         targets = [p_loc, (p_loc[0] - 1, p_loc[1]), (p_loc[0] + 1, p_loc[1]), (p_loc[0], p_loc[1] - 1), (p_loc[0], p_loc[1] + 1)]
+        directions =  [PacmanCommand.STOP, PacmanCommand.WEST, PacmanCommand.EAST, PacmanCommand.SOUTH, PacmanCommand.NORTH]
         heuristics = []
         for target_loc in targets:
             if self._target_is_invalid(target_loc):
@@ -84,11 +100,10 @@ class HeuristicHighLevelModule(rm.ProtoModule):
         for i, heur in enumerate(heuristics):
             if heur < min_heur:
                 min_heur = heur
-                mins = [(i, heur)]
+                mins = [(directions[i], targets[i])]
             elif heur == min_heur:
-                mins.append((i, heur))
-        
-
+                mins.append((directions[i], targets[i]))
+        return self._get_target_with_min_turning_direction(mins)
 
     def _update_game_state(self):
         p_loc = (self.state.pacman.x, self.state.pacman.y)
@@ -110,7 +125,7 @@ class HeuristicHighLevelModule(rm.ProtoModule):
             if self.previous_loc != msg.pacman:
                 if self.previous_loc is not None:
                    self.direction = self._get_direction((self.previous_loc.x, self.previous_loc.y), (msg.pacman.x, msg.pacman.y))
-                self.previous_loc = self.state.pacman
+                self.previous_loc = self.state.pacman if self.state else None
             self.state = msg
 
     def tick(self):
