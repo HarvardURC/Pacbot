@@ -8,7 +8,7 @@ from messages import MsgType, message_buffers, PacmanState, PacmanCommand
 ADDRESS = os.environ.get("LOCAL_ADDRESS","localhost")
 PORT = os.environ.get("LOCAL_PORT", 11295)
 
-FREQUENCY = 2
+FREQUENCY = 2.05
 
 class PacbotSimulatorModule(rm.ProtoModule):
     def __init__(self, addr, port):
