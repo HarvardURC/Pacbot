@@ -41,12 +41,9 @@ class HeuristicHighLevelModule(rm.ProtoModule):
     def _find_paths_to_closest_ghosts(self, pac_loc):
         ghosts = [self.state.red_ghost, self.state.pink_ghost, self.state.orange_ghost, self.state.blue_ghost]
         state_paths = [(ghost.state, bfs(self.grid, pac_loc, (ghost.x, ghost.y), GHOST_CUTOFF)) for ghost in ghosts]
-        print(ghosts)
-        print(state_paths)
         return [sp for sp in state_paths if sp[1] is not None]
 
     def _find_distance_of_closest_pellet(self, target_loc):
-        print('getting pellet')
         return len(bfs(self.grid, target_loc, [o])) - 1
 
     def _target_is_invalid(self, target_loc):
@@ -102,9 +99,7 @@ class HeuristicHighLevelModule(rm.ProtoModule):
                     else:
                         ghost_heuristic += pow((GHOST_CUTOFF - closest_ghost[1]), 2) * -1 * FRIGHTENED_GHOST_WEIGHT
 
-            print('ghost: {}'.format(ghost_heuristic))
             pellet_heuristic = dist_to_pellet * PELLET_WEIGHT
-            print('pellet: {}'.format(pellet_heuristic))
             heuristics.append(ghost_heuristic + pellet_heuristic)
         print(heuristics)
         mins = []
