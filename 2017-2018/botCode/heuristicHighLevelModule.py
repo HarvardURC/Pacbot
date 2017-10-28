@@ -14,7 +14,8 @@ PORT = os.environ.get("LOCAL_PORT", 11295)
 FREQUENCY = 30
 PELLET_WEIGHT = 0.65
 GHOST_WEIGHT = 0.35
-GHOST_CUTOFF = 10
+FRIGHTENED_GHOST_WEIGHT = .3 * GHOST_WEIGHT
+GHOST_CUTOFF = 6
 
 class HeuristicHighLevelModule(rm.ProtoModule):
     def __init__(self, addr, port):
@@ -79,17 +80,29 @@ class HeuristicHighLevelModule(rm.ProtoModule):
                 continue
             dist_to_pellet = self._find_distance_of_closest_pellet(target_loc)
             paths_to_ghosts = self._find_paths_to_closest_ghosts(target_loc)
+
+
             closest_ghost = (None, float('inf'))
+            ghosts = []
             for state, path in paths_to_ghosts:
                 dist = len(path) - 1
                 closest_ghost = (state, dist) if dist < closest_ghost[1] else closest_ghost
+                ghosts.append((state, dist))
                 if self._is_power_pellet_closer(path):
                     if target_loc == p_loc:
                         return path[1]
                     else:
                         return path[0]
-            ghost_heuristic = 0 if closest_ghost[1] > GHOST_CUTOFF else pow((GHOST_CUTOFF - closest_ghost[1]), 2) * GHOST_WEIGHT
-            ghost_heuristic = ghost_heuristic * -1 if closest_ghost[0] == LightState.FRIGHTENED else ghost_heuristic
+
+            ghost_heuristic =0
+            for state, dist in ghosts:
+                temp = 0
+                if dist < GHOST_CUTOFF and state == LightState.NORMAL:
+                    temp = pow((GHOST_CUTOFF - closest_ghost[1]), 2) * GHOST_WEIGHT
+                else:
+                    temp = pow((GHOST_CUTOFF - closest_ghost[1]), 2) * -1 * FRIGHTENED_GHOST_WEIGHT
+                ghost_heuristic += temp
+
             print('ghost: {}'.format(ghost_heuristic))
             pellet_heuristic = dist_to_pellet * PELLET_WEIGHT
             print('pellet: {}'.format(pellet_heuristic))
