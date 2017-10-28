@@ -15,7 +15,7 @@ FREQUENCY = 30
 PELLET_WEIGHT = 0.65
 GHOST_WEIGHT = 0.35
 FRIGHTENED_GHOST_WEIGHT = .3 * GHOST_WEIGHT
-GHOST_CUTOFF = 6
+GHOST_CUTOFF = 10
 
 class HeuristicHighLevelModule(rm.ProtoModule):
     def __init__(self, addr, port):
@@ -94,14 +94,13 @@ class HeuristicHighLevelModule(rm.ProtoModule):
                     else:
                         return path[0]
 
-            ghost_heuristic =0
+            ghost_heuristic = 0
             for state, dist in ghosts:
-                temp = 0
-                if dist < GHOST_CUTOFF and state == LightState.NORMAL:
-                    temp = pow((GHOST_CUTOFF - closest_ghost[1]), 2) * GHOST_WEIGHT
-                else:
-                    temp = pow((GHOST_CUTOFF - closest_ghost[1]), 2) * -1 * FRIGHTENED_GHOST_WEIGHT
-                ghost_heuristic += temp
+                if dist < GHOST_CUTOFF:
+                    if state == LightState.NORMAL:
+                        ghost_heuristic += pow((GHOST_CUTOFF - closest_ghost[1]), 2) * GHOST_WEIGHT
+                    else:
+                        ghost_heuristic += pow((GHOST_CUTOFF - closest_ghost[1]), 2) * -1 * FRIGHTENED_GHOST_WEIGHT
 
             print('ghost: {}'.format(ghost_heuristic))
             pellet_heuristic = dist_to_pellet * PELLET_WEIGHT
