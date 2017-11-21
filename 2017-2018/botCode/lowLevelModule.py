@@ -4,7 +4,7 @@ import os
 import robomodules as rm
 import variables as var
 from grid import grid
-from sensor import DistSensor
+from low_level/sensor import DistSensor
 from messages import MsgType, message_buffers, LightState, PacmanCommand
 
 ADDRESS = os.environ.get("LOCAL_ADDRESS","localhost")
