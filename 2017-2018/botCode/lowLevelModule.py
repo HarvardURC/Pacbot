@@ -21,24 +21,76 @@ class LowLevelModule(rm.ProtoModule):
         self.current_dir = PacmanCommand.EAST
         self.sensors = [DistSensor(i) for i in range(1, 8)]
         
-    def _should_move_forward(self, cur_dir, cmd):
-        return cur_dir == cmd
+    def _should_turn_left(self, cmd):
+        return 
+            (self.current_dir == PacmanCommand.NORTH and cmd  == PacmanCommand.WEST) or
+            (self.current_dir == PacmanCommand.SOUTH and cmd  == PacmanCommand.EAST) or
+            (self.current_dir == PacmanCommand.EAST and cmd  == PacmanCommand.NORTH) or
+            (self.current_dir == PacmanCommand.WEST and cmd  == PacmanCommand.SOUTH)
+
+    def _should_turn_right(self, cmd):
+        return 
+            (self.current_dir == PacmanCommand.NORTH and cmd  == PacmanCommand.EAST) or
+            (self.current_dir == PacmanCommand.SOUTH and cmd  == PacmanCommand.WEST) or
+            (self.current_dir == PacmanCommand.EAST and cmd  == PacmanCommand.SOUTH) or
+            (self.current_dir == PacmanCommand.WEST and cmd  == PacmanCommand.NORTH)
+
+    def _should_turn_around(self, cmd):
+        return 
+            (self.current_dir == PacmanCommand.NORTH and cmd  == PacmanCommand.SOUTH) or
+            (self.current_dir == PacmanCommand.SOUTH and cmd  == PacmanCommand.NORTH) or
+            (self.current_dir == PacmanCommand.EAST and cmd  == PacmanCommand.WEST) or
+            (self.current_dir == PacmanCommand.WEST and cmd  == PacmanCommand.EAST)
 
     def _move_forward(self):
         #TODO: move forward one unit
+
+    def _turn_right(self):
+        #TODO: Turn 90 degrees right
+        if self.current_dir == PacmanCommand.EAST:
+            self.current_dir = PacmanCommand.SOUTH
+        elif self.current_dir == PacmanCommand.SOUTH:
+            self.current_dir = PacmanCommand.WEST
+        elif self.current_dir == PacmanCommand.WEST:
+            self.current_dir = PacmanCommand.NORTH
+        else:
+            self.current_dir = PacmanCommand.EAST
+            
+    def _turn_left(self):
+        #TODO: Turn 90 degrees left
+        if self.current_dir == PacmanCommand.EAST:
+            self.current_dir = PacmanCommand.NORTH
+        elif self.current_dir == PacmanCommand.NORTH:
+            self.current_dir = PacmanCommand.WEST
+        elif self.current_dir == PacmanCommand.WEST:
+            self.current_dir = PacmanCommand.SOUTH
+        else:
+            self.current_dir = PacmanCommand.EAST
+
+    def _turn_around(self):
+        #TODO: Turn 180 degrees
+        if self.current_dir == PacmanCommand.EAST:
+            self.current_dir = PacmanCommand.WEST
+        elif self.current_dir == PacmanCommand.NORTH:
+            self.current_dir = PacmanCommand.SOUTH
+        elif self.current_dir == PacmanCommand.WEST:
+            self.current_dir = PacmanCommand.EAST
+        else:
+            self.current_dir = PacmanCommand.NORTH
 
     def _execute_command(self):
         if self.current_command:
             cmd = self.current_command
             self.current_command = None
-            if self._should_move_forward():
-                self._move_forward()
-            else:
-                #TODO: other cases
-                # example for getting sensor reading
-                self.sensors[7].get_reading()
-
-        self._execute_command()
+            if cmd == PacmanCommand.STOP:
+                return
+            if self._should_turn_left(cmd):
+                self._turn_left()
+            elif self._should_turn_right(cmd):
+                self._turn_right()
+            elif self._should_turn_around(cmd):
+                self._turn_around()
+            self._move_forward()
 
     def msg_received(self, msg, msg_type):
         if msg_type == MsgType.PACMAN_COMMAND:
@@ -49,7 +101,8 @@ class LowLevelModule(rm.ProtoModule):
     def tick(self):
         if self.current_command:
             self.set_frequency(0)
-            self._execute_command()
+            while True:
+                self._execute_command()
 
 
 def main():
