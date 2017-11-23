@@ -12,7 +12,7 @@ class TofSensor:
     def setup(self):
         digitalWrite(self.pin, HIGH)
         sensor.default_settings()
-        sensor.set_address(address)
+        # sensor.set_address(address)
         print("%s connected", self.name)
 
     def get_distance(self):
