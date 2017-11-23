@@ -3,8 +3,8 @@ from pins import *
 from time import sleep
 
 def test():
-    left_motor = Motor("Left", pins.motor_power_l, pins.motor_direction_l)
-    right_motor = Motor("Right", pins.motor_power_r, pins.motor_direction_r)
+    left_motor = Motor("Left", pins.motor_power_l, pins.motor_direction_l, 100)
+    right_motor = Motor("Right", pins.motor_power_r, pins.motor_direction_r, 100)
 
     print("Motors Initialized.\n")
 

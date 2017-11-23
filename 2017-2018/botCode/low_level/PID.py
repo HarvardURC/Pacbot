@@ -10,8 +10,7 @@ class PID:
     DIRECT = 1
     REVERSE = 0
 
-    def __init__(self, input, output, setpoint, kp, ki, kd, controller_direction, timer):
-        self._output = output
+    def __init__(self, input, setpoint, kp, ki, kd, controller_direction, timer):
         self._input = input
         self._setpoint = setpoint
         self._timer = timer
@@ -28,7 +27,6 @@ class PID:
         self.set_tunings(kp, ki, kd)
 
         self._last_time = self.millis() - self.sample_time
-
 
     def compute(self):
         """ compute is called evertime loop excutes.
@@ -71,6 +69,8 @@ class PID:
 
         return True
 
+    def output(self):
+        return self._output
 
     def set_tunings(self, kp, ki, kd):
         """ Allows the controllers dynamic performance to be adjusted."""
