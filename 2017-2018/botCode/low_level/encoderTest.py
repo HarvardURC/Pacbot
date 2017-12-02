@@ -9,7 +9,7 @@ def main():
     while(True):
         new_pos = encoder.read()
         if new_pos != position:
-            print("Position = %f", new_pos)
+            print("Position = {}".format(new_pos))
             position = new_pos
             
         sleep(1)
