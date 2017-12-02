@@ -15,7 +15,7 @@ from types import SimpleNamespace
 '''
 pins = SimpleNamespace(**{"led" : 1, 
     "tof_left" : 15, "tof_right" : 18, 
-    "encoderPinL1" : 17, 
-    "encoderPinL2" : 27, 
+    "encoder_pin_l1" : 17, 
+    "encoder_pin_l2" : 27, 
     "motor_power_l" : 13,
     "motor_direction_l" : 19})
