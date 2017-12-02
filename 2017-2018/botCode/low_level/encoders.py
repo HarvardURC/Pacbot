@@ -45,4 +45,4 @@ class Encoder:
         return self._position
 
     def write(self, pos):
-        return self._position = pos
+        self._position = pos
