@@ -2,8 +2,10 @@ from time import sleep
 from GPIOhelpers import *
 
 setGPIO()
+
 class Encoder:
     def __init__(self, pin_a, pin_b):
+        setGPIO()
         self._pin_a = pin_a
         self._pin_b = pin_b
         self._position = 0
