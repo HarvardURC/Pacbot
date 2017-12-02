@@ -1,4 +1,4 @@
-import ST_VL6180X.ST_VL6180X
+import ST_VL6180X
 from GPIOhelpers import *
 
 class TofSensor:
