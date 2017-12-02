@@ -13,3 +13,5 @@ def main():
             position = new_pos
             
         sleep(1)
+
+main()
