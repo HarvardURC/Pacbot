@@ -50,6 +50,8 @@ class timer:
     def millis(self):
         return int((time.time() - self._start) * 1000 // 1)
 
+setGPIO()
+
 
 
 
