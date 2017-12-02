@@ -1,6 +1,8 @@
 from time import sleep
 from GPIOhelpers import *
 
+setGPIO()
+
 class Encoder:
     def __init__(self, pin_a, pin_b):
         self._pin_a = pin_a
