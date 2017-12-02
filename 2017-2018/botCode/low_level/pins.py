@@ -13,4 +13,4 @@ from types import SimpleNamespace
     "tof_right_diag" : 0,
     "tof_right" : 0})
 '''
-pins = SimpleNamespace(**{"led" : 1, "tofLeft" : 15, "tofRight" : 18, "encoderPinL1" : 17, "encoderPinL2" : 27})
+pins = SimpleNamespace(**{"led" : 1, "tof_left" : 15, "to_right" : 18, "encoderPinL1" : 17, "encoderPinL2" : 27})
