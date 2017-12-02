@@ -1,4 +1,4 @@
-import encoders
+from encoders import Encoder
 from pins import *
 from GPIOhelpers import *
 from time import sleep
