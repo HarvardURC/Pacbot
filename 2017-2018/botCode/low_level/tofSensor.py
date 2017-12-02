@@ -5,13 +5,14 @@ setGPIO()
 class TofSensor:
     def __init__(self, pin, name, address):
         self.name = name
-        self.sensor = VL6180X(address = address)
+        self.address = address
         self.pin = pin
-        digitalMode(self.pin, OUTPUT)
-        digitalWrite(self.pin, LOW)
+        digitalMode(self.pin, INPUT_PULLUP)
+
+        self.sensor = VL6180X(address = self.address)
 
     def setup(self):
-        digitalWrite(self.pin, HIGH)
+        # digitalWrite(self.pin, HIGH)
         self.sensor.default_settings()
         # sensor.set_address(address)
         print("{} connected".format(self.name))
