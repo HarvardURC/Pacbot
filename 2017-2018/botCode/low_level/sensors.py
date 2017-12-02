@@ -2,11 +2,14 @@ import sys
 from time import sleep
 from pins import *
 from tofSensor import TofSensor
+import GPIOhelpers
 
 class Sensors:
     def __init__(self, pins, names):
         self.sensors = {}
+        digitalMode(pin, INPUT_PULLUP)
         for i, pin in enumerate(pins):
+
             self.sensors[names[i]] = TofSensor(pin, names[i])
 
         # Initializes sensors
