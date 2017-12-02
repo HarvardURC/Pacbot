@@ -1,5 +1,6 @@
-import ST_VL6180X
+from ST_VL6180X import VL6180X
 from GPIOhelpers import *
+setGPIO()
 
 class TofSensor:
     def __init__(self, pin, name):
@@ -11,7 +12,7 @@ class TofSensor:
 
     def setup(self):
         digitalWrite(self.pin, HIGH)
-        sensor.default_settings()
+        self.sensor.default_settings()
         # sensor.set_address(address)
         print("%s connected", self.name)
 
