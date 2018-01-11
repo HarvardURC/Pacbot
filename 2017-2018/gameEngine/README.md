@@ -5,6 +5,8 @@ To run the gameEngine you need the following:
 - Python 3
 - Pygame (for the visualizer)
 - OpenCV (for the computer vision module)
+- Protobuf (for the server)
+
 
 In order to add new message types you need the Google Protocol Buffer compiler for python.
 
@@ -15,9 +17,9 @@ To run the gameEngine, first run the server and then run each of the module proc
 
 2. `./gameEngine.py`
 
-3. `./visualizer.py` OR `./terminalPrinter.py`
+3. `./visualize.py` OR `./terminalPrinter.py`
 
-4. `./keyboardInput.py` OR `./gameraReader.py`
+4. `./keyboardInput.py` OR `./cameraReader.py`
 
 ## Visualizer
 
