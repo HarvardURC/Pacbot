@@ -27,5 +27,6 @@ class Motor:
                 print("forwards")
             print("...\n")
 
-            analogWrite(self.power_pin, speed)
             digitalWrite(self.direction_pin, direction)
+            analogWrite(self.power_pin, speed)
+            
