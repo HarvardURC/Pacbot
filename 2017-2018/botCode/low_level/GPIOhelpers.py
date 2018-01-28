@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+import time
 
 HIGH = GPIO.HIGH
 LOW = GPIO.LOW
@@ -36,7 +37,21 @@ def digitalRead(pin):
     return GPIO.input(pin)
 
 def clearAllPins():
+    pwm_pins = {}
     return GPIO.cleanup()
 
 def attachInterrupt(pin, my_callback, event):
-    return GPIO.add_event_detect(pin, event, callback=my_callback)
+    return GPIO.add_event_detect(pin, event, callback=my_callback, bouncetime = 1)
+
+class timer:
+    def __init__(self):
+        self._start = time.time()
+        
+    def millis(self):
+        return int((time.time() - self._start) * 1000 // 1)
+
+setGPIO()
+
+
+
+
