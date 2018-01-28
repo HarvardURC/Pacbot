@@ -7,7 +7,7 @@ ADDRESS = os.environ.get("SERVER_ADDRESS","127.0.0.1")
 PORT = os.environ.get("SERVER_PORT", 11295)
 
 def main():
-    processor = MovementProcessor(ADDRESS, PORT)
+    processor = MovementProcessor(ADDRESS, PORT, 0)
     processor.run()
 
 if __name__ == "__main__":

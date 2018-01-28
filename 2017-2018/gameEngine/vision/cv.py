@@ -7,11 +7,11 @@ from messages import *
 FREQUENCY = 60
 
 class MovementProcessor(rm.ProtoModule):
-    def __init__(self, addr, port):
+    def __init__(self, addr, port, camNumber, edges=None):
         super().__init__(addr, port, message_buffers, MsgType, FREQUENCY)
 
         self.edges = edges or {'l':342, 'r':1185,'u':-8,'d':749}
-        self.cap = cv2.VideoCapture(cam_number) # set camera
+        self.cap = cv2.VideoCapture(camNumber) # set camera
         self.cap.set(3, 1280) # set frame width
         self.cap.set(4, 720) # set frame height
 
