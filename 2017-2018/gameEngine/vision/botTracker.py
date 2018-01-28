@@ -102,7 +102,8 @@ class MovementProcessor(rm.ProtoModule):
         buf = PacmanState.AgentState()
         buf.x = bot_loc[0]
         buf.y = bot_loc[1]
+        print(bot_loc)
         self.client.write(buf.SerializeToString(), MsgType.PACMAN_LOCATION)
-        self._display_grid_image()
+        #self._display_grid_image()
 
 
