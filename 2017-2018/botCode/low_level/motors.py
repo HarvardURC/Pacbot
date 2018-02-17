@@ -38,9 +38,20 @@ class Motors:
     def turn_left():
         if self._frontIR.get_distance() < WALL_THRESHOLD:
             self.front_align()
+
         self.move_ticks(-1 * TICKS_TURN, TICKS_TURN)
 
     def turn_right():
         if self._frontIR.get_distance() < WALL_THRESHOLD:
             self.front_align()
+
         self.move_ticks(TICKS_TURN, -1 * TICKS_TURN)
+
+    def front_align():
+        
+
+
+
+
+
+

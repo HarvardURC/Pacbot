@@ -322,9 +322,9 @@ class VL6180X:
     #     self.set_register_16bit(__VL6180X_SYSRANGE__PART_TO_PART_RANGE_OFFSET, ptp_offset / scaling);
 
     def set_address(self, new_addr):
-        #self.set_register(self.__VL6180X_I2C_SLAVE_DEVICE_ADDRESS, new_addr)
-        #self.address = new_addr
-        self.address = self.address
+        self.set_register(self.__VL6180X_I2C_SLAVE_DEVICE_ADDRESS, new_addr)
+        self.address = new_addr
+        # self.address = self.address
 
 
 

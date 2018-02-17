@@ -45,6 +45,6 @@ l = 8
 """ Crossroads
 I,o,I
 o,r,o
-I,o,O
+I,o,I
 """
 r = 9
