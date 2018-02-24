@@ -1,4 +1,4 @@
-from Types import SimpleNamespace
+from types import SimpleNamespace
 
 '''pins = SimpleNamespace(**{
     "led" : 1,
