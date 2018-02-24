@@ -14,7 +14,7 @@ class TofSensor:
     def setup(self):
         # digitalWrite(self.pin, HIGH)
         self.sensor.default_settings()
-        sensor.set_address(address)
+        sensor.set_address(self.address)
         print("{} connected".format(self.name))
 
     def set_address(self, address):
