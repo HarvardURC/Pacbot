@@ -1,4 +1,4 @@
-# from types import SimpleNamespace
+from Types import SimpleNamespace
 
 '''pins = SimpleNamespace(**{
     "led" : 1,
@@ -13,7 +13,7 @@
     "tof_right_diag" : 0,
     "tof_right" : 0})
 '''
-pins = types.SimpleNamespace(**{ 
+pins = SimpleNamespace(**{ 
     "tof_front" : 27,
     "tof_fleft" : 18,
     "tof_fright" : 23,
