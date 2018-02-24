@@ -7,7 +7,7 @@ from GPIOhelpers import *
 setGPIO()
 
 class Sensors:
-    def __init__(self, pins_i, pins_ce, names, addresses):
+    def __init__(self, pins_i, names, addresses):
         self.sensors = {}
         
         for i, pin in enumerate(pins_i):
