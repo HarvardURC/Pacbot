@@ -4,8 +4,6 @@ from GPIOhelpers import *
 from time import sleep
 
 def main():
-    setGPIO()
-
     encoder_r = Encoder(pins.encoder_pin_r1, pins.encoder_pin_r2)
     position_r = -999
     encoder_l = Encoder(pins.encoder_pin_l1, pins.encoder_pin_l2)
@@ -20,5 +18,4 @@ def main():
             postion_l = new_pos_l
             
         sleep(1)
-
 main()

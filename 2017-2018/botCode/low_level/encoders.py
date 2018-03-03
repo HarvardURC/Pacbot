@@ -46,5 +46,8 @@ class Encoder:
     def read(self):
         return self._position
 
+    def reset(self):
+        self.position = 0
+
     def write(self, pos):
         self._position = pos
