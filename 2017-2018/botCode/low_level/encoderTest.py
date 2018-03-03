@@ -11,7 +11,7 @@ def main():
     encoder_l = Encoder(pins.encoder_pin_l1, pins.encoder_pin_l2)
     position_l = -999
     while(True):
-        new_pos_r = encoder_r.read()
+        new_pos_r = -encoder_r.read()
         new_pos_l = encoder_l.read()
         if new_pos_r != position_r or new_pos_l != position_l:
             print("Position_r = {}".format(new_pos_r))
