@@ -9,9 +9,13 @@ setGPIO()
 class Sensors:
     def __init__(self, pins_i, names, addresses):
         self.sensors = {}
+        for pin in pins_i:
+            digitalMode(pin, OUTPUT)
+            digitalWrite(pin, LOW)
         
         for i, pin in enumerate(pins_i):
             self.sensors[names[i]] = TofSensor(pin, names[i], addresses[i])
+            #a = input("enter chip")
 
         # for pin in pin_ce:
         #     digitalMode(pin, OUTPUT)
