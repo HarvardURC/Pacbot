@@ -18,6 +18,8 @@ pins = SimpleNamespace(**{
     "tof_fleft" : 18,
     "tof_fright" : 23,
     "tof_rear" : 13,
+    "tof_rleft" : 6,
+    "tof_rright" : 26,
     "encoder_pin_l1" : 4, 
     "encoder_pin_l2" : 14,
     "encoder_pin_r1" : 15, 
