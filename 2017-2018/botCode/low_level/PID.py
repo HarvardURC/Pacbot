@@ -15,6 +15,7 @@ class PID:
         self._setpoint = setpoint
         self._timer = timer
         self._in_auto = False
+        self.output = None
 
         # default output limits
         self.set_output_limits(0, 255)
@@ -28,13 +29,16 @@ class PID:
 
         self._last_time = self.millis() - self.sample_time
 
-    def compute(self):
+    def compute(self, my_input, my_setpoint):
         """ compute is called evertime loop excutes.
         It decides for itself whether new output needs to be computed.
         Returns True when output is computed and false otherwise.
         """ 
         if not self._in_auto:
             return False
+
+        self._input = my_input
+        self._setpoint = my_setpoint
 
         now = self.millis()
         time_change = now - self._last_time
