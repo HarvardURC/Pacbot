@@ -5,8 +5,6 @@ from tofSensor import TofSensor
 from GPIOhelpers import *
 
 setGPIO()
-import sys
-sys.stdout = open('test', 'w')
 
 class Sensors:
     def __init__(self, pins_i, names, addresses):
