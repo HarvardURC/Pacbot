@@ -5,7 +5,8 @@ from tofSensor import TofSensor
 from GPIOhelpers import *
 
 setGPIO()
-
+import sys
+sys.stdout = open('test', 'w')
 class Sensors:
     def __init__(self, pins_i, names, addresses):
         self.sensors = {}
@@ -31,7 +32,7 @@ class Sensors:
             self.sensors[sensor_name].setup()
 
     def print_sensor_value(self, name):
-        print("{}: {} mm\n".format(name, self.sensors[name].get_distance()))
+        sys.stdout.write("{}: {} mm\n".format(name, self.sensors[name].get_distance()))
 
     def print_all_values(self):
         for sensor_name in self.sensors:
