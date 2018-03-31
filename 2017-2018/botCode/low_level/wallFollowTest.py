@@ -24,7 +24,7 @@ def setup():
 
     my_PID = PID(input, setpoint, 2.0, 0.0018, 0, DIRECT, timer)
 
-    sensors = Sensors([pins.tof_right], ["right"])
+    sensors = Sensors([pins.tof_front], ["rfront"])
 
     left_motor = Motor("Left", pins.motor_power_l, pins.motor_direction_l)
     right_motor = Motor("Right", pins.motor_power_r, pins.motor_direction_r)
