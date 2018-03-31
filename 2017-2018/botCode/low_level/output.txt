@@ -1,0 +1,128 @@
+ToF sensor is ready.
+ToF sensor is ready.
+ToF sensor is ready.
+ToF sensor is ready.
+ToF sensor is ready.
+ToF sensor is ready.
+rright connected
+rear connected
+front connected
+rleft connected
+fleft connected
+fright connected
+rright: 88 mm
+rear: 61 mm
+front: 0 mm
+rleft: 52 mm
+fleft: 81 mm
+fright: 57 mm
+rright: 86 mm
+rear: 58 mm
+front: 255 mm
+rleft: 52 mm
+fleft: 81 mm
+fright: 57 mm
+rright: 65 mm
+rear: 48 mm
+front: 255 mm
+rleft: 55 mm
+fleft: 74 mm
+fright: 68 mm
+rright: 145 mm
+rear: 106 mm
+front: 255 mm
+rleft: 61 mm
+fleft: 74 mm
+fright: 64 mm
+rright: 145 mm
+rear: 124 mm
+front: 255 mm
+rleft: 65 mm
+fleft: 175 mm
+fright: 67 mm
+rright: 164 mm
+rear: 177 mm
+front: 255 mm
+rleft: 67 mm
+fleft: 255 mm
+fright: 81 mm
+rright: 55 mm
+rear: 177 mm
+front: 255 mm
+rleft: 113 mm
+fleft: 158 mm
+fright: 36 mm
+rright: 110 mm
+rear: 255 mm
+front: 255 mm
+rleft: 39 mm
+fleft: 66 mm
+fright: 77 mm
+rright: 110 mm
+rear: 255 mm
+front: 255 mm
+rleft: 58 mm
+fleft: 59 mm
+fright: 81 mm
+rright: 66 mm
+rear: 255 mm
+front: 176 mm
+rleft: 76 mm
+fleft: 59 mm
+fright: 65 mm
+rright: 67 mm
+rear: 255 mm
+front: 75 mm
+rleft: 75 mm
+fleft: 103 mm
+fright: 62 mm
+rright: 70 mm
+rear: 255 mm
+front: 160 mm
+rleft: 71 mm
+fleft: 103 mm
+fright: 71 mm
+rright: 70 mm
+rear: 255 mm
+front: 160 mm
+rleft: 64 mm
+fleft: 68 mm
+fright: 69 mm
+rright: 101 mm
+rear: 255 mm
+front: 255 mm
+rleft: 66 mm
+fleft: 73 mm
+fright: 65 mm
+rright: 76 mm
+rear: 255 mm
+front: 255 mm
+rleft: 64 mm
+fleft: 89 mm
+fright: 68 mm
+rright: 76 mm
+rear: 148 mm
+front: 255 mm
+rleft: 59 mm
+fleft: 89 mm
+fright: 68 mm
+rright: 86 mm
+rear: 54 mm
+front: 255 mm
+rleft: 65 mm
+fleft: 77 mm
+fright: 61 mm
+rright: 80 mm
+rear: 34 mm
+front: 64 mm
+rleft: 17 mm
+fleft: 25 mm
+fright: 255 mm
+rright: 46 mm
+rear: 33 mm
+front: 62 mm
+rleft: 25 mm
+fleft: 27 mm
+fright: 255 mm
+rright: 47 mm
+rear: 34 mm

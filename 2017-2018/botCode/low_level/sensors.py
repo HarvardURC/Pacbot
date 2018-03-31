@@ -31,7 +31,7 @@ class Sensors:
             self.sensors[sensor_name].setup()
 
     def print_sensor_value(self, name):
-        print("{}: {} mm\n".format(name, self.sensors[name].get_distance()))
+        print("{}: {} mm".format(name, self.sensors[name].get_distance()))
 
     def print_all_values(self):
         for sensor_name in self.sensors:
