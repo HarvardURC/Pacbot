@@ -33,7 +33,7 @@ class Motor:
             digitalWrite(self.direction_pin, direction.value)
             analogWrite(self.power_pin,speed)
 
-    def stop(self)
+    def stop(self):
         analogWrite(self.power_pin,0)
             
             #GPIO.setup(10, OUTPUT)
