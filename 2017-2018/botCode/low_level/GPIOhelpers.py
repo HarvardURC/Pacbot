@@ -43,7 +43,7 @@ def clearAllPins():
 def attachInterrupt(pin, my_callback, event):
     return GPIO.add_event_detect(pin, event, callback=my_callback, bouncetime = 1)
 
-class timer:
+class Timer:
     def __init__(self):
         self._start = time.time()
         

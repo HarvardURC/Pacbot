@@ -2,7 +2,10 @@
 Converted from arduino library: http://playground.arduino.cc/Code/PIDLibrary 
 Explanation at: http://brettbeauregard.com/blog/2011/04/improving-the-beginners-pid-introduction/
 """
-
+AUTOMATIC = 1
+MANUAL = 0
+DIRECT = 1
+REVERSE = 0
 class PID:
     # constants
     AUTOMATIC = 1
@@ -15,7 +18,8 @@ class PID:
         self._setpoint = setpoint
         self._timer = timer
         self._in_auto = False
-        self.output = None
+        self._output = None
+        self._controller_direction = controller_direction
 
         # default output limits
         self.set_output_limits(0, 255)
@@ -27,7 +31,7 @@ class PID:
 
         self.set_tunings(kp, ki, kd)
 
-        self._last_time = self.millis() - self.sample_time
+        self._last_time = self.millis() - self._sample_time
 
     def compute(self, my_input, my_setpoint):
         """ compute is called evertime loop excutes.
@@ -85,7 +89,7 @@ class PID:
         self._disp_ki = ki
         self._disp_kd = kd
 
-        sample_time_in_sec = self.sample_time / 1000
+        sample_time_in_sec = self._sample_time / 1000
 
         self._kp = kp
         self._ki = ki * sample_time_in_sec
@@ -98,7 +102,7 @@ class PID:
 
     def set_sample_time(self, new_sample_time):
         """ sets the period, in milliseconds, at which the calculation is performed. """
-        if new_sample_time <= 0
+        if new_sample_time <= 0:
             return
 
         ratio = new_sample_time / self._sample_time
@@ -114,21 +118,21 @@ class PID:
         self._out_max = max
 
         if self._in_auto:
-            if self._output > self._out_max
+            if self._output > self._out_max:
                 self._output = self._out_max
-            elif self._output < self._out_min
+            elif self._output < self._out_min:
                 self._output = self._out_min
 
-            if self._I_term > self._out_max
+            if self._I_term > self._out_max:
                 self._I_term = self._out_max
-            elif self._I_term < self._out_min
+            elif self._I_term < self._out_min:
                 self._I_term = self._out_min
 
     def set_mode(self, mode):
         """ Allows the controller mode to be set to MANUAL or AUTOMATIC.
         When mode if changed from manual to auto, the controller is automatically (re)initialized.
         """
-        new_auto = (mode = AUTOMATIC)
+        new_auto = (mode == AUTOMATIC)
 
         if  new_auto and not self._in_auto:
             self._intialize()
@@ -140,9 +144,9 @@ class PID:
         self._I_term = self._output
         self._last_input = self._input
 
-        if self._I_term > self._out_max
+        if self._I_term > self._out_max:
             self._I_term = self._out_max
-        elif self._I_term < self._out_min
+        elif self._I_term < self._out_min:
             self._I_term = self._out_min
 
     def set_controller_direction(self, direction):
@@ -157,7 +161,7 @@ class PID:
         self._controller_direction = direction
 
     def get_kp(self):
-        return self.
+        return self._disp_kp
 
     def get_ki(self):
         return self._disp_ki
@@ -171,7 +175,7 @@ class PID:
         else:
             return MANUAL
 
-    def get_direction(self);
+    def get_direction(self):
         return self._controller_direction
 
     def millis(self):

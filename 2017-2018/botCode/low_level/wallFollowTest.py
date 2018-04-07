@@ -8,15 +8,15 @@
 from pins import *
 from GPIOhelpers import *
 from sensors import Sensors
-import motors
-import PID
+from motor import *
+from PID import *
 
 testing_distance = 50
 min_num = 180
 
 
 def setup():
-    timer = timer()
+    timer = Timer()
 
     input = 0
 
@@ -24,10 +24,10 @@ def setup():
 
     my_PID = PID(input, setpoint, 2.0, 0.0018, 0, DIRECT, timer)
 
-    sensors = Sensors([pins.tof_front], ["rfront"])
+    sensors = Sensors([pins.tof_front], ["rfront"],[0x29])
 
-    left_motor = Motor("Left", pins.motor_power_l, pins.motor_direction_l)
-    right_motor = Motor("Right", pins.motor_power_r, pins.motor_direction_r)
+    left_motor = Motor("Left", pins.motor_speed_l, pins.motor_direction_l)
+    right_motor = Motor("Right", pins.motor_speed_r, pins.motor_direction_r)
 
     my_PID.set_output_limits(-50, 50)
 
@@ -54,7 +54,7 @@ def main():
             print(" Setpoint: ")
             print(Setpoint)
 
-
+main()
 
 
 
