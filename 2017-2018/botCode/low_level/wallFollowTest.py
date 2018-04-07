@@ -10,7 +10,7 @@ from GPIOhelpers import *
 from sensors import Sensors
 from motor import *
 from PID import *
-
+from time import sleep
 testing_distance = 50
 min_num = 180
 
@@ -22,35 +22,41 @@ def main():
 
     setpoint = testing_distance
 
-    my_PID = PID(input, setpoint, 2.0, 0.0018, 0, DIRECT, timer)
+    my_PID = PID(input, setpoint, 2.0, 0.002, 0.000, DIRECT, timer)
 
-    sensors = Sensors([pins.tof_front], ["rfront"],[0x29])
+    sensors = Sensors([pins.tof_front], ["front"],[0x30])
 
     left_motor = Motor("Left", pins.motor_speed_l, pins.motor_direction_l)
     right_motor = Motor("Right", pins.motor_speed_r, pins.motor_direction_r)
 
-    my_PID.set_output_limits(-50, 50)
+    my_PID.set_output_limits(-10, 10)
 
     my_PID.set_mode(AUTOMATIC)
 
     while(True):
-	distance = sensors[0].get_distance()
+        distance = sensors.sensors["front"].get_distance() 
         if my_PID.compute(distance,setpoint):
+            print("Output")
+            print(my_PID.output())
             if my_PID.output() >= 0:
                 direction = MotorDirection.FORWARD
+                power = abs(my_PID.output()) * 2 
             else:
                 direction = MotorDirection.BACKWARD
+                power = abs(my_PID.output()) * 2 
 
-            power = abs(my_PID.output()) * 2
+            
 
             left_motor.move(direction, power)
             right_motor.move(direction, power)
 
             print("Sensor: ")
-            input = sensors["right"].get_distance()
+            input = sensors.sensors["front"].get_distance()
             print(input)
-            print(" Setpoint: ")
-            print(Setpoint)
+            print("...")
+            #print(" Setpoint: ")
+            #print(setpoint)
+            sleep(0.1)
 
 main()
 
