@@ -15,7 +15,7 @@ testing_distance = 50
 min_num = 180
 
 
-def setup():
+def main():
     timer = Timer()
 
     input = 0
@@ -33,11 +33,9 @@ def setup():
 
     my_PID.set_mode(AUTOMATIC)
 
-def main():
-    setup()
-
-    while(true):
-        if my_PID.compute():
+    while(True):
+	distance = sensors[0].get_distance()
+        if my_PID.compute(distance,setpoint):
             if my_PID.output() >= 0:
                 direction = MotorDirection.FORWARD
             else:

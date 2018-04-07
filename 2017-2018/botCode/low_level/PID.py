@@ -141,7 +141,7 @@ class PID:
 
     def _intialize(self):
         """ Handles mode change from manual to auto. """
-        self._I_term = self._output
+        self._I_term = 0
         self._last_input = self._input
 
         if self._I_term > self._out_max:
