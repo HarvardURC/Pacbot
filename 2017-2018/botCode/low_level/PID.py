@@ -13,13 +13,14 @@ class PID:
     DIRECT = 1
     REVERSE = 0
 
-    def __init__(self, input, setpoint, kp, ki, kd, controller_direction, timer):
-        self._input = input
+    def __init__(self, inp, setpoint, kp, ki, kd, controller_direction, timer):
+        self._input = inp
         self._setpoint = setpoint
-        self._timer = timer
+        self._timer = timer()
         self._in_auto = False
-        self._output = None
+        self._output = 0
         self._controller_direction = controller_direction
+        self._last_input = 0
 
         # default output limits
         self.set_output_limits(0, 255)

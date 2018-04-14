@@ -3,7 +3,7 @@ from encoders import Encoder
 from pins import *
 from sensors import Sensors
 from GPIOhelpers import *
-
+from PID import *
 setGPIO()
 
 MOTOR_SPEED = 10
@@ -18,36 +18,36 @@ class Motors:
         self._frightIR = self.sensors.sensors["fright"]
         self._rearIR = self.sensors.sensors["rear"]
         self._rleftIR = self.sensors.sensors["rleft"]
-        self._rrightIR = rself.sensors.sensors["rright"]
+        self._rrightIR = self.sensors.sensors["rright"]
 
         self.encoderLeft = Encoder(pins.encoder_pin_l1, pins.encoder_pin_l2)
         self.encoderRight = Encoder(pins.encoder_pin_r1, pins.encoder_pin_r2)
 
-        self.left_motor = Motor("Left", pins.motor_power_l, pins.motor_direction_l, 0)
+        self.left_motor = Motor("Left", pins.motor_speed_l, pins.motor_direction_l, 0)
 
-        self.right_motor = Motor("Right", pins.motor_power_r, pins.motor_direction_r, 0)
+        self.right_motor = Motor("Right", pins.motor_speed_r, pins.motor_direction_r, 0)
 
         self.setpointL = 0
         self.inputL = 0
-        self.PIDLeft = PID(input, setpoint, 2.0, 0.002, 0.000, DIRECT, timer)
+        self.PIDLeft = PID(self.inputL, self.setpointL, 2.0, 0.002, 0.000, DIRECT, Timer)
         self.PIDLeft.set_output_limits(-1 * MOTOR_SPEED, MOTOR_SPEED)
-        self.PIDLeft.my_PID.set_mode(AUTOMATIC)
+        self.PIDLeft.set_mode(AUTOMATIC)
         
         self.setpointR = 0
         self.inputR = 0
-        self.PIDRight = PID(input, setpoint, 2.0, 0.002, 0.000, DIRECT, timer)
+        self.PIDRight = PID(self.inputR, self.setpointR, 2.0, 0.002, 0.000, DIRECT, Timer)
         self.PIDRight.set_output_limits(-1 * MOTOR_SPEED, MOTOR_SPEED)
-        self.PIDRight.my_PID.set_mode(AUTOMATIC)
+        self.PIDRight.set_mode(AUTOMATIC)
 
     def move_motors(self, left, right):
         if left >= 0:
-            self.left_motor.move(MotorDirection.FORWARD, ans(left))
+            self.left_motor.move(MotorDirection.FORWARD, abs(left))
         else:
-            self.left_motor.move(MotorDirection.BACKWARD, ans(left))
+            self.left_motor.move(MotorDirection.BACKWARD, abs(left))
         if right >= 0:
-            self.right_motor.move(MotorDirection.FORWARD, ans(right))
+            self.right_motor.move(MotorDirection.FORWARD, abs(right))
         else:
-            self.right_motor.move(MotorDirection.BACKWARD, ans(right))
+            self.right_motor.move(MotorDirection.BACKWARD, abs(right))
 
     def stop(self):
         self.right_motor.stop()
@@ -72,8 +72,8 @@ class Motors:
             self.inputL = self.encoderLeft.read()
             self.inputR = self.encoderRight.read()
 
-            self.PIDRight(self.inputR, self.setpointR)
-            self.PIDLeft(self.inputL, self.setpointL)
+            self.PIDRight.compute(self.inputR, self.setpointR)
+            self.PIDLeft.compute(self.inputL, self.setpointL)
 
             l_rem = abs(self.inputL - self.setpointL)
             r_rem = abs(self.inputR - self.setpointR)
@@ -145,7 +145,8 @@ class Motors:
         self.move_ticks(-1 * offset, offset)
         self.stop()
 
-
+M = Motors()
+M.turn_left()
         
 
 
