@@ -20,6 +20,7 @@ class Split(Enum):
 
 # colors:
 red_color = (255, 0, 0)
+green_color = (0, 255, 0)
 blue_color = (0, 255, 255)
 pink_color = (255, 185, 255)
 orange_color = (255, 185, 81)

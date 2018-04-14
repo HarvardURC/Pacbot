@@ -185,6 +185,14 @@ class Visualizer(rm.ProtoModule):
         y = int((row_idx + 1) * SQUARE_SIZE - SQUARE_SIZE/2)
         pygame.draw.circle(self.surface, pygame.Color(*white_color), (x,y), int(SQUARE_SIZE/5))
 
+
+    def _print_corners(self):
+        r = int(SQUARE_SIZE/3)
+        pygame.draw.circle(self.surface, pygame.Color(*green_color), (r,r), r)
+        pygame.draw.circle(self.surface, pygame.Color(*green_color), (r,GRID_SIZE[1]*SQUARE_SIZE-r), int(SQUARE_SIZE/5))
+        pygame.draw.circle(self.surface, pygame.Color(*green_color), (GRID_SIZE[0]*SQUARE_SIZE - r,GRID_SIZE[1]*SQUARE_SIZE - r), r)
+        pygame.draw.circle(self.surface, pygame.Color(*green_color), (GRID_SIZE[0]*SQUARE_SIZE - r, r), r)
+
     def _print_power_pellet(self, col_idx, row_idx):
         x = int((col_idx + 1) * SQUARE_SIZE - SQUARE_SIZE/2)
         y = int((row_idx + 1) * SQUARE_SIZE - SQUARE_SIZE/2)
@@ -320,6 +328,7 @@ class Visualizer(rm.ProtoModule):
                     col_idx += 1
 
             self._print_score_lives_time(state.score, state.lives, state.elapsed_time)
+            self._print_corners()
 
             # Yay flipping the entire display all at once for performance!
             y_off = 0 if self.split in [Split.TOP, Split.FULL] else self.y_height
