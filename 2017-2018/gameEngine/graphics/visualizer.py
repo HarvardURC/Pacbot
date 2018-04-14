@@ -4,7 +4,7 @@ from .variables import *
 from .spriteStripAnim import *
 
 class Visualizer(rm.ProtoModule):
-    def __init__(self, addr, port, print_walls, print_pacman):
+    def __init__(self, addr, port, print_walls, print_pacman, split=Split.FULL):
         self.subscriptions = [MsgType.FULL_STATE]
         super().__init__(addr, port, message_buffers, MsgType,DISPLAY_FREQUENCY, self.subscriptions)
 
@@ -24,7 +24,14 @@ class Visualizer(rm.ProtoModule):
         pygame.init()
         # Set up the surface to draw on
         # This should also be used in Visualizer.draw()
-        self.surface = pygame.display.set_mode((GRID_SIZE[0]*SQUARE_SIZE, GRID_SIZE[1]*SQUARE_SIZE))
+        self.surface = pygame.Surface((GRID_SIZE[0]*SQUARE_SIZE, GRID_SIZE[1]*SQUARE_SIZE))
+        self.split = split
+        self.y_height = int(GRID_SIZE[1]*SQUARE_SIZE/2)
+        if GRID_SIZE[1] % 2 == 1 and self.split == Split.TOP:
+            self.y_height += 1
+        elif self.split == Split.FULL:
+            self.y_height = GRID_SIZE[1]*SQUARE_SIZE
+        self.display_surface = pygame.display.set_mode((GRID_SIZE[0]*SQUARE_SIZE, self.y_height))
         pygame.display.set_caption("PACBOT")
         self.font = pygame.font.Font('graphics/crackman.ttf', int(SQUARE_SIZE))
 
@@ -315,5 +322,7 @@ class Visualizer(rm.ProtoModule):
             self._print_score_lives_time(state.score, state.lives, state.elapsed_time)
 
             # Yay flipping the entire display all at once for performance!
+            y_off = 0 if self.split in [Split.TOP, Split.FULL] else self.y_height
+            self.display_surface.blit(self.surface, pygame.Rect(0, -y_off, GRID_SIZE[0]*SQUARE_SIZE, self.y_height))
             pygame.display.flip()
             self.last_tick = self.state.update_ticks

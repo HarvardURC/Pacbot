@@ -13,6 +13,11 @@ class Ghosts(Enum):
     PINK = 2
     ORANGE = 3
 
+class Split(Enum):
+    TOP = 0
+    BOTTOM = 1
+    FULL = 2
+
 # colors:
 red_color = (255, 0, 0)
 blue_color = (0, 255, 255)
