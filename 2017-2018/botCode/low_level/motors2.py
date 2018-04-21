@@ -104,22 +104,22 @@ class Motors:
         self.encoderLeft.write(0)
         self.encoderRight.write(0)
 
-        self.setpointfL = ticks_l
-        self.setpointfR = ticks_r
+        self.setpointL = ticks_l
+        self.setpointR = ticks_r
 
-        self.inputfR = 0
-        self.inputfL = 0
+        self.inputR = 0
+        self.inputL = 0
 
         time = self.PIDRight.millis()
 
         while ((abs(self.inputL - self.setpointL) > 10 or abs(self.inputR - self.setpointR) > 10) and (self.PIDRight.millis() - time < 2000)):
-            self.inputfL , self.inputfR = self.read_encoders()
+            self.inputL , self.inputR = self.read_encoders()
 
-            self.PIDfRight.compute(self.inputfR, self.setpointfR)
-            self.PIDfLeft.compute(self.inputfL, self.setpointfL)
+            self.PIDRight.compute(self.inputR, self.setpointR)
+            self.PIDLeft.compute(self.inputL, self.setpointL)
 
-            l_rem = abs(self.inputfL - self.setpointfL)
-            r_rem = abs(self.inputfR - self.setpointfR)
+            l_rem = abs(self.inputL - self.setpointL)
+            r_rem = abs(self.inputR - self.setpointR))
 
             if l_rem > r_rem :
                 self.move_motors(self.PIDLeft.output(),0)
@@ -198,15 +198,15 @@ class Motors:
     def turn_left(self): 
         # if self._frontIR.get_distance() < WALL_THRESHOLD:
         #     self.front_align()
-        self.PIDfLeft.set_tunings(1.7,0.01,0)
-        self.PIDfRight.set_tunings(1.7,0.01,0)
+        self.PIDLeft.set_tunings(0.4,0.01,0)
+        self.PIDRight.set_tunings(0.4,0.01,0)
         self.move_ticks(-1 * TICKS_TURN, TICKS_TURN)
 
     def turn_right(self):
         # if self._frontIR.get_distance() < WALL_THRESHOLD:
         #     self.front_align()
-        self.PIDfLeft.set_tunings(1.7,0.01,0)
-        self.PIDfRight.set_tunings(1.7,0.01,0)
+        self.PIDLeft.set_tunings(0.4,0.01,0)
+        self.PIDRight.set_tunings(0.4,0.01,0)
         self.move_ticks(TICKS_TURN, -1 * TICKS_TURN)
 
     # def front_align():
