@@ -4,7 +4,7 @@ import os
 import robomodules as rm
 import variables as var
 from grid import grid
-from low_level/sensor import DistSensor
+from low_level/motors import Motors
 from messages import MsgType, message_buffers, LightState, PacmanCommand
 
 ADDRESS = os.environ.get("LOCAL_ADDRESS","localhost")
@@ -12,14 +12,16 @@ PORT = os.environ.get("LOCAL_PORT", 11295)
 
 FREQUENCY = 60
 
+GRID_VAL = 200
+
 class LowLevelModule(rm.ProtoModule):
     def __init__(self, addr, port):
         self.subscriptions = [MsgType.PACMAN_COMMAND, MsgType.LIGHT_STATE]
         super().__init__(addr, port, message_buffers, MsgType, FREQUENCY, self.subscriptions)
         self.current_command = None
         self.current_location = None
+        self.motors = Motors()
         self.current_dir = PacmanCommand.EAST
-        self.sensors = [DistSensor(i) for i in range(1, 8)]
         
     def _should_turn_left(self, cmd):
         return 
@@ -35,7 +37,7 @@ class LowLevelModule(rm.ProtoModule):
             (self.current_dir == PacmanCommand.EAST and cmd  == PacmanCommand.SOUTH) or
             (self.current_dir == PacmanCommand.WEST and cmd  == PacmanCommand.NORTH)
 
-    def _should_turn_around(self, cmd):
+    def _should_reverse(self, cmd):
         return 
             (self.current_dir == PacmanCommand.NORTH and cmd  == PacmanCommand.SOUTH) or
             (self.current_dir == PacmanCommand.SOUTH and cmd  == PacmanCommand.NORTH) or
@@ -43,7 +45,7 @@ class LowLevelModule(rm.ProtoModule):
             (self.current_dir == PacmanCommand.WEST and cmd  == PacmanCommand.EAST)
 
     def _move_forward(self):
-        #TODO: move forward one unit
+        self.motors.advance(GRID_VAL)
 
     def _turn_right(self):
         #TODO: Turn 90 degrees right
@@ -77,6 +79,9 @@ class LowLevelModule(rm.ProtoModule):
             self.current_dir = PacmanCommand.EAST
         else:
             self.current_dir = PacmanCommand.NORTH
+    
+    def _reverse(self):
+        self.motors.reverse(GRID_VAL)
 
     def _execute_command(self):
         if self.current_command:
@@ -88,8 +93,8 @@ class LowLevelModule(rm.ProtoModule):
                 self._turn_left()
             elif self._should_turn_right(cmd):
                 self._turn_right()
-            elif self._should_turn_around(cmd):
-                self._turn_around()
+            elif self._should_reverse(cmd):
+                self._reverse()
             self._move_forward()
 
     def msg_received(self, msg, msg_type):
@@ -108,7 +113,6 @@ class LowLevelModule(rm.ProtoModule):
 def main():
     module = LowLevelModule(ADDRESS, PORT)
     module.run()
-
 
 if __name__ == "__main__":
     main()
