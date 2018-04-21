@@ -6,7 +6,7 @@ from GPIOhelpers import *
 from PID import *
 setGPIO()
 
-MOTOR_SPEED = 2
+MOTOR_SPEED = 5
 TICKS_CELL = 500
 TICKS_TURN = 200
 WALL_THRESHOLD_DIAG = 130
@@ -58,7 +58,7 @@ class Motors:
         if self.dir:
             return (self.encoderLeft.read(), self.encoderRight.read())
         else:
-            return -(self.encoderLeft.read(), self.encoderRight.read())
+            return (-self.encoderLeft.read(), -self.encoderRight.read())
 
     def raw_encoders(self):
         return (self.encoderLeft.read(), self.encoderRight.read())
@@ -163,6 +163,7 @@ class Motors:
     # def front_align():
 
     def followFront(self, ticks, distance_l = 0, distance_r = 0):
+        print("fFront")
         self.encoderLeft.write(distance_l)
         self.encoderRight.write(distance_r)
 
@@ -197,6 +198,7 @@ class Motors:
         self.stop()
 
     def followRear(self, ticks, distance_l = 0, distance_r = 0):
+        print("fRear")
         self.encoderLeft.write(distance_l)
         self.encoderRight.write(distance_r)
 
@@ -217,8 +219,8 @@ class Motors:
                 moved_l, moved_r = self.raw_encoders()
                 self.advance(ticks, moved_l, moved_r)
                 return
-            self.PIDRight.compute(self.inputrR, self.setpointrR)
-            self.PIDLeft.compute(self.inputrL, self.setpointrL)
+            self.PIDrRight.compute(self.inputrR, self.setpointrR)
+            self.PIDrLeft.compute(self.inputrL, self.setpointrL)
 
             if self.dir:
                 self.move_motors((MOTOR_SPEED + self.PIDrLeft.output())/2, (MOTOR_SPEED - self.PIDrRight.output())/2)
@@ -231,6 +233,7 @@ class Motors:
         self.stop()
 
     def followLeft(self, ticks, distance_l = 0, distance_r = 0):
+        print("fLeft")
         self.encoderLeft.write(distance_l)
         self.encoderRight.write(distance_r)
 
@@ -265,6 +268,7 @@ class Motors:
         self.stop()
 
     def followRight(self, ticks, distance_l = 0, distance_r = 0):
+        print("fRight")
         self.encoderLeft.write(distance_l)
         self.encoderRight.write(distance_r)
 
@@ -299,11 +303,13 @@ class Motors:
         self.stop()
 
 M = Motors()
-M.advance(100)
+#M.reverse_direction()
+M.advance(1000)
 M.stop()
+print("done")
 
-from time import sleep
-sleep(5)
+import sys
+sys.exit()
 
 
 
