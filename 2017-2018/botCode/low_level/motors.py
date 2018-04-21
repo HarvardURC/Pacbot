@@ -6,7 +6,7 @@ from GPIOhelpers import *
 from PID import *
 setGPIO()
 
-MOTOR_SPEED = 10
+MOTOR_SPEED = 2
 TICKS_CELL = 500
 TICKS_TURN = 200
 
@@ -50,8 +50,10 @@ class Motors:
             self.right_motor.move(MotorDirection.BACKWARD, abs(right))
 
     def stop(self):
+        print("stopped")
         self.right_motor.stop()
         self.left_motor.stop()
+        print("done")
 
     def wait(self, ms):
         delay(ms/1000)
@@ -68,10 +70,11 @@ class Motors:
 
         time = self.PIDRight.millis()
 
-        while ((abs(self.inputL - self.setpointL) > 10 or abs(self.inputR - self.setpointR) > 10) and (self.PIDRight.millis() - time < 2000)):
-            self.inputL = self.encoderLeft.read()
-            self.inputR = self.encoderRight.read()
-
+        while ((abs(self.inputL - self.setpointL) > 5 or abs(self.inputR - self.setpointR) > 5) and (self.PIDRight.millis() - time < 20000)):
+            self.inputL = abs(self.encoderLeft.read())
+            self.inputR = abs(self.encoderRight.read())
+            print(self.inputL)
+            print(self.inputR)
             self.PIDRight.compute(self.inputR, self.setpointR)
             self.PIDLeft.compute(self.inputL, self.setpointL)
 
@@ -80,10 +83,14 @@ class Motors:
 
             if l_rem > r_rem :
                 self.move_motors(self.PIDLeft.output(),0)
+
+                print("left")
             elif r_rem > l_rem:
                 self.move_motors(0,self.PIDRight.output())
+                print("right")
             else:
                 self.move_motors(self.PIDLeft.output(),self.PIDRight.output()) 
+                print("both")
         self.stop()
 
 
@@ -146,8 +153,14 @@ class Motors:
         self.stop()
 
 M = Motors()
-M.turn_left()
-        
+M.forward()
+M.stop()
+from time import sleep
+sleep(5)
+#M.turn_left()
+#M.stop()
+#M.turn_right()
+#M.stop()
 
 
 

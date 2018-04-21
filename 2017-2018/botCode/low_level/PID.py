@@ -64,6 +64,7 @@ class PID:
         d_input = self._input - self._last_input
 
         # compute PID output
+        self._I_term = 0
         output = self._kp * error + self._I_term - self._kd * d_input
 
         if output > self._out_max:
