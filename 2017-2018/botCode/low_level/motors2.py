@@ -158,8 +158,7 @@ class Motors:
             elif (self._frightIR.get_distance() <  WALL_THRESHOLD_DIAG and self._rrightIR.get_distance() <  WALL_THRESHOLD_DIAG and (self._frightIR.get_distance() <  WALL_DIST or self._rrightIR.get_distance() <  WALL_DIST)):
                 self.followRight()
             else:
-                print("move")
-                self.move_ticks(ticks - abs(distance_l), ticks - abs(distance_r))
+                self.straight()
 
         offset = (distance_l - distance_r)/2
         self.move_ticks(-1 * offset, offset)
@@ -207,8 +206,6 @@ class Motors:
         else: 
             self.move_motors(-(MOTOR_SPEED + self.PIDfLeft.output())/2, -(MOTOR_SPEED + self.PIDfRight.output())/2)
 
-        
-
     def followRear(self):
         print("fRear")
 
@@ -249,8 +246,6 @@ class Motors:
         else:
             self.move_motors(-(MOTOR_SPEED + self.PIDfLeft.output())/2, -(MOTOR_SPEED + self.PIDrLeft.output())/2)
 
-
-
     def followRight(self):
         print("fRight")
 
@@ -269,6 +264,13 @@ class Motors:
             self.move_motors((MOTOR_SPEED + self.PIDfRight.output())/2, (MOTOR_SPEED + self.PIDrRight.output())/2)
         else:
             self.move_motors(-(MOTOR_SPEED + self.PIDfRight.output())/2, -(MOTOR_SPEED + self.PIDrRight.output())/2)
+
+    def straight(self):
+        print("straight")
+        if self.dir:
+            self.move_motors(MOTOR_SPEED/2, MOTOR_SPEED/2)
+        else:
+            self.move_motors(-MOTOR_SPEED/2, -MOTOR_SPEED/2)
 
 M = Motors()
 #M.reverse_direction()
