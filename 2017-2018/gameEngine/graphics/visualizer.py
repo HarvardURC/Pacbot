@@ -93,19 +93,19 @@ class Visualizer(rm.ProtoModule):
         self.surface.fill((0,0,0))
 
     def _print_score_lives_time(self, score, lives, time):
-        score_surf_1 = self.font.render('Score:', True, dark_blue_color)
-        self.surface.blit(score_surf_1, (SQUARE_SIZE*23.5, SQUARE_SIZE*10))
-        score_surf_2 = self.font.render('{}'.format(score), True, dark_blue_color)
-        self.surface.blit(score_surf_2, (SQUARE_SIZE*23.5, SQUARE_SIZE*11))
+        score_surf_1 = self.font.render('Score:', True, white_color)
+        self.surface.blit(score_surf_1, (SQUARE_SIZE*23.5, SQUARE_SIZE*11))
+        score_surf_2 = self.font.render('{}'.format(score), True, white_color)
+        self.surface.blit(score_surf_2, (SQUARE_SIZE*23.5, SQUARE_SIZE*12))
 
-        lives_surf_1 = self.font.render('Lives:', True, dark_blue_color)
-        self.surface.blit(lives_surf_1, (SQUARE_SIZE*23.5, SQUARE_SIZE*13))
-        lives_surf_2 = self.font.render('{}'.format(lives), True, dark_blue_color)
-        self.surface.blit(lives_surf_2, (SQUARE_SIZE*23.5, SQUARE_SIZE*14))
+        lives_surf_1 = self.font.render('Lives:', True, white_color)
+        self.surface.blit(lives_surf_1, (SQUARE_SIZE*1, SQUARE_SIZE*16))
+        lives_surf_2 = self.font.render('{}'.format(lives), True, white_color)
+        self.surface.blit(lives_surf_2, (SQUARE_SIZE*1, SQUARE_SIZE*17))
 
-        time_surf_1 = self.font.render('Time:', True, dark_blue_color)
+        time_surf_1 = self.font.render('Time:', True, white_color)
         self.surface.blit(time_surf_1, (SQUARE_SIZE*23.5, SQUARE_SIZE*16))
-        time_surf_2 = self.font.render('{0:.2f}s'.format(time), True, dark_blue_color)
+        time_surf_2 = self.font.render('{0:.2f}s'.format(time), True, white_color)
         self.surface.blit(time_surf_2, (SQUARE_SIZE*23.5, SQUARE_SIZE*17))
 
 

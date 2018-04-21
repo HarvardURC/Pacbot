@@ -3,14 +3,14 @@ from .transform import *
 import numpy as np
 
 # Threshold values for yellow dots
-lower_yellow = np.array([18,95,66])
-upper_yellow = np.array([30,255,255])
+lower_yellow = np.array([21,0,252])
+upper_yellow = np.array([59,156,255])
 
 # Threshold values for Green dots
 #lower_green = np.array([20,30,180])
 #upper_green = np.array([70,70,250])
 
-lower_green = np.array([46,15,180])
+lower_green = np.array([46,50,180])
 upper_green = np.array([76,74,255])
 
 def valid(contours):

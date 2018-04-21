@@ -3,7 +3,8 @@ from enum import Enum
 DISPLAY_FREQUENCY = 240 # 60 Hz
 SPRITE_FREQUENCY = 6
 GRID_SIZE = (28, 31)
-SQUARE_SIZE = 48
+SQUARE_SIZE = 44
+#SQUARE_SIZE = 30
 SPRITE_FILE = 'graphics/pac_t.bmp'
 
 # ghost enums:

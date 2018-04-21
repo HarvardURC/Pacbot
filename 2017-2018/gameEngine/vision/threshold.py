@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import cv2
 import numpy as np
 from time import sleep
@@ -15,8 +17,10 @@ class ViewImages:
     def __init__(self):
 
         # Set thresholds for color detection and thresholding
-        self.thresh_low = np.array([20, 30, 180])
-        self.thresh_high = np.array([70, 70, 250])
+        #self.thresh_low = np.array([20, 30, 180])
+        #self.thresh_high = np.array([70, 70, 250])
+        self.thresh_low = np.array([46,15,180])
+        self.thresh_high = np.array([76,74,255])
 
     def run(self):
        # Create a black image, a window

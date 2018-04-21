@@ -70,6 +70,7 @@ class MovementProcessor(rm.ProtoModule):
                     b_y = self.y_off + self.height - 2
                 if grid[b_x][b_y] == I:
                     return
+                print((b_x, b_y))
                 buf = PacmanState.AgentState()
                 buf.x = b_x
                 buf.y = b_y
