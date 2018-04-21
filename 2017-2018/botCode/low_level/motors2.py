@@ -274,7 +274,7 @@ class Motors:
 
 M = Motors()
 #M.reverse_direction()
-M.advance(1000)
+M.advance(1500)
 M.stop()
 print("done")
 
