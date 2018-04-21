@@ -30,6 +30,18 @@ class Motors:
 
         self.right_motor = Motor("Right", pins.motor_speed_r, pins.motor_direction_r, 0)
 
+        self.setpointL = 0
+        self.inputL = 0
+        self.PIDLeft = PID(self.inputL, self.setpointL, 2.0, 0.002, 0.000, DIRECT, Timer)
+        self.PIDLeft.set_output_limits(-1 * MOTOR_SPEED, MOTOR_SPEED)
+        self.PIDLeft.set_mode(AUTOMATIC)
+
+        self.setpointR = 0
+        self.inputR = 0
+        self.PIDRight = PID(self.inputR, self.setpointR, 2.0, 0.002, 0.000, DIRECT, Timer)
+        self.PIDRight.set_output_limits(-1 * MOTOR_SPEED, MOTOR_SPEED)
+        self.PIDRight.set_mode(AUTOMATIC)
+
         self.setpointfL = 0
         self.inputfL = 0
         self.PIDfLeft = PID(self.inputfL, self.setpointfL, 2.0, 0.002, 0.000, DIRECT, Timer)
