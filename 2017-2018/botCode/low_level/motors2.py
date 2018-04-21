@@ -232,8 +232,8 @@ class Motors:
 
     def followFront(self):
         print("fFront")
-        self.PIDfLeft.set_tunings(0.6,0.01,0.01)
-        self.PIDfRight.set_tunings(0.6,0.01,0.01)
+        self.PIDfLeft.set_tunings(0.4,0.01,0.01)
+        self.PIDfRight.set_tunings(0.4,0.01,0.01)
         self.setpointfR = WALL_DISTANCE_DIAG
         self.setpointfL = WALL_DISTANCE_DIAG
 
@@ -251,8 +251,8 @@ class Motors:
     def followRear(self):
         print("fRear")
 
-        self.PIDrLeft.set_tunings(0.6,0.01,0.01)
-        self.PIDrRight.set_tunings(0.6,0.01,0.01)
+        self.PIDrLeft.set_tunings(0.4,0.01,0.01)
+        self.PIDrRight.set_tunings(0.4,0.01,0.01)
         self.setpointrR = WALL_DISTANCE_DIAG
         self.setpointrL = WALL_DISTANCE_DIAG
 
@@ -271,8 +271,8 @@ class Motors:
     def followLeft(self):
         print("fLeft")
 
-        self.PIDfLeft.set_tunings(0.6,0.01,0.01)
-        self.PIDrLeft.set_tunings(0.6,0.01,0.01)
+        self.PIDfLeft.set_tunings(0.4,0.01,0.01)
+        self.PIDrLeft.set_tunings(0.4,0.01,0.01)
         self.setpointfL = WALL_DISTANCE_DIAG
         self.setpointrL = WALL_DISTANCE_DIAG
 
@@ -291,8 +291,8 @@ class Motors:
     def followRight(self):
         print("fRight")
 
-        self.PIDfRight.set_tunings(0.6,0.01,0.01)
-        self.PIDrRight.set_tunings(0.6,0.01,0.01)
+        self.PIDfRight.set_tunings(0.4,0.01,0.01)
+        self.PIDrRight.set_tunings(0.4,0.01,0.01)
         self.setpointfR = WALL_DISTANCE_DIAG
         self.setpointrR = WALL_DISTANCE_DIAG
 
@@ -310,7 +310,7 @@ class Motors:
     def followfRight(self):
         print("ffRight")
 
-        self.PIDfRight.set_tunings(0.6,0.01,0.01)
+        self.PIDfRight.set_tunings(0.4,0.01,0.01)
         self.setpointfR = WALL_DISTANCE_DIAG
 
         self.inputfR = self._frightIR.get_distance()
@@ -325,7 +325,7 @@ class Motors:
     def followfLeft(self):
         print("ffLeft")
 
-        self.PIDfLeft.set_tunings(0.6,0.01,0.01)
+        self.PIDfLeft.set_tunings(0.4,0.01,0.01)
         self.setpointfL = WALL_DISTANCE_DIAG
 
         self.inputfL = self._fleftIR.get_distance()
@@ -340,7 +340,7 @@ class Motors:
     def followrRight(self):
         print("frRight")
 
-        self.PIDrRight.set_tunings(0.6,0.01,0.01)
+        self.PIDrRight.set_tunings(0.4,0.01,0.01)
         self.setpointrR = WALL_DISTANCE_DIAG
 
         self.inputrR = self._rrightIR.get_distance()
@@ -355,7 +355,7 @@ class Motors:
     def followrLeft(self):
         print("frLeft")
 
-        self.PIDrLeft.set_tunings(0.6,0.01,0.01)
+        self.PIDrLeft.set_tunings(0.4,0.01,0.01)
         self.setpointrL = WALL_DISTANCE_DIAG
 
         self.inputrL = self._rleftIR.get_distance()
