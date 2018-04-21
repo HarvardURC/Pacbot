@@ -6,7 +6,7 @@ from GPIOhelpers import *
 from PID import *
 setGPIO()
 
-MOTOR_SPEED = 10
+MOTOR_SPEED = 2
 TICKS_CELL = 500
 TICKS_TURN = 200
 
@@ -76,8 +76,10 @@ class Motors:
             self.right_motor.move(MotorDirection.BACKWARD, abs(right))
 
     def stop(self):
+        print("stopped")
         self.right_motor.stop()
         self.left_motor.stop()
+        print("done")
 
     def wait(self, ms):
         delay(ms/1000)
@@ -104,11 +106,14 @@ class Motors:
             r_rem = abs(self.inputfR - self.setpointfR)
 
             if l_rem > r_rem :
-                self.move_motors(self.PIDfLeft.output(),0)
+                self.move_motors(self.PIDLeft.output(),0)
+                print("left")
             elif r_rem > l_rem:
-                self.move_motors(0,self.PIDfRight.output())
+                self.move_motors(0,self.PIDRight.output())
+                print("right")
             else:
-                self.move_motors(self.PIDfLeft.output(),self.PIDfRight.output()) 
+                self.move_motors(self.PIDLeft.output(),self.PIDRight.output()) 
+                print("both")
         self.stop()
 
 
@@ -288,14 +293,17 @@ class Motors:
             else:
                 self.move_motors(-(MOTOR_SPEED + self.PIDfRight.output())/2, -(MOTOR_SPEED - self.PIDrRight.output())/2)
 
-
         offset = (distance_l - distance_r)/2
         self.move_ticks(-1 * offset, offset)
         self.stop()
 
 M = Motors()
 M.advance(100)
-        
+M.stop()
+
+from time import sleep
+sleep(5)
+
 
 
 

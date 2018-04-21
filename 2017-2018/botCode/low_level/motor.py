@@ -22,14 +22,14 @@ class Motor:
         if direction == MotorDirection.STOP:
             analogWrite(self.power_pin, 0)
         else:
-            print(str(self.name))
-            print(" motor moving ")
-            if direction == MotorDirection.BACKWARD:
-                print("backwards")
-            else:
-                print("forwards")
-            print("...\n")
-            print(direction.value)
+            #print(str(self.name))
+            #print(" motor moving ")
+            #if direction == MotorDirection.BACKWARD:
+                #print("backwards")
+            #else:
+                #print("forwards")
+            #print("...\n")
+            #print(direction.value)
             digitalWrite(self.direction_pin, direction.value)
             analogWrite(self.power_pin,speed)
 
