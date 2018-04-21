@@ -11,7 +11,7 @@ def main():
     walls = ('-w' in sys.argv or os.environ.get("WALLS",False))
     pacman = ('-p' in sys.argv or os.environ.get("PACMAN",False))
     top = ('-t' in sys.argv or os.environ.get("TOP",False))
-    bottom = ('-b' in sys.argv or os.environ.get("TOP",False))
+    bottom = ('-b' in sys.argv or os.environ.get("BOTTOM",False))
     split = Split.FULL
     if top:
         split = Split.TOP

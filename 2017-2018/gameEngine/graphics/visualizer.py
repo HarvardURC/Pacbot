@@ -27,7 +27,7 @@ class Visualizer(rm.ProtoModule):
         self.surface = pygame.Surface((GRID_SIZE[0]*SQUARE_SIZE, GRID_SIZE[1]*SQUARE_SIZE))
         self.split = split
         self.y_height = int(GRID_SIZE[1]*SQUARE_SIZE/2)
-        if GRID_SIZE[1] % 2 == 1 and self.split == Split.TOP:
+        if GRID_SIZE[1] % 2 == 1 and self.split == Split.BOTTOM:
             self.y_height += 1
         elif self.split == Split.FULL:
             self.y_height = GRID_SIZE[1]*SQUARE_SIZE
@@ -328,7 +328,7 @@ class Visualizer(rm.ProtoModule):
                     col_idx += 1
 
             self._print_score_lives_time(state.score, state.lives, state.elapsed_time)
-            self._print_corners()
+            #self._print_corners()
 
             # Yay flipping the entire display all at once for performance!
             y_off = 0 if self.split in [Split.TOP, Split.FULL] else self.y_height
