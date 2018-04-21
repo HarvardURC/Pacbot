@@ -159,26 +159,26 @@ class Motors:
                     front_min = min(dists['fr'], dists['fl'])
                     rear_min = min(dists['rr'], dists['rl'])
                     if front_min <= rear_min:
-                        self.followFront()
+                        self.follow_front()
                     else:
-                        self.followRear()
+                        self.follow_rear()
                 else:
-                    self.followFront()
+                    self.follow_front()
 
             elif rear_valid:
-                self.followRear()
+                self.follow_rear()
             elif left_valid:
-                self.followLeft()
+                self.follow_left()
             elif right_valid:
-                self.followRight()
+                self.follow_right()
             elif dists['fr'] < WALL_THRESHOLD_DIAG:
-                self.followfRight()
+                self.follow_front_right()
             elif dists['fl'] < WALL_THRESHOLD_DIAG:
-                self.followfLeft()
+                self.follow_front_left()
             elif dists['rr'] < WALL_THRESHOLD_DIAG:
-                self.followrRight()
+                self.follow_rear_right()
             elif dists['rl'] < WALL_THRESHOLD_DIAG:
-                self.followrLeft()
+                self.follow_rear_left()
 
             else:
                 self.straight()
@@ -211,7 +211,7 @@ class Motors:
 
     # def front_align():
 
-    def followFront(self):
+    def follow_front(self):
         print("fFront")
         self.PIDfLeft.set_tunings(KP, KI, KD)
         self.PIDfRight.set_tunings(KP, KI, KD)
@@ -229,7 +229,7 @@ class Motors:
         else: 
             self.move_motors(-(MOTOR_SPEED + self.PIDfLeft.output())/2, -(MOTOR_SPEED + self.PIDfRight.output())/2)
 
-    def followRear(self):
+    def follow_rear(self):
         print("fRear")
 
         self.PIDrLeft.set_tunings(KP, KI, KD)
@@ -249,7 +249,7 @@ class Motors:
         else:
             self.move_motors(-(MOTOR_SPEED + self.PIDrLeft.output())/2, -(MOTOR_SPEED + self.PIDrRight.output())/2)
 
-    def followLeft(self):
+    def follow_left(self):
         print("fLeft")
 
         self.PIDfLeft.set_tunings(KP, KI, KD)
@@ -269,7 +269,7 @@ class Motors:
         else:
             self.move_motors(-(MOTOR_SPEED + self.PIDfLeft.output())/2, -(MOTOR_SPEED + self.PIDrLeft.output())/2)
 
-    def followRight(self):
+    def follow_right(self):
         print("fRight")
 
         self.PIDfRight.set_tunings(KP, KI, KD)
@@ -288,7 +288,7 @@ class Motors:
         else:
             self.move_motors(-(MOTOR_SPEED + self.PIDfRight.output())/2, -(MOTOR_SPEED + self.PIDrRight.output())/2)
 
-    def followfRight(self):
+    def follow_front_right(self):
         print("ffRight")
 
         self.PIDfRight.set_tunings(KP, KI, KD)
@@ -303,7 +303,7 @@ class Motors:
         else:
             self.move_motors(-(MOTOR_SPEED - self.PIDfRight.output())/2, -(MOTOR_SPEED + self.PIDfRight.output())/2)
 
-    def followfLeft(self):
+    def follow_front_left(self):
         print("ffLeft")
 
         self.PIDfLeft.set_tunings(KP, KI, KD)
@@ -318,7 +318,7 @@ class Motors:
         else:
             self.move_motors(-(MOTOR_SPEED + self.PIDfLeft.output())/2, -(MOTOR_SPEED - self.PIDfLeft.output())/2)
 
-    def followrRight(self):
+    def follow_rear_right(self):
         print("frRight")
 
         self.PIDrRight.set_tunings(KP, KI, KD)
@@ -333,7 +333,7 @@ class Motors:
         else:
             self.move_motors(-(MOTOR_SPEED - self.PIDrRight.output())/2, -(MOTOR_SPEED + self.PIDrRight.output())/2)
 
-    def followrLeft(self):
+    def follow_rear_left(self):
         print("frLeft")
 
         self.PIDrLeft.set_tunings(KP, KI, KD)
