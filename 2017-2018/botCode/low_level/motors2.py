@@ -157,6 +157,15 @@ class Motors:
                 self.followLeft()
             elif (self._frightIR.get_distance() <  WALL_THRESHOLD_DIAG and self._rrightIR.get_distance() <  WALL_THRESHOLD_DIAG and (self._frightIR.get_distance() <  WALL_DIST or self._rrightIR.get_distance() <  WALL_DIST)):
                 self.followRight()
+            elif self.self._frightIR.get_distance() < WALL_THRESHOLD_DIAG:
+                self.followfRight()
+            elif self.self._flefttIR.get_distance() < WALL_THRESHOLD_DIAG:
+                self.followfLeft()
+            elif self.self._rrightIR.get_distance() < WALL_THRESHOLD_DIAG:
+                self.followrRight()
+            elif self.self._rleftIR.get_distance() < WALL_THRESHOLD_DIAG:
+                self.followrLeft()
+
             else:
                 self.straight()
 
@@ -265,6 +274,67 @@ class Motors:
         else:
             self.move_motors(-(MOTOR_SPEED + self.PIDfRight.output())/2, -(MOTOR_SPEED + self.PIDrRight.output())/2)
 
+    def followfRight(self):
+        print("ffRight")
+
+        self.PIDfRight.set_tunings(0.6,0.01,0.01)
+        self.setpointfR = WALL_DISTANCE_DIAG
+
+        self.inputfR = self._frightIR.get_distance()
+
+        self.PIDfRight.compute(self.inputfR, self.setpointfR)
+
+        if self.dir:
+            self.move_motors((MOTOR_SPEED - self.PIDfRight.output())/2, (MOTOR_SPEED + self.PIDfRight.output())/2)
+        else:
+            self.move_motors(-(MOTOR_SPEED - self.PIDfRight.output())/2, -(MOTOR_SPEED + self.PIDfRight.output())/2)
+
+    def followfLeft(self):
+        print("ffLeft")
+
+        self.PIDfLeft.set_tunings(0.6,0.01,0.01)
+        self.setpointfL = WALL_DISTANCE_DIAG
+
+        self.inputfL = self._fleftIR.get_distance()
+
+        self.PIDfLeft.compute(self.inputfL, self.setpointfL)
+
+        if self.dir:
+            self.move_motors((MOTOR_SPEED + self.PIDfLeft.output())/2, (MOTOR_SPEED - self.PIDfLeft.output())/2)
+        else:
+            self.move_motors(-(MOTOR_SPEED + self.PIDfLeft.output())/2, -(MOTOR_SPEED - self.PIDfLeft.output())/2)
+
+    def followrRight(self):
+        print("frRight")
+
+        self.PIDrRight.set_tunings(0.6,0.01,0.01)
+        self.setpointrR = WALL_DISTANCE_DIAG
+
+        self.inputrR = self._rrightIR.get_distance()
+
+        self.PIDrRight.compute(self.inputrR, self.setpointrR)
+
+        if self.dir:
+            self.move_motors((MOTOR_SPEED - self.PIDrRight.output())/2, (MOTOR_SPEED + self.PIDrRight.output())/2)
+        else:
+            self.move_motors(-(MOTOR_SPEED - self.PIDrRight.output())/2, -(MOTOR_SPEED + self.PIDrRight.output())/2)
+
+    def followrLeft(self):
+        print("frLeft")
+
+        self.PIDrLeft.set_tunings(0.6,0.01,0.01)
+        self.setpointrL = WALL_DISTANCE_DIAG
+
+        self.inputrL = self._rleftIR.get_distance()
+
+        self.PIDrLeft.compute(self.inputrL, self.setpointrL)
+
+        if self.dir:
+            self.move_motors((MOTOR_SPEED + self.PIDrLeft.output())/2, (MOTOR_SPEED - self.PIDrLeft.output())/2)
+        else:
+            self.move_motors(-(MOTOR_SPEED + self.PIDrLeft.output())/2, -(MOTOR_SPEED - self.PIDrLeft.output())/2)
+
+
     def straight(self):
         print("straight")
         if self.dir:
@@ -274,7 +344,7 @@ class Motors:
 
 M = Motors()
 #M.reverse_direction()
-M.advance(1000)
+M.advance(1500)
 M.stop()
 print("done")
 
