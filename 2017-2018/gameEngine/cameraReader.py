@@ -16,9 +16,9 @@ def main():
         print('select either -t for top cam of -b for bottom cam')
         sys.exit(1)
     if top:
-        processor = MovementProcessor(ADDRESS, PORT, 1, 16, 15, 26, windows)
+        processor = MovementProcessor(ADDRESS, PORT, 1, 15, 15, 26, windows)
     elif bottom:
-        processor = MovementProcessor(ADDRESS, PORT, 2, 0, 16, 26, windows)
+        processor = MovementProcessor(ADDRESS, PORT, 2, 1, 15, 26, windows)
     processor.run()
 
 if __name__ == "__main__":

@@ -65,9 +65,16 @@ class MovementProcessor(rm.ProtoModule):
                 y_c += delta_y*sector_h
                 x_c += delta_x*sector_w
                 b_y = int(self.y_off + round(self.height - (y_c+sector_h*0.5)/sector_h))
+                print(b_y)
                 b_x = int(round((x_c+sector_w*0.5)/sector_w))
-                if b_y >= self.y_off + self.height - 1:
+                if b_y >= self.y_off + self.height - 1 and self.y_off > 1:
                     b_y = self.y_off + self.height - 2
+                elif b_y < 1:
+                    b_y = 1
+                if b_x < 1:
+                    b_x = 1
+                elif b_x > self.width:
+                    b_x = self.width
                 if grid[b_x][b_y] == I:
                     return
                 print((b_x, b_y))
