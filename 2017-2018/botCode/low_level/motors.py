@@ -127,13 +127,13 @@ class Motors:
         self.move_ticks(TICKS_CELL, TICKS_CELL)
 
     def advance(self, ticks, distance_l = 0, distance_r = 0):
-        if (self._frightIR < WALL_THRESHOLD_DIAG and self._fleftIR < WALL_THRESHOLD_DIAG):
+        if (self._frightIR.get_distance() < WALL_THRESHOLD_DIAG and self._fleftIR.get_distance() < WALL_THRESHOLD_DIAG):
             self.followFront(ticks, distance_l, distance_r)
-        elif (self._rrightIR < WALL_THRESHOLD_DIAG and self._rleftIR < WALL_THRESHOLD_DIAG):
+        elif (self._rrightIR.get_distance() < WALL_THRESHOLD_DIAG and self._rleftIR.get_distance() < WALL_THRESHOLD_DIAG):
             self.followRear(ticks, distance_l, distance_r)
-        elif (self._fleftIR <  WALL_THRESHOLD_DIAG and self._rleftIR <  WALL_THRESHOLD_DIAG):
+        elif (self._fleftIR.get_distance() <  WALL_THRESHOLD_DIAG and self._rleftIR.get_distance() <  WALL_THRESHOLD_DIAG):
             self.followLeft(ticks, distance_l, distance_r)
-        elif (self._frightIR <  WALL_THRESHOLD_DIAG and self._rrightIR <  WALL_THRESHOLD_DIAG):
+        elif (self._frightIR.get_distance() <  WALL_THRESHOLD_DIAG and self._rrightIR.get_distance() <  WALL_THRESHOLD_DIAG):
             self.followRight(ticks, distance_l, distance_r)
         else:
             self.move_ticks(ticks, ticks)
