@@ -6,12 +6,14 @@ from GPIOhelpers import *
 from PID import *
 setGPIO()
 
+import signal, sys
+
 MOTOR_SPEED = 50
 TICKS_CELL = 500
 TICKS_TURN = 200
 WALL_THRESHOLD_DIAG = 120
 WALL_DISTANCE_DIAG = 70
-WALL_DIST = 80
+WALL_DIST = 70
 class Motors:
     def __init__(self):
         self.sensors = Sensors([pins.tof_front,pins.tof_rear,pins.tof_fleft,pins.tof_fright,pins.tof_rleft,pins.tof_rright], ["front", "rear","fleft","fright","rleft","rright"], [0x30,0x31,0x32,0x33,0x34,0x35])
@@ -149,17 +151,38 @@ class Motors:
             print(distance_l)
             print(distance_r)
 
+
             if (False):
-                self.followfRight()
+                fright = self._frightIR.get_distance()
+                fleft = self._fleftIR.get_distance() 
+
+                rright = self._rrightIR.get_distance()
+                rleft = self._rleftIR.get_distance()    
+
+                if fright < fleft and fright <rright  and fright < rleft and fright < WALL_DIST:
+                    self.followfRight()
+                elif fleft < fright  and fleft <rright and fleft < rleft and fleft < WALL_DIST:
+                    self.followfLeft()
+                elif rright  < fright  and rright < fleft and rright < rleft and rright < WALL_DIST:
+                    self.followrRight()
+                else:
+                    self.followrLeft()
+
+
+
+                
             
             elif (self._frightIR.get_distance() < WALL_THRESHOLD_DIAG and self._fleftIR.get_distance() < WALL_THRESHOLD_DIAG and (self._frightIR.get_distance() < WALL_DIST or self._fleftIR.get_distance() < WALL_DIST)) :
                 if (self._rrightIR.get_distance() < WALL_THRESHOLD_DIAG and self._rleftIR.get_distance() < WALL_THRESHOLD_DIAG and (self._rrightIR.get_distance() < WALL_DIST or self._rleftIR.get_distance() < WALL_DIST)):
-                    front_sum = self._frightIR.get_distance() + self._fleftIR.get_distance()
-                    rear_sum = self._rrightIR.get_distance() + self._rleftIR.get_distance()
-                    if front_sum >=  rear_sum:
+                    front_min = min(self._frightIR.get_distance(),self._fleftIR.get_distance())
+                    rear_min = min(self._rrightIR.get_distance(), self._rleftIR.get_distance())
+                    if front_min <=  rear_min:
                         self.followFront()
                     else:
                         self.followRear()
+                else:
+                    self.followFront()
+
 
             elif (self._rrightIR.get_distance() < WALL_THRESHOLD_DIAG and self._rleftIR.get_distance() < WALL_THRESHOLD_DIAG and (self._rrightIR.get_distance() < WALL_DIST or self._rleftIR.get_distance() < WALL_DIST)):
                 self.followRear()
@@ -353,12 +376,20 @@ class Motors:
             self.move_motors(-MOTOR_SPEED/2, -MOTOR_SPEED/2)
 
 M = Motors()
+
+
 #M.reverse_direction()
-M.advance(3000)
+try:
+    M.advance(3000)
+except KeyboardInterrupt:
+    M.stop()
+    sys.exit()
+
 M.stop()
 print("done")
 
 import sys
+
 sys.exit()
 
 
