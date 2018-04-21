@@ -149,7 +149,10 @@ class Motors:
             print(distance_l)
             print(distance_r)
 
-            if (self._frightIR.get_distance() < WALL_THRESHOLD_DIAG and self._fleftIR.get_distance() < WALL_THRESHOLD_DIAG and (self._frightIR.get_distance() < WALL_DIST or self._fleftIR.get_distance() < WALL_DIST)) :
+            if (False):
+                self.followfRight()
+            
+            elif (self._frightIR.get_distance() < WALL_THRESHOLD_DIAG and self._fleftIR.get_distance() < WALL_THRESHOLD_DIAG and (self._frightIR.get_distance() < WALL_DIST or self._fleftIR.get_distance() < WALL_DIST)) :
                 self.followFront()
             elif (self._rrightIR.get_distance() < WALL_THRESHOLD_DIAG and self._rleftIR.get_distance() < WALL_THRESHOLD_DIAG and (self._rrightIR.get_distance() < WALL_DIST or self._rleftIR.get_distance() < WALL_DIST)):
                 self.followRear()
@@ -157,13 +160,13 @@ class Motors:
                 self.followLeft()
             elif (self._frightIR.get_distance() <  WALL_THRESHOLD_DIAG and self._rrightIR.get_distance() <  WALL_THRESHOLD_DIAG and (self._frightIR.get_distance() <  WALL_DIST or self._rrightIR.get_distance() <  WALL_DIST)):
                 self.followRight()
-            elif self.self._frightIR.get_distance() < WALL_THRESHOLD_DIAG:
+            elif self._frightIR.get_distance() < WALL_THRESHOLD_DIAG:
                 self.followfRight()
-            elif self.self._flefttIR.get_distance() < WALL_THRESHOLD_DIAG:
+            elif self._fleftIR.get_distance() < WALL_THRESHOLD_DIAG:
                 self.followfLeft()
-            elif self.self._rrightIR.get_distance() < WALL_THRESHOLD_DIAG:
+            elif self._rrightIR.get_distance() < WALL_THRESHOLD_DIAG:
                 self.followrRight()
-            elif self.self._rleftIR.get_distance() < WALL_THRESHOLD_DIAG:
+            elif self._rleftIR.get_distance() < WALL_THRESHOLD_DIAG:
                 self.followrLeft()
 
             else:
@@ -344,7 +347,7 @@ class Motors:
 
 M = Motors()
 #M.reverse_direction()
-M.advance(1500)
+M.advance(3000)
 M.stop()
 print("done")
 
