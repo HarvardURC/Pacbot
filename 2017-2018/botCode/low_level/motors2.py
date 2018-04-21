@@ -14,6 +14,10 @@ TICKS_TURN = 200
 WALL_THRESHOLD_DIAG = 120
 WALL_DISTANCE_DIAG = 70
 WALL_DIST = 70
+
+KP = 0.4
+KI = 0.01
+KD = 0.01
 class Motors:
     def __init__(self):
         self.sensors = Sensors([pins.tof_front,pins.tof_rear,pins.tof_fleft,pins.tof_fright,pins.tof_rleft,pins.tof_rright], ["front", "rear","fleft","fright","rleft","rright"], [0x30,0x31,0x32,0x33,0x34,0x35])
@@ -96,9 +100,6 @@ class Motors:
         self.right_motor.stop()
         self.left_motor.stop()
 
-    def wait(self, ms):
-        delay(ms/1000)
-
     def move_ticks(self, ticks_l, ticks_r):
         self.encoderLeft.write(0)
         self.encoderRight.write(0)
@@ -131,15 +132,6 @@ class Motors:
                 print("both")
         self.stop()
 
-
-    def forward(self):
-        self.PIDfLeft.set_output_limits(-1 * MOTOR_SPEED, MOTOR_SPEED)
-        self.PIDfRight.set_output_limits(-1 * MOTOR_SPEED, MOTOR_SPEED)
-        self.PIDfLeft.set_tunings(0.6,0.01,0.01)
-        self.PIDfRight.set_tunings(0.6,0.01,0.01)
-
-        self.move_ticks(TICKS_CELL, TICKS_CELL)
-
     def advance(self, ticks):
         self.encoderLeft.write(0)
         self.encoderRight.write(0)
@@ -150,53 +142,42 @@ class Motors:
             distance_l, distance_r = self.read_encoders()
             print(distance_l)
             print(distance_r)
+            dists = {
+                'fr': self._frightIR.get_distance(),
+                'fl': self._fleftIR.get_distance(),
+                'rr': self._rrightIR.get_distance(),
+                'rl': self._rleftIR.get_distance()
+            }
 
+            front_valid = dists['fr'] < WALL_THRESHOLD_DIAG and dists['fl'] < WALL_THRESHOLD_DIAG and (dists['fr'] < WALL_DIST or dists['fl'] < WALL_DIST)
+            rear_valid = dists['rr'] < WALL_THRESHOLD_DIAG and dists['rl'] < WALL_THRESHOLD_DIAG and (dists['rr'] < WALL_DIST or dists['rl'] < WALL_DIST)
+            left_valid = dists['fl'] <  WALL_THRESHOLD_DIAG and dists['rl'] <  WALL_THRESHOLD_DIAG and (dists['fl'] <  WALL_DIST or dists['rl'] <  WALL_DIST)
+            right_valid = dists['fr'] <  WALL_THRESHOLD_DIAG and dists['rr'] <  WALL_THRESHOLD_DIAG and (dists['fr'] <  WALL_DIST or dists['rr'] <  WALL_DIST)
 
-            if (False):
-                fright = self._frightIR.get_distance()
-                fleft = self._fleftIR.get_distance() 
-
-                rright = self._rrightIR.get_distance()
-                rleft = self._rleftIR.get_distance()    
-
-                if fright < fleft and fright <rright  and fright < rleft and fright < WALL_DIST:
-                    self.followfRight()
-                elif fleft < fright  and fleft <rright and fleft < rleft and fleft < WALL_DIST:
-                    self.followfLeft()
-                elif rright  < fright  and rright < fleft and rright < rleft and rright < WALL_DIST:
-                    self.followrRight()
-                else:
-                    self.followrLeft()
-
-
-
-                
-            
-            elif (self._frightIR.get_distance() < WALL_THRESHOLD_DIAG and self._fleftIR.get_distance() < WALL_THRESHOLD_DIAG and (self._frightIR.get_distance() < WALL_DIST or self._fleftIR.get_distance() < WALL_DIST)) :
-                if (self._rrightIR.get_distance() < WALL_THRESHOLD_DIAG and self._rleftIR.get_distance() < WALL_THRESHOLD_DIAG and (self._rrightIR.get_distance() < WALL_DIST or self._rleftIR.get_distance() < WALL_DIST)):
-                    front_min = min(self._frightIR.get_distance(),self._fleftIR.get_distance())
-                    rear_min = min(self._rrightIR.get_distance(), self._rleftIR.get_distance())
-                    if front_min <=  rear_min:
+            if front_valid:
+                if rear_valid:
+                    front_min = min(dists['fr'], dists['fl'])
+                    rear_min = min(dists['rr'], dists['rl'])
+                    if front_min <= rear_min:
                         self.followFront()
                     else:
                         self.followRear()
                 else:
                     self.followFront()
 
-
-            elif (self._rrightIR.get_distance() < WALL_THRESHOLD_DIAG and self._rleftIR.get_distance() < WALL_THRESHOLD_DIAG and (self._rrightIR.get_distance() < WALL_DIST or self._rleftIR.get_distance() < WALL_DIST)):
+            elif rear_valid:
                 self.followRear()
-            elif (self._fleftIR.get_distance() <  WALL_THRESHOLD_DIAG and self._rleftIR.get_distance() <  WALL_THRESHOLD_DIAG and (self._fleftIR.get_distance() <  WALL_DIST or self._rleftIR.get_distance() <  WALL_DIST)):
+            elif left_valid:
                 self.followLeft()
-            elif (self._frightIR.get_distance() <  WALL_THRESHOLD_DIAG and self._rrightIR.get_distance() <  WALL_THRESHOLD_DIAG and (self._frightIR.get_distance() <  WALL_DIST or self._rrightIR.get_distance() <  WALL_DIST)):
+            elif right_valid:
                 self.followRight()
-            elif self._frightIR.get_distance() < WALL_THRESHOLD_DIAG:
+            elif dists['fr'] < WALL_THRESHOLD_DIAG:
                 self.followfRight()
-            elif self._fleftIR.get_distance() < WALL_THRESHOLD_DIAG:
+            elif dists['fl'] < WALL_THRESHOLD_DIAG:
                 self.followfLeft()
-            elif self._rrightIR.get_distance() < WALL_THRESHOLD_DIAG:
+            elif dists['rr'] < WALL_THRESHOLD_DIAG:
                 self.followrRight()
-            elif self._rleftIR.get_distance() < WALL_THRESHOLD_DIAG:
+            elif dists['rl'] < WALL_THRESHOLD_DIAG:
                 self.followrLeft()
 
             else:
@@ -206,11 +187,11 @@ class Motors:
         self.move_ticks(-1 * offset, offset)
         self.stop()
 
-    def turn_around_l():
+    def turn_around_l(self):
         self.turn_left()
         self.turn_left()
 
-    def turn_around_r():
+    def turn_around_r(self):
         self.turn_right()
         self.turn_right()
 
@@ -232,8 +213,8 @@ class Motors:
 
     def followFront(self):
         print("fFront")
-        self.PIDfLeft.set_tunings(0.4,0.01,0.01)
-        self.PIDfRight.set_tunings(0.4,0.01,0.01)
+        self.PIDfLeft.set_tunings(KP, KI, KD)
+        self.PIDfRight.set_tunings(KP, KI, KD)
         self.setpointfR = WALL_DISTANCE_DIAG
         self.setpointfL = WALL_DISTANCE_DIAG
 
@@ -251,8 +232,8 @@ class Motors:
     def followRear(self):
         print("fRear")
 
-        self.PIDrLeft.set_tunings(0.4,0.01,0.01)
-        self.PIDrRight.set_tunings(0.4,0.01,0.01)
+        self.PIDrLeft.set_tunings(KP, KI, KD)
+        self.PIDrRight.set_tunings(KP, KI, KD)
         self.setpointrR = WALL_DISTANCE_DIAG
         self.setpointrL = WALL_DISTANCE_DIAG
 
@@ -271,8 +252,8 @@ class Motors:
     def followLeft(self):
         print("fLeft")
 
-        self.PIDfLeft.set_tunings(0.4,0.01,0.01)
-        self.PIDrLeft.set_tunings(0.4,0.01,0.01)
+        self.PIDfLeft.set_tunings(KP, KI, KD)
+        self.PIDrLeft.set_tunings(KP, KI, KD)
         self.setpointfL = WALL_DISTANCE_DIAG
         self.setpointrL = WALL_DISTANCE_DIAG
 
@@ -291,8 +272,8 @@ class Motors:
     def followRight(self):
         print("fRight")
 
-        self.PIDfRight.set_tunings(0.4,0.01,0.01)
-        self.PIDrRight.set_tunings(0.4,0.01,0.01)
+        self.PIDfRight.set_tunings(KP, KI, KD)
+        self.PIDrRight.set_tunings(KP, KI, KD)
         self.setpointfR = WALL_DISTANCE_DIAG
         self.setpointrR = WALL_DISTANCE_DIAG
 
@@ -310,7 +291,7 @@ class Motors:
     def followfRight(self):
         print("ffRight")
 
-        self.PIDfRight.set_tunings(0.4,0.01,0.01)
+        self.PIDfRight.set_tunings(KP, KI, KD)
         self.setpointfR = WALL_DISTANCE_DIAG
 
         self.inputfR = self._frightIR.get_distance()
@@ -325,7 +306,7 @@ class Motors:
     def followfLeft(self):
         print("ffLeft")
 
-        self.PIDfLeft.set_tunings(0.4,0.01,0.01)
+        self.PIDfLeft.set_tunings(KP, KI, KD)
         self.setpointfL = WALL_DISTANCE_DIAG
 
         self.inputfL = self._fleftIR.get_distance()
@@ -340,7 +321,7 @@ class Motors:
     def followrRight(self):
         print("frRight")
 
-        self.PIDrRight.set_tunings(0.4,0.01,0.01)
+        self.PIDrRight.set_tunings(KP, KI, KD)
         self.setpointrR = WALL_DISTANCE_DIAG
 
         self.inputrR = self._rrightIR.get_distance()
@@ -355,7 +336,7 @@ class Motors:
     def followrLeft(self):
         print("frLeft")
 
-        self.PIDrLeft.set_tunings(0.4,0.01,0.01)
+        self.PIDrLeft.set_tunings(KP, KI, KD)
         self.setpointrL = WALL_DISTANCE_DIAG
 
         self.inputrL = self._rleftIR.get_distance()
