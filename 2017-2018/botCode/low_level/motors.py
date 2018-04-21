@@ -9,7 +9,7 @@ setGPIO()
 MOTOR_SPEED = 5
 TICKS_CELL = 500
 TICKS_TURN = 200
-WALL_THRESHOLD_DIAG = 130
+WALL_THRESHOLD_DIAG = 120
 WALL_DISTANCE_DIAG = 70
 class Motors:
     def __init__(self):
@@ -92,7 +92,6 @@ class Motors:
         print("stopped")
         self.right_motor.stop()
         self.left_motor.stop()
-        print("done")
 
     def wait(self, ms):
         delay(ms/1000)
@@ -140,6 +139,8 @@ class Motors:
 
     def advance(self, ticks, distance_l = 0, distance_r = 0):
         if (self._frightIR.get_distance() < WALL_THRESHOLD_DIAG and self._fleftIR.get_distance() < WALL_THRESHOLD_DIAG):
+            print(self._frightIR.get_distance())           
+            print(self._fleftIR.get_distance())
             self.followFront(ticks, distance_l, distance_r)
         elif (self._rrightIR.get_distance() < WALL_THRESHOLD_DIAG and self._rleftIR.get_distance() < WALL_THRESHOLD_DIAG):
             self.followRear(ticks, distance_l, distance_r)
@@ -148,6 +149,7 @@ class Motors:
         elif (self._frightIR.get_distance() <  WALL_THRESHOLD_DIAG and self._rrightIR.get_distance() <  WALL_THRESHOLD_DIAG):
             self.followRight(ticks, distance_l, distance_r)
         else:
+            print("move")
             self.move_ticks(ticks, ticks)
 
     def turn_around_l():
@@ -225,6 +227,8 @@ class Motors:
             distance_l, distance_r = self.read_encoders()
             self.inputrR = self._rrightIR.get_distance()
             self.inputrL = self._rleftIR.get_distance()
+            print(self.inputrR)
+            print(self.inputrL)
 
             if self.inputrR > WALL_THRESHOLD_DIAG or self.inputrL > WALL_THRESHOLD_DIAG:
                 self.stop()
@@ -235,9 +239,9 @@ class Motors:
             self.PIDrLeft.compute(self.inputrL, self.setpointrL)
 
             if self.dir:
-                self.move_motors((MOTOR_SPEED + self.PIDrLeft.output())/2, (MOTOR_SPEED - self.PIDrRight.output())/2)
+                self.move_motors((MOTOR_SPEED + self.PIDrLeft.output())/2, (MOTOR_SPEED + self.PIDrRight.output())/2)
             else:
-                self.move_motors(-(MOTOR_SPEED + self.PIDrLeft.output())/2, -(MOTOR_SPEED - self.PIDrRight.output())/2)
+                self.move_motors(-(MOTOR_SPEED + self.PIDrLeft.output())/2, -(MOTOR_SPEED + self.PIDrRight.output())/2)
 
 
         offset = (distance_l - distance_r)/2
@@ -270,9 +274,9 @@ class Motors:
             self.PIDrLeft.compute(self.inputrL, self.setpointrL)
 
             if self.dir:
-                self.move_motors((MOTOR_SPEED + self.PIDfLeft.output())/2, (MOTOR_SPEED - self.PIDrLeft.output())/2)
+                self.move_motors((MOTOR_SPEED + self.PIDfLeft.output())/2, (MOTOR_SPEED + self.PIDrLeft.output())/2)
             else:
-                self.move_motors(-(MOTOR_SPEED + self.PIDfLeft.output())/2, -(MOTOR_SPEED - self.PIDrLeft.output())/2)
+                self.move_motors(-(MOTOR_SPEED + self.PIDfLeft.output())/2, -(MOTOR_SPEED + self.PIDrLeft.output())/2)
 
 
         offset = (distance_l - distance_r)/2
@@ -306,9 +310,9 @@ class Motors:
             self.PIDrRight.compute(self.inputrR, self.setpointrR)
 
             if self.dir:
-                self.move_motors((MOTOR_SPEED + self.PIDfRight.output())/2, (MOTOR_SPEED - self.PIDrRight.output())/2)
+                self.move_motors((MOTOR_SPEED + self.PIDfRight.output())/2, (MOTOR_SPEED + self.PIDrRight.output())/2)
             else:
-                self.move_motors(-(MOTOR_SPEED + self.PIDfRight.output())/2, -(MOTOR_SPEED - self.PIDrRight.output())/2)
+                self.move_motors(-(MOTOR_SPEED + self.PIDfRight.output())/2, -(MOTOR_SPEED + self.PIDrRight.output())/2)
 
         offset = (distance_l - distance_r)/2
         self.move_ticks(-1 * offset, offset)
