@@ -153,7 +153,14 @@ class Motors:
                 self.followfRight()
             
             elif (self._frightIR.get_distance() < WALL_THRESHOLD_DIAG and self._fleftIR.get_distance() < WALL_THRESHOLD_DIAG and (self._frightIR.get_distance() < WALL_DIST or self._fleftIR.get_distance() < WALL_DIST)) :
-                self.followFront()
+                if (self._rrightIR.get_distance() < WALL_THRESHOLD_DIAG and self._rleftIR.get_distance() < WALL_THRESHOLD_DIAG and (self._rrightIR.get_distance() < WALL_DIST or self._rleftIR.get_distance() < WALL_DIST)):
+                    front_sum = self._frightIR.get_distance() + self._fleftIR.get_distance()
+                    rear_sum = self._rrightIR.get_distance() + self._rleftIR.get_distance()
+                    if front_sum >=  rear_sum:
+                        self.followFront()
+                    else:
+                        self.followRear()
+
             elif (self._rrightIR.get_distance() < WALL_THRESHOLD_DIAG and self._rleftIR.get_distance() < WALL_THRESHOLD_DIAG and (self._rrightIR.get_distance() < WALL_DIST or self._rleftIR.get_distance() < WALL_DIST)):
                 self.followRear()
             elif (self._fleftIR.get_distance() <  WALL_THRESHOLD_DIAG and self._rleftIR.get_distance() <  WALL_THRESHOLD_DIAG and (self._fleftIR.get_distance() <  WALL_DIST or self._rleftIR.get_distance() <  WALL_DIST)):
