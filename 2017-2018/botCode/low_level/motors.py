@@ -9,7 +9,8 @@ setGPIO()
 MOTOR_SPEED = 2
 TICKS_CELL = 500
 TICKS_TURN = 200
-
+WALL_THRESHOLD_DIAG = 130
+WALL_DISTANCE_DIAG = 70
 class Motors:
     def __init__(self):
         self.sensors = Sensors([pins.tof_front,pins.tof_rear,pins.tof_fleft,pins.tof_fright,pins.tof_rleft,pins.tof_rright], ["front", "rear","fleft","fright","rleft","rright"], [0x30,0x31,0x32,0x33,0x34,0x35])
@@ -206,7 +207,7 @@ class Motors:
         self.setpointrR = WALL_DISTANCE_DIAG
         self.setpointrL = WALL_DISTANCE_DIAG
 
-        while (distance_l + distance_r < M ticks * 2):
+        while (distance_l + distance_r < ticks * 2):
             distance_l, distance_r = self.read_encoders()
             self.inputrR = self._rrightIR.get_distance()
             self.inputrL = self._rleftIR.get_distance()
@@ -240,7 +241,7 @@ class Motors:
         self.setpointfL = WALL_DISTANCE_DIAG
         self.setpointrL = WALL_DISTANCE_DIAG
 
-        while (distance_l + distance_r < M ticks * 2):
+        while (distance_l + distance_r < ticks * 2):
             distance_l, distance_r = self.read_encoders()
             self.inputfL = self._flefttIR.get_distance()
             self.inputrL = self._rleftIR.get_distance()
@@ -274,7 +275,7 @@ class Motors:
         self.setpointfR = WALL_DISTANCE_DIAG
         self.setpointrR = WALL_DISTANCE_DIAG
 
-        while (distance_l + distance_r < M ticks * 2):
+        while (distance_l + distance_r < ticks * 2):
             distance_l, distance_r = self.read_encoders()
             self.inputfR = self._frightIR.get_distance()
             self.inputrR = self._rrightIR.get_distance()
