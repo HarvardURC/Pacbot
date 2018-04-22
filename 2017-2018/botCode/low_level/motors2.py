@@ -10,12 +10,13 @@ import signal, sys
 
 MOTOR_SPEED = 50
 TICKS_CELL = 500
-TICKS_TURN = 200
+TICKS_TURN = 220
 WALL_THRESHOLD_DIAG = 120
 WALL_DISTANCE_DIAG = 70
-WALL_DIST = 70
+WALL_DIST = 80
 
 KP = 0.4
+KP2 = 0.3
 KI = 0.01
 KD = 0.01
 class Motors:
@@ -40,13 +41,13 @@ class Motors:
         self.setpointL = 0
         self.inputL = 0
         self.PIDLeft = PID(self.inputL, self.setpointL, 2.0, 0.002, 0.000, DIRECT, Timer)
-        self.PIDLeft.set_output_limits(-1 * MOTOR_SPEED, MOTOR_SPEED)
+        self.PIDLeft.set_output_limits(-1 * MOTOR_SPEED/10, MOTOR_SPEED/10)
         self.PIDLeft.set_mode(AUTOMATIC)
 
         self.setpointR = 0
         self.inputR = 0
         self.PIDRight = PID(self.inputR, self.setpointR, 2.0, 0.002, 0.000, DIRECT, Timer)
-        self.PIDRight.set_output_limits(-1 * MOTOR_SPEED, MOTOR_SPEED)
+        self.PIDRight.set_output_limits(-1 * MOTOR_SPEED/10, MOTOR_SPEED/10)
         self.PIDRight.set_mode(AUTOMATIC)
 
         self.setpointfL = 0
@@ -112,24 +113,32 @@ class Motors:
 
         time = self.PIDRight.millis()
 
-        while ((abs(self.inputL - self.setpointL) > 10 or abs(self.inputR - self.setpointR) > 10) and (self.PIDRight.millis() - time < 2000)):
+        while (abs(self.inputL - self.setpointL) > 5 or abs(self.inputR - self.setpointR) > 5):
             self.inputL , self.inputR = self.read_encoders()
+
+            #self.inputL *= -1
+            #self.inputR *= -1
 
             self.PIDRight.compute(self.inputR, self.setpointR)
             self.PIDLeft.compute(self.inputL, self.setpointL)
 
             l_rem = abs(self.inputL - self.setpointL)
-            r_rem = abs(self.inputR - self.setpointR))
-
+            r_rem = abs(self.inputR - self.setpointR)
+            print('left: {}:{}:{}'.format(self.inputL, self.setpointL, self.PIDLeft.output()))
+            print('right: {}:{}:{}'.format(self.inputR, self.setpointR, self.PIDRight.output()))
+            #self.move_motors(self.PIDLeft.output(),self.PIDRight.output()) 
+            #self.move_motors(-1,1) 
+            
             if l_rem > r_rem :
                 self.move_motors(self.PIDLeft.output(),0)
-                print("left")
+                #print("left")
             elif r_rem > l_rem:
                 self.move_motors(0,self.PIDRight.output())
-                print("right")
+                #print("right")
             else:
                 self.move_motors(self.PIDLeft.output(),self.PIDRight.output()) 
-                print("both")
+                #print("both")
+            
         self.stop()
 
     def advance(self, ticks):
@@ -154,6 +163,9 @@ class Motors:
             left_valid = dists['fl'] <  WALL_THRESHOLD_DIAG and dists['rl'] <  WALL_THRESHOLD_DIAG and (dists['fl'] <  WALL_DIST or dists['rl'] <  WALL_DIST)
             right_valid = dists['fr'] <  WALL_THRESHOLD_DIAG and dists['rr'] <  WALL_THRESHOLD_DIAG and (dists['fr'] <  WALL_DIST or dists['rr'] <  WALL_DIST)
 
+            dist2 = [dists["fr"], dists["fl"], dists["rr"], dists["rl"]]
+            min_idx = dist2.index(min(dist2))
+
             if front_valid:
                 if rear_valid:
                     front_min = min(dists['fr'], dists['fl'])
@@ -171,6 +183,18 @@ class Motors:
                 self.follow_left()
             elif right_valid:
                 self.follow_right()
+            elif dist2[min_idx] < WALL_THRESHOLD_DIAG:
+                if min_idx == 0:
+                    self.follow_front_right()
+                elif min_idx == 1:
+                    self.follow_front_left()
+                elif min_idx == 2:
+                    self.follow_rear_right()
+                else:
+                    self.follow_rear_left()
+            else:
+                self.straight()
+            """
             elif dists['fr'] < WALL_THRESHOLD_DIAG:
                 self.follow_front_right()
             elif dists['fl'] < WALL_THRESHOLD_DIAG:
@@ -179,9 +203,7 @@ class Motors:
                 self.follow_rear_right()
             elif dists['rl'] < WALL_THRESHOLD_DIAG:
                 self.follow_rear_left()
-
-            else:
-                self.straight()
+            """
 
         offset = (distance_l - distance_r)/2
         self.move_ticks(-1 * offset, offset)
@@ -291,7 +313,7 @@ class Motors:
     def follow_front_right(self):
         print("ffRight")
 
-        self.PIDfRight.set_tunings(KP, KI, KD)
+        self.PIDfRight.set_tunings(KP2, KI, KD)
         self.setpointfR = WALL_DISTANCE_DIAG
 
         self.inputfR = self._frightIR.get_distance()
@@ -306,7 +328,7 @@ class Motors:
     def follow_front_left(self):
         print("ffLeft")
 
-        self.PIDfLeft.set_tunings(KP, KI, KD)
+        self.PIDfLeft.set_tunings(KP2, KI, KD)
         self.setpointfL = WALL_DISTANCE_DIAG
 
         self.inputfL = self._fleftIR.get_distance()
@@ -321,7 +343,7 @@ class Motors:
     def follow_rear_right(self):
         print("frRight")
 
-        self.PIDrRight.set_tunings(KP, KI, KD)
+        self.PIDrRight.set_tunings(KP2, KI, KD)
         self.setpointrR = WALL_DISTANCE_DIAG
 
         self.inputrR = self._rrightIR.get_distance()
@@ -336,7 +358,7 @@ class Motors:
     def follow_rear_left(self):
         print("frLeft")
 
-        self.PIDrLeft.set_tunings(KP, KI, KD)
+        self.PIDrLeft.set_tunings(KP2, KI, KD)
         self.setpointrL = WALL_DISTANCE_DIAG
 
         self.inputrL = self._rleftIR.get_distance()
@@ -361,6 +383,8 @@ M = Motors()
 
 #M.reverse_direction()
 try:
+   # M.advance(3000)
+    #M.turn_left()
     M.advance(3000)
 except KeyboardInterrupt:
     M.stop()
