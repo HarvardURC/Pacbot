@@ -163,8 +163,26 @@ class Motors:
             left_valid = dists['fl'] <  WALL_THRESHOLD_DIAG and dists['rl'] <  WALL_THRESHOLD_DIAG and (dists['fl'] <  WALL_DIST or dists['rl'] <  WALL_DIST)
             right_valid = dists['fr'] <  WALL_THRESHOLD_DIAG and dists['rr'] <  WALL_THRESHOLD_DIAG and (dists['fr'] <  WALL_DIST or dists['rr'] <  WALL_DIST)
 
-            dist2 = [dists["fr"], dists["fl"], dists["rr"], dists["rl"]]
-            min_idx = dist2.index(min(dist2))
+            dist2 = []
+            if dists["fr"] < WALL_THRESHOLD_DIAG:
+                dist2.append(dists["fr"])
+            else:
+                dist2.append(-float(inf))
+
+            if dists["fl"] < WALL_THRESHOLD_DIAG:
+                dist2.append(dists["fl"])
+            else:
+                dist2.append(-float(inf))
+            if dists["rr"] < WALL_THRESHOLD_DIAG:
+                dist2.append(dists["rr"])
+            else:
+                dist2.append(-float(inf))
+            if dists["rl"] < WALL_THRESHOLD_DIAG:
+                dist2.append(dists["rl"])
+            else:
+                dist2.append(-float(inf))
+            
+            max_idx = dist2.index(max(dist2))
 
             if front_valid:
                 if rear_valid:
@@ -183,12 +201,13 @@ class Motors:
                 self.follow_left()
             elif right_valid:
                 self.follow_right()
-            elif dist2[min_idx] < WALL_THRESHOLD_DIAG:
-                if min_idx == 0:
+                
+            elif dist2[max_idx] < WALL_THRESHOLD_DIAG:
+                if max_idx == 0:
                     self.follow_front_right()
-                elif min_idx == 1:
+                elif max_idx == 1:
                     self.follow_front_left()
-                elif min_idx == 2:
+                elif max_idx == 2:
                     self.follow_rear_right()
                 else:
                     self.follow_rear_left()
