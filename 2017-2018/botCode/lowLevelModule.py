@@ -48,7 +48,7 @@ class LowLevelModule(rm.ProtoModule):
         self.motors.advance(GRID_VAL)
 
     def _turn_right(self):
-        #TODO: Turn 90 degrees right
+        self.motors.turn_right()
         if self.current_dir == PacmanCommand.EAST:
             self.current_dir = PacmanCommand.SOUTH
         elif self.current_dir == PacmanCommand.SOUTH:
@@ -59,7 +59,7 @@ class LowLevelModule(rm.ProtoModule):
             self.current_dir = PacmanCommand.EAST
             
     def _turn_left(self):
-        #TODO: Turn 90 degrees left
+        self.motors.turn_left()
         if self.current_dir == PacmanCommand.EAST:
             self.current_dir = PacmanCommand.NORTH
         elif self.current_dir == PacmanCommand.NORTH:
