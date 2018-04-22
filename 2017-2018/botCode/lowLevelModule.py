@@ -4,7 +4,7 @@ import os
 import robomodules as rm
 import variables as var
 from grid import grid
-from low_level/motors import Motors
+from low_level.motors import Motors
 from messages import MsgType, message_buffers, LightState, PacmanCommand
 
 ADDRESS = os.environ.get("LOCAL_ADDRESS","localhost")
@@ -109,10 +109,15 @@ class LowLevelModule(rm.ProtoModule):
             while True:
                 self._execute_command()
 
+    def kill(self):
+        self.motors.stop()
+
 
 def main():
     module = LowLevelModule(ADDRESS, PORT)
-    module.run()
-
+    try:
+        module.run()
+    except KeyboardInterrupt:
+        module.kill()
 if __name__ == "__main__":
     main()

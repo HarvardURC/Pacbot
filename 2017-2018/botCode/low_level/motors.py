@@ -10,7 +10,7 @@ import signal, sys
 
 MOTOR_SPEED = 50
 TICKS_CELL = 500
-TICKS_TURN = 220
+TICKS_TURN = 100
 WALL_THRESHOLD_DIAG = 120
 WALL_DISTANCE_DIAG = 70
 WALL_DIST = 80
@@ -188,7 +188,7 @@ class Motors:
         self.move_ticks(-1 * offset, offset)
         self.stop()
 
-    def self.reverse(self, ticks):
+    def reverse(self, ticks):
         self.reverse_direction()
         self.advance(ticks)
         self.reverse_direction()
@@ -361,15 +361,15 @@ class Motors:
             self.move_motors(MOTOR_SPEED/2, MOTOR_SPEED/2)
         else:
             self.move_motors(-MOTOR_SPEED/2, -MOTOR_SPEED/2)
-
+'''
 M = Motors()
 
 
 #M.reverse_direction()
 try:
    # M.advance(3000)
-    #M.turn_left()
-    M.advance(3000)
+    M.turn_left()
+    #M.advance(3000)
 except KeyboardInterrupt:
     M.stop()
     sys.exit()
@@ -380,10 +380,4 @@ print("done")
 import sys
 
 sys.exit()
-
-
-
-
-
-
-
+'''
