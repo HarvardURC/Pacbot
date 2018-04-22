@@ -24,24 +24,24 @@ class LowLevelModule(rm.ProtoModule):
         self.current_dir = PacmanCommand.EAST
         
     def _should_turn_left(self, cmd):
-        return 
-            (self.current_dir == PacmanCommand.NORTH and cmd  == PacmanCommand.WEST) or
-            (self.current_dir == PacmanCommand.SOUTH and cmd  == PacmanCommand.EAST) or
-            (self.current_dir == PacmanCommand.EAST and cmd  == PacmanCommand.NORTH) or
+        return \
+            (self.current_dir == PacmanCommand.NORTH and cmd  == PacmanCommand.WEST) or \
+            (self.current_dir == PacmanCommand.SOUTH and cmd  == PacmanCommand.EAST) or \
+            (self.current_dir == PacmanCommand.EAST and cmd  == PacmanCommand.NORTH) or \
             (self.current_dir == PacmanCommand.WEST and cmd  == PacmanCommand.SOUTH)
 
     def _should_turn_right(self, cmd):
-        return 
-            (self.current_dir == PacmanCommand.NORTH and cmd  == PacmanCommand.EAST) or
-            (self.current_dir == PacmanCommand.SOUTH and cmd  == PacmanCommand.WEST) or
-            (self.current_dir == PacmanCommand.EAST and cmd  == PacmanCommand.SOUTH) or
+        return \
+            (self.current_dir == PacmanCommand.NORTH and cmd  == PacmanCommand.EAST) or \
+            (self.current_dir == PacmanCommand.SOUTH and cmd  == PacmanCommand.WEST) or \
+            (self.current_dir == PacmanCommand.EAST and cmd  == PacmanCommand.SOUTH) or \
             (self.current_dir == PacmanCommand.WEST and cmd  == PacmanCommand.NORTH)
 
     def _should_reverse(self, cmd):
-        return 
-            (self.current_dir == PacmanCommand.NORTH and cmd  == PacmanCommand.SOUTH) or
-            (self.current_dir == PacmanCommand.SOUTH and cmd  == PacmanCommand.NORTH) or
-            (self.current_dir == PacmanCommand.EAST and cmd  == PacmanCommand.WEST) or
+        return \
+            (self.current_dir == PacmanCommand.NORTH and cmd  == PacmanCommand.SOUTH) or \
+            (self.current_dir == PacmanCommand.SOUTH and cmd  == PacmanCommand.NORTH) or \
+            (self.current_dir == PacmanCommand.EAST and cmd  == PacmanCommand.WEST) or \
             (self.current_dir == PacmanCommand.WEST and cmd  == PacmanCommand.EAST)
 
     def _move_forward(self):
