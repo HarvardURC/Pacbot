@@ -124,7 +124,7 @@ static PyObject* encoderWrite(PyObject* self, PyObject* args){
 
     pos = n;
 
-    return Py_None
+    return Py_None;
 };
 
 static PyObject* encoderInit(PyObject* self, PyObject* args)
@@ -145,7 +145,7 @@ static PyObject* encoderTerminate(PyObject* self){
 
     gpioTerminate();
 
-    return Py_None
+    return Py_None;
 };
 
 static PyMethodDef encoderMethods[] = {
@@ -153,7 +153,7 @@ static PyMethodDef encoderMethods[] = {
     { "write", encoderWrite, METH_VARARGS, "Write Encoder Value" },
     { "read", encoderRead, METH_NOARGS, "Read Encoder" },
     { "terminate", encoderTerminate, METH_NOARGS, "Terminate Encoder" },
-    { NULL, NULL, 0, NULL }
+    { NULL, NULL, 0, NULL };
 };
 
 // Our Module Definition struct
@@ -162,7 +162,7 @@ static struct PyModuleDef Encoder = {
     "Encoder",
     "Encoder Module",
     -1,
-    encoderMethods
+    encoderMethods;
 };
 
 // Initializes our module using our above struct
