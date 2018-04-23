@@ -11,7 +11,7 @@ import signal, sys
 MOTOR_SPEED = 50
 TICKS_CELL = 500
 TICKS_TURN = 100
-WALL_THRESHOLD_DIAG = 120
+WALL_THRESHOLD_DIAG = 110
 WALL_DISTANCE_DIAG = 70
 WALL_DIST = 80
 
@@ -153,7 +153,7 @@ class Motors:
             left_valid = dists['fl'] <  WALL_THRESHOLD_DIAG and dists['rl'] <  WALL_THRESHOLD_DIAG and (dists['fl'] <  WALL_DIST or dists['rl'] <  WALL_DIST)
             right_valid = dists['fr'] <  WALL_THRESHOLD_DIAG and dists['rr'] <  WALL_THRESHOLD_DIAG and (dists['fr'] <  WALL_DIST or dists['rr'] <  WALL_DIST)
 
-            max2 = max(dists, key = lambda k: dists[k] if dists[k] < WALL_THRESHOLD_DIAG else float(-inf))
+            max2 = max(dists, key = lambda k: dists[k] if dists[k] < WALL_THRESHOLD_DIAG else -float('inf'))
             single_sensor_functions = {
                     'fr': self.follow_front_right,
                     'fl': self.follow_front_left,

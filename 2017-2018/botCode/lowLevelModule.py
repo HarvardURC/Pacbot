@@ -86,16 +86,19 @@ class LowLevelModule(rm.ProtoModule):
     def _execute_command(self):
         if self.current_command:
             cmd = self.current_command
+            print(cmd)
             self.current_command = None
             if cmd == PacmanCommand.STOP:
+                self.motors.stop()
                 return
             if self._should_turn_left(cmd):
                 self._turn_left()
             elif self._should_turn_right(cmd):
                 self._turn_right()
-            elif self._should_reverse(cmd):
+            if self._should_reverse(cmd):
                 self._reverse()
-            self._move_forward()
+            else:
+                self._move_forward()
 
     def msg_received(self, msg, msg_type):
         if msg_type == MsgType.PACMAN_COMMAND:
@@ -104,6 +107,11 @@ class LowLevelModule(rm.ProtoModule):
             self.current_location = (msg.pacman.x, msg.pacman.y)
 
     def tick(self):
+
+        self.set_frequency(0)
+        self._move_forward()
+        self.motors.stop()
+        return
         if self.current_command:
             self.set_frequency(0)
             while True:
