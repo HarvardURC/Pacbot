@@ -106,17 +106,17 @@ sudo ./rot_enc_c
 static int pos = 0;
 Pi_Renc_t * renc;
 
-void callback(int way)
+void encoderCallback(int way)
 {
    pos = 0;
    pos += way;
 };
 
-static PyObject *read(PyObject* self){
+static PyObject* encoderRead(PyObject* self){
     return Py_BuildValue("i", pos);
 };
 
-static PyObject *write(PyObject* self, PyObject* args){
+static PyObject* encoderWrite(PyObject* self, PyObject* args){
     int n;
     // if our `n` value 
     if(!PyArg_ParseTuple(args, "i", &n))
@@ -127,20 +127,20 @@ static PyObject *write(PyObject* self, PyObject* args){
     return Py_None
 };
 
-static PyObject* init(PyObject* self, PyObject* args)
+static PyObject* encoderInit(PyObject* self, PyObject* args)
 {
     int pin_a, pin_b;
 
     if(!PyArg_ParseTuple(args, "ii", &pin_a, &pin_b))
         return NULL;
    
-    if (gpioInitialise() < 0) return 1;
+    if (gpioInitialise() < 0) return Py_BuildValue("i", 1);
 
     renc = Pi_Renc(pin_a, pin_b, callback);
 
 };
 
-static PyObject *terminate(PyObject* self){
+static PyObject* encoderTerminate(PyObject* self){
     Pi_Renc_cancel(renc);
 
     gpioTerminate();
@@ -149,10 +149,10 @@ static PyObject *terminate(PyObject* self){
 };
 
 static PyMethodDef encoderMethods[] = {
-    { "init", init, METH_VARARGS, "Initialize Encoder" },
-    { "write", write, METH_VARARGS, "Write Encoder Value" },
-    { "read", read, METH_NOARGS, "Read Encoder" },
-    { "terminate", terminate, METH_NOARGS, "Terminate Encoder" },
+    { "init", encoderInit, METH_VARARGS, "Initialize Encoder" },
+    { "write", encoderWrite, METH_VARARGS, "Write Encoder Value" },
+    { "read", encoderRead, METH_NOARGS, "Read Encoder" },
+    { "terminate", encoderTerminate, METH_NOARGS, "Terminate Encoder" },
     { NULL, NULL, 0, NULL }
 };
 
