@@ -3,38 +3,35 @@
 import os, copy
 import robomodules as rm
 from variables import *
-from messages import MsgType, message_buffers, PacmanCommand
+from grid import grid
+from search import bfs
+from messages import MsgType, message_buffers, LightState, PacmanCommand
 
 ADDRESS = os.environ.get("LOCAL_ADDRESS","localhost")
 PORT = os.environ.get("LOCAL_PORT", 11295)
 
-FREQUENCY = 30
+FREQUENCY = 60
 
-class KeyboardHighLevelModule(rm.ProtoModule):
+class BasicHighLevelModule(rm.ProtoModule):
     def __init__(self, addr, port):
         self.subscriptions = []
         super().__init__(addr, port, message_buffers, MsgType, FREQUENCY, self.subscriptions)
         self.next_dir = None
-        self.loop.add_reader(sys.stdin, self.keypress)
-        self.grid = copy.deepcopy(grid)
-    
+
     def msg_received(self, msg, msg_type):
         return
 
     def tick(self):
-        if self.next_dir != None:
+        if self.next_dir == None:
+            self.keypress()
+        else:
             new_msg = PacmanCommand()
             new_msg.dir = self.next_dir
             self.write(new_msg.SerializeToString(), MsgType.PACMAN_COMMAND)
             self.next_dir = None
-            return
-
-        new_msg = PacmanCommand()
-        new_msg.dir = PacmanCommand.STOP
-        self.write(new_msg.SerializeToString(), MsgType.PACMAN_COMMAND)
 
     def keypress(self):
-        char = sys.stdin.read(1)
+        char = input('direction: ')
         if char == 'a':
             self.next_dir = PacmanCommand.WEST
         elif char == 'd':
@@ -47,8 +44,9 @@ class KeyboardHighLevelModule(rm.ProtoModule):
             self.quit()
 
 def main():
-    module = KeyboardHighLevelModule(ADDRESS, PORT)
+    module = BasicHighLevelModule(ADDRESS, PORT)
     module.run()
+
 
 if __name__ == "__main__":
     main()
