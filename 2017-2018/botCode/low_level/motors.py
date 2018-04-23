@@ -8,17 +8,17 @@ setGPIO()
 
 import signal, sys
 
-MOTOR_SPEED = 50
+MOTOR_SPEED = 30
 TICKS_CELL = 500
-TICKS_TURN = 100
-WALL_THRESHOLD_DIAG = 110
+TICKS_TURN = 420
+WALL_THRESHOLD_DIAG = 85
 WALL_DISTANCE_DIAG = 70
 WALL_DIST = 80
-
+KP3 = 0.4
 KP = 0.4
-KP2 = 0.3
+KP2 = 0.4
 KI = 0.01
-KD = 0.01
+KD = 0.00
 class Motors:
     def __init__(self):
         self.sensors = Sensors([pins.tof_front,pins.tof_rear,pins.tof_fleft,pins.tof_fright,pins.tof_rleft,pins.tof_rright], ["front", "rear","fleft","fright","rleft","rright"], [0x30,0x31,0x32,0x33,0x34,0x35])
@@ -40,13 +40,13 @@ class Motors:
 
         self.setpointL = 0
         self.inputL = 0
-        self.PIDLeft = PID(self.inputL, self.setpointL, 2.0, 0.002, 0.000, DIRECT, Timer)
+        self.PIDLeft = PID(self.inputL, self.setpointL, KP3, 0.002, 0.000, DIRECT, Timer)
         self.PIDLeft.set_output_limits(-1 * MOTOR_SPEED/10, MOTOR_SPEED/10)
         self.PIDLeft.set_mode(AUTOMATIC)
 
         self.setpointR = 0
         self.inputR = 0
-        self.PIDRight = PID(self.inputR, self.setpointR, 2.0, 0.002, 0.000, DIRECT, Timer)
+        self.PIDRight = PID(self.inputR, self.setpointR, KP3, 0.002, 0.000, DIRECT, Timer)
         self.PIDRight.set_output_limits(-1 * MOTOR_SPEED/10, MOTOR_SPEED/10)
         self.PIDRight.set_mode(AUTOMATIC)
 
@@ -162,6 +162,7 @@ class Motors:
             }
 
             if front_valid:
+                """
                 if rear_valid:
                     front_min = min(dists['fr'], dists['fl'])
                     rear_min = min(dists['rr'], dists['rl'])
@@ -171,9 +172,10 @@ class Motors:
                         self.follow_rear()
                 else:
                     self.follow_front()
-
-            elif rear_valid:
-                self.follow_rear()
+                """
+                self.follow_front()
+            #elif rear_valid:
+                #self.follow_rear()
             elif left_valid:
                 self.follow_left()
             elif right_valid:
@@ -204,15 +206,15 @@ class Motors:
     def turn_left(self): 
         # if self._frontIR.get_distance() < WALL_THRESHOLD:
         #     self.front_align()
-        self.PIDLeft.set_tunings(0.4,0.01,0)
-        self.PIDRight.set_tunings(0.4,0.01,0)
+        self.PIDLeft.set_tunings(KP3,0.01,0)
+        self.PIDRight.set_tunings(KP3,0.01,0)
         self.move_ticks(-1 * TICKS_TURN, TICKS_TURN)
 
     def turn_right(self):
         # if self._frontIR.get_distance() < WALL_THRESHOLD:
         #     self.front_align()
-        self.PIDLeft.set_tunings(0.4,0.01,0)
-        self.PIDRight.set_tunings(0.4,0.01,0)
+        self.PIDLeft.set_tunings(KP3,0.01,0)
+        self.PIDRight.set_tunings(KP3,0.01,0)
         self.move_ticks(TICKS_TURN, -1 * TICKS_TURN)
 
     # def front_align():
@@ -251,7 +253,7 @@ class Motors:
         self.PIDrLeft.compute(self.inputrL, self.setpointrL)
 
         if self.dir:
-            self.move_motors((MOTOR_SPEED + self.PIDrLeft.output())/2, (MOTOR_SPEED + self.PIDrRight.output())/2)
+            self.move_motors((MOTOR_SPEED - self.PIDrLeft.output())/2, (MOTOR_SPEED - self.PIDrRight.output())/2)
         else:
             self.move_motors(-(MOTOR_SPEED + self.PIDrLeft.output())/2, -(MOTOR_SPEED + self.PIDrRight.output())/2)
 

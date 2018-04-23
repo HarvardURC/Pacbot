@@ -1,6 +1,6 @@
 from time import sleep
 from .GPIOhelpers import *
-
+#from GPIOhelpers import *
 setGPIO()
 
 class Encoder:
@@ -12,7 +12,6 @@ class Encoder:
         digitalMode(self._pin_a, INPUT)
         digitalMode(self._pin_b, INPUT)
 
-        sleep(2)
 
         attachInterrupt(self._pin_a, self._interrupt_a, CHANGE);
         attachInterrupt(self._pin_b, self._interrupt_b, CHANGE);
