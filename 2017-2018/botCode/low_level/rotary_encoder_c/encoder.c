@@ -112,7 +112,7 @@ void encoderCallback(int way)
    pos += way;
 };
 
-static PyObject* encoderRead(PyObject* self){
+static PyObject* encoderRead(PyObject* self, PyObject* args){
     return Py_BuildValue("i", pos);
 };
 
@@ -136,11 +136,11 @@ static PyObject* encoderInit(PyObject* self, PyObject* args)
    
     if (gpioInitialise() < 0) return Py_BuildValue("i", 1);
 
-    renc = Pi_Renc(pin_a, pin_b, callback);
+    renc = Pi_Renc(pin_a, pin_b, encoderCallback);
 
 };
 
-static PyObject* encoderTerminate(PyObject* self){
+static PyObject* encoderTerminate(PyObject* self, PyObject* args){
     Pi_Renc_cancel(renc);
 
     gpioTerminate();
@@ -153,7 +153,7 @@ static PyMethodDef encoderMethods[] = {
     { "write", encoderWrite, METH_VARARGS, "Write Encoder Value" },
     { "read", encoderRead, METH_NOARGS, "Read Encoder" },
     { "terminate", encoderTerminate, METH_NOARGS, "Terminate Encoder" },
-    { NULL, NULL, 0, NULL };
+    { NULL, NULL, 0, NULL }
 };
 
 // Our Module Definition struct
@@ -162,7 +162,7 @@ static struct PyModuleDef Encoder = {
     "Encoder",
     "Encoder Module",
     -1,
-    encoderMethods;
+    encoderMethods
 };
 
 // Initializes our module using our above struct
