@@ -157,7 +157,7 @@ static PyMethodDef encoderMethods[] = {
 };
 
 // Our Module Definition struct
-static struct PyModuleDef encoderModule = {
+static struct PyModuleDef Encoder = {
     PyModuleDef_HEAD_INIT,
     "Encoder",
     "Encoder Module",
@@ -168,5 +168,5 @@ static struct PyModuleDef encoderModule = {
 // Initializes our module using our above struct
 PyMODINIT_FUNC PyInit_EncoderModule(void)
 {
-    return PyModule_Create(&encoderModule);
+    return PyModule_Create(&Encoder);
 }
