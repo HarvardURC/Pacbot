@@ -10,15 +10,15 @@ import signal, sys
 
 MOTOR_SPEED = 10
 TICKS_CELL = 500
-TICKS_TURN = 420
+TICKS_TURN = 300
 WALL_THRESHOLD_DIAG = 85
 WALL_DISTANCE_DIAG = 70
 WALL_DIST = 80
 KP3 = 0.4
-KP = 0.4
-KP2 = 0.4
+KP = .4
+KP2 = .4
 KI = 0.01
-KD = 0.00
+KD = 0.05
 class Motors:
     def __init__(self):
         self.sensors = Sensors([pins.tof_front,pins.tof_rear,pins.tof_fleft,pins.tof_fright,pins.tof_rleft,pins.tof_rright], ["front", "rear","fleft","fright","rleft","rright"], [0x30,0x31,0x32,0x33,0x34,0x35])
@@ -188,8 +188,8 @@ class Motors:
             else:
                 self.straight()
 
-        offset = (distance_l - distance_r)/2
-        self.move_ticks(-1 * offset, offset)
+        #offset = (distance_l - distance_r)/2
+        #self.move_ticks(-1 * offset, offset)
         self.stop()
 
     def reverse(self, ticks):
