@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 
    if (gpioInitialise() < 0) return 1;
 
-   renc = Pi_Renc(7, 8, callback);
+   renc = Pi_Renc(4, 14, callback);
 
    sleep(300);
 
