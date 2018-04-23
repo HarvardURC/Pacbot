@@ -8,7 +8,7 @@ setGPIO()
 
 import signal, sys
 
-MOTOR_SPEED = 30
+MOTOR_SPEED = 10
 TICKS_CELL = 500
 TICKS_TURN = 420
 WALL_THRESHOLD_DIAG = 85
@@ -115,6 +115,8 @@ class Motors:
 
         while (abs(self.inputL - self.setpointL) > 5 or abs(self.inputR - self.setpointR) > 5):
             self.inputL , self.inputR = self.read_encoders()
+            print(self.inputL)
+            print(self.inputR)
 
             self.PIDRight.compute(self.inputR, self.setpointR)
             self.PIDLeft.compute(self.inputL, self.setpointL)

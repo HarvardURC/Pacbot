@@ -4,7 +4,7 @@ M = Motors()
 
 try:
     #M.turn_left()
-    M.advance(3000)
+    M.advance(500)
 
 except KeyboardInterrupt:
     M.stop()
