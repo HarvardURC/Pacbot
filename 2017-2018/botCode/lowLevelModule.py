@@ -86,7 +86,6 @@ class LowLevelModule(rm.ProtoModule):
     def _execute_command(self):
         if self.current_command:
             cmd = self.current_command
-            print(cmd)
             self.current_command = None
             if cmd == PacmanCommand.STOP:
                 self.motors.stop()
@@ -107,15 +106,8 @@ class LowLevelModule(rm.ProtoModule):
             self.current_location = (msg.pacman.x, msg.pacman.y)
 
     def tick(self):
-
-        self.set_frequency(0)
-        self._move_forward()
-        self.motors.stop()
-        return
         if self.current_command:
-            self.set_frequency(0)
-            while True:
-                self._execute_command()
+            self._execute_command()
 
     def kill(self):
         self.motors.stop()
