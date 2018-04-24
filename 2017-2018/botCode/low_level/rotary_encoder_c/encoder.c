@@ -175,7 +175,8 @@ static PyObject* encoderInit(PyObject* self, PyObject* args)
 };
 
 static PyObject* encoderTerminate(PyObject* self, PyObject* args){
-  Pi_Renc_cancel(renc);
+  Pi_Renc_cancel(rencA);
+  Pi_Renc_cancel(rencB);
 
   gpioTerminate();
 
