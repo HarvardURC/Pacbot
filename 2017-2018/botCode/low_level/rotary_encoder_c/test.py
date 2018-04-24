@@ -2,7 +2,7 @@ import Encoder
 from threading import Thread
 
 def init():
-    Encoder.init()
+    Encoder.init(4,14)
 
 thread = Thread(target = init)
 thread.start()

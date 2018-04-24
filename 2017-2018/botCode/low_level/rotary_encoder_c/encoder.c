@@ -74,17 +74,16 @@ Pi_Renc_t * Pi_Renc(int gpioA, int gpioB, Pi_Renc_CB_t callback)
 
    return renc;
 };
+void Pi_Renc_cancel(Pi_Renc_t *renc)
+{
+    if (renc)
+    {
+       gpioSetAlertFunc(renc->gpioA, 0);
+       gpioSetAlertFunc(renc->gpioB, 0);
 
-// void Pi_Renc_cancel(Pi_Renc_t *renc)
-// {
-//    if (renc)
-//    {
-//       gpioSetAlertFunc(renc->gpioA, 0);
-//       gpioSetAlertFunc(renc->gpioB, 0);
-
-//       free(renc);
-//    }
-// };
+       free(renc);
+    }
+ };
 
 /*
 
@@ -138,7 +137,7 @@ static PyObject* encoderInit(PyObject* self, PyObject* args)
      if (gpioInitialise() < 0) return Py_BuildValue("i", 1);
 
      renc = Pi_Renc(pin_a, pin_b, encoderCallback);
-     while (1);
+     //while (1);
 
      return Py_None;
 
@@ -154,7 +153,7 @@ static PyObject* encoderTerminate(PyObject* self, PyObject* args){
 
 static PyMethodDef encoderMethods[] = {
     {"init", encoderInit, METH_VARARGS, "Initialize Encoder"},
-    {"terminiate", encoderTerminate, METH_NOARGS, "Terminate Encoder"}
+    {"terminiate", encoderTerminate, METH_NOARGS, "Terminate Encoder"},
     { "write", encoderWrite, METH_VARARGS, "Write Encoder Value" },
     { "read", encoderRead, METH_NOARGS, "Read Encoder" },
     { NULL, NULL, 0, NULL }
