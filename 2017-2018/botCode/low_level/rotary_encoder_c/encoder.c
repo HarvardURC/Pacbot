@@ -138,6 +138,8 @@ static PyObject* encoderInit(PyObject* self, PyObject* args)
      if (gpioInitialise() < 0) return Py_BuildValue("i", 1);
 
      renc = Pi_Renc(pin_a, pin_b, encoderCallback);
+     while (1);
+
      return Py_None;
 
 };
