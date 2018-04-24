@@ -1,11 +1,10 @@
+#!/usr/bin/env python3
 import Encoder
-from threading import Thread
 
-def init():
+def main():
     Encoder.init(4,14)
+    while True:
+        print(Encoder.read())
 
-thread = Thread(target = init)
-thread.start()
-
-while True:
-    print(Encoder.read())
+if __name__ == "__main__":
+    main()
