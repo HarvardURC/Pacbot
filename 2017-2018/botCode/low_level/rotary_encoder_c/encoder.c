@@ -106,13 +106,13 @@ sudo ./rot_enc_c
 static int pos = 0;
 Pi_Renc_t * renc;
 
-renc = Pi_Renc(pin_a, pin_b, encoderCallback);
+
 void encoderCallback(int way)
 {
    pos = 0;
    pos += way;
 };
-
+renc = Pi_Renc(4, 14, encoderCallback);
 
 static PyObject* encoderRead(PyObject* self, PyObject* args){
     return Py_BuildValue("i", pos);
