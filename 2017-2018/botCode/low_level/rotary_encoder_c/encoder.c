@@ -108,8 +108,8 @@ Pi_Renc_t * renc;
 
 void encoderCallback(int way)
 {
-   pos = 0;
    pos += way;
+   printf("new val: %d", pos)
 };
 
 static PyObject* encoderRead(PyObject* self, PyObject* args){
