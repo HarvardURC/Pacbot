@@ -166,7 +166,7 @@ static struct PyModuleDef Encoder = {
 };
 
 // Initializes our module using our above struct
-PyMODINIT_FUNC PyInit_EncoderModule(void)
+PyMODINIT_FUNC PyInit_Encoder(void)
 {
     return PyModule_Create(&Encoder);
 }
