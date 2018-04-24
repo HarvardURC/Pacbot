@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <pigpio.h>
 
-typedef void (*Pi_Renc_CB_t)(int);
+typedef void (*Pi_Renc_CB_t)(int, int);
 
 struct _Pi_Renc_s;
 
@@ -68,7 +68,7 @@ Pi_Renc_t * Pi_Renc(int gpioA, int gpioB, Pi_Renc_CB_t callback, int enc)
    renc->levA=0;
    renc->levB=0;
    renc->lastGpio = -1;
-   renc->enc=enc
+   renc->enc=enc;
 
    gpioSetMode(gpioA, PI_INPUT);
    gpioSetMode(gpioB, PI_INPUT);
@@ -142,7 +142,7 @@ static PyObject* encoderRead(PyObject* self, PyObject* args){
 
 static PyObject* encoderWrite(PyObject* self, PyObject* args){
   int n;
-  int enc;c
+  int enc;
   // if our `n` value 
   if(!PyArg_ParseTuple(args, "ii", &n, &enc))
     return NULL;
