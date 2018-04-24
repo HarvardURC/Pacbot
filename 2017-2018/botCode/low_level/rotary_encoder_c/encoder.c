@@ -187,7 +187,7 @@ static PyMethodDef encoderMethods[] = {
   {"init", encoderInit, METH_VARARGS, "Initialize Encoder"},
   {"terminiate", encoderTerminate, METH_NOARGS, "Terminate Encoder"},
   { "write", encoderWrite, METH_VARARGS, "Write Encoder Value" },
-  { "read", encoderRead, METH_NOARGS, "Read Encoder" },
+  { "read", encoderRead, METH_VARARGS, "Read Encoder" },
   { NULL, NULL, 0, NULL }
 };
 
