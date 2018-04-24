@@ -75,16 +75,16 @@ Pi_Renc_t * Pi_Renc(int gpioA, int gpioB, Pi_Renc_CB_t callback)
    return renc;
 };
 
-void Pi_Renc_cancel(Pi_Renc_t *renc)
-{
-   if (renc)
-   {
-      gpioSetAlertFunc(renc->gpioA, 0);
-      gpioSetAlertFunc(renc->gpioB, 0);
+// void Pi_Renc_cancel(Pi_Renc_t *renc)
+// {
+//    if (renc)
+//    {
+//       gpioSetAlertFunc(renc->gpioA, 0);
+//       gpioSetAlertFunc(renc->gpioB, 0);
 
-      free(renc);
-   }
-};
+//       free(renc);
+//    }
+// };
 
 /*
 
@@ -141,19 +141,18 @@ static PyObject* encoderInit(PyObject* self, PyObject* args)
 
 };
 
-static PyObject* encoderTerminate(PyObject* self, PyObject* args){
-    Pi_Renc_cancel(renc);
+// static PyObject* encoderTerminate(PyObject* self, PyObject* args){
+//     Pi_Renc_cancel(renc);
 
-    gpioTerminate();
+//     gpioTerminate();
 
-    return Py_None;
-};
+//     return Py_None;
+// };
 
 static PyMethodDef encoderMethods[] = {
     { "init", encoderInit, METH_VARARGS, "Initialize Encoder" },
     { "write", encoderWrite, METH_VARARGS, "Write Encoder Value" },
     { "read", encoderRead, METH_NOARGS, "Read Encoder" },
-    { "terminate", encoderTerminate, METH_NOARGS, "Terminate Encoder" },
     { NULL, NULL, 0, NULL }
 };
 
