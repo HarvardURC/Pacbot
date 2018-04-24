@@ -9,7 +9,7 @@ struct _Pi_Renc_s;
 
 typedef struct _Pi_Renc_s Pi_Renc_t;
 
-Pi_Renc_t * Pi_Renc(int gpioA, int gpioB, Pi_Renc_CB_t callback);
+Pi_Renc_t * Pi_Renc(int gpioA, int gpioB, Pi_Renc_CB_t callback, int enc);
 
 void Pi_Renc_cancel(Pi_Renc_t *renc);
 
@@ -21,32 +21,42 @@ struct _Pi_Renc_s
    int levA;
    int levB;
    int lastGpio;
+   int enc;
 };
 
 static void _cb(int gpio, int level, uint32_t tick, void *user)
 {
-   Pi_Renc_t *renc;
+  Pi_Renc_t *renc;
 
-   renc = user;
+  renc = user;
 
-   if (gpio == renc->gpioA) renc->levA = level; else renc->levB = level;
+  if (gpio == renc->gpioA) renc->levA = level; else renc->levB = level;
 
-   if (gpio != renc->lastGpio) /* debounce */
-   {
-      renc->lastGpio = gpio;
+  if (gpio != renc->lastGpio) /* debounce */
+  {
+    renc->lastGpio = gpio;
 
-      if ((gpio == renc->gpioA) && (level == 1))
-      {
-         if (renc->levB) (renc->callback)(1);
+    if ((gpio == renc->gpioA) && (level == 1))
+    {
+      if (renc->levB) {
+        (renc->callback)(1, renc->enc);
+      } else {
+        (renc->callback)(-1, renc->enc);
       }
-      else if ((gpio == renc->gpioB) && (level == 1))
-      {
-         if (renc->levA) (renc->callback)(-1);
+
+    }
+    else if ((gpio == renc->gpioB) && (level == 1))
+    {
+      if (renc->levA) {
+        (renc->callback)(-1, renc->enc);
+      } else {
+        (renc->callback)(1, renc->enc);
       }
-   }
+    }
+  }
 };
 
-Pi_Renc_t * Pi_Renc(int gpioA, int gpioB, Pi_Renc_CB_t callback)
+Pi_Renc_t * Pi_Renc(int gpioA, int gpioB, Pi_Renc_CB_t callback, int enc)
 {
    Pi_Renc_t *renc;
 
@@ -58,6 +68,7 @@ Pi_Renc_t * Pi_Renc(int gpioA, int gpioB, Pi_Renc_CB_t callback)
    renc->levA=0;
    renc->levB=0;
    renc->lastGpio = -1;
+   renc->enc=enc
 
    gpioSetMode(gpioA, PI_INPUT);
    gpioSetMode(gpioB, PI_INPUT);
@@ -102,73 +113,94 @@ sudo ./rot_enc_c
 
 */
 
-static int pos = 0;
-Pi_Renc_t * renc;
+static int posA = 0;
+Pi_Renc_t * rencA;
+
+static int posB = 0;
+Pi_Renc_t * rencB;
 
 
-void encoderCallback(int way)
+void encoderCallback(int way, int enc)
 {
-   pos += way;
+  if (enc == 0) {
+    posA += way;
+  } else {
+    posB += way;
+  }
 };
 
 static PyObject* encoderRead(PyObject* self, PyObject* args){
-    return Py_BuildValue("i", pos);
+  int n;
+  if(!PyArg_ParseTuple(args, "i", &n))
+    return NULL;
+  if (n == 0) {
+    return Py_BuildValue("i", posA);
+  } else {
+    return Py_BuildValue("i", posB);
+  }
 };
 
 static PyObject* encoderWrite(PyObject* self, PyObject* args){
-    int n;
-    // if our `n` value 
-    if(!PyArg_ParseTuple(args, "i", &n))
-        return NULL;
-
-    pos = n;
-
-    return Py_None;
+  int n;
+  int enc;c
+  // if our `n` value 
+  if(!PyArg_ParseTuple(args, "ii", &n, &enc))
+    return NULL;
+  
+  if (enc == 0) {
+    posA = n;
+  } else {
+    posB = n;
+  }
+  return Py_None;
 };
 
 static PyObject* encoderInit(PyObject* self, PyObject* args)
 {	
-     int pin_a, pin_b;
+  int pin_a, pin_b, enc;
 
-     if(!PyArg_ParseTuple(args, "ii", &pin_a, &pin_b))
-     	return NULL;
+  if(!PyArg_ParseTuple(args, "iii", &pin_a, &pin_b, &enc))
+    return NULL;
    
-     if (gpioInitialise() < 0) return Py_BuildValue("i", 1);
+  if (gpioInitialise() < 0) return Py_BuildValue("i", 1);
 
-     renc = Pi_Renc(pin_a, pin_b, encoderCallback);
-     //while (1);
+  if (enc == 0) {
+    rencA = Pi_Renc(pin_a, pin_b, encoderCallback, enc);
+  } else {
+    rencB = Pi_Renc(pin_a, pin_b, encoderCallback, enc);
+  }
 
-     return Py_None;
+  return Py_None;
 
 };
 
 static PyObject* encoderTerminate(PyObject* self, PyObject* args){
-    Pi_Renc_cancel(renc);
+  Pi_Renc_cancel(renc);
 
-    gpioTerminate();
+  gpioTerminate();
 
-    return Py_None;
+  return Py_None;
 };
 
 static PyMethodDef encoderMethods[] = {
-    {"init", encoderInit, METH_VARARGS, "Initialize Encoder"},
-    {"terminiate", encoderTerminate, METH_NOARGS, "Terminate Encoder"},
-    { "write", encoderWrite, METH_VARARGS, "Write Encoder Value" },
-    { "read", encoderRead, METH_NOARGS, "Read Encoder" },
-    { NULL, NULL, 0, NULL }
+  {"init", encoderInit, METH_VARARGS, "Initialize Encoder"},
+  {"terminiate", encoderTerminate, METH_NOARGS, "Terminate Encoder"},
+  { "write", encoderWrite, METH_VARARGS, "Write Encoder Value" },
+  { "read", encoderRead, METH_NOARGS, "Read Encoder" },
+  { NULL, NULL, 0, NULL }
 };
 
 // Our Module Definition struct
 static struct PyModuleDef Encoder = {
-    PyModuleDef_HEAD_INIT,
-    "Encoder",
-    "Encoder Module",
-    -1,
-    encoderMethods
+  PyModuleDef_HEAD_INIT,
+  "Encoder",
+  "Encoder Module",
+  -1,
+  encoderMethods
 };
 
 // Initializes our module using our above struct
 PyMODINIT_FUNC PyInit_Encoder(void)
 {
-    return PyModule_Create(&Encoder);
+  return PyModule_Create(&Encoder);
 }
