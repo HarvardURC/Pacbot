@@ -1,5 +1,5 @@
 from .motor import Motor, MotorDirection
-from .encoders import Encoder
+from RotaryEncoder import Encoder
 from .pins import *
 from .sensors import Sensors
 from .GPIOhelpers import *
@@ -31,8 +31,8 @@ class Motors:
 
         self.dir = True
 
-        self.encoderLeft = Encoder(pins.encoder_pin_l1, pins.encoder_pin_l2)
-        self.encoderRight = Encoder(pins.encoder_pin_r1, pins.encoder_pin_r2)
+        Encoder.init(pins.encoder_pin_l1, pins.encoder_pin_l2, 0)
+        Encoder.init(pins.encoder_pin_r1, pins.encoder_pin_r2, 1)
 
         self.left_motor = Motor("Left", pins.motor_speed_l, pins.motor_direction_l, 0)
 
@@ -76,12 +76,12 @@ class Motors:
 
     def read_encoders(self):
         if self.dir:
-            return (self.encoderLeft.read(), -self.encoderRight.read())
+            return (Encoder.read(0), -Encoder.read(1))
         else:
-            return (-self.encoderLeft.read(), self.encoderRight.read())
+            return (-Encoder.read(0), Encoder.read(1))
 
     def raw_encoders(self):
-        return (self.encoderLeft.read(), self.encoderRight.read())
+        return (Encoder.read(0), Encoder.read(1))
 
     def reverse_direction(self):
         self.dir = not self.dir
@@ -102,8 +102,8 @@ class Motors:
         self.left_motor.stop()
 
     def move_ticks(self, ticks_l, ticks_r):
-        self.encoderLeft.write(0)
-        self.encoderRight.write(0)
+        Encoder.write(0, 0)
+        Encoder.write(0, 1)
 
         self.setpointL = ticks_l
         self.setpointR = ticks_r
@@ -134,8 +134,8 @@ class Motors:
         self.stop()
 
     def advance(self, ticks):
-        self.encoderLeft.write(0)
-        self.encoderRight.write(0)
+        Encoder.write(0, 0)
+        Encoder.write(0, 1)
 
         distance_l, distance_r = self.read_encoders()
 
@@ -164,20 +164,7 @@ class Motors:
             }
 
             if front_valid:
-                """
-                if rear_valid:
-                    front_min = min(dists['fr'], dists['fl'])
-                    rear_min = min(dists['rr'], dists['rl'])
-                    if front_min <= rear_min:
-                        self.follow_front()
-                    else:
-                        self.follow_rear()
-                else:
-                    self.follow_front()
-                """
                 self.follow_front()
-            #elif rear_valid:
-                #self.follow_rear()
             elif left_valid:
                 self.follow_left()
             elif right_valid:
@@ -188,8 +175,6 @@ class Motors:
             else:
                 self.straight()
 
-        #offset = (distance_l - distance_r)/2
-        #self.move_ticks(-1 * offset, offset)
         self.stop()
 
     def reverse(self, ticks):
@@ -206,20 +191,14 @@ class Motors:
         self.turn_right()
 
     def turn_left(self): 
-        # if self._frontIR.get_distance() < WALL_THRESHOLD:
-        #     self.front_align()
         self.PIDLeft.set_tunings(KP3,0.01,0)
         self.PIDRight.set_tunings(KP3,0.01,0)
         self.move_ticks(-1 * TICKS_TURN, TICKS_TURN)
 
     def turn_right(self):
-        # if self._frontIR.get_distance() < WALL_THRESHOLD:
-        #     self.front_align()
         self.PIDLeft.set_tunings(KP3,0.01,0)
         self.PIDRight.set_tunings(KP3,0.01,0)
         self.move_ticks(TICKS_TURN, -1 * TICKS_TURN)
-
-    # def front_align():
 
     def follow_front(self):
         print("fFront")
@@ -365,23 +344,3 @@ class Motors:
             self.move_motors(MOTOR_SPEED/2, MOTOR_SPEED/2)
         else:
             self.move_motors(-MOTOR_SPEED/2, -MOTOR_SPEED/2)
-'''
-M = Motors()
-
-
-#M.reverse_direction()
-try:
-   # M.advance(3000)
-    M.turn_left()
-    #M.advance(3000)
-except KeyboardInterrupt:
-    M.stop()
-    sys.exit()
-
-M.stop()
-print("done")
-
-import sys
-
-sys.exit()
-'''

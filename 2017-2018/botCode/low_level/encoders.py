@@ -1,6 +1,7 @@
 from time import sleep
 from .GPIOhelpers import *
 #from GPIOhelpers import *
+from .RotaryEncoder import Encoder
 setGPIO()
 
 class Encoder:
