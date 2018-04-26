@@ -3,8 +3,10 @@
 import cv2
 import numpy as np
 from time import sleep
+from variables import lower_green, upper_green, lower_yellow, upper_yellow
 
 CAM_NUM = 2
+green = True
 
 def nothing(x):
     pass
@@ -17,10 +19,12 @@ class ViewImages:
     def __init__(self):
 
         # Set thresholds for color detection and thresholding
-        #self.thresh_low = np.array([20, 30, 180])
-        #self.thresh_high = np.array([70, 70, 250])
-        self.thresh_low = np.array([46,15,180])
-        self.thresh_high = np.array([76,74,255])
+        if green:
+            self.thresh_low = lower_green
+            self.thresh_high = upper_green 
+        else:
+            self.thresh_low = lower_yellow
+            self.thresh_high = upper_yellow 
 
     def run(self):
        # Create a black image, a window
@@ -44,6 +48,8 @@ class ViewImages:
         cv2.setTrackbarPos('S (high)', 'thresholds', self.thresh_high[1])
         cv2.setTrackbarPos('V (high)', 'thresholds', self.thresh_high[2])
         camera = cv2.VideoCapture(CAM_NUM)
+        camera.set(3, 960)
+        camera.set(4, 540)
         while True:
             cv2.imshow('thresholds', img)
 

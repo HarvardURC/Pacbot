@@ -1,17 +1,7 @@
 import cv2
 from .transform import *
 import numpy as np
-
-# Threshold values for yellow dots
-lower_yellow = np.array([20,0,206])
-upper_yellow = np.array([59,190,255])
-
-# Threshold values for Green dots
-#lower_green = np.array([20,30,180])
-#upper_green = np.array([70,70,250])
-
-lower_green = np.array([46,50,180])
-upper_green = np.array([70,100,255])
+from .variables import lower_green, upper_green
 
 def valid(contours):
     x,y = [],[]

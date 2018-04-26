@@ -16,11 +16,11 @@ def main():
         print('select either -t for top cam of -b for bottom cam')
         sys.exit(1)
     if top:
-        camera_number = 1
-        processor = MovementProcessor(ADDRESS, PORT, camera_number, 15, 15, 26, windows)
-    elif bottom:
         camera_number = 2
-        processor = MovementProcessor(ADDRESS, PORT, camera_number, 1, 15, 26, windows)
+        processor = MovementProcessor(ADDRESS, PORT, camera_number, 15, 16, 27, windows)
+    elif bottom:
+        camera_number = 1
+        processor = MovementProcessor(ADDRESS, PORT, camera_number, 1, 15, 27, windows)
     processor.run()
 
 if __name__ == "__main__":

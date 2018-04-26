@@ -42,6 +42,8 @@ class MovementProcessor(rm.ProtoModule):
         if np.array_equal(warped, []):
             return
 
+        warped = warped[:,20:-20]
+
         warped_blur = cv2.medianBlur(warped, 5)
         hsv = cv2.cvtColor(warped_blur, cv2.COLOR_BGR2HSV)
         mask = cv2.inRange(hsv, lower_yellow, upper_yellow)
@@ -57,16 +59,12 @@ class MovementProcessor(rm.ProtoModule):
         if len(contours) != 0:
             c = max(contours, key = cv2.contourArea)
             if cv2.contourArea(c) > 100:
+                skip = False
                 x, y, w, h = cv2.boundingRect(c)
-                x_c = x + w/2
-                y_c = y + w/2
-                delta_y = 2*(y_c/imgray.shape[0] - 0.5)
-                delta_x = 2*(x_c/imgray.shape[1] - 0.5)
-                y_c += delta_y*sector_h
-                x_c += delta_x*sector_w
-                b_y = int(self.y_off + round(self.height - (y_c+sector_h*0.5)/sector_h))
-                print(b_y)
-                b_x = int(round((x_c+sector_w*0.5)/sector_w))
+                x_c = x + 0.5*sector_w
+                y_c = (imgray.shape[0] - y) - 1.5*sector_h
+                b_y = int(self.y_off + round(y_c/sector_h))
+                b_x = int(round(x_c/sector_w))
                 if b_y >= self.y_off + self.height - 1 and self.y_off > 1:
                     b_y = self.y_off + self.height - 2
                 elif b_y < 1:
@@ -76,13 +74,14 @@ class MovementProcessor(rm.ProtoModule):
                 elif b_x > self.width:
                     b_x = self.width
                 if grid[b_x][b_y] == I:
-                    return
+                    skip = True
                 print((b_x, b_y))
-                buf = PacmanState.AgentState()
-                buf.x = b_x
-                buf.y = b_y
-                self.client.write(buf.SerializeToString(), MsgType.PACMAN_LOCATION)
-        
+                if not skip:
+                    buf = PacmanState.AgentState()
+                    buf.x = b_x
+                    buf.y = b_y
+                    self.client.write(buf.SerializeToString(), MsgType.PACMAN_LOCATION)
+
         if self.show_windows:
             cv2.imshow('warp',warped) #Warped Image based on the corners detected.
 
