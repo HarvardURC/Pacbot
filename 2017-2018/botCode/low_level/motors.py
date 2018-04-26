@@ -163,20 +163,31 @@ class Motors:
             left_valid = dists['fl'] <  WALL_THRESHOLD_DIAG and dists['rl'] <  WALL_THRESHOLD_DIAG and (dists['fl'] <  WALL_DIST or dists['rl'] <  WALL_DIST)
             right_valid = dists['fr'] <  WALL_THRESHOLD_DIAG and dists['rr'] <  WALL_THRESHOLD_DIAG and (dists['fr'] <  WALL_DIST or dists['rr'] <  WALL_DIST)
 
-            max2 = min(dists, key = lambda k: dists[k] if (dists[k] < WALL_THRESHOLD_DIAG and k[0] != 'r') else float('inf'))
-            single_sensor_functions = {
-                    'fr': self.follow_front_right,
-                    'fl': self.follow_front_left
-            }
+            if self.dir:
+                max2 = min(dists, key = lambda k: dists[k] if (dists[k] < WALL_THRESHOLD_DIAG and k[0] != 'r') else float('inf'))
+                single_sensor_functions = {
+                        'fr': self.follow_front_right,
+                        'fl': self.follow_front_left
+                }
+            else:
+                max2 = min(dists, key = lambda k: dists[k] if (dists[k] < WALL_THRESHOLD_DIAG and k[0] != 'f') else float('inf'))
+                single_sensor_functions = {
+                        'rr': self.follow_rear_right,
+                        'rl': self.follow_rear_left
+                }
 
-            if front_valid:
+            if front_valid and self.dir:
                 self.follow_front()
+            elif rear_valid and not self.dir:
+                self.follow_rear()
             elif left_valid:
                 self.follow_left()
             elif right_valid:
                 self.follow_right()
                 
-            elif dists[max2] < WALL_THRESHOLD_DIAG and max2[0] != 'r':
+            elif dists[max2] < WALL_THRESHOLD_DIAG and max2[0] != 'r' and self.dir:
+                single_sensor_functions[max2]()
+            elif dists[max2] < WALL_THRESHOLD_DIAG and max2[0] != 'f' and not self.dir:
                 single_sensor_functions[max2]()
             else:
                 self.straight()
@@ -219,10 +230,9 @@ class Motors:
         self.PIDfRight.compute(self.inputfR, self.setpointfR)
         self.PIDfLeft.compute(self.inputfL, self.setpointfL)
 
-        if self.dir:
-            self.move_motors((MOTOR_SPEED + self.PIDfLeft.output())/2, (MOTOR_SPEED + self.PIDfRight.output())/2)
-        else: 
-            self.move_motors(-(MOTOR_SPEED + self.PIDfLeft.output())/2, -(MOTOR_SPEED + self.PIDfRight.output())/2)
+
+        self.move_motors((MOTOR_SPEED + self.PIDfLeft.output())/2, (MOTOR_SPEED + self.PIDfRight.output())/2)
+        
 
     def follow_rear(self):
         #print("fRear")
@@ -239,10 +249,9 @@ class Motors:
         self.PIDrRight.compute(self.inputrR, self.setpointrR)
         self.PIDrLeft.compute(self.inputrL, self.setpointrL)
 
-        if self.dir:
-            self.move_motors((MOTOR_SPEED - self.PIDrLeft.output())/2, (MOTOR_SPEED - self.PIDrRight.output())/2)
-        else:
-            self.move_motors(-(MOTOR_SPEED + self.PIDrLeft.output())/2, -(MOTOR_SPEED + self.PIDrRight.output())/2)
+
+        self.move_motors(-(MOTOR_SPEED + self.PIDrLeft.output())/2, -(MOTOR_SPEED + self.PIDrRight.output())/2)
+            
 
     def follow_left(self):
         #print("fLeft")
