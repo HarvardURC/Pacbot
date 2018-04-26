@@ -8,15 +8,15 @@ setGPIO()
 
 import signal, sys
 
-MOTOR_SPEED = 43
+MOTOR_SPEED = 47
 TICKS_CELL = 270
 TICKS_TURN = 231
 WALL_THRESHOLD_DIAG = 85
 WALL_DISTANCE_DIAG = 75
 WALL_DIST = 80
-KP3 = 0.4
-KP = 0.65
-KP2 = .3
+KP3 = 0.8
+KP = 0.67
+KP2 = .17
 KI = 0.01
 KD = 0.05
 class Motors:
@@ -134,20 +134,29 @@ class Motors:
         self.stop()
     
     def move_cells(self, cells):
+        """for _ in range(cells):  
+            self.advance(TICKS_CELL)
+        """
         self.advance(cells*TICKS_CELL)
-
     def advance(self, ticks):
         Encoder.write(0, 0)
         Encoder.write(0, 1)
 
         distance_l, distance_r = self.read_encoders()
         added = 0
+        have_driven = False
 
         while (min(distance_r, distance_l) < ticks):
+            if have_driven and self.dir and self._frontIR.get_distance() < 40 and self._fleftIR.get_distance() < 65 and self._frightIR.get_distance() < 65:
+                print("break:",self._frontIR.get_distance())
+                break
+            elif have_driven and not self.dir and self._rearIR.get_distance() < 40 and self._rleftIR.get_distance()< 65 and self._rrightIR.get_distance() < 65:
+                break
+            
             if abs(distance_l - distance_r) > 140:
                 print('added: {}'.format(added))
-                added += 6
-                ticks += 6
+                added += 4
+                ticks += 4
             distance_l, distance_r = self.read_encoders()
             #print(distance_l)
             #print(distance_r)
@@ -180,23 +189,28 @@ class Motors:
                 self.follow_front()
             elif rear_valid and not self.dir:
                 self.follow_rear()
-            elif left_valid:
-                self.follow_left()
-            elif right_valid:
-                self.follow_right()
-                
             elif dists[max2] < WALL_THRESHOLD_DIAG and max2[0] != 'r' and self.dir:
+                #print(max2)
                 single_sensor_functions[max2]()
             elif dists[max2] < WALL_THRESHOLD_DIAG and max2[0] != 'f' and not self.dir:
                 single_sensor_functions[max2]()
             else:
                 self.straight()
+            have_driven = True
+ 
+            """
+            elif left_valid:
+                self.follow_left()
+            elif right_valid:
+                print("right")
+                self.follow_right()
 
+            """ 
         self.stop()
 
     def reverse(self, ticks):
         self.reverse_direction()
-        self.advance(ticks)
+        self.move_cells(ticks)
         self.reverse_direction()
 
     def turn_around_l(self):
@@ -245,7 +259,8 @@ class Motors:
         self.inputrR = self._rrightIR.get_distance()
         self.inputrL = self._rleftIR.get_distance()
         
-
+        #print("R:",self.inputrR)
+        #print("L:",self.inputrL)
         self.PIDrRight.compute(self.inputrR, self.setpointrR)
         self.PIDrLeft.compute(self.inputrL, self.setpointrL)
 
@@ -271,7 +286,7 @@ class Motors:
         if self.dir:
             self.move_motors((MOTOR_SPEED + self.PIDfLeft.output())/2, (MOTOR_SPEED + self.PIDrLeft.output())/2)
         else:
-            self.move_motors(-(MOTOR_SPEED + self.PIDfLeft.output())/2, -(MOTOR_SPEED + self.PIDrLeft.output())/2)
+            self.move_motors(-(MOTOR_SPEED + self.PIDrLeft.output())/2, -(MOTOR_SPEED + self.PIDfLeft.output())/2)
 
     def follow_right(self):
         #print("fRight")
@@ -288,7 +303,9 @@ class Motors:
         self.PIDrRight.compute(self.inputrR, self.setpointrR)
 
         if self.dir:
-            self.move_motors((MOTOR_SPEED + self.PIDfRight.output())/2, (MOTOR_SPEED + self.PIDrRight.output())/2)
+            self.move_motors(MOTOR_SPEED , (MOTOR_SPEED + (self.PIDfRight.output() + self.PIDrRight.output())/2)/2)
+            print(self.PIDrRight.output())
+            print(self.PIDfRight.output())
         else:
             self.move_motors(-(MOTOR_SPEED + self.PIDfRight.output())/2, -(MOTOR_SPEED + self.PIDrRight.output())/2)
 
