@@ -169,8 +169,8 @@ class Motors:
 
             front_valid = dists['fr'] < WALL_THRESHOLD_DIAG and dists['fl'] < WALL_THRESHOLD_DIAG and (dists['fr'] < WALL_DIST or dists['fl'] < WALL_DIST)
             rear_valid = dists['rr'] < WALL_THRESHOLD_DIAG and dists['rl'] < WALL_THRESHOLD_DIAG and (dists['rr'] < WALL_DIST or dists['rl'] < WALL_DIST)
-            left_valid = dists['fl'] <  WALL_THRESHOLD_DIAG and dists['rl'] <  WALL_THRESHOLD_DIAG and (dists['fl'] <  WALL_DIST or dists['rl'] <  WALL_DIST)
-            right_valid = dists['fr'] <  WALL_THRESHOLD_DIAG and dists['rr'] <  WALL_THRESHOLD_DIAG and (dists['fr'] <  WALL_DIST or dists['rr'] <  WALL_DIST)
+            left_valid = dists['fl'] <  WALL_THRESHOLD_DIAG and dists['rr'] <  WALL_THRESHOLD_DIAG and (dists['fl'] <  WALL_DIST or dists['rr'] <  WALL_DIST)
+            right_valid = dists['fr'] <  WALL_THRESHOLD_DIAG and dists['rl'] <  WALL_THRESHOLD_DIAG and (dists['fr'] <  WALL_DIST or dists['rl'] <  WALL_DIST)
 
             if self.dir:
                 max2 = min(dists, key = lambda k: dists[k] if (dists[k] < WALL_THRESHOLD_DIAG and k[0] != 'r') else float('inf'))
@@ -189,6 +189,11 @@ class Motors:
                 self.follow_front()
             elif rear_valid and not self.dir:
                 self.follow_rear()
+            elif left_valid:
+                self.follow_left()
+            elif right_valid:
+                print("right")
+                self.follow_right()
             elif dists[max2] < WALL_THRESHOLD_DIAG and max2[0] != 'r' and self.dir:
                 #print(max2)
                 single_sensor_functions[max2]()
@@ -274,19 +279,19 @@ class Motors:
         self.PIDfLeft.set_tunings(KP, KI, KD)
         self.PIDrLeft.set_tunings(KP, KI, KD)
         self.setpointfL = WALL_DISTANCE_DIAG
-        self.setpointrL = WALL_DISTANCE_DIAG
+        self.setpointrR = WALL_DISTANCE_DIAG
 
 
         self.inputfL = self._fleftIR.get_distance()
-        self.inputrL = self._rleftIR.get_distance()
+        self.inputrR = self._rrightIR.get_distance()
 
         self.PIDfLeft.compute(self.inputfL, self.setpointfL)
-        self.PIDrLeft.compute(self.inputrL, self.setpointrL)
+        self.PIDrRightt.compute(self.inputrR, self.setpointrR)
 
         if self.dir:
-            self.move_motors((MOTOR_SPEED + self.PIDfLeft.output())/2, (MOTOR_SPEED + self.PIDrLeft.output())/2)
+            self.move_motors((MOTOR_SPEED + self.PIDfLeft.output())/2, (MOTOR_SPEED + self.PIDrRight.output())/2)
         else:
-            self.move_motors(-(MOTOR_SPEED + self.PIDrLeft.output())/2, -(MOTOR_SPEED + self.PIDfLeft.output())/2)
+            self.move_motors(-(MOTOR_SPEED + self.PIDfLeft.output())/2, -(MOTOR_SPEED + self.PIDrRight.output())/2)
 
     def follow_right(self):
         #print("fRight")
@@ -294,20 +299,18 @@ class Motors:
         self.PIDfRight.set_tunings(KP, KI, KD)
         self.PIDrRight.set_tunings(KP, KI, KD)
         self.setpointfR = WALL_DISTANCE_DIAG
-        self.setpointrR = WALL_DISTANCE_DIAG
+        self.setpointrL = WALL_DISTANCE_DIAG
 
         self.inputfR = self._frightIR.get_distance()
-        self.inputrR = self._rrightIR.get_distance()              
+        self.inputrL = self._rleftIR.get_distance()              
             
         self.PIDfRight.compute(self.inputfR, self.setpointfR)
-        self.PIDrRight.compute(self.inputrR, self.setpointrR)
+        self.PIDrLeft.compute(self.inputrL, self.setpointrL)
 
         if self.dir:
-            self.move_motors(MOTOR_SPEED , (MOTOR_SPEED + (self.PIDfRight.output() + self.PIDrRight.output())/2)/2)
-            print(self.PIDrRight.output())
-            print(self.PIDfRight.output())
+            self.move_motors((MOTOR_SPEED + self.PIDrLeft.output())/2, (MOTOR_SPEED + self.PIDfRight.output())/2)
         else:
-            self.move_motors(-(MOTOR_SPEED + self.PIDfRight.output())/2, -(MOTOR_SPEED + self.PIDrRight.output())/2)
+            self.move_motors(-(MOTOR_SPEED + self.PIDrLeft.output())/2, -(MOTOR_SPEED + self.PIDfRight.output())/2)
 
     def follow_front_right(self):
         #print("ffRight")
