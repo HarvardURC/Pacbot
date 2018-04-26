@@ -1,5 +1,5 @@
 from .motor import Motor, MotorDirection
-from RotaryEncoder import Encoder
+import Encoder
 from .pins import *
 from .sensors import Sensors
 from .GPIOhelpers import *
@@ -8,15 +8,15 @@ setGPIO()
 
 import signal, sys
 
-MOTOR_SPEED = 10
-TICKS_CELL = 500
-TICKS_TURN = 300
+MOTOR_SPEED = 43
+TICKS_CELL = 270
+TICKS_TURN = 231
 WALL_THRESHOLD_DIAG = 85
-WALL_DISTANCE_DIAG = 70
+WALL_DISTANCE_DIAG = 75
 WALL_DIST = 80
 KP3 = 0.4
-KP = .4
-KP2 = .4
+KP = 0.65
+KP2 = .3
 KI = 0.01
 KD = 0.05
 class Motors:
@@ -41,13 +41,13 @@ class Motors:
         self.setpointL = 0
         self.inputL = 0
         self.PIDLeft = PID(self.inputL, self.setpointL, KP3, 0.002, 0.000, DIRECT, Timer)
-        self.PIDLeft.set_output_limits(-1 * MOTOR_SPEED/10, MOTOR_SPEED/10)
+        self.PIDLeft.set_output_limits(-1 * MOTOR_SPEED*1.5, MOTOR_SPEED*1.5)
         self.PIDLeft.set_mode(AUTOMATIC)
 
         self.setpointR = 0
         self.inputR = 0
         self.PIDRight = PID(self.inputR, self.setpointR, KP3, 0.002, 0.000, DIRECT, Timer)
-        self.PIDRight.set_output_limits(-1 * MOTOR_SPEED/10, MOTOR_SPEED/10)
+        self.PIDRight.set_output_limits(-1 * MOTOR_SPEED*1.5, MOTOR_SPEED*1.5)
         self.PIDRight.set_mode(AUTOMATIC)
 
         self.setpointfL = 0
@@ -76,9 +76,9 @@ class Motors:
 
     def read_encoders(self):
         if self.dir:
-            return (Encoder.read(0), -Encoder.read(1))
-        else:
             return (-Encoder.read(0), Encoder.read(1))
+        else:
+            return (Encoder.read(0), -Encoder.read(1))
 
     def raw_encoders(self):
         return (Encoder.read(0), Encoder.read(1))
@@ -115,8 +115,8 @@ class Motors:
 
         while (abs(self.inputL - self.setpointL) > 5 or abs(self.inputR - self.setpointR) > 5):
             self.inputL , self.inputR = self.read_encoders()
-            print(self.inputL)
-            print(self.inputR)
+            #print(self.inputL)
+            #print(self.inputR)
 
             self.PIDRight.compute(self.inputR, self.setpointR)
             self.PIDLeft.compute(self.inputL, self.setpointL)
@@ -124,25 +124,33 @@ class Motors:
             l_rem = abs(self.inputL - self.setpointL)
             r_rem = abs(self.inputR - self.setpointR)
             
-            if l_rem > r_rem :
+            if l_rem > r_rem and (abs(l_rem - r_rem) > 10 or r_rem < 10):
                 self.move_motors(self.PIDLeft.output(),0)
-            elif r_rem > l_rem:
+            elif r_rem > l_rem and (abs(l_rem - r_rem) > 10 or l_rem < 10):
                 self.move_motors(0,self.PIDRight.output())
             else:
                 self.move_motors(self.PIDLeft.output(),self.PIDRight.output()) 
             
         self.stop()
+    
+    def move_cells(self, cells):
+        self.advance(cells*TICKS_CELL)
 
     def advance(self, ticks):
         Encoder.write(0, 0)
         Encoder.write(0, 1)
 
         distance_l, distance_r = self.read_encoders()
+        added = 0
 
-        while (distance_l + distance_r < ticks * 2):
+        while (min(distance_r, distance_l) < ticks):
+            if abs(distance_l - distance_r) > 140:
+                print('added: {}'.format(added))
+                added += 6
+                ticks += 6
             distance_l, distance_r = self.read_encoders()
-            print(distance_l)
-            print(distance_r)
+            #print(distance_l)
+            #print(distance_r)
             dists = {
                 'fr': self._frightIR.get_distance(),
                 'fl': self._fleftIR.get_distance(),
@@ -155,12 +163,10 @@ class Motors:
             left_valid = dists['fl'] <  WALL_THRESHOLD_DIAG and dists['rl'] <  WALL_THRESHOLD_DIAG and (dists['fl'] <  WALL_DIST or dists['rl'] <  WALL_DIST)
             right_valid = dists['fr'] <  WALL_THRESHOLD_DIAG and dists['rr'] <  WALL_THRESHOLD_DIAG and (dists['fr'] <  WALL_DIST or dists['rr'] <  WALL_DIST)
 
-            max2 = max(dists, key = lambda k: dists[k] if dists[k] < WALL_THRESHOLD_DIAG else -float('inf'))
+            max2 = min(dists, key = lambda k: dists[k] if (dists[k] < WALL_THRESHOLD_DIAG and k[0] != 'r') else float('inf'))
             single_sensor_functions = {
                     'fr': self.follow_front_right,
-                    'fl': self.follow_front_left,
-                    'rr': self.follow_rear_right,
-                    'rl': self.follow_rear_left
+                    'fl': self.follow_front_left
             }
 
             if front_valid:
@@ -170,7 +176,7 @@ class Motors:
             elif right_valid:
                 self.follow_right()
                 
-            elif dists[max2] < WALL_THRESHOLD_DIAG:
+            elif dists[max2] < WALL_THRESHOLD_DIAG and max2[0] != 'r':
                 single_sensor_functions[max2]()
             else:
                 self.straight()
@@ -201,7 +207,7 @@ class Motors:
         self.move_ticks(TICKS_TURN, -1 * TICKS_TURN)
 
     def follow_front(self):
-        print("fFront")
+        #print("fFront")
         self.PIDfLeft.set_tunings(KP, KI, KD)
         self.PIDfRight.set_tunings(KP, KI, KD)
         self.setpointfR = WALL_DISTANCE_DIAG
@@ -219,7 +225,7 @@ class Motors:
             self.move_motors(-(MOTOR_SPEED + self.PIDfLeft.output())/2, -(MOTOR_SPEED + self.PIDfRight.output())/2)
 
     def follow_rear(self):
-        print("fRear")
+        #print("fRear")
 
         self.PIDrLeft.set_tunings(KP, KI, KD)
         self.PIDrRight.set_tunings(KP, KI, KD)
@@ -239,7 +245,7 @@ class Motors:
             self.move_motors(-(MOTOR_SPEED + self.PIDrLeft.output())/2, -(MOTOR_SPEED + self.PIDrRight.output())/2)
 
     def follow_left(self):
-        print("fLeft")
+        #print("fLeft")
 
         self.PIDfLeft.set_tunings(KP, KI, KD)
         self.PIDrLeft.set_tunings(KP, KI, KD)
@@ -259,7 +265,7 @@ class Motors:
             self.move_motors(-(MOTOR_SPEED + self.PIDfLeft.output())/2, -(MOTOR_SPEED + self.PIDrLeft.output())/2)
 
     def follow_right(self):
-        print("fRight")
+        #print("fRight")
 
         self.PIDfRight.set_tunings(KP, KI, KD)
         self.PIDrRight.set_tunings(KP, KI, KD)
@@ -278,7 +284,7 @@ class Motors:
             self.move_motors(-(MOTOR_SPEED + self.PIDfRight.output())/2, -(MOTOR_SPEED + self.PIDrRight.output())/2)
 
     def follow_front_right(self):
-        print("ffRight")
+        #print("ffRight")
 
         self.PIDfRight.set_tunings(KP2, KI, KD)
         self.setpointfR = WALL_DISTANCE_DIAG
@@ -293,7 +299,7 @@ class Motors:
             self.move_motors(-(MOTOR_SPEED - self.PIDfRight.output())/2, -(MOTOR_SPEED + self.PIDfRight.output())/2)
 
     def follow_front_left(self):
-        print("ffLeft")
+        #print("ffLeft")
 
         self.PIDfLeft.set_tunings(KP2, KI, KD)
         self.setpointfL = WALL_DISTANCE_DIAG
@@ -308,7 +314,7 @@ class Motors:
             self.move_motors(-(MOTOR_SPEED + self.PIDfLeft.output())/2, -(MOTOR_SPEED - self.PIDfLeft.output())/2)
 
     def follow_rear_right(self):
-        print("frRight")
+        #print("frRight")
 
         self.PIDrRight.set_tunings(KP2, KI, KD)
         self.setpointrR = WALL_DISTANCE_DIAG
@@ -323,7 +329,7 @@ class Motors:
             self.move_motors(-(MOTOR_SPEED - self.PIDrRight.output())/2, -(MOTOR_SPEED + self.PIDrRight.output())/2)
 
     def follow_rear_left(self):
-        print("frLeft")
+        #print("frLeft")
 
         self.PIDrLeft.set_tunings(KP2, KI, KD)
         self.setpointrL = WALL_DISTANCE_DIAG
@@ -339,7 +345,7 @@ class Motors:
 
 
     def straight(self):
-        print("straight")
+        #print("straight")
         if self.dir:
             self.move_motors(MOTOR_SPEED/2, MOTOR_SPEED/2)
         else:
