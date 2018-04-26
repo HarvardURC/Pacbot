@@ -3,8 +3,8 @@ from low_level.motors import Motors
 M = Motors()
 
 try:
-    #M.move_cells(4)
-    #"""
+    M.reverse(20)
+    """
     for i in range(3):
        # M.turn_around_r()
         #M.reverse(4)
@@ -20,7 +20,7 @@ try:
         M.turn_right()
         M.move_cells(6)
         M.turn_right()
-    #"""
+    """
 
 except KeyboardInterrupt:
     M.stop()

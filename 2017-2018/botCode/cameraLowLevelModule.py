@@ -22,6 +22,7 @@ class LowLevelModule(rm.ProtoModule):
         self.current_location = None
         self.motors = Motors()
         self.current_dir = PacmanCommand.EAST
+        print('ready')
         
     def _should_turn_left(self, cmd):
         return \
@@ -49,6 +50,7 @@ class LowLevelModule(rm.ProtoModule):
 
     def _turn_right(self):
         self.motors.turn_right()
+        self.motors.stop()
         if self.current_dir == PacmanCommand.EAST:
             self.current_dir = PacmanCommand.SOUTH
         elif self.current_dir == PacmanCommand.SOUTH:
@@ -60,6 +62,7 @@ class LowLevelModule(rm.ProtoModule):
             
     def _turn_left(self):
         self.motors.turn_left()
+        self.motos.stop()
         if self.current_dir == PacmanCommand.EAST:
             self.current_dir = PacmanCommand.NORTH
         elif self.current_dir == PacmanCommand.NORTH:
@@ -91,17 +94,23 @@ class LowLevelModule(rm.ProtoModule):
                 self.motors.stop()
                 return
             if self._should_turn_left(cmd):
+                print('turn left')
                 self._turn_left()
             elif self._should_turn_right(cmd):
+                print('turn right')
                 self._turn_right()
             if self._should_reverse(cmd):
+                print('reverse')
                 self._reverse()
             else:
+                print('forward')
                 loc = self.current_location
                 self._move_forward()
+                return
                 if loc[0] == self.current_location[0] and loc[1] == self.current_location[1]:
                     # Failed to move Turn and try again
                     while loc[0] == self.current_location[0] and loc[1] == self.current_location[1]:
+                        print('stuck')
                         self._turn_left()
                         self._move_forward()
 
@@ -121,7 +130,8 @@ class LowLevelModule(rm.ProtoModule):
         elif msg_type == MsgType.LIGHT_STATE:
             prev_loc = self.current_location
             self.current_location = (msg.pacman.x, msg.pacman.y)
-            self._set_direction(prev_loc)
+            if prev_loc != None:
+                self._set_direction(prev_loc)
 
     def tick(self):
         if self.current_command:
