@@ -6,7 +6,7 @@ try:
     #M.move_cells(4)
     #"""
     for i in range(3):
-        #M.turn_around_r()
+       # M.turn_around_r()
         #M.reverse(4)
         #M.move_cells(4)
         #M.turn_around_l()
