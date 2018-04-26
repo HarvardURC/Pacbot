@@ -5,7 +5,7 @@ import numpy as np
 from time import sleep
 from variables import lower_green, upper_green, lower_yellow, upper_yellow
 
-CAM_NUM = 2
+CAM_NUM = 1
 green = True
 
 def nothing(x):

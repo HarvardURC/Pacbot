@@ -7,14 +7,14 @@ from .helpers import *
 from .grid import grid
 from .variables import *
 
-FREQUENCY = 60
+FREQUENCY = 30
 
 class MovementProcessor(rm.ProtoModule):
     def __init__(self, addr, port, cam_id, y_off, height, width, show_windows):
         super().__init__(addr, port, message_buffers, MsgType, FREQUENCY)
         self.cap = cv2.VideoCapture(cam_id)
-        self.cap.set(3,960)
-        self.cap.set(4,540)
+        self.cap.set(3,640)
+        self.cap.set(4,360)
         self.y_off = y_off
         self.height = height
         self.width = width
