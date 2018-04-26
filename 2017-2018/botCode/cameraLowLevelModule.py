@@ -12,12 +12,14 @@ PORT = os.environ.get("LOCAL_PORT", 11295)
 
 FREQUENCY = 60
 
+GRID_VAL = 200
+
 class LowLevelModule(rm.ProtoModule):
     def __init__(self, addr, port):
-        self.subscriptions = [MsgType.PACMAN_COMMAND]
+        self.subscriptions = [MsgType.PACMAN_COMMAND, MsgType.LIGHT_STATE]
         super().__init__(addr, port, message_buffers, MsgType, FREQUENCY, self.subscriptions)
         self.current_command = None
-        self.current_location = (13, 7)
+        self.current_location = None
         self.motors = Motors()
         self.current_dir = PacmanCommand.EAST
         
@@ -95,19 +97,31 @@ class LowLevelModule(rm.ProtoModule):
             if self._should_reverse(cmd):
                 self._reverse()
             else:
+                loc = self.current_location
                 self._move_forward()
-            if cmd == PacmanCommand.EAST:
-                self.current_location = (self.current_location[0] + 1, self.current_location[1])
-            elif cmd == PacmanCommand.WEST:
-                self.current_location = (self.current_location[0] - 1, self.current_location[1])
-            elif cmd == PacmanCommand.NORTH:
-                self.current_location = (self.current_location[0], self.current_location[1] + 1)
-            elif cmd == PacmanCommand.SOUTH:
-                self.current_location = (self.current_location[0], self.current_location[1] - 1)
+                if loc[0] == self.current_location[0] and loc[1] == self.current_location[1]:
+                    # Failed to move Turn and try again
+                    while loc[0] == self.current_location[0] and loc[1] == self.current_location[1]:
+                        self._turn_left()
+                        self._move_forward()
+
+    def _set_direction(self, prev_loc):
+        if prev_loc[0] > self.current_location[0]:
+            self.current_dir = PacmanCommand.WEST
+        elif prev_loc[0] < self.current_location[0]:
+            self.current_dir = PacmanCommand.EAST
+        elif prev_loc[1] > self.current_location[1]:
+            self.current_dir = PacmanCommand.SOUTH
+        elif prev_loc[1] < self.current_location[1]:
+            self.current_dir = PacmanCommand.NORTH
 
     def msg_received(self, msg, msg_type):
         if msg_type == MsgType.PACMAN_COMMAND:
             self.current_command = msg.dir
+        elif msg_type == MsgType.LIGHT_STATE:
+            prev_loc = self.current_location
+            self.current_location = (msg.pacman.x, msg.pacman.y)
+            self._set_direction(prev_loc)
 
     def tick(self):
         if self.current_command:
