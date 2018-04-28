@@ -189,11 +189,6 @@ class Motors:
                 self.follow_front()
             elif rear_valid and not self.dir:
                 self.follow_rear()
-            elif left_valid:
-                self.follow_left()
-            elif right_valid:
-                print("right")
-                self.follow_right()
             elif dists[max2] < WALL_THRESHOLD_DIAG and max2[0] != 'r' and self.dir:
                 #print(max2)
                 single_sensor_functions[max2]()
