@@ -7,7 +7,7 @@ from grid import grid
 from low_level.motors import Motors
 from messages import MsgType, message_buffers, LightState, PacmanCommand
 from time import sleep
-ADDRESS = os.environ.get("LOCAL_ADDRESS","192.168.0.100")
+ADDRESS = os.environ.get("LOCAL_ADDRESS","192.168.0.101")
 PORT = os.environ.get("LOCAL_PORT", 11295)
 
 FREQUENCY = 10
@@ -99,33 +99,50 @@ class LowLevelModule(rm.ProtoModule):
                 self.motors.stop()
                 return
             if self._should_turn_left(cmd):
+                print("tl")
                 self._turn_left()
+                self.forwards = 0
                 #self.motors.move_cells(1)
                 #self.loc = self.current_location
             elif self._should_turn_right(cmd):
+                print("tr")
                 self._turn_right()
+                self.forwards = 0
                 #self.motors.move_cells(1)
                 #loc = self.current_location
             if self._should_reverse(cmd):
-                #"""
+                print("r")
+                """
+                self.forwards = 0
+                self.motors.turn_around_l()
+                self.motors.move_cells(1)
+                self._turn_around()
+ 
                 if self.prev_loc != self.current_location:
-                        self.forwards = 0 
+                        self.forwards = 0
+            
                 self.prev_loc = self.current_location 
                 self._reverse()
                 self.forwards +=1
-                #"""
-                """
+            
+            
                 self.motors.turn_around_l()
                 self.motors.move_cells(1)
                 self._turn_around()
                 """
+                self.motors.reverse_direction()
+                self.motors.move_cells(1)
+                self.motors.reverse_direction()
+                self.forwards = 0
 
                                                
             else:
-                if self.prev_loc == self.current_location and self.forwards > 2:
+                if self.prev_loc == self.current_location and self.forwards > 1:
                     self.motors.escape()
+                    self.forwards = 0
                 
                 else:
+                    print("f")
                     if self.prev_loc != self.current_location:
                         self.forwards = 0
                     self.prev_loc = self.current_location
@@ -147,6 +164,7 @@ class LowLevelModule(rm.ProtoModule):
             self.current_command = msg.dir
         elif msg_type == MsgType.LIGHT_STATE:
             if self.ticks % 5 != 0:
+                self.ticks += 1
                 return
             prev_loc = self.current_location
             self.current_location = (msg.pacman.x, msg.pacman.y)
