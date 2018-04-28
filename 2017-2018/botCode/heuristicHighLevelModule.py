@@ -11,7 +11,7 @@ from messages import MsgType, message_buffers, LightState, PacmanCommand
 ADDRESS = os.environ.get("LOCAL_ADDRESS","localhost")
 PORT = os.environ.get("LOCAL_PORT", 11295)
 
-FREQUENCY = 30
+FREQUENCY = 3
 PELLET_WEIGHT = 0.65
 GHOST_WEIGHT = 0.35
 FRIGHTENED_GHOST_WEIGHT = .3 * GHOST_WEIGHT
