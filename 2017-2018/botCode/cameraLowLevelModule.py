@@ -6,11 +6,11 @@ import variables as var
 from grid import grid
 from low_level.motors import Motors
 from messages import MsgType, message_buffers, LightState, PacmanCommand
-
-ADDRESS = os.environ.get("LOCAL_ADDRESS","localhost")
+from time import sleep
+ADDRESS = os.environ.get("LOCAL_ADDRESS","192.168.0.100")
 PORT = os.environ.get("LOCAL_PORT", 11295)
 
-FREQUENCY = 60
+FREQUENCY = 10
 
 GRID_VAL = 200
 
@@ -23,6 +23,9 @@ class LowLevelModule(rm.ProtoModule):
         self.motors = Motors()
         self.current_dir = PacmanCommand.EAST
         print('ready')
+        self.prev_loc = None
+        self.ticks = 0
+        self.forwards = 0
         
     def _should_turn_left(self, cmd):
         return \
@@ -50,7 +53,6 @@ class LowLevelModule(rm.ProtoModule):
 
     def _turn_right(self):
         self.motors.turn_right()
-        self.motors.stop()
         if self.current_dir == PacmanCommand.EAST:
             self.current_dir = PacmanCommand.SOUTH
         elif self.current_dir == PacmanCommand.SOUTH:
@@ -62,7 +64,6 @@ class LowLevelModule(rm.ProtoModule):
             
     def _turn_left(self):
         self.motors.turn_left()
-        self.motos.stop()
         if self.current_dir == PacmanCommand.EAST:
             self.current_dir = PacmanCommand.NORTH
         elif self.current_dir == PacmanCommand.NORTH:
@@ -84,42 +85,59 @@ class LowLevelModule(rm.ProtoModule):
             self.current_dir = PacmanCommand.NORTH
     
     def _reverse(self):
-        self.motors.reverse(1)
+        #print("reverse")
+        self.motors.reverse_direction()
+        self._turn_around()
+        self._move_forward()
 
     def _execute_command(self):
         if self.current_command:
+            #print(self.current_dir)
             cmd = self.current_command
             self.current_command = None
             if cmd == PacmanCommand.STOP:
                 self.motors.stop()
                 return
             if self._should_turn_left(cmd):
-                print('turn left')
                 self._turn_left()
+                #self.motors.move_cells(1)
+                #self.loc = self.current_location
             elif self._should_turn_right(cmd):
-                print('turn right')
                 self._turn_right()
+                #self.motors.move_cells(1)
+                #loc = self.current_location
             if self._should_reverse(cmd):
-                print('reverse')
+                #"""
+                if self.prev_loc != self.current_location:
+                        self.forwards = 0 
+                self.prev_loc = self.current_location 
                 self._reverse()
-            else:
-                print('forward')
-                loc = self.current_location
-                self._move_forward()
-                return
-                if loc[0] == self.current_location[0] and loc[1] == self.current_location[1]:
-                    # Failed to move Turn and try again
-                    while loc[0] == self.current_location[0] and loc[1] == self.current_location[1]:
-                        print('stuck')
-                        self._turn_left()
-                        self._move_forward()
+                self.forwards +=1
+                #"""
+                """
+                self.motors.turn_around_l()
+                self.motors.move_cells(1)
+                self._turn_around()
+                """
 
+                                               
+            else:
+                if self.prev_loc == self.current_location and self.forwards > 2:
+                    self.motors.escape()
+                
+                else:
+                    if self.prev_loc != self.current_location:
+                        self.forwards = 0
+                    self.prev_loc = self.current_location
+                    self._move_forward()
+                    self.forwards += 1
+                
     def _set_direction(self, prev_loc):
         if prev_loc[0] > self.current_location[0]:
             self.current_dir = PacmanCommand.WEST
         elif prev_loc[0] < self.current_location[0]:
             self.current_dir = PacmanCommand.EAST
-        elif prev_loc[1] > self.current_location[1]:
+        elif prev_loc[1]> self.current_location[1]:
             self.current_dir = PacmanCommand.SOUTH
         elif prev_loc[1] < self.current_location[1]:
             self.current_dir = PacmanCommand.NORTH
@@ -128,14 +146,19 @@ class LowLevelModule(rm.ProtoModule):
         if msg_type == MsgType.PACMAN_COMMAND:
             self.current_command = msg.dir
         elif msg_type == MsgType.LIGHT_STATE:
+            if self.ticks % 5 != 0:
+                return
             prev_loc = self.current_location
             self.current_location = (msg.pacman.x, msg.pacman.y)
             if prev_loc != None:
                 self._set_direction(prev_loc)
+            self.ticks += 1
 
     def tick(self):
+        self.set_frequency(0)
         if self.current_command:
             self._execute_command()
+        self.loop.call_soon(self.tick)
 
     def kill(self):
         self.motors.stop()

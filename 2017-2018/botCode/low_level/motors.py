@@ -5,7 +5,7 @@ from .sensors import Sensors
 from .GPIOhelpers import *
 from .PID import *
 setGPIO()
-
+import time
 import signal, sys
 
 MOTOR_SPEED = 47
@@ -14,8 +14,9 @@ TICKS_TURN = 231
 WALL_THRESHOLD_DIAG = 85
 WALL_DISTANCE_DIAG = 75
 WALL_DIST = 80
-KP3 = 0.8
-KP = 0.67
+TIME = 3000
+KP3 = 0.5
+KP = 0.4
 KP2 = .17
 KI = 0.01
 KD = 0.05
@@ -105,15 +106,16 @@ class Motors:
         Encoder.write(0, 0)
         Encoder.write(0, 1)
 
+        factor = abs(ticks_l)/TICKS_CELL
+
         self.setpointL = ticks_l
         self.setpointR = ticks_r
 
         self.inputR = 0
         self.inputL = 0
 
-        time = self.PIDRight.millis()
-
-        while (abs(self.inputL - self.setpointL) > 5 or abs(self.inputR - self.setpointR) > 5):
+        start = time.time() * 1000
+        while ((abs(self.inputL - self.setpointL) > 5 or abs(self.inputR - self.setpointR) > 5) and (time.time()* 1000 - start < factor *TIME)):
             self.inputL , self.inputR = self.read_encoders()
             #print(self.inputL)
             #print(self.inputR)
@@ -142,15 +144,17 @@ class Motors:
         Encoder.write(0, 0)
         Encoder.write(0, 1)
 
+        factor = ticks/TICKS_CELL
+
         distance_l, distance_r = self.read_encoders()
         added = 0
         have_driven = False
-
-        while (min(distance_r, distance_l) < ticks):
-            if have_driven and self.dir and self._frontIR.get_distance() < 40 and self._fleftIR.get_distance() < 65 and self._frightIR.get_distance() < 65:
+        start = time.time()*1000
+        while (min(distance_r, distance_l) < ticks and (time.time()*1000 - start < factor * TIME)):
+            if have_driven and self.dir and self._frontIR.get_distance() < 40  and self._fleftIR.get_distance() < 65 and  self._frightIR.get_distance() < 65:
                 print("break:",self._frontIR.get_distance())
                 break
-            elif have_driven and not self.dir and self._rearIR.get_distance() < 40 and self._rleftIR.get_distance()< 65 and self._rrightIR.get_distance() < 65:
+            elif have_driven and not self.dir and self._rearIR.get_distance() < 40 and (self._rleftIR.get_distance() < 65 or  self._rrightIR.get_distance() < 65):
                 break
             
             if abs(distance_l - distance_r) > 140:
@@ -213,6 +217,59 @@ class Motors:
         self.move_cells(ticks)
         self.reverse_direction()
 
+    def back(self):
+        if(self._rearIR.get_distance() > 25 and self._rleftIR.get_distance()> 10 and self._rrightIR.get_distance() > 10):
+            print("back")
+            self.move_ticks(-TICKS_CELL/4, -TICKS_CELL/4)
+        else:
+            print("not back")
+
+    def turn_slight_left(self):
+        print("turn_slight_left")
+        self.PIDLeft.set_tunings(KP3,0.01,0)
+        self.PIDRight.set_tunings(KP3,0.01,0)
+        self.move_ticks(-1 * TICKS_TURN/6, TICKS_TURN/6)
+    
+    def turn_slight_right(self):
+        print("turn_slight_right")
+        self.PIDLeft.set_tunings(KP3,0.01,0)
+        self.PIDRight.set_tunings(KP3,0.01,0)
+        self.move_ticks(1 * TICKS_TURN/6, -1*TICKS_TURN/6)
+
+    def attempt_escape(self):
+        if(self._frontIR.get_distance() > 40 and self._fleftIR.get_distance()> 60 and self._frightIR.get_distance() > 60):
+            print("attempted")
+            self.move_cells(1)
+            return True
+        else:
+            print("could not")
+            return False
+
+    def escape(self):
+        escaped = False
+        self.dir = True
+        if self._frightIR.get_distance() <= self._fleftIR.get_distance():
+            while not escaped:
+                print('stuck')
+                self.back()
+                self.turn_slight_left()
+                escaped = self.attempt_escape()
+            if(self._frontIR.get_distance() < 40  or self._fleftIR.get_distance() < 10 or self._frightIR.get_distance() < 10):
+                print("second escape")
+                self.turn_left()
+                self.move_cells(2)
+        else: 
+            while not escaped:
+                print('stuck')
+                self.back()
+                self.turn_slight_right()
+                escaped = self.attempt_escape()
+            if(self._frontIR.get_distance() < 40  or self._fleftIR.get_distance() < 10 or self._frightIR.get_distance() < 10):
+                print("second escape")
+                self.turn_right()
+                self.move_cells(2)
+ 
+
     def turn_around_l(self):
         self.turn_left()
         self.turn_left()
@@ -224,12 +281,20 @@ class Motors:
     def turn_left(self): 
         self.PIDLeft.set_tunings(KP3,0.01,0)
         self.PIDRight.set_tunings(KP3,0.01,0)
-        self.move_ticks(-1 * TICKS_TURN, TICKS_TURN)
+        if self.dir:
+            self.move_ticks(-1 * TICKS_TURN, TICKS_TURN)
+        else: 
+            self.move_ticks(TICKS_TURN, -1*TICKS_TURN)
+            self.reverse_direction()
 
     def turn_right(self):
         self.PIDLeft.set_tunings(KP3,0.01,0)
         self.PIDRight.set_tunings(KP3,0.01,0)
-        self.move_ticks(TICKS_TURN, -1 * TICKS_TURN)
+        if self.dir:
+            self.move_ticks(TICKS_TURN, -1 * TICKS_TURN)
+        else: 
+            self.move_ticks(-1 * TICKS_TURN, TICKS_TURN)
+            self.reverse_direction()
 
     def follow_front(self):
         #print("fFront")

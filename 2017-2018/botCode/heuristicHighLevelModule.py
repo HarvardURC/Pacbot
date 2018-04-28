@@ -8,7 +8,7 @@ from grid import grid
 from search import bfs
 from messages import MsgType, message_buffers, LightState, PacmanCommand
 
-ADDRESS = os.environ.get("LOCAL_ADDRESS","localhost")
+ADDRESS = os.environ.get("LOCAL_ADDRESS","192.168.0.100")
 PORT = os.environ.get("LOCAL_PORT", 11295)
 
 FREQUENCY = 30

@@ -3,9 +3,11 @@ from low_level.motors import Motors
 M = Motors()
 
 try:
-    M.reverse(20)
+    M.escape()
+    #M.move_cells(20)
+    #M.reverse(20)
     """
-    for i in range(3):
+    for i in range(1):
        # M.turn_around_r()
         #M.reverse(4)
         #M.move_cells(4)
@@ -19,7 +21,13 @@ try:
         M.move_cells(4)
         M.turn_right()
         M.move_cells(6)
-        M.turn_right()
+    M.move_cells(6)
+    M.turn_right()
+    M.move_cells(10)
+    M.turn_right()
+    M.move_cells(8)
+    M.turn_left()
+    M.move_cells(20)
     """
 
 except KeyboardInterrupt:
