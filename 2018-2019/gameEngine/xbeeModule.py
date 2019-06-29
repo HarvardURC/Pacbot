@@ -48,6 +48,7 @@ class XbeeModule(rm.ProtoModule):
             g_state = 'F' if self.state.blue_ghost.frightened_counter > 0 else 'N'
             m += '#{}#{}#{}%\n'.format(self.state.blue_ghost.x, self.state.blue_ghost.y, g_state)
             self.xbee.write(m.encode())
+            print(m.encode())
             print('wrote')
 
 
