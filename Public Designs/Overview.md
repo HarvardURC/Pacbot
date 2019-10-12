@@ -3,19 +3,30 @@
 
 ## Electrical Components 
 -1 Raspberry Pi Zero W
+
 -1 Teensy 3.5
+
 -1 PCB
+
 -1 IMU
+
 -Assorted capacitors, resistors, wires
+
 -4 IR Sensors
+
 -2 Magnetic encoder pairs
+
 -2 Motors
+
 -1 Motor Driver
+
 -Li-Po Battery
+
 (specific links to components can be found at https://docs.google.com/spreadsheets/d/1ZO9OBoGcNkOdx6GaBkAFo6AWodeVCOaCXKic-0er2z0/edit?usp=sharing)
 
 ## Mechanical Components
 -Wheels/Ball Casters
+
 -3D Printed Battery Clip
 
 ## Code
