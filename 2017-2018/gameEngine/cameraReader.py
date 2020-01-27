@@ -4,7 +4,7 @@ import os
 import sys
 from vision import MovementProcessor
 
-ADDRESS = os.environ.get("SERVER_ADDRESS","127.0.0.1")
+ADDRESS = os.environ.get("SERVER_ADDRESS","192.168.0.100")
 PORT = os.environ.get("SERVER_PORT", 11297)
 
 def main():
@@ -16,7 +16,7 @@ def main():
         print('select either -t for top cam of -b for bottom cam')
         sys.exit(1)
     if top:
-        camera_number = 2
+        camera_number = 0
         processor = MovementProcessor(ADDRESS, PORT, camera_number, 15, 16, 27, windows)
     elif bottom:
         camera_number = 1

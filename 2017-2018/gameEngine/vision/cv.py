@@ -50,7 +50,7 @@ class MovementProcessor(rm.ProtoModule):
         res = cv2.bitwise_and(warped, warped, mask=mask)
         res = cv2.cvtColor(res,cv2.COLOR_HSV2BGR)
         imgray = cv2.cvtColor(res,cv2.COLOR_BGR2GRAY)
-        _, contours, _ = cv2.findContours(imgray,cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        contours, _ = cv2.findContours(imgray,cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
         
 
         sector_h = imgray.shape[0]/self.height

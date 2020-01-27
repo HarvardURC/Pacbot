@@ -72,7 +72,7 @@ def warp_image(frame):
     imgray = cv2.cvtColor(res,cv2.COLOR_BGR2GRAY)
     
     # Find contours
-    _, contours, _ = cv2.findContours(imgray, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    contours, _ = cv2.findContours(imgray, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     
     # At this point we will filter our contours.
     # We will merge contours that are nearby together
