@@ -51,12 +51,34 @@ class GameState:
         self.power_pellets -= 1
         self._become_frightened()
 
+    def _is_eating_cherry(self):
+        return self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] == c
+
+    def _eat_cherry(self):
+        self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] = e
+        self.score += cherry_score
+        self.cherry = False
+
+    def _should_spawn_cherry(self):
+        if self.pellets == 170:
+            print("Cherry spawned")
+            return True
+        print(self.pellets)
+        return False
+
+    def _spawn_cherry(self):
+        self.grid[cherry_pos[0]][cherry_pos[1]] = c
+        self.cherry = True
+
     def _update_score(self):
         if self._is_eating_pellet():
             self._eat_pellet()
 
         if self._is_eating_power_pellet():
             self._eat_power_pellet()
+
+        if self._is_eating_cherry():
+            self._eat_cherry()
 
     def _respawn_agents(self):
         self.pacbot.respawn()
@@ -147,15 +169,16 @@ class GameState:
                     self._swap_state_if_necessary()
                     self.state_counter += 1
                 self.start_counter += 1
-
-
             self._update_score()
+            if self._should_spawn_cherry():
+                self._spawn_cherry()
             self.update_ticks += 1
 
     def restart(self):
         self.grid = copy.deepcopy(grid)
         self.pellets = sum([col.count(o) for col in self.grid])
         self.power_pellets = sum([col.count(O) for col in self.grid])
+        self.cherry = False
         self.old_state = chase
         self.state = scatter
         self.frightened_counter = 0

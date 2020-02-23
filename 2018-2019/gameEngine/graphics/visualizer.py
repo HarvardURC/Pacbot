@@ -72,6 +72,9 @@ class Visualizer(rm.ProtoModule):
             },
             'frightened': {
                 'r': SpriteStripAnim(SPRITE_FILE, (584,64,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
+            },
+            'fruit': {
+                'r': SpriteStripAnim(SPRITE_FILE, (487,48,16,16), 2, 1, True, int(1/(SPRITE_FREQUENCY * DISPLAY_FREQUENCY)))
             }
         }
 
@@ -120,6 +123,18 @@ class Visualizer(rm.ProtoModule):
             return self.state.pink_ghost.frightened_counter > 0
         else:
             return False
+    
+    def _get_frightened_counter(self, color):
+        if color == Ghosts.RED:
+            return self.state.red_ghost.frightened_counter
+        elif color == Ghosts.BLUE:
+            return self.state.blue_ghost.frightened_counter
+        elif color == Ghosts.ORANGE:
+            return self.state.orange_ghost.frightened_counter
+        elif color == Ghosts.PINK:
+            return self.state.pink_ghost.frightened_counter
+        else:
+            return 0
 
     def _get_interpolated_pos(self, idx, inc):
         return (idx + inc * (self.state.update_ticks - self.state.ticks_per_update/2.) / self.state.ticks_per_update) * SQUARE_SIZE
@@ -158,7 +173,16 @@ class Visualizer(rm.ProtoModule):
             (x, y) = self._get_draw_pos(col_idx, row_idx, self.dirs['blue'][0], self.dirs['blue'][1])
 
         if self._is_ghost_frightened(color):
+            time_left = self._get_frightened_counter(color)
             self.surface.blit(pygame.transform.scale(self.sprites['frightened']['r'].next(), (SQUARE_SIZE, SQUARE_SIZE)), (x,y))
+            if time_left < 10:
+                if time_left % 2 != 0:
+                    self.sprites['frightened']['r'].next().set_alpha(0)
+                else:
+                    self.sprites['frightened']['r'].next().set_alpha(255)
+            else:
+                self.sprites['frightened']['r'].next().set_alpha(255)
+            print(time_left)
         elif direction == PacmanState.LEFT:
             self.surface.blit(pygame.transform.scale(sprite_set['l'].next(), (SQUARE_SIZE, SQUARE_SIZE)), (x,y))
         elif direction == PacmanState.RIGHT:
@@ -197,6 +221,11 @@ class Visualizer(rm.ProtoModule):
         x = int((col_idx + 1) * SQUARE_SIZE - SQUARE_SIZE/2)
         y = int((row_idx + 1) * SQUARE_SIZE - SQUARE_SIZE/2)
         pygame.draw.circle(self.surface, pygame.Color(*white_color), (x,y), int(SQUARE_SIZE/3))
+
+    def _print_cherry(self, col_idx, row_idx):
+        (x, y) = (col_idx * SQUARE_SIZE, row_idx * SQUARE_SIZE)
+        self.surface.blit(pygame.transform.scale(self.sprites['fruit']['r'].next(), (SQUARE_SIZE, SQUARE_SIZE)), (x,y))
+
 
     def _print_wall(self, col_idx, row_idx):
         u_idx = col_idx * self.state.grid_columns + row_idx + 1 if row_idx < self.state.grid_columns - 1 else - 1
@@ -319,6 +348,8 @@ class Visualizer(rm.ProtoModule):
                     self._print_pellet(col_idx, GRID_SIZE[1] - row_idx - 1)
                 elif el == PacmanState.POWER_PELLET:
                     self._print_power_pellet(col_idx, GRID_SIZE[1] - row_idx - 1)
+                elif el == PacmanState.CHERRY:
+                    self._print_cherry(col_idx, GRID_SIZE[1] - row_idx - 1)
                 elif el == PacmanState.WALL and self.print_walls:
                     self._print_wall(col_idx, row_idx)
 

@@ -4,7 +4,7 @@ import robomodules
 import os
 from messages import MsgType
 
-ADDRESS = os.environ.get("BIND_ADDRESS","192.168.0.100")
+ADDRESS = os.environ.get("BIND_ADDRESS","localhost")
 PORT = os.environ.get("BIND_PORT", 11297)
 
 def main():
