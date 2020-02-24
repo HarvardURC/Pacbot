@@ -7,8 +7,8 @@ O = 4
 n = 5
 
 # Threshold values for yellow dots
-lower_yellow = np.array([23,69,206])
-upper_yellow = np.array([38,190,255])
+lower_yellow = np.array([22,24,185])
+upper_yellow = np.array([36,196,255])
 
-lower_green = np.array([38,65,129])
-upper_green = np.array([70,196,255])
+lower_green = np.array([42,20,222])
+upper_green = np.array([65,206,255])

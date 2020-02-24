@@ -1,0 +1,16 @@
+syntax = "proto2";
+
+package botCode;
+
+message PacmanCommand {
+
+  required Direction dir = 1;
+
+  enum Direction {
+    STOP = 1;
+    NORTH = 2;
+    SOUTH = 3;
+    EAST = 4;
+    WEST = 5;
+  }
+}
