@@ -4,7 +4,7 @@ import os
 import sys
 from vision import MovementProcessor
 
-ADDRESS = os.environ.get("SERVER_ADDRESS","192.168.0.100")
+ADDRESS = os.environ.get("SERVER_ADDRESS","localhost")
 PORT = os.environ.get("SERVER_PORT", 11297)
 
 def main():

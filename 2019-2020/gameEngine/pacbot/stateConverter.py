@@ -30,6 +30,8 @@ class StateConverter:
             return PacmanState.PELLET
         elif el == O:
             return PacmanState.POWER_PELLET
+        elif el == c:
+            return PacmanState.CHERRY
         else:
             return PacmanState.EMPTY
 

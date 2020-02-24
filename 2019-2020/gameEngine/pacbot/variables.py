@@ -10,6 +10,7 @@ o = 2
 e = 3
 O = 4
 n = 5
+c = 6
 
 # State enums
 scatter = 1
@@ -32,9 +33,11 @@ starting_lives = 3
 frightened_length = 40
 pellet_score = 10
 power_pellet_score = 50
+cherry_score = 100
 ghost_score = 200
 state_swap_times = [35, 135, 170, 270, 295, 395, 420]
 pacbot_starting_pos = (14, 7)
 pacbot_starting_dir = left
+cherry_pos = (13, 13)
 game_frequency = 2.
 ticks_per_update = 12

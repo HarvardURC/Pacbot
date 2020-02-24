@@ -6,7 +6,7 @@ from messages import *
 from pacbot.variables import *
 from pacbot.grid import *
 
-ADDRESS = os.environ.get("BIND_ADDRESS","192.168.0.100")
+ADDRESS = os.environ.get("BIND_ADDRESS","localhost")
 PORT = os.environ.get("BIND_PORT", 11297)
 
 SPEED = 1.0

@@ -1,4 +1,4 @@
-# Pacbot 2019-20 gameEngine
+# Pacbot 2017-18 gameEngine
 
 ## Requirements
 To run the gameEngine you need the following:
@@ -12,7 +12,7 @@ In order to add new message types you need the Google Protocol Buffer compiler f
 
 ## Running the gameEngine
 
-To run the gameEngine, first run the server and then run each of the module proccesses separately. (To run locally, change the server addresses to 'localhost')
+To run the gameEngine, first run the server and then run each of the module proccesses separately.
 1. `./server.py`
 
 2. `./gameEngine.py`

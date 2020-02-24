@@ -37,6 +37,7 @@ message PacmanState {
     PELLET = 1;
     POWER_PELLET = 2;
     EMPTY = 3;
+    CHERRY = 4;
   }
 
   enum Direction {
