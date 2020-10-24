@@ -1,0 +1,417 @@
+PCBNEW-LibModule-V1  
+# encoding utf-8
+Units mm
+$INDEX
+ADA3708_RPI-ZERO
+$EndINDEX
+$MODULE ADA3708_RPI-ZERO
+Po 0 0 0 15 00000000 00000000 ~~
+Li ADA3708_RPI-ZERO
+Cd Raspberry Pi board model B+, full outline with position of big connectors &amp; drill holes
+Sc 00000000
+At STD
+Op 0 0 0
+.SolderMask 0
+.SolderPaste 0
+T0 -27.9928 -5.72581 1.00189 1.00189 0 0.05 N V 21 "ADA3708_RPI-ZERO"
+T1 -28.5911 28.591 1.00056 1.00056 0 0.05 N V 21 "VAL**"
+DC -29 23 -25.9 23 0.127 27
+DC 29 23 32.1 23 0.127 27
+DC 29 0 32.1 0 0.127 27
+DC -29 0 -25.9 0 0.127 27
+DA -29.5 23.5 -29.5 26.5 900 0.127 27
+DS -29.5 26.5 -25.65 26.5 0.127 27
+DS -25.65 26.5 -18.15 26.5 0.127 27
+DS -18.15 26.5 29.5 26.5 0.127 27
+DA 29.5 23.5 32.5 23.5 900 0.127 27
+DS 32.5 23.5 32.5 -0.5 0.127 27
+DA 29.5 -0.5 29.5 -3.5 900 0.127 27
+DS 29.5 -3.5 -29.5 -3.5 0.127 27
+DA -29.5 -0.5 -32.5 -0.5 900 0.127 27
+DS -32.5 -0.5 -32.5 23.5 0.127 27
+DS -25.65 26.5 -25.65 20.75 0.127 27
+DS -25.65 20.75 -18.15 20.75 0.127 27
+DS -18.15 20.75 -18.15 26.5 0.127 27
+DS -25.65 26.5 -25.9 27 0.127 27
+DS -25.9 27 -17.9 27 0.127 27
+DS -17.9 27 -18.15 26.5 0.127 27
+T2 -24.472700 4.131750 1 1 0 .05 N V 21 "1"
+DS 4.4 26.5 5.25 26.5 0.127 27
+DS 5.25 26.5 12.75 26.5 0.127 27
+DS 5.25 26.5 5.25 20.75 0.127 27
+DS 5.25 20.75 12.75 20.75 0.127 27
+DS 12.75 20.75 12.75 26.5 0.127 27
+DS 5.25 26.5 5 27 0.127 27
+DS 5 27 13 27 0.127 27
+DS 13 27 12.75 26.5 0.127 27
+DS 17 26.5 17.85 26.5 0.127 27
+DS 17.85 26.5 25.35 26.5 0.127 27
+DS 17.85 26.5 17.85 20.75 0.127 27
+DS 17.85 20.75 25.35 20.75 0.127 27
+DS 25.35 20.75 25.35 26.5 0.127 27
+DS 17.85 26.5 17.6 27 0.127 27
+DS 17.6 27 25.6 27 0.127 27
+DS 25.6 27 25.35 26.5 0.127 27
+DS -25.4 -2.54 -25.4 2.54 0.127 27
+DS -25.4 2.54 25.4 2.54 0.127 27
+DS 25.4 2.54 25.4 -2.54 0.127 27
+DS 25.4 -2.54 -25.4 -2.54 0.127 27
+DS -32.75 -3.75 32.75 -3.75 0.05 26
+DS 32.75 -3.75 32.75 27.25 0.05 26
+DS 32.75 27.25 -32.75 27.25 0.05 26
+DS -32.75 27.25 -32.75 -3.75 0.05 26
+DA -29.5 23.5 -29.5 26.5 900 0.127 21
+DS -29.5 26.5 29.5 26.5 0.127 21
+DA 29.5 23.5 32.5 23.5 900 0.127 21
+DS 32.5 23.5 32.5 -0.5 0.127 21
+DA 29.5 -0.5 29.5 -3.5 900 0.127 21
+DS 29.5 -3.5 -29.5 -3.5 0.127 21
+DA -29.5 -0.5 -32.5 -0.5 900 0.127 21
+DS -32.5 -0.5 -32.5 23.5 0.127 21
+DS 4.4 26.5 12.75 26.5 0.127 21
+DS 17 26.5 25.35 26.5 0.127 21
+$PAD
+Sh "1" R 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -24.13 1.27
+$EndPAD
+$PAD
+Sh "2" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -24.13 -1.27
+$EndPAD
+$PAD
+Sh "3" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -21.59 1.27
+$EndPAD
+$PAD
+Sh "4" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -21.59 -1.27
+$EndPAD
+$PAD
+Sh "5" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -19.05 1.27
+$EndPAD
+$PAD
+Sh "6" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -19.05 -1.27
+$EndPAD
+$PAD
+Sh "7" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -16.51 1.27
+$EndPAD
+$PAD
+Sh "8" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -16.51 -1.27
+$EndPAD
+$PAD
+Sh "9" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -13.97 1.27
+$EndPAD
+$PAD
+Sh "10" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -13.97 -1.27
+$EndPAD
+$PAD
+Sh "11" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -11.43 1.27
+$EndPAD
+$PAD
+Sh "12" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -11.43 -1.27
+$EndPAD
+$PAD
+Sh "13" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -8.89 1.27
+$EndPAD
+$PAD
+Sh "14" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -8.89 -1.27
+$EndPAD
+$PAD
+Sh "15" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -6.35 1.27
+$EndPAD
+$PAD
+Sh "16" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -6.35 -1.27
+$EndPAD
+$PAD
+Sh "17" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -3.81 1.27
+$EndPAD
+$PAD
+Sh "18" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -3.81 -1.27
+$EndPAD
+$PAD
+Sh "19" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -1.27 1.27
+$EndPAD
+$PAD
+Sh "20" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po -1.27 -1.27
+$EndPAD
+$PAD
+Sh "21" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 1.27 1.27
+$EndPAD
+$PAD
+Sh "22" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 1.27 -1.27
+$EndPAD
+$PAD
+Sh "23" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 3.81 1.27
+$EndPAD
+$PAD
+Sh "24" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 3.81 -1.27
+$EndPAD
+$PAD
+Sh "25" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 6.35 1.27
+$EndPAD
+$PAD
+Sh "26" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 6.35 -1.27
+$EndPAD
+$PAD
+Sh "27" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 8.89 1.27
+$EndPAD
+$PAD
+Sh "28" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 8.89 -1.27
+$EndPAD
+$PAD
+Sh "29" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 11.43 1.27
+$EndPAD
+$PAD
+Sh "30" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 11.43 -1.27
+$EndPAD
+$PAD
+Sh "31" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 13.97 1.27
+$EndPAD
+$PAD
+Sh "32" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 13.97 -1.27
+$EndPAD
+$PAD
+Sh "33" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 16.51 1.27
+$EndPAD
+$PAD
+Sh "34" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 16.51 -1.27
+$EndPAD
+$PAD
+Sh "35" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 19.05 1.27
+$EndPAD
+$PAD
+Sh "36" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 19.05 -1.27
+$EndPAD
+$PAD
+Sh "37" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 21.59 1.27
+$EndPAD
+$PAD
+Sh "38" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 21.59 -1.27
+$EndPAD
+$PAD
+Sh "39" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 24.13 1.27
+$EndPAD
+$PAD
+Sh "40" C 1.508 1.508 0 0 0
+Dr 1 0 0
+At STD N 00C0FFFF
+.SolderMask 0
+Ne 0 ""
+Po 24.13 -1.27
+$EndPAD
+$PAD
+Sh "Hole" C 2.75 2.75 0 0 0
+Dr 2.75 0 0
+At HOLE N 00E0FFFF
+Po -29 23
+$EndPAD
+$PAD
+Sh "Hole" C 2.75 2.75 0 0 0
+Dr 2.75 0 0
+At HOLE N 00E0FFFF
+Po -29 0
+$EndPAD
+$PAD
+Sh "Hole" C 2.75 2.75 0 0 0
+Dr 2.75 0 0
+At HOLE N 00E0FFFF
+Po 29 23
+$EndPAD
+$PAD
+Sh "Hole" C 2.75 2.75 0 0 0
+Dr 2.75 0 0
+At HOLE N 00E0FFFF
+Po 29 0
+$EndPAD
+$EndMODULE ADA3708_RPI-ZERO
