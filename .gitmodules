@@ -4,3 +4,6 @@
 [submodule "2017-2018/botCode/robomodules"]
 	path = 2017-2018/botCode/robomodules
 	url = https://github.com/HarvardURC/robomodules.git
+[submodule "2020-2021/2020-2021/old-botCode/robomodules"]
+	path = 2020-2021/2020-2021/old-botCode/robomodules
+	url = https://github.com/HarvardURC/robomodules
