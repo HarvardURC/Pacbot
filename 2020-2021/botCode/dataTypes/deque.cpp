@@ -1,5 +1,6 @@
 #include "./deque.hpp"
 
+#include <string>
 #include <vector>
 
 // The deque works like so:
@@ -46,16 +47,16 @@ template <typename T> int Deque<T>::length() {
 template <typename T> int Deque<T>::get_max_size() { return this->max_size; }
 
 template <typename T> T Deque<T>::get(int index) {
-    if (index < this->length()) {
+    if (index < this->length() && index > 0) {
         return data.at(get_real_index(index));
-    } /*else {
-        throw std::__throw_out_of_range("Deque");
-        // cout << "Out of Range Exception in Deque: index = " index
-        //     << ", length = " << this->length()
-    }*/
+    } else {
+        throw std::out_of_range("Deque, Index = " + std::to_string(index) +
+                                ", Length = " + std::to_string(length()));
+    }
 }
+template <typename T> T Deque<T>::last() { return get(length() - 1); }
 template <typename T> T Deque<T>::pop() {
-    T val = data.at(this->first_index);
+    T val = last();
     // This is shifting backwards because let's say you have some deque with
     //    data [1*, 2 ,3'], where the star marks the pointer to the first
     //    element

@@ -17,6 +17,7 @@ template <typename T> class Deque {
     int length();
     int get_max_size();
     T get(int index);
+    T last();
     void add(T el);
     T pop();
 };
