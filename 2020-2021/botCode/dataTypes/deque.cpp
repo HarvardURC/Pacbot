@@ -1,4 +1,4 @@
-#include "deque.hpp"
+#include "./deque.hpp"
 
 #include <vector>
 
@@ -14,31 +14,24 @@ int modulo(int a, int b) {
     return remainder < 0 ? remainder + a : remainder;
 }
 
-template <typename T>
-Deque<T>::Deque() {
-    return Deque(0);
-}
+template <typename T> Deque<T>::Deque() { return Deque(0); }
 
-template <typename T>
-Deque<T>::Deque(int max_size) {
+template <typename T> Deque<T>::Deque(int max_size) {
     this->max_size = max_size;
     this->first_index = -1;
     this->last_index = 0;
 }
 // eff_index = effective index
-template <typename T>
-int Deque<T>::normalize_index(int index) {
+template <typename T> int Deque<T>::normalize_index(int index) {
     if (index <= 0) {
         return index;
     }
     return modulo(index, data.size());
 }
-template <typename T>
-int Deque<T>::get_real_index(int eff_index) {
+template <typename T> int Deque<T>::get_real_index(int eff_index) {
     return normalize_index(first_index - eff_index);
 }
-template <typename T>
-int Deque<T>::get_eff_index(int real_index) {
+template <typename T> int Deque<T>::get_eff_index(int real_index) {
     return normalize_index(first_index - real_index);
 }
 template <typename T>
@@ -47,13 +40,12 @@ int Deque<T>::shift_index(int real_index, bool inc_index) {
     return normalize_index(first_index + inc_amount);
 }
 
-template <typename T>
-int Deque<T>::length() {
+template <typename T> int Deque<T>::length() {
     return normalize_index(get_eff_index(last_index) + 1);
 }
+template <typename T> int Deque<T>::get_max_size() { return this->max_size; }
 
-template <typename T>
-T Deque<T>::get(int index) {
+template <typename T> T Deque<T>::get(int index) {
     if (index < this->length()) {
         return data.at(get_real_index(index));
     } /*else {
@@ -62,8 +54,7 @@ T Deque<T>::get(int index) {
         //     << ", length = " << this->length()
     }*/
 }
-template <typename T>
-T Deque<T>::pop() {
+template <typename T> T Deque<T>::pop() {
     T val = data.at(this->first_index);
     // This is shifting backwards because let's say you have some deque with
     //    data [1*, 2 ,3'], where the star marks the pointer to the first
@@ -73,12 +64,11 @@ T Deque<T>::pop() {
     this->first_index = shift_index(this->first_index, true);
     return val;
 }
-template <typename T>
-void Deque<T>::add(T el) {
+template <typename T> void Deque<T>::add(T el) {
     if (data.size() != max_size) {
         data.push_back(el);
     } else {
-        else if (length() != data.size()) {
+        if (length() != data.size()) {
             this->last_index = shift_index(this->last_index, false);
         }
         data[this->first_index] = el;
