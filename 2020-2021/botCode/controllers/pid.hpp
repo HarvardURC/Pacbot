@@ -22,7 +22,6 @@ class PID {
         int d_smoother = DEFAULT_D_SMOOTHER);
 
     void add_error(double error);
-    void add_error_w_deriv(double error, double de_dt);
     double get_output();
 
     double get_kp();

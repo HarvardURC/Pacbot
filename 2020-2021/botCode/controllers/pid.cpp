@@ -9,13 +9,13 @@ PID::PID(double kp, double ki, double kpredict, int d_smoother) {
 }
 
 void PID::add_error(double error) {
-    this->errors.add(PID::ErrorLog(error, time(NULL)));
-    double de_dt = 0;
-    add_error_w_deriv(error, de_dt);
-}
-
-void PID::add_error_w_deriv(double error, double de_dt) {
+    time_t tm = time(NULL);
+    double de = error - errors.last().error;
+    double dt = difftime(tm, errors.last().time);
+    double de_dt = dt == 0 ? 0 : de / dt;
+    this->ki += 0.5 * dt * (error + errors.last().error);
     this->output = this->kp * error + this->kd * de_dt + this->ki * ki;
+    this->errors.add(PID::ErrorLog(error, tm));
 }
 double PID::get_output() { return output; }
 
