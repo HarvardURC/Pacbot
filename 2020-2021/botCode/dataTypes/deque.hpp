@@ -1,3 +1,4 @@
+#include <iterator>
 #include <vector>
 
 template <typename T> class Deque {
@@ -19,5 +20,7 @@ template <typename T> class Deque {
     T get(int index);
     T last();
     void add(T el);
+    void add_to_end(T el);
     T pop();
+    Deque<T> clone();
 };

@@ -3,17 +3,17 @@
 #include <string>
 #include <vector>
 
+int modulo(int a, int b) {
+    int remainder = a % b;
+    return remainder < 0 ? remainder + a : remainder;
+}
+
 // The deque works like so:
 // It has a max size, and a set of elements
 // When you add an element, it adds it to your elements like a stack
 //     If after you addthe total number of elements currently contained in the
 //     deque is greater than the the max size, the last element is removed
 // There is also O(1) get(index) and pop() functionality
-
-int modulo(int a, int b) {
-    int remainder = a % b;
-    return remainder < 0 ? remainder + a : remainder;
-}
 
 template <typename T> Deque<T>::Deque() { return Deque(0); }
 
@@ -80,4 +80,12 @@ template <typename T> void Deque<T>::add(T el) {
     // When you add 0, the data becomes [0, 1*, 2], so you have to move the
     //    star pointer one less, and same with the '
     this->first_index = shift_index(this->first_index, false);
+}
+
+template <typename T> Deque<T> Deque<T>::clone() {
+    Deque<T> deque = Deque(this->max_size);
+    for (int i = this->length() - 1; i >= 0; i--) {
+        deque.add(this->get(i));
+    }
+    return deque;
 }

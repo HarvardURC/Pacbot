@@ -18,7 +18,8 @@ std::string SD_to_string(SD sd) {
     return sd_string_map[sd];
 }
 
-SD_not_found_exception::sd_not_found_exception(std::string proc_name, SD sd) {
+RobotState::sd_not_found_exception::sd_not_found_exception(
+    std::string proc_name, SD sd) {
     this->proc_name = proc_name;
     this->sd = sd;
 }
@@ -40,6 +41,14 @@ double RobotState::pop(SD sd) {
     } catch (sd_not_found_exception &e) {
         throw sd_not_found_exception("RobotState.pop", sd);
     }
+}
+
+std::unordered_set<SD, SDHash> RobotState::get_keys() {
+    std::unordered_set<SD, SDHash> keys = std::unordered_set<SD, SDHash>();
+    for (auto entry : this->data) {
+        keys.insert(entry.first);
+    }
+    return keys;
 }
 
 RobotState RobotState::clone() {

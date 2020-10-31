@@ -4,14 +4,13 @@
 #include <unordered_set>
 
 enum SD { Row, Col, Angle };
+struct SDHash {
+    std::size_t operator()(SD sd) const { return (int)sd; }
+};
 
 class RobotState {
 
   public:
-    struct SDHash {
-        std::size_t operator()(SD sd) const { return (int)sd; }
-    };
-
     class sd_not_found_exception : public std::exception {
       private:
         SD sd;

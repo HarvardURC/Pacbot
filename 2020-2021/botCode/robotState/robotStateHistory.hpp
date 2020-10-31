@@ -8,8 +8,7 @@ class RobotStateHistory {
 
   public:
     static const int DEFAULT_MAX_SIZE = 5;
-    RobotStateHistory();
-    RobotStateHistory(int max_size);
+    RobotStateHistory(int max_size = DEFAULT_MAX_SIZE);
     RobotStateHistory(Deque<RobotState> stateHistory);
     RobotState currentState();
     RobotState statesAgo(int n);
