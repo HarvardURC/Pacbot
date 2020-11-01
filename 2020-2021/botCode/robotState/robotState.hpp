@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-enum SD { Row, Col, Angle };
+enum SD { Row, Col, Angle, Time };
 struct SDHash {
     std::size_t operator()(SD sd) const { return (int)sd; }
 };

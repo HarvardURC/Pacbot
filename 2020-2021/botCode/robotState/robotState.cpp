@@ -15,6 +15,7 @@ std::string SD_to_string(SD sd) {
     sd_string_map[Row] = "Row";
     sd_string_map[Col] = "Col";
     sd_string_map[Angle] = "Angle";
+    sd_string_map[Time] = "Time";
     return sd_string_map[sd];
 }
 
