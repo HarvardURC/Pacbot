@@ -44,4 +44,5 @@ class RobotState {
     std::unordered_set<SD, SDHash> get_keys();
     static std::string sd_to_string(SD sd);
     RobotState clone();
+    void use(RobotState robotState);
 }; // namespace std
