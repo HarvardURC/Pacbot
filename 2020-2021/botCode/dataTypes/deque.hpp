@@ -11,6 +11,7 @@ template <typename T> class Deque {
     int get_real_index(int eff_index);
     int get_eff_index(int real_index);
     int shift_index(int index, bool inc_index);
+    bool index_in_bounds(int eff_index);
 
   public:
     Deque();
@@ -19,6 +20,7 @@ template <typename T> class Deque {
     int get_max_size();
     T get(int index);
     T last();
+    void set(int index, T el);
     void add(T el);
     void add_to_end(T el);
     T pop();

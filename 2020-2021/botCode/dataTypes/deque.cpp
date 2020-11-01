@@ -45,10 +45,20 @@ template <typename T> int Deque<T>::length() {
     return normalize_index(get_eff_index(last_index) + 1);
 }
 template <typename T> int Deque<T>::get_max_size() { return this->max_size; }
-
+template <typename T> bool Deque<T>::index_in_bounds(int eff_index) {
+    return eff_index < this->length() && eff_index > 0;
+}
 template <typename T> T Deque<T>::get(int index) {
-    if (index < this->length() && index > 0) {
+    if (index_in_bounds(index)) {
         return data.at(get_real_index(index));
+    } else {
+        throw std::out_of_range("Deque, Index = " + std::to_string(index) +
+                                ", Length = " + std::to_string(length()));
+    }
+}
+template <typename T> void Deque<T>::set(int index, T el) {
+    if (index_in_bounds(index)) {
+        data[get_real_index(index)] = el;
     } else {
         throw std::out_of_range("Deque, Index = " + std::to_string(index) +
                                 ", Length = " + std::to_string(length()));
