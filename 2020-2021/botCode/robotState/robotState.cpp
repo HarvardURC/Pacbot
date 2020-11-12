@@ -51,11 +51,6 @@ std::unordered_set<SD, SDHash> RobotState::get_keys() {
     }
     return keys;
 }
-
-RobotState RobotState::clone() {
-    return RobotState(std::unordered_map<SD, double, SDHash>(this->data.begin(),
-                                                             this->data.end()));
-}
 void RobotState::use(RobotState robot_state) {
     for (SD sd : robot_state.get_keys()) {
         this->set(sd, robot_state.get(sd));

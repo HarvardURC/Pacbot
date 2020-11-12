@@ -1,3 +1,6 @@
+#ifndef ROBOT_STATE_H
+#define ROBOT_STATE_H
+
 #include <exception>
 #include <string>
 #include <unordered_map>
@@ -43,6 +46,7 @@ class RobotState {
     double pop(SD sd);
     std::unordered_set<SD, SDHash> get_keys();
     static std::string sd_to_string(SD sd);
-    RobotState clone();
-    void use(RobotState robotState);
+    void use(RobotState robot_state);
 }; // namespace std
+
+#endif

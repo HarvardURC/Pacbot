@@ -1,3 +1,6 @@
+#ifndef PID_H
+#define PID_H
+
 #include "pid.hpp"
 
 PID::PID(double kp, double ki, double kpredict, int d_smoother) {
@@ -29,3 +32,5 @@ void PID::set_kp(double kp) { this->kp = kp; }
 void PID::set_ki(double ki) { this->ki = ki; }
 void PID::set_kd(double kd) { this->kd = kd; }
 void PID::set_kpredict(double kpredict) { this->kd = kpredict * this->kp; }
+
+#endif

@@ -1,12 +1,12 @@
 // This file will run on loop and control the robot
-#include "utils/conversions.hpp"
-class Master {
-  private:
-    static void on_init();
-    static void on_periodic();
-    static void loop();
 
-  public:
-    static double TICK_LENGTH = ;
-    static void start();
-};
+#ifndef MASTER_H
+#define MASTER_H
+
+#include "utils/conversions.hpp"
+
+const double TICK_LENGTH = millis_to_secs(20);
+
+static void start();
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef DEQUE_H
+#define DEQUE_H
+
 #include <iterator>
 #include <vector>
 
@@ -18,11 +21,15 @@ template <typename T> class Deque {
     Deque(int max_size);
     int length();
     int get_max_size();
+    void set_max_size(int max_size);
     T get(int index);
     T last();
     void set(int index, T el);
     void add(T el);
     void add_to_end(T el);
-    T pop();
+    T pop_first();
+    T pop_last();
     Deque<T> clone();
 };
+
+#endif
