@@ -4,6 +4,7 @@
 #include <iterator>
 #include <vector>
 
+// For some reason this is fucked
 template <typename T> class Deque {
   private:
     std::vector<T> data;
