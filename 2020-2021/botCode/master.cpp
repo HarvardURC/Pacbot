@@ -8,7 +8,7 @@ void on_periodic(bool *is_running) { *is_running = false; }
 void loop() {
     bool *is_running = (bool *)malloc(1);
     *is_running = true;
-    std::thread on_periodic(is_running);
+    std::thread th(on_periodic, std::ref(is_running));
     std::this_thread::sleep_for(
         std::chrono::milliseconds((int)secs_to_millis(TICK_LENGTH)));
     // Ideally this is_running system should be changed to actually check if the
@@ -18,8 +18,10 @@ void loop() {
             "\n WARNING: on_periodic is taking longer than the TICK_LENGTH of "
             "%d milliseconds.\n",
             (int)secs_to_millis(TICK_LENGTH));
-        on_periodic.join();
+        th.join();
         printf("Loop continuing.\n");
+    } else {
+        th.join();
     }
     loop();
 }
@@ -28,3 +30,5 @@ void start() {
     on_init();
     loop();
 }
+
+int main() { return 0; }

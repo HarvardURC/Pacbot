@@ -16,8 +16,9 @@ void PID::add_error(double error) {
     double de = error - errors.last().error;
     double dt = difftime(tm, errors.last().time);
     double de_dt = dt == 0 ? 0 : de / dt;
-    this->ki += 0.5 * dt * (error + errors.last().error);
-    this->output = this->kp * error + this->kd * de_dt + this->ki * ki;
+    this->integral += 0.5 * dt * (error + errors.last().error);
+    this->output =
+        this->kp * error + this->kd * de_dt + this->ki * this->integral;
     this->errors.add(PID::ErrorLog(error, tm));
 }
 double PID::get_output() { return output; }
@@ -25,7 +26,7 @@ double PID::get_output() { return output; }
 double PID::get_kp() { return kp; }
 double PID::get_ki() { return ki; }
 double PID::get_kd() { return kd; }
-double PID::get_prediction() { return kd / kp; }
+double PID::get_prediction() { return kp == 0. ? 0. : kd / kp; }
 int PID::get_smoother() { return this->errors.get_max_size(); }
 
 void PID::set_kp(double kp) { this->kp = kp; }

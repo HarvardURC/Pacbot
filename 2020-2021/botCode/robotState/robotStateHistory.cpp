@@ -1,4 +1,5 @@
 #include "robotStateHistory.hpp"
+
 #include <stdexcept>
 
 RobotStateHistory::RobotStateHistory(Deque<RobotState> stateHistory) {

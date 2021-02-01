@@ -29,7 +29,6 @@ class RobotStateHistory {
     void set(SD sd, double val);
     double pop(SD sd);
     std::unordered_set<SD, SDHash> get_keys();
-    static std::string sd_to_string(SD sd);
     void use(RobotState robot_state);
 };
 #endif

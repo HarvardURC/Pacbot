@@ -9,7 +9,7 @@ RobotState::RobotState() {
     RobotState(std::unordered_map<SD, double, SDHash>());
 }
 
-std::string SD_to_string(SD sd) {
+std::string RobotState::sd_to_string(SD sd) {
     std::unordered_map<SD, std::string, SDHash> sd_string_map =
         std::unordered_map<SD, std::string, SDHash>();
     sd_string_map[Row] = "Row";
@@ -24,6 +24,12 @@ RobotState::sd_not_found_exception::sd_not_found_exception(
     this->proc_name = proc_name;
     this->sd = sd;
 }
+void RobotState::throw_if_not_found(std::string proc_name, SD sd) {
+    if (!this->contains(sd)) {
+        throw sd_not_found_exception(proc_name, sd);
+    }
+}
+
 bool RobotState::contains(SD sd) { return this->data.count(sd); }
 bool RobotState::get(SD sd) {
     throw_if_not_found("RobotState.get", sd);
