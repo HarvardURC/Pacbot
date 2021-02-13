@@ -5,7 +5,7 @@
 
 #include "utils/conversions.hpp"
 
-const double TICK_LENGTH = millis_to_secs(20);
+const double TICK_LENGTH = millis_to_secs(1000);
 
 static void start();
 

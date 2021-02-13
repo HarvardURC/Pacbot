@@ -4,7 +4,7 @@ CC = gcc
 # compiler flags:
 #  -g    adds debugging information to the executable file
 #  -Wall turns on most, but not all, compiler warnings
-CFLAGS  = -lstdc++ -std=c++14 -Wall
+CFLAGS  = -lstdc++ -std=c++14 -o executable -Wall
 
 MAIN := .
 UTILS_C := $(wildcard utils/*.cpp)
