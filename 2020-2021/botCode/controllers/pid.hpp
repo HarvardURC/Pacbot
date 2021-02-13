@@ -1,6 +1,6 @@
 #include <time.h>
 
-#include "../dataTypes/deque.hpp"
+#include <deque>
 
 class PID {
   private:
@@ -11,9 +11,13 @@ class PID {
             this->error = error;
             this->time = time;
         }
+        ErrorLog() {
+            this->error = 0;
+            this->time = 0;
+        }
     };
     double kp, ki, kd, output, integral;
-    Deque<ErrorLog> errors;
+    std::deque<ErrorLog> errors;
 
   public:
     // Number of errors to look back

@@ -1,5 +1,7 @@
 #include "master.hpp"
-#include "robotState/globalState.hpp"
+#include <stdio.h>
+
+/*#include "robotState/globalState.hpp"
 #include <chrono>
 #include <thread>
 
@@ -30,5 +32,6 @@ void start() {
     on_init();
     loop();
 }
+*/
 
-int main() { return 0; }
+int main() { throw 20; }
