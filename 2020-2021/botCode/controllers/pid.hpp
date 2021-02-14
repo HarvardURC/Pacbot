@@ -1,29 +1,35 @@
+#ifndef PID_H
+#define PID_H
+
+#include "../dataTypes/deque.cpp"
+#include <chrono>
 #include <time.h>
 
-#include <deque>
+typedef std::chrono::high_resolution_clock Clock;
 
 class PID {
   private:
     struct ErrorLog {
         double error;
-        time_t time;
-        ErrorLog(double error, time_t time) {
+        Clock::time_point time;
+        ErrorLog(double error, Clock::time_point time) {
             this->error = error;
             this->time = time;
         }
         ErrorLog() {
             this->error = 0;
-            this->time = 0;
+            this->time = Clock::now();
         }
     };
     double kp, ki, kd, output, integral;
-    std::deque<ErrorLog> errors;
+    Deque<ErrorLog> errors;
 
   public:
     // Number of errors to look back
     static const int DEFAULT_D_SMOOTHER = 5;
-    PID(double kp, double ki, double kpredict,
-        int d_smoother = DEFAULT_D_SMOOTHER);
+    PID(double kp, double ki, double kd, int d_smoother = DEFAULT_D_SMOOTHER);
+    static PID PID_predict(double kp, double ki, double kpredict,
+                           int d_smoother = DEFAULT_D_SMOOTHER);
 
     void add_error(double error);
     double get_output();
@@ -39,3 +45,5 @@ class PID {
     void set_kd(double kd);
     void set_kpredict(double kpredict);
 };
+
+#endif

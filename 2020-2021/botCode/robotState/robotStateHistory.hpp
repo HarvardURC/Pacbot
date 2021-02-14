@@ -1,19 +1,19 @@
 #ifndef ROBOT_STATE_HISTORY_H
 #define ROBOT_STATE_HISTORY_H
 
+#include "../dataTypes/deque.cpp"
 #include "robotState.hpp"
-#include <deque>
 
 class RobotStateHistory {
 
   private:
     RobotState current_state;
-    std::deque<RobotState> state_history;
+    Deque<RobotState> state_history;
 
   public:
     static const int DEFAULT_MAX_SIZE = 5;
     RobotStateHistory(int max_size = DEFAULT_MAX_SIZE);
-    RobotStateHistory(std::deque<RobotState> state_history);
+    RobotStateHistory(Deque<RobotState> state_history);
     int get_max_size();
     RobotState get_current_state();
     // This doesn't allow you to edit earlier states
@@ -21,8 +21,8 @@ class RobotStateHistory {
     int num_states();
     void add_state(RobotState robot_state);
     void set_current_state(RobotState robot_state);
-    void drop_current_state();
-    std::deque<double> get_SD_history(SD sd);
+    RobotState drop_current_state();
+    Deque<double> get_SD_history(SD sd);
     bool contains(SD sd);
     bool get(SD sd);
     void set(SD sd, double val);
