@@ -5,7 +5,7 @@ typedef std::chrono::milliseconds milliseconds;
 
 PID::PID(double kp, double ki, double kd, int d_smoother) {
     // kpredict = kd/kp, units = seconds
-    this->errors.set_max_size(d_smoother);
+    this->errors = Deque<ErrorLog>(d_smoother);
     set_kp(kp);
     set_ki(ki);
     set_kd(kd);
@@ -20,6 +20,8 @@ PID PID::PID_predict(double kp, double ki, double kpredict, int d_smoother) {
 
 void PID::add_error(double error) {
     Clock::time_point tm = Clock::now();
+    this->errors.add(PID::ErrorLog(error, tm));
+    printf("length: %d\n", this->errors.length());
     double de = error - this->errors.last().error;
     double dt =
         millis_to_secs(std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -31,7 +33,6 @@ void PID::add_error(double error) {
         this->kp * error + this->kd * de_dt + this->ki * this->integral;
     printf("DT: %f, de: %f, kp: %f, kd: %f, output: %f\n", dt, de, this->kp,
            this->kd, this->output);
-    this->errors.add(PID::ErrorLog(error, tm));
 }
 double PID::get_output() { return output; }
 

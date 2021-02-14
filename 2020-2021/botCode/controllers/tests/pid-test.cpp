@@ -24,9 +24,9 @@ bool test_p() {
 
 bool test_d() {
     PID pid = PID(1., 0., 1.);
-    int sleep_time = 100;
-    double tolerance = 0.01;
-    pid.add_error(1.1);
+    int sleep_time = 500;
+    double tolerance = 0.02;
+    pid.add_error(1 + sleep_time / 1000.);
     std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));
     pid.add_error(1);
     return abs(pid.get_output()) < tolerance;
@@ -35,7 +35,7 @@ bool test_d() {
 bool test_predict() {
     PID pid = PID(1., 0., 3.);
     int sleep_time = 1;
-    double tolerance = 0.01;
+    double tolerance = 0.02;
     pid.add_error(2.);
     std::this_thread::sleep_for(std::chrono::seconds(sleep_time));
     pid.add_error(1.5);
