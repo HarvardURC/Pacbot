@@ -2,9 +2,13 @@
 #include <iostream>
 #include <unistd.h>
 
+extern "C" {
+	#include "wiringPi.h"
+}
 using namespace std;
 
 int main(){
+	wiringPiSetup();
 	Sensors mySensors = Sensors();
 	
 	while (1){

@@ -1,12 +1,12 @@
 #include "sensors.hpp"
-#include "../pac_pins.hpp"
+#include "../pac_pins.cpp"
 #include "unistd.h"
 extern "C" {
 	#include "wiringPi.h"
 }
 
 Sensors::Sensors(){
-	wiringPiSetup();
+	//wiringPiSetup();
 	sleep(0.5);
 	int all_pins[4] = {pacBot_pins["tof_front"], pacBot_pins["tof_left"], pacBot_pins["tof_right"], pacBot_pins["tof_rear"]};
 
