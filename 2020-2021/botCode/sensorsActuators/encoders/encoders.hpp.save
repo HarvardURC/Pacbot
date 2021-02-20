@@ -1,0 +1,44 @@
+// C library headers
+#include <stdio.h>
+#include <string.h>
+
+// Linux headers
+#include <fcntl.h> // Contains file controls like O_RDWR
+#include <errno.h> // Error integer and strerror() function
+#include <termios.h> // Contains POSIX terminal control definitions
+#include <unistd.h> // write(), read(), close()
+
+class Encoders{
+	public:
+		int pos_right;
+		int pos_left;
+		void update(){
+				int serial_port = open("/dev/ttyUSB0",O_RDWR);
+
+// C library headers
+#include <stdio.h>
+#include <string.h>
+
+// Linux headers
+#include <fcntl.h> // Contains file controls like O_RDWR
+#include <errno.h> // Error integer and strerror() function
+#include <termios.h> // Contains POSIX terminal control definitions
+#include <unistd.h> // write(), read(), close()
+
+class Encoders{
+        public:
+                int pos_right;
+                int pos_left;
+                void update(){
+                                int 
+				// Check for errrors 
+				 
+
+
+
+
+
+
+
+
+
