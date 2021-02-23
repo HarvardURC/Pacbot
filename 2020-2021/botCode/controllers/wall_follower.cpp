@@ -1,12 +1,13 @@
+#include "wall_follower.hpp"
 #include "../sensorsActuators/motors.hpp"
 #include "../sensorsActuators/sensors.hpp"
-#include "wall_follower.hpp"
 
 wall_follower::wall_follower(double dist, bool follow_right) {
-    this->pid = PID(wall_follower::kP, wall_follower::kI, wall_follower::kD);
+    this->pid = PID(0.3, 0., 0.);
+    // PID(wall_follower::kP, wall_follower::kI, wall_follower::kD);
     this->follow_right = follow_right;
 }
-void update() {
+void wall_follower::update() {
     TofSensor *sensor = this->follow_right ? right : left;
     double error = sensor->distance() - dist;
     int speed = 40;
@@ -15,4 +16,4 @@ void update() {
     this->left_motor->move(MotorDirection::FORWARD, speed + output);
     this->right_motor->move(MotorDirection::FORWARD, speed - output);
 }
-PID get_pid() { return this->pid; }
+PID wall_follower::get_pid() { return this->pid; }
