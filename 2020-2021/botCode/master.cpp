@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 #include "robotState/globalState.hpp"
-#include "wiringPi.c"
+#include "wiringPi.h"
 #include <chrono>
 #include <thread>
 
