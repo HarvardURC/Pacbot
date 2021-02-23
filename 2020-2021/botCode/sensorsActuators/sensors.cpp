@@ -34,3 +34,5 @@ Sensors::Sensors() {
     (void)dist;
     printf("All sensors set up correctly!\n");
 }
+
+Sensors sensors = Sensors();

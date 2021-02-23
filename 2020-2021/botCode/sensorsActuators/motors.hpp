@@ -11,6 +11,6 @@ class Motors {
     Motor *left_motor;
 };
 
-Motors motors;
+extern Motors motors;
 
 #endif

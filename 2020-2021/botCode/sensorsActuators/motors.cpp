@@ -10,3 +10,5 @@ Motors::Motors() {
                                  pacBot_pins["motor_direction_l"]);
     printf("Motors Initialized Successfully\n");
 }
+
+Motors motors = Motors();
