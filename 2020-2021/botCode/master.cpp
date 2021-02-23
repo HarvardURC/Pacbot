@@ -1,6 +1,7 @@
 #include "master.hpp"
 #include <stdio.h>
 
+#include "controllers/wall_follower.hpp"
 #include "robotState/globalState.hpp"
 #include "wiringPi.h"
 #include <chrono>

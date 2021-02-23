@@ -27,10 +27,10 @@ Sensors::Sensors() {
     this->rear_tof = new TofSensor(pacBot_pins["tof_rear"], "rear", 0x33);
 
     // Ensure we can receive distances from sensors
-    int dist = this->front->distance();
-    dist = this->rear->distance();
-    dist = this->left->distance();
-    dist = this->right->distance();
+    int dist = this->front_tof->distance();
+    dist = this->rear_tof->distance();
+    dist = this->left_tof->distance();
+    dist = this->right_tof->distance();
     (void)dist;
     printf("All sensors set up correctly!\n");
 }
