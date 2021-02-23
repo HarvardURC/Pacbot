@@ -8,6 +8,7 @@ class wall_follower {
     /*const static double kP = 0.3;
     const static double kI = 0.;
     const static double kD = 0.;*/
+    double dist;
     bool follow_right;
 
   public:

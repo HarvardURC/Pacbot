@@ -5,15 +5,16 @@
 wall_follower::wall_follower(double dist, bool follow_right) {
     this->pid = PID(0.3, 0., 0.);
     // PID(wall_follower::kP, wall_follower::kI, wall_follower::kD);
+    this->dist = dist;
     this->follow_right = follow_right;
 }
 void wall_follower::update() {
     TofSensor *sensor =
         this->follow_right ? sensors.right_tof : sensors.left_tof;
-    double error = sensor->distance() - dist;
+    double error = sensor->distance() - this->dist;
+    this->pid.add_error(error);
     int speed = 40;
-    int output = this->pid.output();
-    this->pid.update(error);
+    int output = this->pid.get_output();
     motors.left_motor->move(MotorDirection::FORWARD, speed + output);
     motors.right_motor->move(MotorDirection::FORWARD, speed - output);
 }
