@@ -3,6 +3,7 @@
 
 enum MotorDirection{BACKWARD, FORWARD, STOP};
 
+/* class for motors */
 class Motor{
     public:
         Motor(int power_pin, int direction_pin);

@@ -1,8 +1,3 @@
-## Sensors And Actuators
-
-This folder contains files that have the abstract ability to directly talk to specific _kinds_ of sensors and actuators. 
-
+This folder contains classes that allow one to interface with motors and time of flight sensors on the pacbot. However, this folder contains no references to physical "instances" of sensors and actuators. For instance, you might have a file that allows one to deals with motors, but there will be no reference to the specific motors on the chassis of the robot.
 The library wiringPi.h is used to interface with the GPIO pins on the Raspberry PI. wiringPiSetup() must be called immediately when the program starts running to use this library.
 For the time of flight sensors, we use the VL6180 version from Pololu. The C library for these must be installed from https://github.com/leachj/vl6180_pi for the following code to work.
-motors.hpp provides a class for interfacing with the two motors on the PacBot
-sensors.hpp provides a class for interfacing with the four TOF sensors on the PacBot.

@@ -1,8 +1,9 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 
-#include "tofsensor.hpp"
+#include "./sa_interface/tofsensor.hpp"
 
+/* PacBot specific sensors */
 class Sensors{
 	public:
 		Sensors();

@@ -6,6 +6,7 @@
 
 using namespace std;
 
+/* Time of Flight Sensors - Specifically vl6180_x tof sensors*/
 class TofSensor{
 	public:
 		TofSensor(int pin, string name, int address);

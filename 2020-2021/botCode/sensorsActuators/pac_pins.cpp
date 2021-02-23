@@ -1,6 +1,4 @@
-
-#include <map>
-#include <string>
+#include "pac_pins.hpp"
 
 std::map<std::string, int> pacBot_pins = {
     {"tof_front", 28},

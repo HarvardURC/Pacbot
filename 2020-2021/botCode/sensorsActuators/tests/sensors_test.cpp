@@ -1,21 +1,20 @@
-#include "sensors.hpp"
+#include "../sensors.hpp"
 #include <iostream>
-#include <unistd.h>
+#include "wiringPi.h"
+#include <thread>
 
-extern "C" {
-	#include "wiringPi.h"
-}
 using namespace std;
 
 int main(){
+	// WiringPi setup must be called before library is used
 	wiringPiSetup();
+
 	Sensors mySensors = Sensors();
-	
 	while (1){
 		cout << "Front: " << mySensors.front->distance() << endl;
 		cout << "Rear: " << mySensors.rear->distance() << endl;
 		cout << "Right: " << mySensors.right->distance() << endl;
 		cout << "Left: " << mySensors.left->distance() << endl;
-		sleep(1.0);
+		this_thread::sleep_for(1000ms);
 	}
 }
