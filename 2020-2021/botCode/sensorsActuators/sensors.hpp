@@ -4,14 +4,13 @@
 #include "./sa_interface/tofsensor.hpp"
 
 /* PacBot specific sensors */
-class Sensors{
-	public:
-		Sensors();
-		TofSensor* front;
-		TofSensor* rear;
-		TofSensor* left;
-		TofSensor* right;
-
+class Sensors {
+  public:
+    Sensors();
+    TofSensor *front_tof;
+    TofSensor *rear_tof;
+    TofSensor *left_tof;
+    TofSensor *right_tof;
 };
 
 #endif

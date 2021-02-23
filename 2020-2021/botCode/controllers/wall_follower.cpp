@@ -8,7 +8,7 @@ wall_follower::wall_follower(double dist, bool follow_right) {
     this->follow_right = follow_right;
 }
 void wall_follower::update() {
-    TofSensor *sensor = this->follow_right ? right : left;
+    TofSensor *sensor = this->follow_right ? right_tof : left_tof;
     double error = sensor->distance() - dist;
     int speed = 40;
     int output = this->pid.output();
