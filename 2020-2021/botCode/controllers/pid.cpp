@@ -3,6 +3,19 @@
 
 typedef std::chrono::milliseconds milliseconds;
 
+// What is k_predict? Here's the idea:
+// If you have some kp, and some kd, it's not immediatly obvious what the kd
+// means? Well, here's my intuition.
+// output = kp*e + kd*(de/dt), that we know.
+// If we factor out the kp constant (this will make sense in a second) we get:
+// output = kp(e + kd/kp * (de/dt))
+// Now we can say e' = e + kd/kp * (de/dt)
+// So our output = kp*e', but that just looks like a p controller!
+// And e' is simply a linear approximation of e in kd/kp seconds.
+// So, the (kd/kp) constant becoems a more natural constant to think about, it's
+//     how far forward you want to predict!
+// We call this constant k_predict
+
 PID::PID(double kp, double ki, double kd, int d_smoother) {
     // kpredict = kd/kp, units = seconds
     this->errors = Deque<ErrorLog>(d_smoother);
