@@ -2,10 +2,14 @@
 #include <stdio.h>
 
 #include "robotState/globalState.hpp"
+#include "wiringPi.c"
 #include <chrono>
 #include <thread>
 
-void on_init() { return; }
+void on_init() {
+    wiringPiSetup();
+    return;
+}
 void on_periodic(bool *is_running) { *is_running = true; }
 void loop() {
     bool *is_running = (bool *)malloc(1);

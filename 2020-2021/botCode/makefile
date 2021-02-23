@@ -16,6 +16,7 @@ STATE_ESTIMATORS_C := $(wildcard state_estimators/*.cpp)
 STATE_UPDATERS_C := $(wildcard state_updaters/*.cpp)
 MAIN_FILES_C := $(wildcard $(MAIN)/*.cpp)
 
+DEPENDENCIES := wiringPi.c
 ORDERED := $(UTILS_C) $(DATA_TYPES_C) $(ROBOT_STATE_C)  $(SENSORS_ACTUATORS_C) $(CONTROLLERS_C) $(STATE_ESTIMATORS_C) $(STATE_UPDATERS_C) $(MAIN_FILES_C)
 
 
@@ -25,6 +26,6 @@ TARGET = master
 all: $(TARGET)
 
 $(TARGET):$(TARGET).cpp
-	$(CC) $(CFLAGS) $(ORDERED)
+	$(CC) $(DEPENDENCIES) $(CFLAGS) $(ORDERED)
 clean:
 	$(RM) $(TARGET)
