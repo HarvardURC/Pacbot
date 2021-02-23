@@ -27,6 +27,7 @@ class PID {
   public:
     // Number of errors to look back
     static const int DEFAULT_D_SMOOTHER = 5;
+    PID();
     PID(double kp, double ki, double kd, int d_smoother = DEFAULT_D_SMOOTHER);
     static PID PID_predict(double kp, double ki, double kpredict,
                            int d_smoother = DEFAULT_D_SMOOTHER);

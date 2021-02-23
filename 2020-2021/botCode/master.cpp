@@ -6,11 +6,16 @@
 #include <chrono>
 #include <thread>
 
+wall_follower *follower = nullptr;
 void on_init() {
     wiringPiSetup();
+    follower = new wall_follower(0.1, true);
     return;
 }
-void on_periodic(bool *is_running) { *is_running = true; }
+void on_periodic(bool *is_running) {
+    follower->update();
+    *is_running = true;
+}
 void loop() {
     bool *is_running = (bool *)malloc(1);
     *is_running = true;

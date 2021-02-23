@@ -23,6 +23,12 @@ PID::PID(double kp, double ki, double kd, int d_smoother) {
     set_ki(ki);
     set_kd(kd);
 }
+PID::PID() {
+    this->errors = Deque<ErrorLog>(1);
+    set_kp(0);
+    set_ki(0);
+    set_kd(0);
+}
 
 PID PID::PID_predict(double kp, double ki, double kpredict, int d_smoother) {
     // kpredict = kd/kp, units = seconds
