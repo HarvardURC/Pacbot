@@ -1,5 +1,6 @@
 #include "motor.hpp"
 #include <softPwm.h>
+#include <stdio.h>
 #include <wiringPi.h>
 
 Motor::Motor(int power_pin, int direction_pin) {
