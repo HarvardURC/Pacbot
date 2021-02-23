@@ -4,19 +4,20 @@ CC = gcc
 # compiler flags:
 #  -g    adds debugging information to the executable file
 #  -Wall turns on most, but not all, compiler warnings
-CFLAGS  = -lstdc++ -lwiringPi -lvl6180_pi -std=c++14 -o executable -Wall
+CFLAGS  = -lstdc++ -lwiringPi -lvl6180_pi -std=c++14 -lpthread -o executable -Wall
 
 MAIN := .
 UTILS_C := $(wildcard utils/*.cpp)
 DATA_TYPES_C := $(wildcard dataTypes/*.cpp)
 ROBOT_STATE_C := $(wildcard robotState/*.cpp)
+SA_INTERFACE_C := $(wildcard sensorsActuators/sa_interface/*.cpp)
 SENSORS_ACTUATORS_C := $(wildcard sensorsActuators/*.cpp)
 CONTROLLERS_C := $(wildcard controllers/*.cpp)
 STATE_ESTIMATORS_C := $(wildcard state_estimators/*.cpp)
 STATE_UPDATERS_C := $(wildcard state_updaters/*.cpp)
 MAIN_FILES_C := $(wildcard $(MAIN)/*.cpp)
 
-ORDERED := $(UTILS_C) $(DATA_TYPES_C) $(ROBOT_STATE_C)  $(CONTROLLERS_C) $(SENSORS_ACTUATORS_C) $(STATE_ESTIMATORS_C) $(STATE_UPDATERS_C) $(MAIN_FILES_C)
+ORDERED := $(UTILS_C) $(DATA_TYPES_C) $(ROBOT_STATE_C)  $(CONTROLLERS_C) $(SA_INTERFACE) $(SENSORS_ACTUATORS_C) $(MAIN_FILES_C)
 
 
 # the build target executable:
