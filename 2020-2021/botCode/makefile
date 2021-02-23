@@ -17,7 +17,7 @@ STATE_ESTIMATORS_C := $(wildcard state_estimators/*.cpp)
 STATE_UPDATERS_C := $(wildcard state_updaters/*.cpp)
 MAIN_FILES_C := $(wildcard $(MAIN)/*.cpp)
 
-ORDERED := $(UTILS_C) $(DATA_TYPES_C) $(ROBOT_STATE_C)  $(CONTROLLERS_C) $(SA_INTERFACE) $(SENSORS_ACTUATORS_C) $(MAIN_FILES_C)
+ORDERED := $(UTILS_C) $(DATA_TYPES_C) $(ROBOT_STATE_C)  $(CONTROLLERS_C) $(SA_INTERFACE_C) $(SENSORS_ACTUATORS_C) $(MAIN_FILES_C)
 
 
 # the build target executable:
