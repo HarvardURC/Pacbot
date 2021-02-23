@@ -10,4 +10,7 @@ class Motors {
     Motor *right_motor;
     Motor *left_motor;
 };
+
+Motors motors;
+
 #endif

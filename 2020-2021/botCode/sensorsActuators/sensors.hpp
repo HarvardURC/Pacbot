@@ -13,4 +13,6 @@ class Sensors {
     TofSensor *right_tof;
 };
 
+Sensors sensors;
+
 #endif
