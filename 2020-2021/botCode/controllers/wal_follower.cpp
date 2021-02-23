@@ -9,7 +9,7 @@ wall_follower::wall_follower(double dist, bool follow_right) {
 void update() {
     TofSensor *sensor = this->follow_right ? right : left;
     double error = sensor->distance() - dist;
-    int speed = 30;
+    int speed = 40;
     int output = this->pid.output();
     this->pid.update(error);
     this->left_motor->move(MotorDirection::FORWARD, speed + output);
