@@ -6,11 +6,8 @@
 Motor::Motor(int power_pin, int direction_pin) {
     this->power_pin = power_pin;
     this->direction_pin = direction_pin;
-    printf("variables set\n");
     softPwmCreate(this->power_pin, 0, 100);
-    printf("pwm create\n");
     pinMode(this->direction_pin, OUTPUT);
-    printf("pin mode\n");
 }
 
 void Motor::move(MotorDirection direction, int speed) {

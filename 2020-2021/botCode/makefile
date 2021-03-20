@@ -1,10 +1,9 @@
-# the compiler: gcc for C program, define as g++ for C++
-CC = gcc 
+# compiler: gcc for C program
+CC = gcc
 
 # compiler flags:
-#  -g    adds debugging information to the executable file
-#  -Wall turns on most, but not all, compiler warnings
-CFLAGS  = -lstdc++ -lwiringPi -lvl6180_pi -std=c++14 -lpthread -o executable -Wall
+CFLAGS  = -std=c++14 -Wall
+DEPENDENCIES = -lstdc++ -lwiringPi -lvl6180_pi -lpthread 
 
 MAIN := .
 UTILS_C := $(wildcard utils/*.cpp)
@@ -17,15 +16,20 @@ STATE_ESTIMATORS_C := $(wildcard state_estimators/*.cpp)
 STATE_UPDATERS_C := $(wildcard state_updaters/*.cpp)
 MAIN_FILES_C := $(wildcard $(MAIN)/*.cpp)
 
+TARGET = master
+
 ORDERED := $(UTILS_C) $(DATA_TYPES_C) $(ROBOT_STATE_C)  $(CONTROLLERS_C) $(SA_INTERFACE_C) $(SENSORS_ACTUATORS_C) $(MAIN_FILES_C)
 
-
-# the build target executable:
-TARGET = master
+# this replaces .cpp with .o for object files
+OBJS = $(ORDERED:.cpp=.o)
 
 all: $(TARGET)
 
-$(TARGET):$(TARGET).cpp
-	$(CC) $(DEPENDENCIES) $(CFLAGS) $(ORDERED)
+$(TARGET): $(OBJS)
+	$(CC) $(DEPENDENCIES) $(CFLAGS) $(OBJS) -o executable
+
+.cpp.o:
+	$(CC) $(DEPENDENCIES) $(CFLAGS) -c $< -o $@
+
 clean:
-	$(RM) $(TARGET)
+	$(RM) *.o

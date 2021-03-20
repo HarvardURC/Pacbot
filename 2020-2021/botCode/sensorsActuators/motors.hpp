@@ -4,13 +4,8 @@
 #include "./sa_interface/motor.hpp"
 
 /* PacBot specific motors */
-class Motors {
-  public:
-    Motors();
-    Motor *right_motor;
-    Motor *left_motor;
-};
+extern Motor *right_motor;
+extern Motor *left_motor;
 
-extern Motors motors;
-
+void initialize_motors();
 #endif

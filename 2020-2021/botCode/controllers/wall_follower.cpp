@@ -10,12 +10,12 @@ wall_follower::wall_follower(double dist, bool follow_right) {
 }
 void wall_follower::update() {
     TofSensor *sensor =
-        this->follow_right ? sensors.right_tof : sensors.left_tof;
+        this->follow_right ? right_tof : left_tof;
     double error = sensor->distance() - this->dist;
     this->pid.add_error(error);
     int speed = 40;
     int output = this->pid.get_output();
-    motors.left_motor->move(MotorDirection::FORWARD, speed + output);
-    motors.right_motor->move(MotorDirection::FORWARD, speed - output);
+    left_motor->move(MotorDirection::FORWARD, speed + output);
+    right_motor->move(MotorDirection::FORWARD, speed - output);
 }
 PID wall_follower::get_pid() { return this->pid; }

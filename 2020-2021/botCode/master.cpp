@@ -3,6 +3,8 @@
 
 #include "controllers/wall_follower.hpp"
 #include "robotState/globalState.hpp"
+#include "sensorsActuators/motors.hpp"
+#include "sensorsActuators/sensors.hpp"
 #include "wiringPi.h"
 #include <chrono>
 #include <thread>
@@ -10,6 +12,8 @@
 wall_follower *follower = nullptr;
 void on_init() {
     wiringPiSetup();
+    initialize_motors();
+    initialize_sensors();
     follower = new wall_follower(0.1, true);
     return;
 }

@@ -8,13 +8,13 @@ using namespace std;
 int main(){
 	// WiringPi setup must be called before library is used
 	wiringPiSetup();
+	initialize_sensors();
 
-	Sensors mySensors = Sensors();
 	while (1){
-		cout << "Front: " << mySensors.front->distance() << endl;
-		cout << "Rear: " << mySensors.rear->distance() << endl;
-		cout << "Right: " << mySensors.right->distance() << endl;
-		cout << "Left: " << mySensors.left->distance() << endl;
+		cout << "Front: " << front_tof->distance() << endl;
+		cout << "Rear: " << rear_tof->distance() << endl;
+		cout << "Right: " << right_tof->distance() << endl;
+		cout << "Left: " << left_tof->distance() << endl;
 		this_thread::sleep_for(1000ms);
 	}
 }

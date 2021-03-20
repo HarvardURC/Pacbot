@@ -10,11 +10,8 @@ using namespace std;
 int main(void){
     // Wiring pi needs to be setup at the start of the program!
     wiringPiSetup();
-    
-    Motors pac_motors = Motors();
-    Motor *left_motor = pac_motors.left;
-    Motor *right_motor = pac_motors.right;
-
+    printf("Starting motors\n"); 
+    initialize_motors();
     cout << "Motors Initialized." << endl;
 
     left_motor->move(BACKWARD, 50);
