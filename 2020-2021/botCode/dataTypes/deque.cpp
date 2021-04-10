@@ -60,7 +60,7 @@ template <typename T> int Deque<T>::normalize_index(int index) {
     if (this->max_size == 0) {
         return 0;
     } else {
-        return modulo(index, this->max_size);
+        return modulo(index, this->data.size());
     }
 }
 
@@ -88,7 +88,10 @@ template <typename T> int Deque<T>::dec_index(int real_index) {
     return this->shift_index(real_index, false);
 }
 template <typename T> int Deque<T>::length() {
-    return normalize_index(get_eff_index(last_index));
+    if (this->data.size() == 0){
+    	return 0;
+    }
+    return normalize_index(get_eff_index(last_index)) + 1;
 }
 template <typename T> int Deque<T>::get_max_size() { return this->max_size; }
 template <typename T> bool Deque<T>::eff_index_in_bounds(int eff_index) {
@@ -132,7 +135,9 @@ template <typename T> T Deque<T>::pop_last() {
     return val;
 }
 template <typename T> void Deque<T>::add(T el) {
-    printf("adding!!!!\n");
+    printf("adding\n");
+    printf("first index: %d\n", this->first_index);
+    printf("last index: %d\n", this->last_index);
     if (this->data.size() != max_size) {
         this->data.push_back(el);
         this->last_index = inc_index(this->last_index);
@@ -152,9 +157,8 @@ template <typename T> void Deque<T>::add(T el) {
         this->first_index = dec_index(this->first_index);
         
 	this->data[this->first_index] = el;
-	printf("Last Index: %d", this->last_index);
     }
-    printf("Actual last: %d", this->last_index);
+    printf("Last index after: %d\n", this->last_index);
 }
 
 template <typename T> void Deque<T>::set_max_size(int max_size) {
