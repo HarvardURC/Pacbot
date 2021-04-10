@@ -1,22 +1,23 @@
 #include "motor.hpp"
-#include <softPwm.h>
+// #include <softPwm.h>
 #include <stdio.h>
-#include <wiringPi.h>
+// #include <wiringPi.h>
 
 Motor::Motor(int power_pin, int direction_pin) {
     this->power_pin = power_pin;
     this->direction_pin = direction_pin;
-    softPwmCreate(this->power_pin, 0, 100);
-    pinMode(this->direction_pin, OUTPUT);
+    // softPwmCreate(this->power_pin, 0, 100);
+    // pinMode(this->direction_pin, OUTPUT);
 }
 
 void Motor::move(MotorDirection direction, int speed) {
     if (direction == STOP) {
-        softPwmWrite(this->power_pin, 0);
+        // softPwmWrite(this->power_pin, 0);
     } else {
-        digitalWrite(this->direction_pin, direction);
-        softPwmWrite(this->power_pin, speed);
+        // digitalWrite(this->direction_pin, direction);
+        // softPwmWrite(this->power_pin, speed);
     }
 }
 
-void Motor::stop() { softPwmWrite(this->power_pin, 0); }
+void Motor::stop() { // softPwmWrite(this->power_pin, 0);
+}

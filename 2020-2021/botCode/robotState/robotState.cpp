@@ -8,6 +8,9 @@ RobotState::RobotState(std::unordered_map<SD, double, SDHash> data) {
 RobotState::RobotState() {
     RobotState(std::unordered_map<SD, double, SDHash>());
 }
+RobotState::RobotState(const RobotState &robotState) {
+    this->data = robotState.data;
+}
 
 std::string RobotState::sd_to_string(SD sd) {
     std::unordered_map<SD, std::string, SDHash> sd_string_map =
@@ -57,8 +60,26 @@ std::unordered_set<SD, SDHash> RobotState::get_keys() {
     }
     return keys;
 }
-void RobotState::use(RobotState robot_state) {
+void RobotState::cut_down_to(RobotState robot_state,
+                             std::unordered_set<SD> to_use) {
     for (SD sd : robot_state.get_keys()) {
-        this->set(sd, robot_state.get(sd));
+        if (to_use.find(sd) == to_use.end()) {
+            this->remove(sd);
+        }
+    }
+}
+void RobotState::use(RobotState robot_state, std::unordered_set<SD> to_use) {
+    for (SD sd : robot_state.get_keys()) {
+        if (to_use.find(sd) != to_use.end()) {
+            this->set(sd, robot_state.get(sd));
+        }
+    }
+}
+void RobotState::use_extras(RobotState robot_state) {
+    auto this_keys = this->get_keys();
+    for (SD sd : robot_state.get_keys()) {
+        if (this_keys.find(sd) == this_keys.end()) {
+            this->set(sd, robot_state.get(sd));
+        }
     }
 }

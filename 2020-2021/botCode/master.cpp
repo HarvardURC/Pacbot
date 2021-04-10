@@ -5,16 +5,18 @@
 #include "robotState/globalState.hpp"
 #include "sensorsActuators/motors.hpp"
 #include "sensorsActuators/sensors.hpp"
-#include "wiringPi.h"
+#include "stateEstimators/wheelPos.hpp"
+// #include "wiringPi.h"
 #include <chrono>
 #include <thread>
 
 wall_follower *follower = nullptr;
 void on_init() {
-    wiringPiSetup();
+    // wiringPiSetup();
     initialize_motors();
     initialize_sensors();
     follower = new wall_follower(0.1, true);
+    auto _a = getWheelPosEstimator();
     return;
 }
 void on_periodic(bool *is_running) {

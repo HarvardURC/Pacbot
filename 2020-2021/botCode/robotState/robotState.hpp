@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-enum SD { Row, Col, Angle, Time };
+enum SD { Row, Col, X, Y, LW_change, RW_change, LW_pos, RW_pos, Angle, Time };
 struct SDHash {
     std::size_t operator()(SD sd) const { return (int)sd; }
 };
@@ -32,6 +32,7 @@ class RobotState {
     };
     RobotState(std::unordered_map<SD, double, SDHash> data);
     RobotState();
+    RobotState(const RobotState &robotState);
 
   private:
     std::unordered_map<SD, double, SDHash> data;
@@ -46,7 +47,10 @@ class RobotState {
     double pop(SD sd);
     std::unordered_set<SD, SDHash> get_keys();
     static std::string sd_to_string(SD sd);
-    void use(RobotState robot_state);
+    void cut_down_to(RobotState robot_state, std::unordered_set<SD> to_use);
+    void use(RobotState robot_state,
+             std::unordered_set<SD> to_use = std::unordered_set<SD>());
+    void use_extras(RobotState robot_state);
 }; // namespace std
 
 #endif
