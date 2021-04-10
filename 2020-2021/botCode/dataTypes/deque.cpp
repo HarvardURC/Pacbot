@@ -5,6 +5,7 @@
 #include <iterator>
 #include <string>
 #include <vector>
+#include <stdio.h>
 
 template <typename T> class Deque {
   private:
@@ -78,7 +79,7 @@ template <typename T> int Deque<T>::get_eff_index(int real_index) {
 template <typename T>
 int Deque<T>::shift_index(int real_index, bool inc_index) {
     int inc_amount = inc_index ? -1 : 1;
-    return normalize_index(first_index + inc_amount);
+    return normalize_index(real_index + inc_amount);
 }
 template <typename T> int Deque<T>::inc_index(int real_index) {
     return this->shift_index(real_index, true);
@@ -131,16 +132,17 @@ template <typename T> T Deque<T>::pop_last() {
     return val;
 }
 template <typename T> void Deque<T>::add(T el) {
+    printf("adding!!!!\n");
     if (this->data.size() != max_size) {
         this->data.push_back(el);
         this->last_index = inc_index(this->last_index);
     } else {
-        if (length() != this->data.size()) {
+        if (length() == this->data.size()) {
             // The last index is decremented because now the last one is the
             // previous one
             this->last_index = dec_index(this->last_index);
-        }
-        this->data[this->first_index] = el;
+	}
+
         // This is shifting backwards because let's say you have some deque with
         //    data [1*, 2 ,3'], where the star marks the pointer to the first
         //    element and the ' marks the pointer to the last element
@@ -148,7 +150,11 @@ template <typename T> void Deque<T>::add(T el) {
         // the star pointer one less, and same with the ' assuming the deque
         // is at max capacity
         this->first_index = dec_index(this->first_index);
+        
+	this->data[this->first_index] = el;
+	printf("Last Index: %d", this->last_index);
     }
+    printf("Actual last: %d", this->last_index);
 }
 
 template <typename T> void Deque<T>::set_max_size(int max_size) {
