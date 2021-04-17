@@ -2,7 +2,7 @@
 #define TOFSENSOR_H
 
 #include <string>
-#include <vl6180_pi/vl6180_pi.h>
+// #include <vl6180_pi/vl6180_pi.h>
 
 using namespace std;
 
@@ -16,6 +16,6 @@ class TofSensor {
     int address;
 
   private:
-    vl6180 handle;
+    // vl6180 handle;
 };
 #endif

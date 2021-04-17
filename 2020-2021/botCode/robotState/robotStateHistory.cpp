@@ -8,9 +8,14 @@ RobotStateHistory::RobotStateHistory(Deque<RobotState> stateHistory) {
 RobotStateHistory::RobotStateHistory(int max_size) {
     this->state_history = Deque<RobotState>(max_size);
 }
+RobotStateHistory::RobotStateHistory(
+    const RobotStateHistory &robotStateHistory) {
+    this->state_history = robotStateHistory.state_history;
+}
 int RobotStateHistory::get_max_size() {
     return this->state_history.get_max_size();
 }
+int RobotStateHistory::get_size() { return this->state_history.length(); }
 RobotState RobotStateHistory::states_ago(int n) {
     if (n < 0 || n >= this->get_max_size()) {
         throw std::out_of_range(
@@ -50,11 +55,37 @@ void RobotStateHistory::set_max_size(int max_size) {
 bool RobotStateHistory::contains(SD sd) {
     return this->current_state.contains(sd);
 }
-bool RobotStateHistory::get(SD sd) { return this->current_state.get(sd); }
+double RobotStateHistory::get(SD sd) { return this->current_state.get(sd); }
 void RobotStateHistory::set(SD sd, double val) {
     return this->current_state.set(sd, val);
 }
 double RobotStateHistory::pop(SD sd) { return this->current_state.pop(sd); }
+
+void throw_if_out_of_range(int states_ago, int max_size, bool is_max) {
+    if (states_ago < 0 || states_ago >= max_size) {
+        throw std::out_of_range("Index: " + std::to_string(states_ago) +
+                                ", RobotStateHistory " + (is_max ? "max" : "") +
+                                " size: " + std::to_string(max_size));
+    }
+}
+
+double RobotStateHistory::get_past(SD sd, int states_ago, double default_) {
+    throw_if_out_of_range(states_ago, this->get_max_size(), true);
+    if (states_ago > this->get_size()) {
+        return default_;
+    } else {
+        return this->states_ago(states_ago).get(sd);
+    }
+}
+double RobotStateHistory::get_past_unsafe(SD sd, int states_ago) {
+    throw_if_out_of_range(states_ago, this->get_max_size(), true);
+    int real_states_ago = std::min(states_ago, this->get_size() - 1);
+    return this->states_ago(real_states_ago).get(sd);
+}
+double RobotStateHistory::get_past_last_default(SD sd, int states_ago) {
+    throw_if_out_of_range(states_ago, this->get_size(), false);
+    return this->states_ago(states_ago).get(sd);
+}
 std::unordered_set<SD, SDHash> RobotStateHistory::get_keys() {
     return this->current_state.get_keys();
 };
