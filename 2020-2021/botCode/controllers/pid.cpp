@@ -51,8 +51,7 @@ void PID::add_error(double error) {
     this->integral += 0.5 * dt * (error + this->errors.last().error);
     this->output =
         this->kp * error + this->kd * de_dt + this->ki * this->integral;
-    printf("DT: %f, de: %f, kp: %f, kd: %f, output: %f\n", dt, de, this->kp,
-           this->kd, this->output);
+    printf("DT: %f, de: %f, error: %f, output: %f\n", dt, de, error, this->output);
 }
 double PID::get_output() { return output; }
 
