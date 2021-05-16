@@ -5,6 +5,7 @@
 #include <random>
 
 class StateEstimator {
+  public:
     typedef std::function<RobotState(RobotStateHistory, bool)> StateEstimatorF;
     StateEstimatorF f;
     std::unordered_set<SD> past_sds_using;
@@ -15,9 +16,8 @@ class StateEstimator {
                    std::unordered_set<SD> sds_using,
                    std::unordered_set<SD> sds_estimating);
 
-    static void apply(StateEstimator state_estimator,
-                      RobotStateHistory *state_history,
-                      bool with_uncertianity = false);
+    void apply(RobotStateHistory *state_history,
+               bool with_uncertianity = false);
 };
 
 #endif

@@ -28,8 +28,7 @@ class ParticleFilter {
                                   RobotState new_state);
     std::vector<double>
     getProbabilities(std::vector<RobotStateHistory> state_histories);
-    particle choose_particle();
-    RobotStateHistory most_likely();
+    particle chooseParticle();
 
   public:
     std::unordered_set<SD> sds_estimating;
@@ -38,6 +37,10 @@ class ParticleFilter {
                    RobotStateHistory startingState,
                    int num_particles = DEFAULT_NUM_PARTICLES);
     void addState(RobotState new_state);
+    /**
+     Finds and returns the state_history from the single particle with the
+     highest proability
+     */
     RobotStateHistory getStateHistory();
     RobotState estimate(RobotStateHistory state_history);
 };

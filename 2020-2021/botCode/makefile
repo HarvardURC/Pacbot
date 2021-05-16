@@ -12,7 +12,7 @@ ROBOT_STATE_C := $(wildcard robotState/*.cpp)
 SA_INTERFACE_C := $(wildcard sensorsActuators/sa_interface/*.cpp)
 SENSORS_ACTUATORS_C := $(wildcard sensorsActuators/*.cpp)
 CONTROLLERS_C := $(wildcard controllers/*.cpp)
-STATE_JUDGES_C := $(wildcard state_judges/*.cpp)
+STATE_JUDGES_C := $(wildcard stateJudges/*.cpp)
 STATE_ESTIMATORS_C := $(wildcard stateEstimators/*.cpp)
 MAIN_FILES_C := $(wildcard $(MAIN)/*.cpp)
 

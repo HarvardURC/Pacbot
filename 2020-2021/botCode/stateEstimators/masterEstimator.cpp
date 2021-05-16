@@ -14,10 +14,9 @@ StateEstimator::StateEstimator(StateEstimator::StateEstimatorF f,
     this->sds_estimating = sds_estimating;
 }
 
-void StateEstimator::apply(StateEstimator state_estimator,
-                           RobotStateHistory *state_history,
+void StateEstimator::apply(RobotStateHistory *state_history,
                            bool with_uncertianity) {
     // Plasubile that we should enforce sds_using and sds_estimating
-    RobotState new_state = state_estimator.f(*state_history, with_uncertianity);
+    RobotState new_state = this->f(*state_history, with_uncertianity);
     state_history->use(new_state);
 }

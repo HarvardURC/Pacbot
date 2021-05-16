@@ -5,7 +5,9 @@
 #include "robotState/globalState.hpp"
 #include "sensorsActuators/motors.hpp"
 #include "sensorsActuators/sensors.hpp"
+#include "stateEstimators/particleFilter.hpp"
 #include "stateEstimators/wheelPos.hpp"
+#include "stateJudges/optimistic.hpp"
 // #include "wiringPi.h"
 #include <chrono>
 #include <thread>
@@ -16,8 +18,8 @@ void on_init() {
     initialize_motors();
     initialize_sensors();
     follower = new wall_follower(0.1, true);
-    auto _a = getWheelPosEstimator();
-    return;
+    auto est = getWheelPosEstimator();
+    auto _pf = new ParticleFilter(est, optimisticJudge, RobotStateHistory());
 }
 void on_periodic(bool *is_running) {
     follower->update();

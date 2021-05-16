@@ -1,5 +1,6 @@
 #include "particleFilter.hpp"
 #include "../utils/number_manipulation.hpp"
+#include <numeric>
 
 ParticleFilter::ParticleFilter(StateEstimator estimator, StateJudge judge,
                                RobotStateHistory startingState,
@@ -17,7 +18,7 @@ ParticleFilter::ParticleFilter(StateEstimator estimator, StateJudge judge,
 RobotStateHistory ParticleFilter::updateState(RobotStateHistory state_history,
                                               RobotState new_state) {
     state_history.add_state(new_state);
-    apply_state_estimator(this->estimator, &state_history, true);
+    this->estimator.apply(&state_history, true);
     return state_history;
 }
 
@@ -25,19 +26,17 @@ std::vector<double> ParticleFilter::getProbabilities(
     std::vector<RobotStateHistory> state_histories) {
     std::vector<double> probabilities;
     for (RobotStateHistory history : state_histories) {
-        probabilities.push_back(this->judge(history));
+        probabilities.push_back(this->judge(&history));
     }
-    double sum = 0;
-    for (double prob : probabilities) {
-        sum += prob;
-    }
+    double sum =
+        std::accumulate(probabilities.begin(), probabilities.end(), 0.0);
     for (int i = 0; i < probabilities.size(); i++) {
         probabilities[i] = probabilities[i] / sum;
     }
     return probabilities;
 }
 
-particle ParticleFilter::choose_particle() {
+particle ParticleFilter::chooseParticle() {
     double rand_num = this->weight_dist(this->weight_geneator);
     int max_probability = 0;
     for (particle particle : this->particles) {
@@ -46,14 +45,15 @@ particle ParticleFilter::choose_particle() {
             return particle;
         }
     }
+    // Safety, in case the random number is exactly 1
     return this->particles[this->particles.size() - 1];
 }
 
 void ParticleFilter::addState(RobotState new_state) {
     std::vector<RobotStateHistory> new_states;
     for (int i = 0; i < this->num_particles; i++) {
-        new_states.push_back(this->updateState(
-            this->choose_particle().state_history, new_state));
+        new_states.push_back(
+            this->updateState(this->chooseParticle().state_history, new_state));
     }
     std::vector<double> probabilities = this->getProbabilities(new_states);
     std::vector<particle> new_particles;
@@ -63,18 +63,22 @@ void ParticleFilter::addState(RobotState new_state) {
     this->particles = new_particles;
 }
 
-RobotStateHistory ParticleFilter::most_likely() {
-    particle best_particle = this->particles[0];
-    for (particle particle : this->particles) {
-        if (particle.probability > best_particle.probability) {
-            best_particle = particle;
-        }
-    }
+bool particle_compare(particle p1, particle p2) {
+    return p1.probability < p2.probability;
+}
+
+/**
+Finds and returns the state_history from the single particle with the highest
+proability
+*/
+RobotStateHistory ParticleFilter::getStateHistory() {
+    particle best_particle = *std::max_element(
+        this->particles.begin(), this->particles.end(), particle_compare);
     return best_particle.state_history;
 }
 
 RobotState ParticleFilter::estimate(RobotStateHistory state) {
 
     this->addState(state.get_current_state());
-    return this->most_likely().get_current_state();
+    return this->getStateHistory().get_current_state();
 }
