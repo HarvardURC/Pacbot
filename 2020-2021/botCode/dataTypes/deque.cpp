@@ -5,6 +5,7 @@
 #include <iterator>
 #include <string>
 #include <vector>
+#include <stdio.h>
 
 template <typename T> class Deque {
   private:
@@ -59,7 +60,7 @@ template <typename T> int Deque<T>::normalize_index(int index) {
     if (this->max_size == 0) {
         return 0;
     } else {
-        return modulo(index, this->max_size);
+        return modulo(index, this->data.size());
     }
 }
 
@@ -78,7 +79,7 @@ template <typename T> int Deque<T>::get_eff_index(int real_index) {
 template <typename T>
 int Deque<T>::shift_index(int real_index, bool inc_index) {
     int inc_amount = inc_index ? -1 : 1;
-    return normalize_index(first_index + inc_amount);
+    return normalize_index(real_index + inc_amount);
 }
 template <typename T> int Deque<T>::inc_index(int real_index) {
     return this->shift_index(real_index, true);
@@ -87,7 +88,10 @@ template <typename T> int Deque<T>::dec_index(int real_index) {
     return this->shift_index(real_index, false);
 }
 template <typename T> int Deque<T>::length() {
-    return normalize_index(get_eff_index(last_index));
+    if (this->data.size() == 0){
+    	return 0;
+    }
+    return normalize_index(get_eff_index(last_index)) + 1;
 }
 template <typename T> int Deque<T>::get_max_size() { return this->max_size; }
 template <typename T> bool Deque<T>::eff_index_in_bounds(int eff_index) {
@@ -131,16 +135,19 @@ template <typename T> T Deque<T>::pop_last() {
     return val;
 }
 template <typename T> void Deque<T>::add(T el) {
+    printf("adding\n");
+    printf("first index: %d\n", this->first_index);
+    printf("last index: %d\n", this->last_index);
     if (this->data.size() != max_size) {
         this->data.push_back(el);
         this->last_index = inc_index(this->last_index);
     } else {
-        if (length() != this->data.size()) {
+        if (length() == this->data.size()) {
             // The last index is decremented because now the last one is the
             // previous one
             this->last_index = dec_index(this->last_index);
-        }
-        this->data[this->first_index] = el;
+	}
+
         // This is shifting backwards because let's say you have some deque with
         //    data [1*, 2 ,3'], where the star marks the pointer to the first
         //    element and the ' marks the pointer to the last element
@@ -148,7 +155,10 @@ template <typename T> void Deque<T>::add(T el) {
         // the star pointer one less, and same with the ' assuming the deque
         // is at max capacity
         this->first_index = dec_index(this->first_index);
+        
+	this->data[this->first_index] = el;
     }
+    printf("Last index after: %d\n", this->last_index);
 }
 
 template <typename T> void Deque<T>::set_max_size(int max_size) {

@@ -10,6 +10,7 @@ using namespace std;
 int main(void){
     // Wiring pi needs to be setup at the start of the program!
     wiringPiSetup();
+    sleep(5);
     printf("Starting motors\n"); 
     initialize_motors();
     cout << "Motors Initialized." << endl;

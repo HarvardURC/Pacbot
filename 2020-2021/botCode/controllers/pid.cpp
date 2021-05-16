@@ -42,6 +42,7 @@ void PID::add_error(double error) {
     this->errors.add(PID::ErrorLog(error, tm));
     printf("length: %d\n", this->errors.length());
     double de = error - this->errors.last().error;
+    printf("got last\n");
     double dt =
         millis_to_secs(std::chrono::duration_cast<std::chrono::milliseconds>(
                            tm - this->errors.last().time)

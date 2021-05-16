@@ -32,4 +32,4 @@ $(TARGET): $(OBJS)
 	$(CC) $(DEPENDENCIES) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) *.o
+	$(RM) $(OBJS) 
