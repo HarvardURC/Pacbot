@@ -19,7 +19,8 @@ void on_init() {
     initialize_sensors();
     follower = new wall_follower(0.1, true);
     auto est = getWheelPosEstimator();
-    auto _pf = new ParticleFilter(est, optimisticJudge, RobotStateHistory());
+    auto pf = new ParticleFilter(est, optimisticJudge, RobotStateHistory());
+    auto _s = pf->getStateHistory();
 }
 void on_periodic(bool *is_running) {
     follower->update();

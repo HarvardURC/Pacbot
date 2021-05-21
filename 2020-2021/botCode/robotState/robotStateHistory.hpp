@@ -4,27 +4,30 @@
 #include "../dataTypes/deque.cpp"
 #include "robotState.hpp"
 
+typedef std::shared_ptr<const RobotState> history_el_t;
+typedef Deque<history_el_t> history_t;
+
 class RobotStateHistory {
 
   private:
-    RobotState current_state;
-    Deque<RobotState> state_history;
+    std::unique_ptr<RobotState> current_state;
+    std::shared_ptr<history_t> state_history;
+    history_el_t states_ago_ptr(int n);
 
   public:
     static const int DEFAULT_MAX_SIZE = 10;
     RobotStateHistory(int max_size = DEFAULT_MAX_SIZE);
-    RobotStateHistory(Deque<RobotState> state_history);
-    RobotStateHistory(const RobotStateHistory &robotStateHistory);
+    RobotStateHistory(std::shared_ptr<history_t> state_history);
+    RobotStateHistory(const RobotStateHistory &state_history);
+    RobotStateHistory &operator=(const RobotStateHistory &state_history);
     int get_max_size();
     int get_size();
     RobotState get_current_state();
     // This doesn't allow you to edit earlier states
-    RobotState states_ago(int n);
-    int num_states();
     void add_state(RobotState robot_state);
-    void set_current_state(RobotState robot_state);
-    RobotState drop_current_state();
-    Deque<double> get_SD_history(SD sd);
+    void add_empty_state();
+    RobotState states_ago(int n);
+    Deque<std::optional<double>> get_SD_history(SD sd);
     bool contains(SD sd);
     double get(SD sd);
     void set(SD sd, double val);

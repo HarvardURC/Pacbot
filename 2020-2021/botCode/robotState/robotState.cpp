@@ -2,16 +2,18 @@
 
 #include <string>
 
-RobotState::RobotState(std::unordered_map<SD, double, SDHash> data) {
-    this->data = data;
-}
+RobotState::RobotState(std::unordered_map<SD, double, SDHash> data)
+    : data(&data) {}
 RobotState::RobotState() {
-    RobotState(std::unordered_map<SD, double, SDHash>());
+    this->data = std::unique_ptr<std::unordered_map<SD, double, SDHash> /**/>(
+        new std::unordered_map<SD, double, SDHash>());
 }
-RobotState::RobotState(const RobotState &robotState) {
-    this->data = robotState.data;
+RobotState::RobotState(const RobotState &robot_state)
+    : data(new data_t(*robot_state.data)) {}
+RobotState &RobotState::operator=(const RobotState &robot_state) {
+    this->data.reset(new data_t(*robot_state.data));
+    return *this;
 }
-
 std::string RobotState::sd_to_string(SD sd) {
     std::unordered_map<SD, std::string, SDHash> sd_string_map =
         std::unordered_map<SD, std::string, SDHash>();
@@ -27,22 +29,29 @@ RobotState::sd_not_found_exception::sd_not_found_exception(
     this->proc_name = proc_name;
     this->sd = sd;
 }
-void RobotState::throw_if_not_found(std::string proc_name, SD sd) {
+void RobotState::throw_if_not_found(std::string proc_name, SD sd) const {
     if (!this->contains(sd)) {
         throw sd_not_found_exception(proc_name, sd);
     }
 }
 
-bool RobotState::contains(SD sd) { return this->data.count(sd); }
-bool RobotState::get(SD sd) {
+bool RobotState::contains(SD sd) const { return this->data->count(sd); }
+double RobotState::get(SD sd) const {
     throw_if_not_found("RobotState.get", sd);
-    return this->data[sd];
+    return this->data->at(sd);
+}
+std::optional<double> RobotState::geto(SD sd) const {
+    if (this->contains(sd)) {
+        return this->get(sd);
+    } else {
+        return {};
+    }
 }
 void RobotState::set(SD sd, double val) {
     throw_if_not_found("RobotState.set", sd);
-    this->data[sd] = val;
+    this->data->emplace(sd, val);
 }
-void RobotState::remove(SD sd) { this->data.erase(sd); }
+void RobotState::remove(SD sd) { this->data->erase(sd); }
 double RobotState::pop(SD sd) {
     try {
         int val = get(sd);
@@ -53,10 +62,10 @@ double RobotState::pop(SD sd) {
     }
 }
 
-std::unordered_set<SD, SDHash> RobotState::get_keys() {
+std::unordered_set<SD, SDHash> RobotState::get_keys() const {
     std::unordered_set<SD, SDHash> keys = std::unordered_set<SD, SDHash>();
-    for (auto entry : this->data) {
-        keys.insert(entry.first);
+    for (auto itr = this->data->begin(); itr != this->data->end(); itr++) {
+        keys.insert((*itr).first);
     }
     return keys;
 }
@@ -82,4 +91,8 @@ void RobotState::use_extras(RobotState robot_state) {
             this->set(sd, robot_state.get(sd));
         }
     }
+}
+
+std::unordered_map<SD, double, SDHash> RobotState::get_data() const {
+    return *this->data;
 }

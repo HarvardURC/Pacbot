@@ -2,7 +2,7 @@
 CC = gcc
 
 # compiler flags:
-CFLAGS  = -std=c++14 -Wall
+CFLAGS  = -std=c++17 -Wall
 DEPENDENCIES = -lstdc++ -lpthread 
 
 MAIN := .

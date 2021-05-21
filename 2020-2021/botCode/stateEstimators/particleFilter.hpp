@@ -22,8 +22,8 @@ class ParticleFilter {
     int num_particles;
     std::vector<particle> particles;
 
-    std::default_random_engine weight_geneator;
-    std::uniform_real_distribution<double> weight_dist;
+    std::default_random_engine gen;
+    std::uniform_real_distribution<double> distribution;
     RobotStateHistory updateState(RobotStateHistory state_history,
                                   RobotState new_state);
     std::vector<double>
@@ -38,8 +38,7 @@ class ParticleFilter {
                    int num_particles = DEFAULT_NUM_PARTICLES);
     void addState(RobotState new_state);
     /**
-     Finds and returns the state_history from the single particle with the
-     highest proability
+     @return state_history from the single particle with the highest proability
      */
     RobotStateHistory getStateHistory();
     RobotState estimate(RobotStateHistory state_history);

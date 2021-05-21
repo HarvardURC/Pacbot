@@ -2,6 +2,7 @@
 #define ROBOT_STATE_H
 
 #include <exception>
+#include <optional>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -10,6 +11,8 @@ enum SD { Row, Col, X, Y, LW_change, RW_change, LW_pos, RW_pos, Angle, Time };
 struct SDHash {
     std::size_t operator()(SD sd) const { return (int)sd; }
 };
+
+typedef std::unordered_map<SD, double, SDHash> data_t;
 
 class RobotState {
 
@@ -30,27 +33,30 @@ class RobotState {
             return real_msg;
         };
     };
-    RobotState(std::unordered_map<SD, double, SDHash> data);
-    RobotState();
-    RobotState(const RobotState &robotState);
 
   private:
-    std::unordered_map<SD, double, SDHash> data;
+    std::unique_ptr<std::unordered_map<SD, double, SDHash> /**/> data;
     static std::string sd_not_found_msg(std::string proc_name, SD sd);
-    void throw_if_not_found(std::string proc_name, SD sd);
+    void throw_if_not_found(std::string proc_name, SD sd) const;
 
   public:
-    bool contains(SD sd);
-    bool get(SD sd);
+    RobotState(data_t data);
+    RobotState();
+    RobotState(const RobotState &robot_state);
+    RobotState &operator=(const RobotState &robot_state);
+    bool contains(SD sd) const;
+    double get(SD sd) const;
+    std::optional<double> geto(SD sd) const;
     void set(SD sd, double val);
     void remove(SD sd);
     double pop(SD sd);
-    std::unordered_set<SD, SDHash> get_keys();
+    std::unordered_set<SD, SDHash> get_keys() const;
     static std::string sd_to_string(SD sd);
     void cut_down_to(RobotState robot_state, std::unordered_set<SD> to_use);
     void use(RobotState robot_state,
              std::unordered_set<SD> to_use = std::unordered_set<SD>());
     void use_extras(RobotState robot_state);
+    std::unordered_map<SD, double, SDHash> get_data() const;
 }; // namespace std
 
 #endif
