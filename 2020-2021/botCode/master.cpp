@@ -13,14 +13,12 @@
 #include <thread>
 
 wall_follower *follower = nullptr;
+
 void on_init() {
     // wiringPiSetup();
     initialize_motors();
     initialize_sensors();
     follower = new wall_follower(0.1, true);
-    auto est = getWheelPosEstimator();
-    auto pf = new ParticleFilter(est, optimisticJudge, RobotStateHistory());
-    auto _s = pf->getStateHistory();
 }
 void on_periodic(bool *is_running) {
     follower->update();

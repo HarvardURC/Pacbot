@@ -40,19 +40,16 @@ PID PID::PID_predict(double kp, double ki, double kpredict, int d_smoother) {
 void PID::add_error(double error) {
     Clock::time_point tm = Clock::now();
     this->errors.add(PID::ErrorLog(error, tm));
-    printf("length: %d\n", this->errors.length());
     double de = error - this->errors.last().error;
-    printf("got last\n");
     double dt =
         millis_to_secs(std::chrono::duration_cast<std::chrono::milliseconds>(
                            tm - this->errors.last().time)
                            .count());
+    printf("de, dt: %f, %f. deque size: %d\n", de, dt, this->errors.length());
     double de_dt = dt == 0 ? 0 : de / dt;
     this->integral += 0.5 * dt * (error + this->errors.last().error);
     this->output =
         this->kp * error + this->kd * de_dt + this->ki * this->integral;
-    printf("DT: %f, de: %f, kp: %f, kd: %f, output: %f\n", dt, de, this->kp,
-           this->kd, this->output);
 }
 double PID::get_output() { return output; }
 
