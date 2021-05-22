@@ -45,7 +45,6 @@ void PID::add_error(double error) {
         millis_to_secs(std::chrono::duration_cast<std::chrono::milliseconds>(
                            tm - this->errors.last().time)
                            .count());
-    printf("de, dt: %f, %f. deque size: %d\n", de, dt, this->errors.length());
     double de_dt = dt == 0 ? 0 : de / dt;
     this->integral += 0.5 * dt * (error + this->errors.last().error);
     this->output =
