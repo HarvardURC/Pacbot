@@ -29,7 +29,7 @@ int RobotStateHistory::get_max_size() {
     return this->state_history->get_max_size();
 }
 // The plus 1 is due to the current_state variable
-int RobotStateHistory::get_size() { return this->state_history->length() + 1; }
+int RobotStateHistory::get_size() { return this->state_history->size() + 1; }
 
 void throw_if_out_of_range(int states_ago, int max_size, bool is_max) {
     if (states_ago < 0 || states_ago >= max_size) {

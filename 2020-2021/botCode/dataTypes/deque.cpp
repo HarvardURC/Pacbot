@@ -3,16 +3,16 @@
 
 #include "../utils/number_manipulation.hpp"
 #include <iterator>
+#include <stdio.h>
 #include <string>
 #include <vector>
-#include <stdio.h>
 
 template <typename T> class Deque {
   private:
     std::vector<T> data;
     int max_size;
     int first_index; // inclusive
-    int last_index;  // exclusive
+    int length;
     int normalize_index(int index);
     int get_real_index(int eff_index);
     int get_eff_index(int real_index);
@@ -24,7 +24,7 @@ template <typename T> class Deque {
   public:
     Deque();
     Deque(int max_size);
-    int length();
+    int size();
     int get_max_size();
     void set_max_size(int max_size);
     T get(int index);
@@ -46,30 +46,29 @@ template <typename T> class Deque {
 
 template <typename T> Deque<T>::Deque() {
     this->max_size = 0;
-    this->first_index = 0;
-    this->last_index = 0;
+    this->first_index = -1;
+    this->length = 0;
 }
 
 template <typename T> Deque<T>::Deque(int max_size) {
     this->max_size = max_size;
-    this->first_index = 0;
-    this->last_index = 0;
+    this->first_index = -1;
+    this->length = 0;
 }
 // eff_index = effective index
 template <typename T> int Deque<T>::normalize_index(int index) {
     if (this->max_size == 0) {
         return 0;
     } else {
-        return modulo(index, this->data.size());
+        return modulo(index, this->max_size);
     }
 }
 
 // The arraylist is set up, so we add to the end
 // Which means if we have the effective arraylist of [1, 2, 3], that's
-// represented as [0, 0, ..., 0, 3, 2, 1] Here the first index will be the final
-// index in the real array If th effective index is say 1, it must clearly be
-// that fnial index minus 1 hence: real_index = first_index - eff_idnex
-// This also gives us: eff_idnex = first_index - real_index
+// represented as [3, 2, 1, 0, 0, ..., 0]. Here the first index would be 2.
+// Thus effective_index = first_index - real_index, meaning real_index =
+// first_index - effective_index
 template <typename T> int Deque<T>::get_real_index(int eff_index) {
     return normalize_index(first_index - eff_index);
 }
@@ -87,22 +86,17 @@ template <typename T> int Deque<T>::inc_index(int real_index) {
 template <typename T> int Deque<T>::dec_index(int real_index) {
     return this->shift_index(real_index, false);
 }
-template <typename T> int Deque<T>::length() {
-    if (this->data.size() == 0){
-    	return 0;
-    }
-    return normalize_index(get_eff_index(last_index)) + 1;
-}
+template <typename T> int Deque<T>::size() { return this->length; }
 template <typename T> int Deque<T>::get_max_size() { return this->max_size; }
 template <typename T> bool Deque<T>::eff_index_in_bounds(int eff_index) {
-    return eff_index >= 0 && eff_index < this->length();
+    return eff_index >= 0 && eff_index < this->size();
 }
 template <typename T> T Deque<T>::get(int eff_index) {
     if (eff_index_in_bounds(eff_index)) {
         return this->data.at(get_real_index(eff_index));
     } else {
         throw std::out_of_range("Deque: Index = " + std::to_string(eff_index) +
-                                ", Length = " + std::to_string(length()));
+                                ", Length = " + std::to_string(size()));
     }
 }
 template <typename T> void Deque<T>::set(int eff_index, T el) {
@@ -110,10 +104,10 @@ template <typename T> void Deque<T>::set(int eff_index, T el) {
         this->data[get_real_index(eff_index)] = el;
     } else {
         throw std::out_of_range("Deque: Index = " + std::to_string(eff_index) +
-                                ", Length = " + std::to_string(length()));
+                                ", Length = " + std::to_string(size()));
     }
 }
-template <typename T> T Deque<T>::last() { return get(length() - 1); }
+template <typename T> T Deque<T>::last() { return get(size() - 1); }
 template <typename T> T Deque<T>::pop_first() {
     T val = get(0);
     // This is shifting forward because let's say you have some deque with
@@ -131,34 +125,26 @@ template <typename T> T Deque<T>::pop_last() {
     //    element
     // When you pop out the 3, you need to move the end pointer back to the 2
     //    and the * stays at the 1
-    this->last_index = dec_index(this->last_index);
+    this->length -= 1;
     return val;
 }
 template <typename T> void Deque<T>::add(T el) {
-    printf("adding\n");
-    printf("first index: %d\n", this->first_index);
-    printf("last index: %d\n", this->last_index);
+
+    // We do dec_index(this->first_index) because let's say you have some deque
+    // with
+    //    data [1*, 2 ,3'], where the star marks the pointer to the first
+    //    element and the ' marks the pointer to the last element
+    // When you add 0, the data becomes [0, 1*, 2] 3', so you have to move
+    // the star pointer one less, and same with the ' assuming the deque
+    // is at max capacity
+    this->length = std::min(this->length + 1, this->max_size);
     if (this->data.size() != max_size) {
         this->data.push_back(el);
-        this->last_index = inc_index(this->last_index);
-    } else {
-        if (length() == this->data.size()) {
-            // The last index is decremented because now the last one is the
-            // previous one
-            this->last_index = dec_index(this->last_index);
-	}
-
-        // This is shifting backwards because let's say you have some deque with
-        //    data [1*, 2 ,3'], where the star marks the pointer to the first
-        //    element and the ' marks the pointer to the last element
-        // When you add 0, the data becomes [0, 1*, 2] 3', so you have to move
-        // the star pointer one less, and same with the ' assuming the deque
-        // is at max capacity
         this->first_index = dec_index(this->first_index);
-        
-	this->data[this->first_index] = el;
+    } else {
+        this->first_index = dec_index(this->first_index);
+        this->data[this->first_index] = el;
     }
-    printf("Last index after: %d\n", this->last_index);
 }
 
 template <typename T> void Deque<T>::set_max_size(int max_size) {
@@ -170,7 +156,7 @@ template <typename T> void Deque<T>::set_max_size(int max_size) {
 
 template <typename T> Deque<T> Deque<T>::clone() {
     Deque<T> deque = Deque(this->max_size);
-    for (int i = this->length() - 1; i >= 0; i--) {
+    for (int i = this->size() - 1; i >= 0; i--) {
         deque.add(this->get(i));
     }
     return deque;
