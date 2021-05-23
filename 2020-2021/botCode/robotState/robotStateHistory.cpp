@@ -54,8 +54,8 @@ history_el_t RobotStateHistory::states_ago_ptr(int n) {
 std::unordered_set<SD, SDHash> RobotStateHistory::get_keys() {
     return this->current_state->get_keys();
 };
-void RobotStateHistory::use(RobotState robot_state) {
-    return this->current_state->use(robot_state);
+void RobotStateHistory::use_all(RobotState robot_state) {
+    return this->current_state->use_all(robot_state);
 };
 bool RobotStateHistory::contains(SD sd) {
     return this->current_state->contains(sd);

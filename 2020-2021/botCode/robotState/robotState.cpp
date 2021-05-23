@@ -35,7 +35,7 @@ void RobotState::throw_if_not_found(std::string proc_name, SD sd) const {
     }
 }
 
-bool RobotState::contains(SD sd) const { return this->data->count(sd); }
+bool RobotState::contains(SD sd) const { return this->data->count(sd) == 1; }
 double RobotState::get(SD sd) const {
     throw_if_not_found("RobotState.get", sd);
     return this->data->at(sd);
@@ -47,10 +47,7 @@ std::optional<double> RobotState::geto(SD sd) const {
         return {};
     }
 }
-void RobotState::set(SD sd, double val) {
-    throw_if_not_found("RobotState.set", sd);
-    this->data->emplace(sd, val);
-}
+void RobotState::set(SD sd, double val) { (*this->data)[sd] = val; }
 void RobotState::remove(SD sd) { this->data->erase(sd); }
 double RobotState::pop(SD sd) {
     try {
@@ -75,6 +72,11 @@ void RobotState::cut_down_to(RobotState robot_state,
         if (to_use.find(sd) == to_use.end()) {
             this->remove(sd);
         }
+    }
+}
+void RobotState::use_all(RobotState robot_state) {
+    for (SD sd : robot_state.get_keys()) {
+        this->set(sd, robot_state.get(sd));
     }
 }
 void RobotState::use(RobotState robot_state, std::unordered_set<SD> to_use) {

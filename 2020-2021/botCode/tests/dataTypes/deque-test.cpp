@@ -43,7 +43,6 @@ bool test_last() {
     deq.add(0);
     deq.add(1);
     deq.add(2);
-    printf("LAST: %d\n", deq.last());
     return deq.last() == 0;
 }
 } // namespace Deque_test

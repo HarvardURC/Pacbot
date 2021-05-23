@@ -53,8 +53,8 @@ class RobotState {
     std::unordered_set<SD, SDHash> get_keys() const;
     static std::string sd_to_string(SD sd);
     void cut_down_to(RobotState robot_state, std::unordered_set<SD> to_use);
-    void use(RobotState robot_state,
-             std::unordered_set<SD> to_use = std::unordered_set<SD>());
+    void use_all(RobotState robot_state);
+    void use(RobotState robot_state, std::unordered_set<SD> to_use);
     void use_extras(RobotState robot_state);
     std::unordered_map<SD, double, SDHash> get_data() const;
 }; // namespace std

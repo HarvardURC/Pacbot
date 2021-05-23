@@ -37,6 +37,6 @@ class RobotStateHistory {
     double pop(SD sd);
     void set_max_size(int max_size);
     std::unordered_set<SD, SDHash> get_keys();
-    void use(RobotState robot_state);
+    void use_all(RobotState robot_state);
 };
 #endif

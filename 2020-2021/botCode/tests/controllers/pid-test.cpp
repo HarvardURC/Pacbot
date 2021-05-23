@@ -31,7 +31,6 @@ bool test_d() {
     pid.add_error(1 + sleep_time / 1000.);
     std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));
     pid.add_error(1);
-    printf("output: %f\n", abs(pid.get_output()));
     return abs(pid.get_output()) < tolerance;
 }
 
@@ -42,7 +41,6 @@ bool test_predict() {
     pid.add_error(2.);
     std::this_thread::sleep_for(std::chrono::seconds(sleep_time));
     pid.add_error(1.5);
-    printf("OUTPUT: %f\n", pid.get_output());
     return abs(pid.get_output()) < tolerance;
 }
 } // namespace PID_test
