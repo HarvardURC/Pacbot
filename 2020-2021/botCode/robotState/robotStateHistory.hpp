@@ -10,11 +10,11 @@ typedef Deque<history_el_t> history_t;
 class RobotStateHistory {
 
   private:
-    std::unique_ptr<RobotState> current_state;
     std::shared_ptr<history_t> state_history;
     history_el_t states_ago_ptr(int n) const;
 
   public:
+    std::unique_ptr<RobotState> current_state;
     static const int DEFAULT_MAX_SIZE = 10;
     RobotStateHistory(int max_size = DEFAULT_MAX_SIZE);
     RobotStateHistory(std::shared_ptr<history_t> state_history);
@@ -32,10 +32,12 @@ class RobotStateHistory {
     bool contains(SD sd) const;
     double get(SD sd) const;
     void set(SD sd, double val);
+    void set_override(SD sd, double val);
     double get_past(SD sd, int states_ago, double default_) const;
     double get_past_unsafe(SD sd, int states_ago) const;
     double get_past_last_default(SD sd, int states_ago) const;
     double pop(SD sd);
+    void trim_to(std::unordered_set<SD> to_keep);
     void set_max_size(int max_size);
     std::unordered_set<SD, SDHash> get_keys() const;
     void use_all(RobotState robot_state);

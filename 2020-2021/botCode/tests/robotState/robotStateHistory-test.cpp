@@ -15,7 +15,7 @@ bool test_copy() {
     state_history.set(sd, og_val);
     RobotStateHistory copy = state_history;
     bool copy_starts_correct = copy.get(sd) == og_val;
-    copy.set(sd, new_val);
+    copy.set_override(sd, new_val);
     bool copied_correctly = state_history.get(sd) == og_val;
     return copy_starts_correct && copied_correctly;
 }
@@ -39,7 +39,7 @@ bool add_state_simple() {
     RobotState state;
     double val = -12112.325;
     SD sd = SD::Angle;
-    state->set(sd, val);
+    state.set(sd, val);
     state_history.add_state(state);
     return state_history.get(sd) == val;
 }
@@ -48,10 +48,10 @@ bool add_state_seperation() {
     RobotState state;
     double val = -12112.325;
     SD sd = SD::Angle;
-    state->set(sd, val);
+    state.set(sd, val);
     state_history.add_state(state);
     double val2 = 0.0;
-    state->set(sd, val2);
+    state.set_override(sd, val2);
     return state_history.get(sd) == val;
 }
 } // namespace RobotStateHistory_test

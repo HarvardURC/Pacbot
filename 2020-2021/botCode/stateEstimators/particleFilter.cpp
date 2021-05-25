@@ -1,22 +1,33 @@
 #include "particleFilter.hpp"
+#include "../utils/data_type_helpers.hpp"
 #include "../utils/number_manipulation.hpp"
+
 #include <numeric>
 
 ParticleFilter::ParticleFilter(StateEstimator estimator, StateJudge judge,
-                               RobotStateHistory startingState,
+                               RobotStateHistory starting_state,
                                int num_particles)
     : estimator(estimator) {
     this->judge = judge;
     this->sds_estimating = this->estimator.sds_estimating;
     this->sds_using = this->estimator.sds_using;
+    this->past_sds_using = this->estimator.past_sds_using;
     this->gen = std::default_random_engine(get_rand_seed());
     this->distribution = std::uniform_real_distribution<double>(0.0, 1.0);
     this->num_particles = num_particles;
-    particle startingParticle =
+    // Here we do not trim down the past states of starting state to only have
+    // past_sds_using because that would not change the amount we are
+    // storing or copying
+    particle starting_particle =
         particle(std::shared_ptr<RobotStateHistory>(
-                     new RobotStateHistory(startingState)),
+                     new RobotStateHistory(starting_state)),
                  1.);
-    this->particles.push_back(startingParticle);
+    this->particles.push_back(starting_particle);
+    std::unordered_set<SD> all_sds_to_keep = sds_using;
+    for (SD sd : past_sds_using) {
+        all_sds_to_keep.insert(sd);
+    }
+    starting_particle.state_history->trim_to(all_sds_to_keep);
 }
 
 RobotStateHistory ParticleFilter::updateState(RobotStateHistory state_history,
@@ -59,8 +70,13 @@ particle ParticleFilter::chooseParticle() {
     return this->particles[this->particles.size() - 1];
 }
 
-void ParticleFilter::addState(RobotState new_state) {
+void ParticleFilter::addState(RobotState new_state, RobotState previous_state) {
     // Creates a vector if update state histories
+    previous_state.trim_to(this->past_sds_using);
+    for (particle particle : this->particles) {
+        particle.state_history->current_state->use_extras(previous_state);
+    }
+    new_state.trim_to(this->sds_using);
     std::vector<std::shared_ptr<RobotStateHistory>> new_states;
     for (int i = 0; i < this->num_particles; i++) {
         // Sasmple a particle, then update and add its state history

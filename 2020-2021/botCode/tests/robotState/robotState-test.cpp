@@ -20,7 +20,7 @@ bool override_get() {
     double val = 100.5;
     SD sd = SD::X;
     state.set(sd, val0);
-    state.set(sd, val);
+    state.set_override(sd, val);
     return state.get(sd) == val;
 }
 bool copy() {
@@ -29,7 +29,7 @@ bool copy() {
     double val = -100.5;
     state.set(sd, val);
     RobotState copy = state;
-    copy.set(sd, 0.0);
+    copy.set_override(sd, 0.0);
     return state.get(sd) == val;
 }
 bool get_keys() {
@@ -91,6 +91,14 @@ bool use_all() {
     }
     return extra_1s_matched && all_2s_matched;
 }
+bool trim_to() {
+    RobotState state = RobotState();
+    state.set(SD::Angle, 0.0);
+    state.set(SD::Row, 0.0);
+    state.trim_to(std::unordered_set({SD::Angle}));
+    printf("bools: %d, %d", state.contains(SD::Angle), state.contains(SD::Row));
+    return state.contains(SD::Angle) && !state.contains(SD::Row);
+}
 } // namespace RobotState_test
 
 TEST_CASE("RobotState Tests") {
@@ -100,6 +108,7 @@ TEST_CASE("RobotState Tests") {
     REQUIRE(RobotState_test::copy());
     REQUIRE(RobotState_test::get_keys());
     REQUIRE(RobotState_test::use_all());
+    REQUIRE(RobotState_test::trim_to());
 }
 
 #endif

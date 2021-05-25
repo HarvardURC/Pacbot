@@ -47,7 +47,10 @@ class RobotState {
     bool contains(SD sd) const;
     double get(SD sd) const;
     std::optional<double> geto(SD sd) const;
+    // Set will throw if sd already has a value
     void set(SD sd, double val);
+    // Set override will not through if the given sd already has a value
+    void set_override(SD sd, double val);
     void remove(SD sd);
     double pop(SD sd);
     std::unordered_set<SD, SDHash> get_keys() const;
@@ -56,6 +59,7 @@ class RobotState {
     void use_all(RobotState robot_state);
     void use(RobotState robot_state, std::unordered_set<SD> to_use);
     void use_extras(RobotState robot_state);
+    void trim_to(std::unordered_set<SD> to_keep);
     std::unordered_map<SD, double, SDHash> get_data() const;
 }; // namespace std
 

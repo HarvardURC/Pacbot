@@ -4,6 +4,7 @@
 #include "../stateJudges/stateJudge.hpp"
 #include "masterEstimator.hpp"
 #include <random>
+#include <unordered_set>
 
 const int DEFAULT_NUM_PARTICLES = 500;
 
@@ -33,11 +34,13 @@ class ParticleFilter {
 
   public:
     std::unordered_set<SD> sds_estimating;
+    std::unordered_set<SD> past_sds_using;
     std::unordered_set<SD> sds_using;
     ParticleFilter(StateEstimator estimator, StateJudge judge,
                    RobotStateHistory startingState,
                    int num_particles = DEFAULT_NUM_PARTICLES);
-    void addState(RobotState new_state);
+    void addState(RobotState new_state,
+                  RobotState previous_state = RobotState());
     /**
      @return state_history from the single particle with the highest proability
      */

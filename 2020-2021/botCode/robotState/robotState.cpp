@@ -47,7 +47,19 @@ std::optional<double> RobotState::geto(SD sd) const {
         return {};
     }
 }
-void RobotState::set(SD sd, double val) { (*this->data)[sd] = val; }
+void RobotState::set_override(SD sd, double val) { (*this->data)[sd] = val; }
+void RobotState::set(SD sd, double val) {
+    if (this->contains(sd)) {
+        throw std::invalid_argument(
+            // clang-format off
+            "Attempted to set value for " + sd_to_string(sd) +
+            ", but it already has a value. Try set_override if you would like to override the previous value."
+            // clang-format on
+        );
+    } else {
+        (*this->data)[sd] = val;
+    }
+}
 void RobotState::remove(SD sd) { this->data->erase(sd); }
 double RobotState::pop(SD sd) {
     try {
@@ -76,13 +88,13 @@ void RobotState::cut_down_to(RobotState robot_state,
 }
 void RobotState::use_all(RobotState robot_state) {
     for (SD sd : robot_state.get_keys()) {
-        this->set(sd, robot_state.get(sd));
+        this->set_override(sd, robot_state.get(sd));
     }
 }
 void RobotState::use(RobotState robot_state, std::unordered_set<SD> to_use) {
     for (SD sd : robot_state.get_keys()) {
         if (to_use.find(sd) != to_use.end()) {
-            this->set(sd, robot_state.get(sd));
+            this->set_override(sd, robot_state.get(sd));
         }
     }
 }
@@ -97,4 +109,12 @@ void RobotState::use_extras(RobotState robot_state) {
 
 std::unordered_map<SD, double, SDHash> RobotState::get_data() const {
     return *this->data;
+}
+
+void RobotState::trim_to(std::unordered_set<SD> to_keep) {
+    for (SD sd : this->get_keys()) {
+        if (to_keep.count(sd) == 0) {
+            this->remove(sd);
+        }
+    }
 }

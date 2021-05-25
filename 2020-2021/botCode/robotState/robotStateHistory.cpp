@@ -68,6 +68,9 @@ double RobotStateHistory::get(SD sd) const {
 void RobotStateHistory::set(SD sd, double val) {
     return this->current_state->set(sd, val);
 }
+void RobotStateHistory::set_override(SD sd, double val) {
+    return this->current_state->set_override(sd, val);
+}
 double RobotStateHistory::pop(SD sd) { return this->current_state->pop(sd); }
 
 // Returns a copy of the robot state n states ago
@@ -136,4 +139,8 @@ double RobotStateHistory::get_past_last_default(SD sd, int states_ago) const {
         return this->get(sd);
     }
     return this->states_ago_ptr(states_ago)->get(sd);
+}
+
+void RobotStateHistory::trim_to(std::unordered_set<SD> to_keep) {
+    this->current_state->trim_to(to_keep);
 }
