@@ -41,7 +41,7 @@ class ParticleFilter {
     /**
      @return state_history from the single particle with the highest proability
      */
-    RobotStateHistory getStateHistory();
+    RobotState getState();
     RobotState estimate(RobotStateHistory &state_history);
 };
 

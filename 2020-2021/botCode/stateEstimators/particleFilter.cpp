@@ -91,14 +91,19 @@ bool particle_compare(particle p1, particle p2) {
 Finds and returns the state_history from the single particle with the highest
 proability
 */
-RobotStateHistory ParticleFilter::getStateHistory() {
-    particle best_particle = *std::max_element(
-        this->particles.begin(), this->particles.end(), particle_compare);
-    return *best_particle.state_history;
+RobotState ParticleFilter::getState() {
+    RobotState state = RobotState();
+    for (SD sd : this->sds_estimating) {
+        double sum = 0.0;
+        for (particle particle : this->particles) {
+            sum += particle.state_history->get(sd);
+        }
+        state.set(sd, sum / this->particles.size());
+    }
+    return state;
 }
 
 RobotState ParticleFilter::estimate(RobotStateHistory &state) {
-
     this->addState(state.get_current_state());
-    return this->getStateHistory().get_current_state();
+    return this->getState();
 }

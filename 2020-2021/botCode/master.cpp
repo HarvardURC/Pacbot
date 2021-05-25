@@ -29,9 +29,8 @@ void on_init() {
     filter = new ParticleFilter(getTestEstimator(), test_judge, state_history);
 }
 void on_periodic(bool *is_running) {
-    printf("adding a state... ");
     filter->addState(RobotState());
-    printf("current val: %f\n", filter->getStateHistory().get(SD::Angle));
+    printf("current val: %f\n", filter->getState().get(SD::Angle));
     *is_running = false;
 }
 void loop() {
@@ -42,16 +41,16 @@ void loop() {
         std::chrono::milliseconds((int)secs_to_millis(TICK_LENGTH)));
     // Ideally this is_running system should be changed to actually check if the
     //    thread finishes
-    th.join();
+    // th.join();
     if (*is_running) {
         printf(
             "\n WARNING: on_periodic is taking longer than the TICK_LENGTH of "
             "%d milliseconds.\n",
             (int)secs_to_millis(TICK_LENGTH));
-        // th.join();
+        th.join();
         printf("Loop continuing.\n");
     } else {
-        // th.join();
+        th.join();
     }
     loop();
 }
