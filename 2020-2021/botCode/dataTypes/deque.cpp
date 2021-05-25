@@ -13,22 +13,22 @@ template <typename T> class Deque {
     int max_size;
     int first_index; // inclusive
     int length;
-    int normalize_index(int index);
-    int get_real_index(int eff_index);
-    int get_eff_index(int real_index);
-    int shift_index(int index, bool inc_index);
-    int inc_index(int index);
-    int dec_index(int index);
-    bool eff_index_in_bounds(int eff_index);
+    int normalize_index(int index) const;
+    int get_real_index(int eff_index) const;
+    int get_eff_index(int real_index) const;
+    int shift_index(int index, bool inc_index) const;
+    int inc_index(int index) const;
+    int dec_index(int index) const;
+    bool eff_index_in_bounds(int eff_index) const;
 
   public:
     Deque();
     Deque(int max_size);
-    int size();
-    int get_max_size();
+    int size() const;
+    int get_max_size() const;
     void set_max_size(int max_size);
-    T get(int index);
-    T last();
+    T get(int index) const;
+    T last() const;
     void set(int index, T el);
     void add(T el);
     void add_to_end(T el);
@@ -56,7 +56,7 @@ template <typename T> Deque<T>::Deque(int max_size) {
     this->length = 0;
 }
 // eff_index = effective index
-template <typename T> int Deque<T>::normalize_index(int index) {
+template <typename T> int Deque<T>::normalize_index(int index) const {
     if (this->max_size == 0) {
         return 0;
     } else {
@@ -69,29 +69,31 @@ template <typename T> int Deque<T>::normalize_index(int index) {
 // represented as [3, 2, 1, 0, 0, ..., 0]. Here the first index would be 2.
 // Thus effective_index = first_index - real_index, meaning real_index =
 // first_index - effective_index
-template <typename T> int Deque<T>::get_real_index(int eff_index) {
+template <typename T> int Deque<T>::get_real_index(int eff_index) const {
     return normalize_index(first_index - eff_index);
 }
-template <typename T> int Deque<T>::get_eff_index(int real_index) {
+template <typename T> int Deque<T>::get_eff_index(int real_index) const {
     return normalize_index(first_index - real_index);
 }
 template <typename T>
-int Deque<T>::shift_index(int real_index, bool inc_index) {
+int Deque<T>::shift_index(int real_index, bool inc_index) const {
     int inc_amount = inc_index ? -1 : 1;
     return normalize_index(real_index + inc_amount);
 }
-template <typename T> int Deque<T>::inc_index(int real_index) {
+template <typename T> int Deque<T>::inc_index(int real_index) const {
     return this->shift_index(real_index, true);
 }
-template <typename T> int Deque<T>::dec_index(int real_index) {
+template <typename T> int Deque<T>::dec_index(int real_index) const {
     return this->shift_index(real_index, false);
 }
-template <typename T> int Deque<T>::size() { return this->length; }
-template <typename T> int Deque<T>::get_max_size() { return this->max_size; }
-template <typename T> bool Deque<T>::eff_index_in_bounds(int eff_index) {
+template <typename T> int Deque<T>::size() const { return this->length; }
+template <typename T> int Deque<T>::get_max_size() const {
+    return this->max_size;
+}
+template <typename T> bool Deque<T>::eff_index_in_bounds(int eff_index) const {
     return eff_index >= 0 && eff_index < this->size();
 }
-template <typename T> T Deque<T>::get(int eff_index) {
+template <typename T> T Deque<T>::get(int eff_index) const {
     if (eff_index_in_bounds(eff_index)) {
         return this->data.at(get_real_index(eff_index));
     } else {
@@ -107,7 +109,7 @@ template <typename T> void Deque<T>::set(int eff_index, T el) {
                                 ", Length = " + std::to_string(size()));
     }
 }
-template <typename T> T Deque<T>::last() { return get(size() - 1); }
+template <typename T> T Deque<T>::last() const { return get(size() - 1); }
 template <typename T> T Deque<T>::pop_first() {
     T val = get(0);
     // This is shifting forward because let's say you have some deque with

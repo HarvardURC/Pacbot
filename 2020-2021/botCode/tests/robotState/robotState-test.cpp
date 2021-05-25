@@ -89,8 +89,6 @@ bool use_all() {
     for (SD sd : sds_shared) {
         all_2s_matched = all_2s_matched && state1.get(sd) == val2;
     }
-    printf("1s, 2s: %d, %d, %f", extra_1s_matched, all_2s_matched,
-           state1.get(SD::Angle));
     return extra_1s_matched && all_2s_matched;
 }
 } // namespace RobotState_test

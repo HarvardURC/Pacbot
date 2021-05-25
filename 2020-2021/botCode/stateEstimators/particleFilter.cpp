@@ -11,7 +11,11 @@ ParticleFilter::ParticleFilter(StateEstimator estimator, StateJudge judge,
     this->sds_using = this->estimator.sds_using;
     this->gen = std::default_random_engine(get_rand_seed());
     this->distribution = std::uniform_real_distribution<double>(0.0, 1.0);
-    particle startingParticle = particle(startingState, 1.);
+    this->num_particles = num_particles;
+    particle startingParticle =
+        particle(std::shared_ptr<RobotStateHistory>(
+                     new RobotStateHistory(startingState)),
+                 1.);
     this->particles.push_back(startingParticle);
 }
 
@@ -25,10 +29,10 @@ RobotStateHistory ParticleFilter::updateState(RobotStateHistory state_history,
 // Creates a vector of doubles where each probability is proportional to its
 // weight and all the probabilties sum to 1
 std::vector<double> ParticleFilter::getProbabilities(
-    std::vector<RobotStateHistory> state_histories) {
+    std::vector<std::shared_ptr<RobotStateHistory> /**/> state_histories) {
     std::vector<double> probabilities;
-    for (RobotStateHistory history : state_histories) {
-        probabilities.push_back(this->judge(&history));
+    for (std::shared_ptr<RobotStateHistory> history : state_histories) {
+        probabilities.push_back(this->judge(*history));
     }
     double sum =
         std::accumulate(probabilities.begin(), probabilities.end(), 0.0);
@@ -44,7 +48,7 @@ particle ParticleFilter::chooseParticle() {
     // Random num between 0.0 and 1.0, as sum of particle probablities should be
     // 1
     double rand_num = this->distribution(this->gen);
-    int max_probability = 0;
+    double max_probability = 0;
     for (particle particle : this->particles) {
         max_probability += particle.probability;
         if (max_probability >= rand_num) {
@@ -57,16 +61,22 @@ particle ParticleFilter::chooseParticle() {
 
 void ParticleFilter::addState(RobotState new_state) {
     // Creates a vector if update state histories
-    std::vector<RobotStateHistory> new_states;
+    std::vector<std::shared_ptr<RobotStateHistory>> new_states;
     for (int i = 0; i < this->num_particles; i++) {
         // Sasmple a particle, then update and add its state history
-        auto chosen_history = this->chooseParticle().state_history;
-        new_states.push_back(this->updateState(chosen_history, new_state));
+        std::shared_ptr<RobotStateHistory> chosen_history =
+            this->chooseParticle().state_history;
+        RobotStateHistory new_state_history =
+            this->updateState(*chosen_history, new_state);
+        new_states.push_back(std::shared_ptr<RobotStateHistory>(
+            new RobotStateHistory(new_state_history)));
     }
+
     // Get a vector corresponding to the judgment for each particle
     std::vector<double> probabilities = this->getProbabilities(new_states);
     // Resets new particle vector by effectivelly ziping new_states and
     // probabilities
+
     this->particles = std::vector<particle>();
     for (int i = 0; i < this->num_particles; i++) {
         this->particles.push_back(particle(new_states[i], probabilities[i]));
@@ -84,10 +94,10 @@ proability
 RobotStateHistory ParticleFilter::getStateHistory() {
     particle best_particle = *std::max_element(
         this->particles.begin(), this->particles.end(), particle_compare);
-    return best_particle.state_history;
+    return *best_particle.state_history;
 }
 
-RobotState ParticleFilter::estimate(RobotStateHistory state) {
+RobotState ParticleFilter::estimate(RobotStateHistory &state) {
 
     this->addState(state.get_current_state());
     return this->getStateHistory().get_current_state();

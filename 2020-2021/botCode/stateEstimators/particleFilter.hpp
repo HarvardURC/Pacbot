@@ -8,10 +8,11 @@
 const int DEFAULT_NUM_PARTICLES = 500;
 
 struct particle {
-    RobotStateHistory state_history;
+    std::shared_ptr<RobotStateHistory> state_history;
     double probability;
-    particle(RobotStateHistory state_history, double probability) {
-        this->state_history = state_history;
+    particle(std::shared_ptr<RobotStateHistory> state_history,
+             double probability)
+        : state_history(state_history) {
         this->probability = probability;
     }
 };
@@ -26,8 +27,8 @@ class ParticleFilter {
     std::uniform_real_distribution<double> distribution;
     RobotStateHistory updateState(RobotStateHistory state_history,
                                   RobotState new_state);
-    std::vector<double>
-    getProbabilities(std::vector<RobotStateHistory> state_histories);
+    std::vector<double> getProbabilities(
+        std::vector<std::shared_ptr<RobotStateHistory>> state_histories);
     particle chooseParticle();
 
   public:
@@ -41,7 +42,7 @@ class ParticleFilter {
      @return state_history from the single particle with the highest proability
      */
     RobotStateHistory getStateHistory();
-    RobotState estimate(RobotStateHistory state_history);
+    RobotState estimate(RobotStateHistory &state_history);
 };
 
 #endif

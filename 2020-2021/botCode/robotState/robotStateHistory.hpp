@@ -12,7 +12,7 @@ class RobotStateHistory {
   private:
     std::unique_ptr<RobotState> current_state;
     std::shared_ptr<history_t> state_history;
-    history_el_t states_ago_ptr(int n);
+    history_el_t states_ago_ptr(int n) const;
 
   public:
     static const int DEFAULT_MAX_SIZE = 10;
@@ -20,23 +20,24 @@ class RobotStateHistory {
     RobotStateHistory(std::shared_ptr<history_t> state_history);
     RobotStateHistory(const RobotStateHistory &state_history);
     RobotStateHistory &operator=(const RobotStateHistory &state_history);
-    int get_max_size();
-    int get_size();
-    RobotState get_current_state();
+    int get_max_size() const;
+    int get_size() const;
+    RobotState get_current_state() const;
     // This doesn't allow you to edit earlier states
-    void add_state(RobotState robot_state);
+    void add_state(const RobotState &robot_state);
     void add_empty_state();
-    RobotState states_ago(int n);
-    Deque<std::optional<double>> get_SD_history(SD sd);
-    bool contains(SD sd);
-    double get(SD sd);
+    void set_current_state(const RobotState &robot_state);
+    RobotState states_ago(int n) const;
+    Deque<std::optional<double>> get_SD_history(SD sd) const;
+    bool contains(SD sd) const;
+    double get(SD sd) const;
     void set(SD sd, double val);
-    double get_past(SD sd, int states_ago, double default_);
-    double get_past_unsafe(SD sd, int states_ago);
-    double get_past_last_default(SD sd, int states_ago);
+    double get_past(SD sd, int states_ago, double default_) const;
+    double get_past_unsafe(SD sd, int states_ago) const;
+    double get_past_last_default(SD sd, int states_ago) const;
     double pop(SD sd);
     void set_max_size(int max_size);
-    std::unordered_set<SD, SDHash> get_keys();
+    std::unordered_set<SD, SDHash> get_keys() const;
     void use_all(RobotState robot_state);
 };
 #endif

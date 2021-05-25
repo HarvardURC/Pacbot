@@ -6,23 +6,33 @@
 #include "sensorsActuators/motors.hpp"
 #include "sensorsActuators/sensors.hpp"
 #include "stateEstimators/particleFilter.hpp"
+#include "stateEstimators/testEstimator.hpp"
 #include "stateEstimators/wheelPos.hpp"
 #include "stateJudges/optimistic.hpp"
+#include "stateJudges/random.hpp"
+#include "stateJudges/testJudge.hpp"
 // #include "wiringPi.h"
 #include <chrono>
 #include <thread>
 
-wall_follower *follower = nullptr;
+RobotStateHistory state_history;
+ParticleFilter *filter = nullptr;
 
 void on_init() {
-    // wiringPiSetup();
+    /* wiringPiSetup();
     initialize_motors();
     initialize_sensors();
     follower = new wall_follower(0.1, true);
+    */
+
+    state_history.set(SD::Angle, 0.0);
+    filter = new ParticleFilter(getTestEstimator(), test_judge, state_history);
 }
 void on_periodic(bool *is_running) {
-    follower->update();
-    *is_running = true;
+    printf("adding a state... ");
+    filter->addState(RobotState());
+    printf("current val: %f\n", filter->getStateHistory().get(SD::Angle));
+    *is_running = false;
 }
 void loop() {
     bool *is_running = (bool *)malloc(1);

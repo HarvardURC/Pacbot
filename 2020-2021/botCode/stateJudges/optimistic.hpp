@@ -1,8 +1,8 @@
-#ifndef OptimisticH
-#define OptimisticH
+#ifndef OPTIMISTIC_H
+#define OPTIMISTIC_H
 
 #include "stateJudge.hpp"
 
-double optimisticJudge(RobotStateHistory *stateHistory);
+double optimistic_judge(RobotStateHistory stateHistory);
 
 #endif

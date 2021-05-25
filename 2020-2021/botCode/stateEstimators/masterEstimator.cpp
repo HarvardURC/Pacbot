@@ -18,5 +18,5 @@ void StateEstimator::apply(RobotStateHistory *state_history,
                            bool with_uncertianity) {
     // Plasubile that we should enforce sds_using and sds_estimating
     RobotState new_state = this->f(*state_history, with_uncertianity);
-    state_history->use(new_state);
+    state_history->use_all(new_state);
 }

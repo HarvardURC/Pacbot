@@ -1,3 +1,3 @@
 #include "optimistic.hpp"
 
-double optimisticJudge(RobotStateHistory *_stateHistory) { return 1.0; }
+double optimistic_judge(RobotStateHistory _stateHistory) { return 1.0; }

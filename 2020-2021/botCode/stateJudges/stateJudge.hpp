@@ -3,6 +3,6 @@
 
 #include "../robotState/robotStateHistory.hpp"
 
-typedef std::function<double(RobotStateHistory *)> StateJudge;
+typedef std::function<double(RobotStateHistory)> StateJudge;
 
 #endif
