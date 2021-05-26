@@ -15,8 +15,9 @@
 #include <chrono>
 #include <thread>
 
-RobotStateHistory state_history;
-ParticleFilter *filter = nullptr;
+std::shared_ptr<RobotStateHistory> state_history(new RobotStateHistory());
+ParticleFilter *particle_filter = nullptr;
+std::shared_ptr<StateEstimator> particle_filter_est = nullptr;
 
 void on_init() {
     /* wiringPiSetup();
@@ -25,16 +26,24 @@ void on_init() {
     follower = new wall_follower(0.1, true);
     */
 
-    state_history.set(SD::Angle, 0.0);
-    filter = new ParticleFilter(getTestEstimator(), test_judge, state_history);
+    state_history->set(SD::Angle, 0.0);
+    printf("current val, len: %f, %d\n", state_history->get(SD::Angle),
+           state_history->get_size());
+
+    particle_filter =
+        new ParticleFilter(getTestEstimator(), test_judge, *state_history);
+    particle_filter_est = particle_filter->getStateEstimator();
 }
 void on_periodic(bool *is_running) {
-    filter->addState(RobotState());
-    printf("current val: %f\n", filter->getState().get(SD::Angle));
+    state_history->add_empty_state();
+    particle_filter_est->apply(state_history);
+    printf("current val, len: %f, %d\n", state_history->get(SD::Angle),
+           state_history->get_size());
     *is_running = false;
 }
 void loop() {
-    bool *is_running = (bool *)malloc(1);
+    bool is_running_val = true;
+    bool *is_running = &is_running_val;
     *is_running = true;
     std::thread th(on_periodic, std::ref(is_running));
     std::this_thread::sleep_for(

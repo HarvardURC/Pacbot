@@ -131,17 +131,11 @@ RobotState ParticleFilter::estimate(RobotStateHistory &state) {
     return this->getState();
 }
 
-StateEstimator ParticleFilter::stateEstimator(StateEstimator estimator,
-                                              StateJudge judge,
-                                              RobotStateHistory startingState,
-                                              int numParticles) {
-    ParticleFilter particle_filter =
-        ParticleFilter(estimator, judge, startingState, numParticles);
-    auto f = [=](RobotStateHistory state_history,
-                 bool with_uncertianity) mutable -> RobotState {
-        return particle_filter.estimate(state_history);
+std::shared_ptr<StateEstimator> ParticleFilter::getStateEstimator() {
+    auto f = [this](RobotStateHistory state_history,
+                    bool with_uncertianity) mutable -> RobotState {
+        return this->estimate(state_history);
     };
-    return StateEstimator(f, particle_filter.past_sds_using,
-                          particle_filter.sds_using,
-                          particle_filter.sds_estimating);
+    return std::shared_ptr<StateEstimator>(new StateEstimator(
+        f, this->past_sds_using, this->sds_using, this->sds_estimating));
 }

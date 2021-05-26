@@ -5,13 +5,12 @@
 int states_ago_to_index(int states_ago) { return states_ago - 1; }
 
 // CONSTRUCTORS
-RobotStateHistory::RobotStateHistory(std::shared_ptr<history_t> stateHistory) {
+RobotStateHistory::RobotStateHistory(history_t stateHistory) {
     this->state_history = stateHistory;
     this->current_state = std::unique_ptr<RobotState /**/>(new RobotState());
 }
 RobotStateHistory::RobotStateHistory(int max_size) {
-    this->state_history = std::shared_ptr<history_t>(
-        new Deque<history_el_t /**/>(states_ago_to_index(max_size)));
+    this->state_history = history_t(states_ago_to_index(max_size));
     this->current_state = std::unique_ptr<RobotState /**/>(new RobotState());
 }
 RobotStateHistory::RobotStateHistory(const RobotStateHistory &state_history)
@@ -26,11 +25,11 @@ RobotStateHistory::operator=(const RobotStateHistory &state_history) {
 
 // Simple State_history Accessors
 int RobotStateHistory::get_max_size() const {
-    return this->state_history->get_max_size();
+    return this->state_history.get_max_size();
 }
 // The plus 1 is due to the current_state variable
 int RobotStateHistory::get_size() const {
-    return this->state_history->size() + 1;
+    return this->state_history.size() + 1;
 }
 
 void throw_if_out_of_range(int states_ago, int max_size, bool is_max) {
@@ -48,7 +47,7 @@ history_el_t RobotStateHistory::states_ago_ptr(int n) const {
         throw std::out_of_range("RobotStateHistory, internal error, "
                                 "states_ago_ptr called with index 0");
     } else {
-        return this->state_history->get(states_ago_to_index(n));
+        return this->state_history.get(states_ago_to_index(n));
     }
 }
 
@@ -101,7 +100,7 @@ RobotState RobotStateHistory::get_current_state() const {
 // current_state
 void RobotStateHistory::add_state(const RobotState &robot_state) {
     history_el_t el_to_add = history_el_t(new RobotState(*this->current_state));
-    this->state_history->add(el_to_add);
+    this->state_history.add(el_to_add);
     this->current_state =
         std::unique_ptr<RobotState>(new RobotState(robot_state));
 }
@@ -122,7 +121,7 @@ Deque<std::optional<double>> RobotStateHistory::get_SD_history(SD sd) const {
     return sd_history;
 }
 void RobotStateHistory::set_max_size(int max_size) {
-    this->state_history->set_max_size(states_ago_to_index(max_size));
+    this->state_history.set_max_size(states_ago_to_index(max_size));
 }
 
 double RobotStateHistory::get_past(SD sd, int states_ago,

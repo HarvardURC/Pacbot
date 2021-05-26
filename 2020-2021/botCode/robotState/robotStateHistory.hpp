@@ -10,14 +10,14 @@ typedef Deque<history_el_t> history_t;
 class RobotStateHistory {
 
   private:
-    std::shared_ptr<history_t> state_history;
+    history_t state_history;
     history_el_t states_ago_ptr(int n) const;
 
   public:
     std::unique_ptr<RobotState> current_state;
     static const int DEFAULT_MAX_SIZE = 10;
     RobotStateHistory(int max_size = DEFAULT_MAX_SIZE);
-    RobotStateHistory(std::shared_ptr<history_t> state_history);
+    RobotStateHistory(history_t state_history);
     RobotStateHistory(const RobotStateHistory &state_history);
     RobotStateHistory &operator=(const RobotStateHistory &state_history);
     int get_max_size() const;

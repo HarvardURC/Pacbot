@@ -54,6 +54,17 @@ bool add_state_seperation() {
     state.set_override(sd, val2);
     return state_history.get(sd) == val;
 }
+bool trimmed_copy() {
+    std::shared_ptr<RobotStateHistory> state_history(new RobotStateHistory());
+    state_history->set(SD::X, 0.0);
+    state_history->set(SD::Y, 0.0);
+    RobotStateHistory trimmed =
+        state_history->trimmed_copy(std::unordered_set({SD::X}));
+    bool original_correct =
+        state_history->contains(SD::X) && state_history->contains(SD::Y);
+    bool trimmed_correct = trimmed.contains(SD::X) && !trimmed.contains(SD::Y);
+    return original_correct && trimmed_correct;
+}
 } // namespace RobotStateHistory_test
 
 TEST_CASE("RobotStateHistory Tests") {
@@ -62,6 +73,7 @@ TEST_CASE("RobotStateHistory Tests") {
     REQUIRE(RobotStateHistory_test::set_and_get());
     REQUIRE(RobotStateHistory_test::add_state_simple());
     REQUIRE(RobotStateHistory_test::add_state_seperation());
+    REQUIRE(RobotStateHistory_test::trimmed_copy());
 }
 
 #endif
