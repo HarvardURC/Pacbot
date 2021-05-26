@@ -118,3 +118,13 @@ void RobotState::trim_to(std::unordered_set<SD> to_keep) {
         }
     }
 }
+
+RobotState RobotState::trimmed_copy(std::unordered_set<SD> to_keep) const {
+    RobotState copy;
+    for (SD sd : this->get_keys()) {
+        if (to_keep.count(sd) == 1) {
+            copy.set(sd, this->get(sd));
+        }
+    }
+    return copy;
+}

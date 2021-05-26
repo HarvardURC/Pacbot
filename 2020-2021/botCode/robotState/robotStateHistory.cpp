@@ -82,6 +82,17 @@ RobotState RobotStateHistory::states_ago(int n) const {
         return *this->states_ago_ptr(n);
     }
 }
+
+RobotState
+RobotStateHistory::states_ago_trimmed(int n,
+                                      std::unordered_set<SD> to_keep) const {
+    if (n == 0) {
+        return this->current_state->trimmed_copy(to_keep);
+    } else {
+        return this->states_ago_ptr(n)->trimmed_copy(to_keep);
+    }
+}
+
 RobotState RobotStateHistory::get_current_state() const {
     return this->states_ago(0);
 }
@@ -143,4 +154,15 @@ double RobotStateHistory::get_past_last_default(SD sd, int states_ago) const {
 
 void RobotStateHistory::trim_to(std::unordered_set<SD> to_keep) {
     this->current_state->trim_to(to_keep);
+}
+RobotStateHistory
+RobotStateHistory::trimmed_copy(std::unordered_set<SD> to_keep) {
+    RobotStateHistory copy;
+    copy.state_history = this->state_history;
+    for (SD sd : this->current_state->get_keys()) {
+        if (to_keep.count(sd) == 1) {
+            copy.current_state->set(sd, this->get(sd));
+        }
+    }
+    return copy;
 }

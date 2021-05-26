@@ -28,6 +28,7 @@ class RobotStateHistory {
     void add_empty_state();
     void set_current_state(const RobotState &robot_state);
     RobotState states_ago(int n) const;
+    RobotState states_ago_trimmed(int n, std::unordered_set<SD> to_keep) const;
     Deque<std::optional<double>> get_SD_history(SD sd) const;
     bool contains(SD sd) const;
     double get(SD sd) const;
@@ -38,6 +39,7 @@ class RobotStateHistory {
     double get_past_last_default(SD sd, int states_ago) const;
     double pop(SD sd);
     void trim_to(std::unordered_set<SD> to_keep);
+    RobotStateHistory trimmed_copy(std::unordered_set<SD> to_keep);
     void set_max_size(int max_size);
     std::unordered_set<SD, SDHash> get_keys() const;
     void use_all(RobotState robot_state);

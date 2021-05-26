@@ -14,9 +14,10 @@ StateEstimator::StateEstimator(StateEstimator::StateEstimatorF f,
     this->sds_estimating = sds_estimating;
 }
 
-void StateEstimator::apply(RobotStateHistory *state_history,
+void StateEstimator::apply(std::shared_ptr<RobotStateHistory> state_history,
                            bool with_uncertianity) {
     // Plasubile that we should enforce sds_using and sds_estimating
-    RobotState new_state = this->f(*state_history, with_uncertianity);
+    RobotState new_state = this->f(state_history->trimmed_copy(this->sds_using),
+                                   with_uncertianity);
     state_history->use_all(new_state);
 }

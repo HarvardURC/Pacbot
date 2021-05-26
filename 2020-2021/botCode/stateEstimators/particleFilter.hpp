@@ -46,6 +46,11 @@ class ParticleFilter {
      */
     RobotState getState();
     RobotState estimate(RobotStateHistory &state_history);
+
+    static StateEstimator
+    stateEstimator(StateEstimator estimator, StateJudge judge,
+                   RobotStateHistory startingState,
+                   int num_particles = DEFAULT_NUM_PARTICLES);
 };
 
 #endif

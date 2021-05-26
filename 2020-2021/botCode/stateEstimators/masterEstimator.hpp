@@ -16,7 +16,7 @@ class StateEstimator {
                    std::unordered_set<SD> sds_using,
                    std::unordered_set<SD> sds_estimating);
 
-    void apply(RobotStateHistory *state_history,
+    void apply(std::shared_ptr<RobotStateHistory> state_history,
                bool with_uncertianity = false);
 };
 

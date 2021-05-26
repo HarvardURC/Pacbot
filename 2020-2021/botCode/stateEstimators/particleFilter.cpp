@@ -33,7 +33,9 @@ ParticleFilter::ParticleFilter(StateEstimator estimator, StateJudge judge,
 RobotStateHistory ParticleFilter::updateState(RobotStateHistory state_history,
                                               RobotState new_state) {
     state_history.add_state(new_state);
-    this->estimator.apply(&state_history, true);
+    RobotState update =
+        this->estimator.f(state_history.trimmed_copy(this->sds_using), true);
+    state_history.use_all(update);
     return state_history;
 }
 
@@ -120,6 +122,26 @@ RobotState ParticleFilter::getState() {
 }
 
 RobotState ParticleFilter::estimate(RobotStateHistory &state) {
-    this->addState(state.get_current_state());
+    if (state.get_size() == 1) {
+        this->addState(state.get_current_state());
+    } else {
+        this->addState(state.get_current_state(),
+                       state.states_ago_trimmed(1, this->past_sds_using));
+    }
     return this->getState();
+}
+
+StateEstimator ParticleFilter::stateEstimator(StateEstimator estimator,
+                                              StateJudge judge,
+                                              RobotStateHistory startingState,
+                                              int numParticles) {
+    ParticleFilter particle_filter =
+        ParticleFilter(estimator, judge, startingState, numParticles);
+    auto f = [=](RobotStateHistory state_history,
+                 bool with_uncertianity) mutable -> RobotState {
+        return particle_filter.estimate(state_history);
+    };
+    return StateEstimator(f, particle_filter.past_sds_using,
+                          particle_filter.sds_using,
+                          particle_filter.sds_estimating);
 }

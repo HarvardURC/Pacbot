@@ -60,6 +60,7 @@ class RobotState {
     void use(RobotState robot_state, std::unordered_set<SD> to_use);
     void use_extras(RobotState robot_state);
     void trim_to(std::unordered_set<SD> to_keep);
+    RobotState trimmed_copy(std::unordered_set<SD> to_keep) const;
     std::unordered_map<SD, double, SDHash> get_data() const;
 }; // namespace std
 
