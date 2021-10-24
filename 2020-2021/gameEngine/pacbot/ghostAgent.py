@@ -168,5 +168,5 @@ class GhostAgent:
             'next' : (self.init_moves[2],self.init_moves[3])
         }
         self.direction = self.init_direction
-        self.scared_counter = 0
+        self.frightened_counter = 0
         self.respawn_counter = len(respawn_path)
