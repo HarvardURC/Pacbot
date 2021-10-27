@@ -1,7 +1,0 @@
-The code has been written in python 3.5
-You might need to install termios and termcolor 
-
-To run:
-cd into GameCode directory
-run "python pacman.py" in terminal
-
