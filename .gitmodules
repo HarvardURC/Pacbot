@@ -1,3 +1,6 @@
 [submodule "2020-2021/2020-2021/old-botCode/robomodules"]
 	path = 2020-2021/2020-2021/old-botCode/robomodules
 	url = https://github.com/HarvardURC/robomodules
+[submodule "src/gameEngine/robomodules"]
+	path = src/gameEngine/robomodules
+	url = git@github.com:HarvardURC/robomodules.git
