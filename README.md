@@ -5,7 +5,11 @@ Repository for the Harvard Undergraduate Robotics Club's PacBot team
 
 The rules for PacBot and helpful images can be found at our website: https://harvardrobotics.com/pacbots
 
-Codebases for each successive year can be found in the '2017-2018', '2018-2019', and '2019-2020' folders. Each year contains the code for the game engine (in 'gameEngine') and code for the Harvard robot (in 'botCode').
+Codebase for 2021-2022 can be found in the ***master*** branch. Codesbases for past years can be found in their respective branches.
+
+The current Pacman game code can be found in 'src/gameEngine'. The README there describes how to run the game.
+
+The code for the Harvard robotics team's bot can be found in the 'src/botCode' folder (if you're looking for inspiration).
 
 General design info about our previous robots can be found in the 'Public Designs' folder.
 

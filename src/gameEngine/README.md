@@ -12,7 +12,8 @@ In order to add new message types you need the Google Protocol Buffer compiler f
 
 ## Running the gameEngine
 
-To run the gameEngine, first run the server and then run each of the module proccesses separately.
+To run the gameEngine, first run the server and then run each of the module proccesses separately. A virtual environment is included here with all necessary python modules.
+
 1. `./server.py`
 
 2. `./gameEngine.py`
