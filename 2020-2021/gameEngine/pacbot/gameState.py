@@ -130,11 +130,7 @@ class GameState:
 
 
     def _is_game_over(self):
-        return (self._are_all_pellets_eaten() and
-                not (self.red.is_frightened() or
-                    self.red.is_frightened() or
-                    self.red.is_frightened() or
-                    self.red.is_frightened()))
+        return self._are_all_pellets_eaten()
 
     def _swap_state_if_necessary(self):
         if self.state_counter in state_swap_times:
