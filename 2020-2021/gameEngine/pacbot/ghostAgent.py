@@ -50,7 +50,7 @@ class GhostAgent:
     def _get_next_blue_chase_move(self):
         pacbot_target = (0,0)
         if self.game_state.pacbot.direction == up:
-            pacbot_target = (self.game_state.pacbot.pos[0], self.game_state.pacbot.pos[1] + 2)
+            pacbot_target = (self.game_state.pacbot.pos[0] - 2, self.game_state.pacbot.pos[1] + 2)
         elif self.game_state.pacbot.direction == down:
             pacbot_target = (self.game_state.pacbot.pos[0], self.game_state.pacbot.pos[1] - 2)
         elif self.game_state.pacbot.direction == left:
@@ -84,7 +84,7 @@ class GhostAgent:
         return self._get_move_based_on_target(self.game_state.pacbot.pos)
 
     def _get_next_orange_chase_move(self):
-        if self._get_euclidian_distance(self.pos["current"], self.game_state.pacbot.pos) > 8:
+        if self._get_euclidian_distance(self.pos["current"], self.game_state.pacbot.pos) < 8:
             return self._get_next_scatter_move()
         return self._get_move_based_on_target(self.game_state.pacbot.pos)
 

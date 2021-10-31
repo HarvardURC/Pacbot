@@ -128,7 +128,6 @@ class GameState:
     def _are_all_pellets_eaten(self):
         return self.pellets == 0 and self.power_pellets == 0
 
-
     def _is_game_over(self):
         return self._are_all_pellets_eaten()
 
