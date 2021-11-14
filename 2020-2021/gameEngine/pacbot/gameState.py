@@ -61,9 +61,9 @@ class GameState:
 
     def _should_spawn_cherry(self):
         if self.pellets == 170:
-            print("Cherry spawned")
+            #print("Cherry spawned")
             return True
-        print(self.pellets)
+        #print(self.pellets)
         return False
 
     def _spawn_cherry(self):
@@ -146,6 +146,13 @@ class GameState:
         self.previous_start = time.time()
         self.play = True
 
+    def print_ghost_pos(self):
+        ghosts = [self.red, self.pink, self.blue, self.orange]
+        ret = ""
+        for ghost in ghosts:
+            ret += str(ghost.pos["current"])+" "
+        print(ret)
+
     def next_step(self):
         if self._is_game_over():
             self._end_game()
@@ -164,6 +171,7 @@ class GameState:
                     self._swap_state_if_necessary()
                     self.state_counter += 1
                 self.start_counter += 1
+                self.print_ghost_pos()
             self._update_score()
             if self._should_spawn_cherry():
                 self._spawn_cherry()

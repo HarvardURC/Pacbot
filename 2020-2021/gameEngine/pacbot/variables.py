@@ -5,6 +5,7 @@ up = 2
 down = 3
 
 # Grid enums
+# o = normal pellet, e = empty space, O = power pellet, c = cherry position
 I = 1
 o = 2
 e = 3
