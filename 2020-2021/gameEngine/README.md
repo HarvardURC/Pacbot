@@ -23,9 +23,12 @@ To run the gameEngine, first run the server and then run each of the module proc
 
 ## Visualizer
 
-The visualizer takes 2 command line arguments:
+The visualizer takes 3 command line arguments:
 - `-w` - If this is supplied, then the visualizer will draw the maze walls.
 - `-p` - If this is supplied, then the visualizer will draw pacman.
+- `-s` - If this is supplied, then the visualizer should fit the entire game onto your computer screen. 
+         If not, then you can supply a specific square size by inputting `-s=x`, where x is some integer.
+         Default square size without `-s` is 31, square size with `-s` is 25.
 
 ## KeyboardInput
 

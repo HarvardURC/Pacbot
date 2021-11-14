@@ -4,7 +4,7 @@ from .variables import *
 from .spriteStripAnim import *
 
 class Visualizer(rm.ProtoModule):
-    def __init__(self, addr, port, print_walls, print_pacman, split=Split.FULL):
+    def __init__(self, addr, port, print_walls, print_pacman, split=Split.FULL, square_size=SQUARE_SIZE):
         self.subscriptions = [MsgType.FULL_STATE]
         super().__init__(addr, port, message_buffers, MsgType,DISPLAY_FREQUENCY, self.subscriptions)
 
@@ -12,6 +12,8 @@ class Visualizer(rm.ProtoModule):
         self.print_walls = print_walls
         self.print_pacman = print_pacman
         self.last_tick = float('inf')
+
+        self.square_size = square_size
 
         self.dirs = {
             'red': [None, None],
@@ -24,16 +26,16 @@ class Visualizer(rm.ProtoModule):
         pygame.init()
         # Set up the surface to draw on
         # This should also be used in Visualizer.draw()
-        self.surface = pygame.Surface((GRID_SIZE[0]*SQUARE_SIZE, GRID_SIZE[1]*SQUARE_SIZE))
+        self.surface = pygame.Surface((GRID_SIZE[0]*self.square_size, GRID_SIZE[1]*self.square_size))
         self.split = split
-        self.y_height = int(GRID_SIZE[1]*SQUARE_SIZE/2)
+        self.y_height = int(GRID_SIZE[1]*self.square_size/2)
         if GRID_SIZE[1] % 2 == 1 and self.split == Split.BOTTOM:
             self.y_height += 1
         elif self.split == Split.FULL:
-            self.y_height = GRID_SIZE[1]*SQUARE_SIZE
-        self.display_surface = pygame.display.set_mode((GRID_SIZE[0]*SQUARE_SIZE, self.y_height))
+            self.y_height = GRID_SIZE[1]*self.square_size
+        self.display_surface = pygame.display.set_mode((GRID_SIZE[0]*self.square_size, self.y_height))
         pygame.display.set_caption("PACBOT")
-        self.font = pygame.font.Font('graphics/crackman.ttf', int(SQUARE_SIZE))
+        self.font = pygame.font.Font('graphics/crackman.ttf', int(self.square_size))
 
         self._init_sprites()
 
@@ -97,19 +99,19 @@ class Visualizer(rm.ProtoModule):
 
     def _print_score_lives_time(self, score, lives, time):
         score_surf_1 = self.font.render('Score:', True, white_color)
-        self.surface.blit(score_surf_1, (SQUARE_SIZE*23.5, SQUARE_SIZE*11))
+        self.surface.blit(score_surf_1, (self.square_size*23.5, self.square_size*11))
         score_surf_2 = self.font.render('{}'.format(score), True, white_color)
-        self.surface.blit(score_surf_2, (SQUARE_SIZE*23.5, SQUARE_SIZE*12))
+        self.surface.blit(score_surf_2, (self.square_size*23.5, self.square_size*12))
 
         lives_surf_1 = self.font.render('Lives:', True, white_color)
-        self.surface.blit(lives_surf_1, (SQUARE_SIZE*1, SQUARE_SIZE*16))
+        self.surface.blit(lives_surf_1, (self.square_size*1, self.square_size*16))
         lives_surf_2 = self.font.render('{}'.format(lives), True, white_color)
-        self.surface.blit(lives_surf_2, (SQUARE_SIZE*1, SQUARE_SIZE*17))
+        self.surface.blit(lives_surf_2, (self.square_size*1, self.square_size*17))
 
         time_surf_1 = self.font.render('Time:', True, white_color)
-        self.surface.blit(time_surf_1, (SQUARE_SIZE*23.5, SQUARE_SIZE*16))
+        self.surface.blit(time_surf_1, (self.square_size*23.5, self.square_size*16))
         time_surf_2 = self.font.render('{0:.2f}s'.format(time), True, white_color)
-        self.surface.blit(time_surf_2, (SQUARE_SIZE*23.5, SQUARE_SIZE*17))
+        self.surface.blit(time_surf_2, (self.square_size*23.5, self.square_size*17))
 
 
     def _is_ghost_frightened(self, color):
@@ -137,19 +139,19 @@ class Visualizer(rm.ProtoModule):
             return 0
 
     def _get_interpolated_pos(self, idx, inc):
-        return (idx + inc * (self.state.update_ticks - self.state.ticks_per_update/2.) / self.state.ticks_per_update) * SQUARE_SIZE
+        return (idx + inc * (self.state.update_ticks - self.state.ticks_per_update/2.) / self.state.ticks_per_update) * self.square_size
 
     def _get_draw_pos_by_dir(self, col_idx, row_idx, direction):
         if direction == None:
-           return (col_idx * SQUARE_SIZE, row_idx * SQUARE_SIZE)
+           return (col_idx * self.square_size, row_idx * self.square_size)
         elif direction == PacmanState.LEFT:
-            return (self._get_interpolated_pos(col_idx, -1), row_idx * SQUARE_SIZE)
+            return (self._get_interpolated_pos(col_idx, -1), row_idx * self.square_size)
         elif direction == PacmanState.RIGHT:
-            return (self._get_interpolated_pos(col_idx, 1), row_idx * SQUARE_SIZE)
+            return (self._get_interpolated_pos(col_idx, 1), row_idx * self.square_size)
         elif direction == PacmanState.UP:
-            return (col_idx * SQUARE_SIZE, self._get_interpolated_pos(row_idx, -1))
+            return (col_idx * self.square_size, self._get_interpolated_pos(row_idx, -1))
         else:
-            return (col_idx * SQUARE_SIZE, self._get_interpolated_pos(row_idx, 1))
+            return (col_idx * self.square_size, self._get_interpolated_pos(row_idx, 1))
 
 
     def _get_draw_pos(self, col_idx, row_idx, old_dir, new_dir):
@@ -174,7 +176,7 @@ class Visualizer(rm.ProtoModule):
 
         if self._is_ghost_frightened(color):
             time_left = self._get_frightened_counter(color)
-            self.surface.blit(pygame.transform.scale(self.sprites['frightened']['r'].next(), (SQUARE_SIZE, SQUARE_SIZE)), (x,y))
+            self.surface.blit(pygame.transform.scale(self.sprites['frightened']['r'].next(), (self.square_size, self.square_size)), (x,y))
             if time_left < 10:
                 if time_left % 2 != 0:
                     self.sprites['frightened']['r'].next().set_alpha(0)
@@ -184,47 +186,47 @@ class Visualizer(rm.ProtoModule):
                 self.sprites['frightened']['r'].next().set_alpha(255)
             print(time_left)
         elif direction == PacmanState.LEFT:
-            self.surface.blit(pygame.transform.scale(sprite_set['l'].next(), (SQUARE_SIZE, SQUARE_SIZE)), (x,y))
+            self.surface.blit(pygame.transform.scale(sprite_set['l'].next(), (self.square_size, self.square_size)), (x,y))
         elif direction == PacmanState.RIGHT:
-            self.surface.blit(pygame.transform.scale(sprite_set['r'].next(), (SQUARE_SIZE, SQUARE_SIZE)), (x,y))
+            self.surface.blit(pygame.transform.scale(sprite_set['r'].next(), (self.square_size, self.square_size)), (x,y))
         elif direction == PacmanState.UP:
-            self.surface.blit(pygame.transform.scale(sprite_set['u'].next(), (SQUARE_SIZE, SQUARE_SIZE)), (x,y))
+            self.surface.blit(pygame.transform.scale(sprite_set['u'].next(), (self.square_size, self.square_size)), (x,y))
         else:
-            self.surface.blit(pygame.transform.scale(sprite_set['d'].next(), (SQUARE_SIZE, SQUARE_SIZE)), (x,y))
+            self.surface.blit(pygame.transform.scale(sprite_set['d'].next(), (self.square_size, self.square_size)), (x,y))
 
     def _print_pacman(self, direction, col_idx, row_idx):
-        (x, y) = (col_idx * SQUARE_SIZE, row_idx * SQUARE_SIZE)
+        (x, y) = (col_idx * self.square_size, row_idx * self.square_size)
 
         if direction == PacmanState.LEFT:
-            self.surface.blit(pygame.transform.scale(self.sprites['pacman']['l'].next(), (SQUARE_SIZE, SQUARE_SIZE)), (x,y))
+            self.surface.blit(pygame.transform.scale(self.sprites['pacman']['l'].next(), (self.square_size, self.square_size)), (x,y))
         elif direction == PacmanState.RIGHT:
-            self.surface.blit(pygame.transform.scale(self.sprites['pacman']['r'].next(), (SQUARE_SIZE, SQUARE_SIZE)), (x,y))
+            self.surface.blit(pygame.transform.scale(self.sprites['pacman']['r'].next(), (self.square_size, self.square_size)), (x,y))
         elif direction == PacmanState.UP:
-            self.surface.blit(pygame.transform.scale(self.sprites['pacman']['u'].next(), (SQUARE_SIZE, SQUARE_SIZE)), (x,y))
+            self.surface.blit(pygame.transform.scale(self.sprites['pacman']['u'].next(), (self.square_size, self.square_size)), (x,y))
         else:
-            self.surface.blit(pygame.transform.scale(self.sprites['pacman']['d'].next(), (SQUARE_SIZE, SQUARE_SIZE)), (x,y))
+            self.surface.blit(pygame.transform.scale(self.sprites['pacman']['d'].next(), (self.square_size, self.square_size)), (x,y))
 
     def _print_pellet(self, col_idx, row_idx):
-        x = int((col_idx + 1) * SQUARE_SIZE - SQUARE_SIZE/2)
-        y = int((row_idx + 1) * SQUARE_SIZE - SQUARE_SIZE/2)
-        pygame.draw.circle(self.surface, pygame.Color(*white_color), (x,y), int(SQUARE_SIZE/5))
+        x = int((col_idx + 1) * self.square_size - self.square_size/2)
+        y = int((row_idx + 1) * self.square_size - self.square_size/2)
+        pygame.draw.circle(self.surface, pygame.Color(*white_color), (x,y), int(self.square_size/5))
 
 
     def _print_corners(self):
-        r = int(SQUARE_SIZE/3)
+        r = int(self.square_size/3)
         pygame.draw.circle(self.surface, pygame.Color(*green_color), (r,r), r)
-        pygame.draw.circle(self.surface, pygame.Color(*green_color), (r,GRID_SIZE[1]*SQUARE_SIZE-r), int(SQUARE_SIZE/5))
-        pygame.draw.circle(self.surface, pygame.Color(*green_color), (GRID_SIZE[0]*SQUARE_SIZE - r,GRID_SIZE[1]*SQUARE_SIZE - r), r)
-        pygame.draw.circle(self.surface, pygame.Color(*green_color), (GRID_SIZE[0]*SQUARE_SIZE - r, r), r)
+        pygame.draw.circle(self.surface, pygame.Color(*green_color), (r,GRID_SIZE[1]*self.square_size-r), int(self.square_size/5))
+        pygame.draw.circle(self.surface, pygame.Color(*green_color), (GRID_SIZE[0]*self.square_size - r,GRID_SIZE[1]*self.square_size - r), r)
+        pygame.draw.circle(self.surface, pygame.Color(*green_color), (GRID_SIZE[0]*self.square_size - r, r), r)
 
     def _print_power_pellet(self, col_idx, row_idx):
-        x = int((col_idx + 1) * SQUARE_SIZE - SQUARE_SIZE/2)
-        y = int((row_idx + 1) * SQUARE_SIZE - SQUARE_SIZE/2)
-        pygame.draw.circle(self.surface, pygame.Color(*white_color), (x,y), int(SQUARE_SIZE/3))
+        x = int((col_idx + 1) * self.square_size - self.square_size/2)
+        y = int((row_idx + 1) * self.square_size - self.square_size/2)
+        pygame.draw.circle(self.surface, pygame.Color(*white_color), (x,y), int(self.square_size/3))
 
     def _print_cherry(self, col_idx, row_idx):
-        (x, y) = (col_idx * SQUARE_SIZE, row_idx * SQUARE_SIZE)
-        self.surface.blit(pygame.transform.scale(self.sprites['fruit']['r'].next(), (SQUARE_SIZE, SQUARE_SIZE)), (x,y))
+        (x, y) = (col_idx * self.square_size, row_idx * self.square_size)
+        self.surface.blit(pygame.transform.scale(self.sprites['fruit']['r'].next(), (self.square_size, self.square_size)), (x,y))
 
 
     def _print_wall(self, col_idx, row_idx):
@@ -235,12 +237,12 @@ class Visualizer(rm.ProtoModule):
 
         row_idx = GRID_SIZE[1] - row_idx - 1
 
-        x = int(col_idx * SQUARE_SIZE)
-        y = int(row_idx * SQUARE_SIZE)
-        pygame.draw.rect(self.surface, pygame.Color(*dark_blue_color), pygame.Rect(x,y, SQUARE_SIZE, SQUARE_SIZE))
-        x += int(SQUARE_SIZE/4)
-        y += int(SQUARE_SIZE/4)
-        pygame.draw.rect(self.surface, pygame.Color(*black_color), pygame.Rect(x,y, int(SQUARE_SIZE/2)+1, int(SQUARE_SIZE/2)+1))
+        x = int(col_idx * self.square_size)
+        y = int(row_idx * self.square_size)
+        pygame.draw.rect(self.surface, pygame.Color(*dark_blue_color), pygame.Rect(x,y, self.square_size, self.square_size))
+        x += int(self.square_size/4)
+        y += int(self.square_size/4)
+        pygame.draw.rect(self.surface, pygame.Color(*black_color), pygame.Rect(x,y, int(self.square_size/2)+1, int(self.square_size/2)+1))
 
         right = False
         left = False
@@ -250,39 +252,39 @@ class Visualizer(rm.ProtoModule):
         if (u_idx >= 0 and u_idx < len(self.state.grid) and
             self.state.grid[u_idx] == PacmanState.WALL):
             pygame.draw.rect(self.surface, pygame.Color(*black_color),
-                    pygame.Rect(x,y-int(SQUARE_SIZE/4), int(SQUARE_SIZE/2)+1, int(SQUARE_SIZE/2)+1))
+                    pygame.Rect(x,y-int(self.square_size/4), int(self.square_size/2)+1, int(self.square_size/2)+1))
             up = True
 
         if (d_idx >= 0 and d_idx < len(self.state.grid) and
             self.state.grid[d_idx] == PacmanState.WALL):
             pygame.draw.rect(self.surface, pygame.Color(*black_color),
-                    pygame.Rect(x,y+int(SQUARE_SIZE/4), int(SQUARE_SIZE/2)+1, int(SQUARE_SIZE/2)+1))
+                    pygame.Rect(x,y+int(self.square_size/4), int(self.square_size/2)+1, int(self.square_size/2)+1))
             down = True
 
         if (l_idx >= 0 and l_idx < len(self.state.grid) and
             self.state.grid[l_idx] == PacmanState.WALL):
             pygame.draw.rect(self.surface, pygame.Color(*black_color),
-                    pygame.Rect(x-int(SQUARE_SIZE/4),y, int(SQUARE_SIZE/2)+1, int(SQUARE_SIZE/2)+1))
+                    pygame.Rect(x-int(self.square_size/4),y, int(self.square_size/2)+1, int(self.square_size/2)+1))
             left = True
 
         if (r_idx >= 0 and r_idx < len(self.state.grid) and
             self.state.grid[r_idx] == PacmanState.WALL):
             pygame.draw.rect(self.surface, pygame.Color(*black_color),
-                    pygame.Rect(x+int(SQUARE_SIZE/4),y, int(SQUARE_SIZE/2)+1, int(SQUARE_SIZE/2)+1))
+                    pygame.Rect(x+int(self.square_size/4),y, int(self.square_size/2)+1, int(self.square_size/2)+1))
             right = True
 
         if left and up:
-            pygame.draw.rect(self.surface, pygame.Color(*black_color), pygame.Rect(x-int(SQUARE_SIZE/4),
-                y-int(SQUARE_SIZE/4), int(SQUARE_SIZE/2)+1, int(SQUARE_SIZE/2)+1))
+            pygame.draw.rect(self.surface, pygame.Color(*black_color), pygame.Rect(x-int(self.square_size/4),
+                y-int(self.square_size/4), int(self.square_size/2)+1, int(self.square_size/2)+1))
         if right and up:
-            pygame.draw.rect(self.surface, pygame.Color(*black_color), pygame.Rect(x+int(SQUARE_SIZE/4),
-                y-int(SQUARE_SIZE/4), int(SQUARE_SIZE/2)+1, int(SQUARE_SIZE/2)+1))
+            pygame.draw.rect(self.surface, pygame.Color(*black_color), pygame.Rect(x+int(self.square_size/4),
+                y-int(self.square_size/4), int(self.square_size/2)+1, int(self.square_size/2)+1))
         if left and down:
-            pygame.draw.rect(self.surface, pygame.Color(*black_color), pygame.Rect(x-int(SQUARE_SIZE/4),
-                y+int(SQUARE_SIZE/4), int(SQUARE_SIZE/2)+1, int(SQUARE_SIZE/2)+1))
+            pygame.draw.rect(self.surface, pygame.Color(*black_color), pygame.Rect(x-int(self.square_size/4),
+                y+int(self.square_size/4), int(self.square_size/2)+1, int(self.square_size/2)+1))
         if right and down:
-            pygame.draw.rect(self.surface, pygame.Color(*black_color), pygame.Rect(x+int(SQUARE_SIZE/4),
-                y+int(SQUARE_SIZE/4), int(SQUARE_SIZE/2)+1, int(SQUARE_SIZE/2)+1))
+            pygame.draw.rect(self.surface, pygame.Color(*black_color), pygame.Rect(x+int(self.square_size/4),
+                y+int(self.square_size/4), int(self.square_size/2)+1, int(self.square_size/2)+1))
 
 
     def msg_received(self, msg, msg_type):
@@ -363,6 +365,6 @@ class Visualizer(rm.ProtoModule):
 
             # Yay flipping the entire display all at once for performance!
             y_off = 0 if self.split in [Split.TOP, Split.FULL] else self.y_height
-            self.display_surface.blit(self.surface, pygame.Rect(0, -y_off, GRID_SIZE[0]*SQUARE_SIZE, self.y_height))
+            self.display_surface.blit(self.surface, pygame.Rect(0, -y_off, GRID_SIZE[0]*self.square_size, self.y_height))
             pygame.display.flip()
             self.last_tick = self.state.update_ticks
