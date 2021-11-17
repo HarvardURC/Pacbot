@@ -1,0 +1,27 @@
+name: PacBot
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - ca-certificates=2021.10.8=h033912b_0
+  - libcxx=12.0.1=habf9029_0
+  - libffi=3.4.2=h0d85af4_5
+  - libprotobuf=3.19.1=hcf210ce_0
+  - libzlib=1.2.11=h9173be1_1013
+  - ncurses=6.2=h2e338ed_4
+  - openssl=3.0.0=h0d85af4_2
+  - pip=21.3.1=pyhd8ed1ab_0
+  - protobuf=3.19.1=py37hd8d24ac_1
+  - python=3.7.12=hf3644f1_100_cpython
+  - python_abi=3.7=2_cp37m
+  - readline=8.1=h05e3726_0
+  - setuptools=58.5.3=py37hf985489_0
+  - six=1.16.0=pyh6c4a22f_0
+  - sqlite=3.36.0=h23a322b_2
+  - tk=8.6.11=h5dbffcc_1
+  - wheel=0.37.0=pyhd8ed1ab_1
+  - xz=5.2.5=haf1e3a3_1
+  - zlib=1.2.11=h9173be1_1013
+  - pip:
+    - pygame==2.1.0
+prefix: /Users/Tom/anaconda3/envs/PacBot

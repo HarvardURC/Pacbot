@@ -1,26 +1,29 @@
 # Pacbot 2021-22 gameEngine
 
 ## Requirements
-To run the gameEngine you need the following:
-- Python 3
-- Pygame (for the visualizer)
-- OpenCV (for the computer vision module)
-- Protobuf (for the server)
-
-
-In order to add new message types you need the Google Protocol Buffer compiler for python.
+To run the gameEngine, the dependencies listed in the ***environment.yml*** need to be installed. The ***environment.yml*** file is an exported Conda environment, so creating a Conda environment from this is recommended.
 
 ## Running the gameEngine
 
-To run the gameEngine, first run the server and then run each of the module proccesses separately. A virtual environment is included here with all necessary python modules.
+To run the gameEngine, first run the server and then run each of the module proccesses separately. 
+
+Specifically, run the following files:
 
 1. `./server.py`
+This creates a server for communicating between the different modules.
 
 2. `./gameEngine.py`
+This runs the game. Type r to restart, p to unpause/pause, and q to quit.
 
 3. `./visualize.py` OR `./terminalPrinter.py`
+***visualize.py*** displays the game graphics - see **Visualizer** for info regarding its command line arguments.
+
+***terminalPrinter.py*** will instead display the game in the terminal.
 
 4. `./keyboardInput.py` OR `./cameraReader.py`
+***keyboardInput.py*** allows you to provide w,a,s,d commands for moving the PacBot (you must be in this terminal window to provide these commands).
+
+***cameraReader.py*** will instead use the connected cameras to track where the PacBot is on the game board and relay that information to the gameEngine.
 
 ## Visualizer
 
