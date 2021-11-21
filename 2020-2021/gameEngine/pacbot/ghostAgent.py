@@ -135,6 +135,7 @@ class GhostAgent:
         return (move, self._get_direction(self.pos["next"], move))
 
     # Returns the correct move for the ghost based on what state the ghost is in.
+    # Since the state (chase/scatter) is the same for all ghosts, it is stored as part of the game state.
     def _get_next_state_move(self):
         if self.frightened_counter > 0:
             return self._get_next_frightened_move()
