@@ -11,8 +11,4 @@ The current Pacman game code can be found in 'src/gameEngine'. The README there 
 
 The code for the Harvard robotics team's bot can be found in the 'src/botCode' folder (if you're looking for inspiration).
 
-General design info about our previous robots can be found in the 'Public Designs' folder.
-
-Arena images/design can be found in 'Arena Documentation'.
-
-Information on how to communicate with the game engine for participating teams can be found in the 'Comms Docs' folder. This discusses how your robot will receive the state of the game via wifi.
+Documentation for participating teams regarding the game board/arena, bot designs from past years, and how to communicate with the game can be found in the 'docs' directory. Baseline code is provided here that teams can use to code their bots.
