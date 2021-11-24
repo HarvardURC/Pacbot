@@ -1,4 +1,4 @@
-# Pacbot
+# PacBot
 Repository for the Harvard Undergraduate Robotics Club's PacBot team
 
 > NOTE: Because this repository includes submodules, it should be cloned using `git clone --recursive`.
@@ -15,5 +15,4 @@ General design info about our previous robots can be found in the 'Public Design
 
 Arena images/design can be found in 'Arena Documentation'.
 
-Information on how to communicate with the game engine for participating teams can be found in
-the 'Comms Docs' folder.
+Information on how to communicate with the game engine for participating teams can be found in the 'Comms Docs' folder. This discusses how your robot will receive the state of the game via wifi.
