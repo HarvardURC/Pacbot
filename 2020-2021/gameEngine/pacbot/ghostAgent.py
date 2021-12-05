@@ -209,4 +209,6 @@ class GhostAgent:
         }
         self.direction = self.init_direction
         self.frightened_counter = 0
+        # This will prevent the ghost from following the respawn path it follows when
+        # leaving the start area AFTER being eaten by Pacman during a round.
         self.respawn_counter = len(respawn_path)

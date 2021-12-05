@@ -31,32 +31,41 @@ class GameState:
         self.state = self.old_state
         self.frightened_multiplier = 1
 
+    # Decreases the remaining time each ghost should be frightened for and updates each ghost's
+    # current and next move information.
     def _update_ghosts(self):
         self.red.update()
         self.orange.update()
         self.pink.update()
         self.blue.update()
 
+    # Returns true if the position of Pacman is occupied by a pellet.
     def _is_eating_pellet(self):
         return self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] == o
 
+    # Returns true if the position of Pacman is occupied by a power pellet.
     def _is_eating_power_pellet(self):
         return self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] == O
 
+    # Sets the current position of Pacman to empty and increments the score. 
     def _eat_pellet(self):
         self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] = e
         self.score += pellet_score
         self.pellets -= 1
 
+    # Sets the current position of Pacman to empty and increments the score. 
+    # Also makes all ghosts frightened.
     def _eat_power_pellet(self):
         self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] = e
         self.score += power_pellet_score
         self.power_pellets -= 1
         self._become_frightened()
 
+    # Returns true if the position of Pacman is occupied by a cherry.
     def _is_eating_cherry(self):
         return self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] == c
 
+    # Sets the current position of Pacman to empty and increments the score.
     def _eat_cherry(self):
         self.grid[self.pacbot.pos[0]][self.pacbot.pos[1]] = e
         self.score += cherry_score
@@ -88,6 +97,8 @@ class GameState:
         if self._is_eating_cherry():
             self._eat_cherry()
 
+
+    # Updates each agent's position and behavior to reflect the beginning of a new round.
     def _respawn_agents(self):
         self.pacbot.respawn()
         self.red.respawn()
@@ -195,6 +206,7 @@ class GameState:
                 self._spawn_cherry()
             self.update_ticks += 1
 
+    # Sets the game back to its original state (no rounds played).
     def restart(self):
         self.grid = copy.deepcopy(grid)
         self.pellets = sum([col.count(o) for col in self.grid])

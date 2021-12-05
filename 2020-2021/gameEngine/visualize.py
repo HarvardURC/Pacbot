@@ -19,12 +19,17 @@ def main():
     elif bottom:
         split = Split.BOTTOM
     square_size = SQUARE_SIZE
+
+    # If the command was run with the argument "-s=x" then set the square size to x
+    # If the command was run with the argument "-s" then make the square size 25
+    # This allows the game to be rendered correctly on most normal computer screens
     for arg in sys.argv:
         if arg[0:3] == '-s=' and arg[3:].isnumeric():
             square_size = int(arg[3:])
             break
         elif arg[0:2] == '-s' and square_size == SQUARE_SIZE:
             square_size = 25
+        
     visualizer = Visualizer(ADDRESS, PORT, walls, pacman, split, square_size)
     visualizer.run()
 
