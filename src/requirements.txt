@@ -1,3 +1,2 @@
 protobuf==3.19.1
 pygame==2.1.0
-six @ file:///home/conda/feedstock_root/build_artifacts/six_1620240208055/work
