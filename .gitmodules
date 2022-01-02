@@ -4,3 +4,9 @@
 [submodule "src/gameEngine/robomodules"]
 	path = src/gameEngine/robomodules
 	url = git@github.com:HarvardURC/robomodules.git
+[submodule "docs/Sample BotCode/robomodules"]
+	path = docs/Sample BotCode/robomodules
+	url = https://github.com/HarvardURC/robomodules.git
+[submodule "src/botCode/robomodules"]
+	path = src/botCode/robomodules
+	url = https://github.com/HarvardURC/robomodules.git

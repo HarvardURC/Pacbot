@@ -2,7 +2,7 @@
 
 ## Arena
 
-Arena Documentation contains images of the life sized PacMan game board along with a SLDPRT file containg the CAD design of the arena. Overall, the arena mimics the PacMan game where each path is 7 inches wide. Bots should be smaller than 7 inches by 7 inches to effectively navigate the arena. The arena is currently made of wooden material, and the walls of the channels are painted white.
+'Arena Documentation' contains images of the life sized PacMan game board along with a SLDPRT file containg the CAD design of the arena. Overall, the arena mimics the PacMan game where each path is 7 inches wide. Bots should be smaller than 7 inches by 7 inches to effectively navigate the arena. The arena is currently made of wooden material, and the walls of the channels are painted white.
 
 ## Sample Bot Code and Communication
 
