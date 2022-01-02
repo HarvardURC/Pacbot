@@ -1,7 +1,7 @@
 # Pacbot 2021-22 gameEngine
 
 ## Requirements
-To run the gameEngine, the dependencies listed in the ***environment.yml*** need to be installed. The ***environment.yml*** file is an exported Conda environment, so creating a Conda environment from this is recommended.
+To run the gameEngine, the dependencies listed in the ***src/environment.yml*** need to be installed. The ***src/environment.yml*** file is an exported Conda environment, so creating a Conda environment from this is recommended.
 
 ## Running the gameEngine
 
