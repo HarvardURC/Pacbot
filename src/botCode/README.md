@@ -13,7 +13,7 @@ Run './heuristicHighLevelModule.py' to run the high level module.
 
 ## Low Level Code
 
-The module 'cameraLowLevelModule.py' is our current low level code module. It receives direction commands from the high level module and makes decisions on how to move the motors. The module 'lowLevelModule.py' is previous iteration of this.
+The module 'cameraLowLevelModule.py' is our current low level code module. It receives direction commands from the high level module and makes decisions on how to move the motors. The module 'lowLevelModule.py' is a previous iteration of this.
 
 Motor movement is managed through PID loops dependent on the IR sensors. See 'low_level' directory for related code.
 
