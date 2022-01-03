@@ -67,8 +67,10 @@ class GameState:
         return False
 
     def _spawn_cherry(self):
-        self.grid[cherry_pos[0]][cherry_pos[1]] = c
-        self.cherry = True
+        # Don't spawn cherry's yet - not fully incorporated into the message state yet!
+        # self.grid[cherry_pos[0]][cherry_pos[1]] = c
+        # self.cherry = True
+        pass
 
     def _update_score(self):
         if self._is_eating_pellet():

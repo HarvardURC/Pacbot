@@ -16,14 +16,16 @@ This creates a server for communicating between the different modules.
 This runs the game. Type r to restart, p to unpause/pause, and q to quit.
 
 3. `./visualize.py` OR `./terminalPrinter.py`
-***visualize.py*** displays the game graphics - see **Visualizer** for info regarding its command line arguments.
 
-***terminalPrinter.py*** will instead display the game in the terminal.
+*visualize.py* displays the game graphics - see **Visualizer** for info regarding its command line arguments.
+
+*terminalPrinter.py* will instead display the game in the terminal.
 
 4. `./keyboardInput.py` OR `./cameraReader.py`
-***keyboardInput.py*** allows you to provide w,a,s,d commands for moving the PacBot (you must be in this terminal window to provide these commands).
 
-***cameraReader.py*** will instead use the connected cameras to track where the PacBot is on the game board and relay that information to the gameEngine.
+*keyboardInput.py* allows you to provide w,a,s,d commands for moving the PacBot (you must be in this terminal window to provide these commands).
+
+*cameraReader.py* will instead use the connected cameras to track where the PacBot is on the game board and relay that information to the gameEngine.
 
 ## Visualizer
 
