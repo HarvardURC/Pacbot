@@ -19,6 +19,10 @@ def main():
     elif bottom:
         split = Split.BOTTOM
 
+
+    # If the command was run with the argument "-s=x" then set the square size to x
+    # If the command was run with the argument "-s" then make the square size 25
+    # This allows the game to be rendered correctly on most normal computer screens
     square_size = SQUARE_SIZE
     for arg in sys.argv:
         if arg[0:3] == '-s=' and arg[3:].isnumeric():

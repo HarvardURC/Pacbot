@@ -6,6 +6,7 @@ down = 3
 
 # Grid enums
 # o = normal pellet, e = empty space, O = power pellet, c = cherry position
+# I = wall? n = empty space that cannot be moved into?
 I = 1
 o = 2
 e = 3
