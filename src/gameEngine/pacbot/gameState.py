@@ -82,8 +82,9 @@ class GameState:
 
     # Places the cherry on the board.
     def _spawn_cherry(self):
-        self.grid[cherry_pos[0]][cherry_pos[1]] = c
-        self.cherry = True
+        # self.grid[cherry_pos[0]][cherry_pos[1]] = c
+        # self.cherry = True
+        pass
 
     # Updates the score based on what Pacman has just eaten 
     # (what is in Pacman's current space on the board).
