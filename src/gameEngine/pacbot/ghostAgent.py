@@ -165,8 +165,8 @@ class GhostAgent:
     def respawn(self):
         self.pos = {
             'current' : (self.init_moves[0], self.init_moves[1]),
-            'next' : (self.init_moves[2],self.init_moves[3])
+            'next' : (self.init_moves[2], self.init_moves[3])
         }
         self.direction = self.init_direction
-        self.scared_counter = 0
+        self.frightened_counter = 0
         self.respawn_counter = len(respawn_path)
