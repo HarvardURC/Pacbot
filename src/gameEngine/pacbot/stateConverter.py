@@ -106,4 +106,6 @@ class StateConverter:
         proto.pacman.x = game_state.pacbot.pos[0]
         proto.pacman.y = game_state.pacbot.pos[1]
 
+        proto.cherry = game_state.cherry
+
         return proto
