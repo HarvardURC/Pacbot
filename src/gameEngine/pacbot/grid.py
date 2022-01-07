@@ -1,5 +1,9 @@
 from .variables import *
 
+# Grid enums
+# o = normal pellet, e = empty space, O = power pellet, c = cherry position
+# I = wall, n = ghost chambers
+
 #       bottom left of pacman board                             # top left of pacman board
 grid = [[I,I,I,I,I,I,I,I,I,I,I,I,e,e,e,e,e,e,e,e,e,I,I,I,I,I,I,I,I,I,I], # 0
         [I,o,o,o,o,I,I,O,o,o,o,I,e,e,e,e,e,e,e,e,e,I,o,o,o,o,o,O,o,o,I],
