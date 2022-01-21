@@ -3,6 +3,8 @@
 ## Requirements
 To run the gameEngine, the dependencies listed in the ***src/environment.yml*** need to be installed. The ***src/environment.yml*** file is an exported Conda environment, so creating a Conda environment from this is recommended.
 
+Currently, the game engine only runs on **Mac** and **Linux** computers (not Windows). We are working on fixing issues with the Python graphics package to allow the game engine to run on Windows computers.
+
 ## Running the gameEngine
 
 To run the gameEngine, first run the server and then run each of the module proccesses separately. 
