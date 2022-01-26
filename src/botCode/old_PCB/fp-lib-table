@@ -1,0 +1,5 @@
+(fp_lib_table
+  (lib (name pacbot)(type KiCad)(uri ${KIPRJMOD}/pacbot.pretty)(options "")(descr ""))
+  (lib (name teensy)(type KiCad)(uri ${KIPRJMOD}/modules/teensy.pretty)(options "")(descr ""))
+  (lib (name ADA3708)(type Legacy)(uri ${KIPRJMOD}/modules/ADA3708/ADA3708.mod)(options "")(descr ""))
+)
