@@ -164,7 +164,7 @@
 
   (footprint "pacbot:conn_ir" (layer "F.Cu")
     (tedit 5DC25D73) (tstamp 09c6ca89-863f-42d4-867e-9a769c316610)
-    (at 158.665 100.555)
+    (at 161.205 100.555)
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
     (property "Sheetname" "")
     (path "/00000000-0000-0000-0000-00005dbaf5cd")
@@ -203,7 +203,7 @@
 
   (footprint "Capacitor_SMD:C_0603_1608Metric" (layer "F.Cu")
     (tedit 5F68FEEE) (tstamp 0cbeb329-a88d-4a47-a5c2-a1d693de2f8c)
-    (at 136.72 131.35)
+    (at 139.26 131.35)
     (descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
     (tags "capacitor")
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
@@ -245,7 +245,7 @@
 
   (footprint "Capacitor_SMD:C_0603_1608Metric" (layer "F.Cu")
     (tedit 5F68FEEE) (tstamp 0fc5db66-6188-4c1f-bb14-0868bef113eb)
-    (at 128.7 133.86)
+    (at 131.24 133.86)
     (descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
     (tags "capacitor")
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
@@ -287,7 +287,7 @@
 
   (footprint "Capacitor_SMD:C_0603_1608Metric" (layer "F.Cu")
     (tedit 5F68FEEE) (tstamp 1427bb3f-0689-4b41-a816-cd79a5202fd0)
-    (at 120.68 136.37)
+    (at 123.22 136.37)
     (descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
     (tags "capacitor")
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
@@ -329,7 +329,7 @@
 
   (footprint "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical" (layer "F.Cu")
     (tedit 5B7745C2) (tstamp 162e5bdd-61a8-46a3-8485-826b5d58e1a1)
-    (at 121.65 127.08)
+    (at 124.19 127.08)
     (descr "JST PH series connector, B2B-PH-K (http://www.jst-mfg.com/product/pdf/eng/ePH.pdf), generated with kicad-footprint-generator")
     (tags "connector JST PH side entry")
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
@@ -396,7 +396,7 @@
 
   (footprint "Capacitor_SMD:C_0603_1608Metric" (layer "F.Cu")
     (tedit 5F68FEEE) (tstamp 18d11f32-e1a6-4f29-8e3c-0bfeb07299bd)
-    (at 147.32 106.68)
+    (at 149.86 106.68)
     (descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
     (tags "capacitor")
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
@@ -438,7 +438,7 @@
 
   (footprint "Connector_JST:JST_PH_B6B-PH-K_1x06_P2.00mm_Vertical" (layer "F.Cu")
     (tedit 5B7745C2) (tstamp 1c052668-6749-425a-9a77-35f046c8aa39)
-    (at 131.32 126.27)
+    (at 133.86 126.27)
     (descr "JST PH series connector, B6B-PH-K (http://www.jst-mfg.com/product/pdf/eng/ePH.pdf), generated with kicad-footprint-generator")
     (tags "connector JST PH side entry")
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
@@ -529,7 +529,7 @@
 
   (footprint "Capacitor_SMD:C_0603_1608Metric" (layer "F.Cu")
     (tedit 5F68FEEE) (tstamp 24b72b0d-63b8-4e06-89d0-e94dcf39a600)
-    (at 120.68 132.16)
+    (at 123.22 132.16)
     (descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
     (tags "capacitor")
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
@@ -571,7 +571,7 @@
 
   (footprint "Capacitor_SMD:C_0603_1608Metric" (layer "F.Cu")
     (tedit 5F68FEEE) (tstamp 269f19c3-6824-45a8-be29-fa58d70cbb42)
-    (at 132.71 133.86)
+    (at 135.25 133.86)
     (descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
     (tags "capacitor")
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
@@ -613,7 +613,7 @@
 
   (footprint "ADA3708:ADA3708_RPI-ZERO" (layer "F.Cu")
     (tedit 0) (tstamp 29126f72-63f7-4275-8b12-6b96a71c6f17)
-    (at 123.64 77.65)
+    (at 126.18 77.65)
     (descr "Raspberry Pi board model B+, full outline with position of big connectors &amp; drill holes")
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
     (property "Sheetname" "")
@@ -685,6 +685,10 @@
     (fp_circle (center 29 0) (end 32.1 0) (layer "Eco2.User") (width 0.127) (fill none) (tstamp 7273dd21-e834-41d3-b279-d7de727709ca))
     (fp_circle (center -29 0) (end -25.9 0) (layer "Eco2.User") (width 0.127) (fill none) (tstamp a3fab380-991d-404b-95d5-1c209b047b6e))
     (fp_circle (center -29 23) (end -25.9 23) (layer "Eco2.User") (width 0.127) (fill none) (tstamp b2b363dd-8e47-4a76-a142-e00e28334875))
+    (pad "" np_thru_hole circle (at 29 23) (size 2.75 2.75) (drill 2.75) (layers *.Cu *.Mask "F.SilkS") (tstamp 2ea8fa6f-efc3-40fe-bcf9-05bfa46ead4f))
+    (pad "" np_thru_hole circle (at 29 0) (size 2.75 2.75) (drill 2.75) (layers *.Cu *.Mask "F.SilkS") (tstamp 9da1ace0-4181-4f12-80f8-16786a9e5c07))
+    (pad "" np_thru_hole circle (at -29 23) (size 2.75 2.75) (drill 2.75) (layers *.Cu *.Mask "F.SilkS") (tstamp da546d77-4b03-4562-8fc6-837fd68e7691))
+    (pad "" np_thru_hole circle (at -29 0) (size 2.75 2.75) (drill 2.75) (layers *.Cu *.Mask "F.SilkS") (tstamp e2fac877-439c-4da0-af2e-5fdc70f85d42))
     (pad "1" thru_hole rect (at -24.13 1.27) (size 1.508 1.508) (drill 1) (layers *.Cu *.Mask)
       (net 1 "+3V3") (pinfunction "3.3V") (pintype "power_in") (tstamp 402c62e6-8d8e-473a-a0cf-2b86e4908cd7))
     (pad "2" thru_hole circle (at -24.13 -1.27) (size 1.508 1.508) (drill 1) (layers *.Cu *.Mask)
@@ -765,15 +769,11 @@
       (net 2 "GND") (pinfunction "GND") (pintype "power_in") (tstamp 4cc0e615-05a0-4f42-a208-4011ba8ef841))
     (pad "40" thru_hole circle (at 24.13 -1.27) (size 1.508 1.508) (drill 1) (layers *.Cu *.Mask)
       (net 20 "/IRB_EN") (pinfunction "GPIO21") (pintype "bidirectional") (tstamp 4641c87c-bffa-41fe-ae77-be3a97a6f797))
-    (pad "Hole" np_thru_hole circle (at 29 23) (size 2.75 2.75) (drill 2.75) (layers *.Cu *.Mask "F.SilkS") (tstamp 2ea8fa6f-efc3-40fe-bcf9-05bfa46ead4f))
-    (pad "Hole" np_thru_hole circle (at 29 0) (size 2.75 2.75) (drill 2.75) (layers *.Cu *.Mask "F.SilkS") (tstamp 9da1ace0-4181-4f12-80f8-16786a9e5c07))
-    (pad "Hole" np_thru_hole circle (at -29 23) (size 2.75 2.75) (drill 2.75) (layers *.Cu *.Mask "F.SilkS") (tstamp da546d77-4b03-4562-8fc6-837fd68e7691))
-    (pad "Hole" np_thru_hole circle (at -29 0) (size 2.75 2.75) (drill 2.75) (layers *.Cu *.Mask "F.SilkS") (tstamp e2fac877-439c-4da0-af2e-5fdc70f85d42))
   )
 
   (footprint "pacbot:conn_ir" (layer "F.Cu")
     (tedit 5DC25D73) (tstamp 2cd3975a-2259-4fa9-8133-e1586b9b9618)
-    (at 175.635 82.435)
+    (at 178.175 82.435)
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
     (property "Sheetname" "")
     (path "/00000000-0000-0000-0000-00005dbb2c93")
@@ -812,7 +812,7 @@
 
   (footprint "pacbot:conn_ir" (layer "F.Cu")
     (tedit 5DC25D73) (tstamp 4688ff87-8262-46f4-ad96-b5f4e529cfa9)
-    (at 192.605 82.435)
+    (at 195.145 82.435)
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
     (property "Sheetname" "")
     (path "/67298900-3ed0-400d-8ea2-3ff8085d7f48")
@@ -851,7 +851,7 @@
 
   (footprint "Connector_Stocko:Stocko_MKS_1653-6-0-303_1x3_P2.50mm_Vertical" (layer "F.Cu")
     (tedit 5C7139E8) (tstamp 4e677390-a246-4ca0-954c-746e0870f88f)
-    (at 94.99 135.68)
+    (at 97.53 135.68)
     (descr "Stocko MKS 16xx series connector, (https://www.stocko-contact.com/downloads/steckverbindersystem-raster-2,5-mm.pdf#page=15), generated with kicad-footprint-generator")
     (tags "Stocko RFK MKS 16xx")
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
@@ -919,7 +919,7 @@
 
   (footprint "Capacitor_SMD:C_0603_1608Metric" (layer "F.Cu")
     (tedit 5F68FEEE) (tstamp 5c7d6eaf-f256-4349-8203-d2e836872231)
-    (at 128.7 131.35)
+    (at 131.24 131.35)
     (descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
     (tags "capacitor")
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
@@ -961,7 +961,7 @@
 
   (footprint "Capacitor_SMD:C_0603_1608Metric" (layer "F.Cu")
     (tedit 5F68FEEE) (tstamp 5f31b97b-d794-46d6-bbd9-7a5638bcf704)
-    (at 124.69 134.67)
+    (at 127.23 134.67)
     (descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
     (tags "capacitor")
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
@@ -1003,7 +1003,7 @@
 
   (footprint "Capacitor_SMD:C_0603_1608Metric" (layer "F.Cu")
     (tedit 5F68FEEE) (tstamp 71f8d568-0f23-4ff2-8e60-1600ce517a48)
-    (at 132.71 131.35)
+    (at 135.25 131.35)
     (descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
     (tags "capacitor")
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
@@ -1045,7 +1045,7 @@
 
   (footprint "pacbot:conn_ir" (layer "F.Cu")
     (tedit 5DC25D73) (tstamp 81b95d0d-8967-4ed1-8d40-39925d015ae8)
-    (at 147.065 118.675)
+    (at 149.605 118.675)
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
     (property "Sheetname" "")
     (path "/0c6308e6-b315-4296-ba93-844a34f8030a")
@@ -1084,7 +1084,7 @@
 
   (footprint "Connector_JST:JST_PH_B6B-PH-K_1x06_P2.00mm_Vertical" (layer "F.Cu")
     (tedit 5B7745C2) (tstamp 946404ba-9297-43ec-9d67-30184041145f)
-    (at 93.34 127.08)
+    (at 95.88 127.08)
     (descr "JST PH series connector, B6B-PH-K (http://www.jst-mfg.com/product/pdf/eng/ePH.pdf), generated with kicad-footprint-generator")
     (tags "connector JST PH side entry")
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
@@ -1175,7 +1175,7 @@
 
   (footprint "Capacitor_SMD:C_0603_1608Metric" (layer "F.Cu")
     (tedit 5F68FEEE) (tstamp a0dee8e6-f88a-4f05-aba0-bab3aafdf2bc)
-    (at 124.69 132.16)
+    (at 127.23 132.16)
     (descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
     (tags "capacitor")
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
@@ -1217,7 +1217,7 @@
 
   (footprint "pacbot:conn_ir" (layer "F.Cu")
     (tedit 5DC25D73) (tstamp acf5d924-0760-425a-996c-c1d965700be8)
-    (at 158.665 82.435)
+    (at 161.205 82.435)
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
     (property "Sheetname" "")
     (path "/00000000-0000-0000-0000-00005da4d694")
@@ -1256,7 +1256,7 @@
 
   (footprint "pacbot:conn_imu" (layer "F.Cu")
     (tedit 5DB74739) (tstamp b0054ce1-b60e-41de-a6a2-bf712784dd39)
-    (at 108.315 132.205)
+    (at 110.855 132.205)
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
     (property "Sheetname" "")
     (path "/00000000-0000-0000-0000-00005db11066")
@@ -1297,7 +1297,7 @@
 
   (footprint "pacbot:conn_ir" (layer "F.Cu")
     (tedit 5DC25D73) (tstamp c6bba6d7-3631-448e-9df8-b5a9e3238ade)
-    (at 130.095 114.485)
+    (at 132.635 114.485)
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
     (property "Sheetname" "")
     (path "/00000000-0000-0000-0000-00005dbabc5a")
@@ -1336,7 +1336,7 @@
 
   (footprint "pacbot:drv8835" (layer "F.Cu")
     (tedit 5DB736D3) (tstamp c7f7bd58-1ebd-40fd-a39d-a95530a751b6)
-    (at 179.445 100.377)
+    (at 181.985 100.377)
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
     (property "Sheetname" "")
     (path "/00000000-0000-0000-0000-00005da4bc33")
@@ -1386,7 +1386,7 @@
 
   (footprint "teensy:Teensy30_31_32_LC" (layer "F.Cu")
     (tedit 5D5216D8) (tstamp df5c9f6b-a62e-44ba-997f-b2cf3279c7d4)
-    (at 109.99 114.89)
+    (at 112.53 114.89)
     (property "Sheetfile" "D:/data/13.Freshman Year (Harvard College)/clubs/HURC (Harvard Undergraduate Robotics Club)/Pacbot/src/botCode/PCB/PacBot_2021-2022.sch")
     (property "Sheetname" "")
     (path "/00000000-0000-0000-0000-00005da36c5e")
@@ -1570,5 +1570,14 @@
     (pad "52" thru_hole circle locked (at -10.16 0) (size 1.9 1.9) (drill 0.5) (layers *.Cu *.Mask) (tstamp 765684c2-53b3-4ef7-bd1b-7a4a73d87b76))
     (pad "52" thru_hole circle locked (at -6.35 0) (size 1.9 1.9) (drill 0.5) (layers *.Cu *.Mask) (tstamp dd2d59b3-ddef-491f-bb57-eb3d3820bdeb))
   )
+
+  (gr_line (start 93.275 -84.25) (end 105.975 -96.95) (layer "Edge.Cuts") (width 0.05) (tstamp 1399f001-fcc8-44ad-93cd-45f556537d9b))
+  (gr_line (start 105.975 -96.95) (end 207.575 -96.95) (layer "Edge.Cuts") (width 0.05) (tstamp 16c5bcca-6d20-49e6-b5a2-bf0979818732))
+  (gr_line (start 220.275 -33.45) (end 207.575 -20.75) (layer "Edge.Cuts") (width 0.05) (tstamp 9097ddf4-a696-49b2-80ad-265d3e36ccf0))
+  (gr_line (start 93.275 -33.45) (end 93.275 -84.25) (layer "Edge.Cuts") (width 0.05) (tstamp 9b893ef6-b674-44f2-bc00-2b2ceae7e237))
+  (gr_line (start 93.275 -33.45) (end 105.975 -20.75) (layer "Edge.Cuts") (width 0.05) (tstamp aa1fc60f-a852-4e31-96d6-6472f03e0810))
+  (gr_line (start 220.275 -84.25) (end 220.275 -33.45) (layer "Edge.Cuts") (width 0.05) (tstamp ab87da6d-546d-4ea9-aae2-df687d09a641))
+  (gr_line (start 207.575 -20.75) (end 105.975 -20.75) (layer "Edge.Cuts") (width 0.05) (tstamp ac3d64f7-fb36-4c37-8270-85d4927b09f4))
+  (gr_line (start 220.275 -84.25) (end 207.575 -96.95) (layer "Edge.Cuts") (width 0.05) (tstamp d2980117-00b9-4eaa-9fba-07086935c25b))
 
 )
