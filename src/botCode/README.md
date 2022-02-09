@@ -1,4 +1,6 @@
-# PacBot 2017-18 Bot Code
+# PacBot 2021-22 Bot Code
+
+This directory contains all of the code for the Harvard team's PacBot. Participating teams can refer to this code when designing their own bots if they'd like.
 
 ## How it works
 
