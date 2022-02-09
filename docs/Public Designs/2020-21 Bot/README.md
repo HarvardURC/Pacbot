@@ -1,5 +1,5 @@
 # Harvard PacBot Design Overview 2020-21
-PCB design files and images of bot can be found here.
+PCB design files and images of the bot can be found in this directory.
 
 ## Electrical Components
 -1 Raspberry Pi Zero W
@@ -8,7 +8,7 @@ PCB design files and images of bot can be found here.
 
 -1 PCB
 
--1 IMU
+-1 IMU (not in images)
 
 -4 IR Sensors
 
@@ -28,4 +28,28 @@ PCB design files and images of bot can be found here.
 -Wheels/Ball Casters
 
 ## Broad Overview
-As the core processors for the bot, a Raspberry Pi Zero W and Teensy 3.5 were used. Nearly all of our high level and low level code ran off of our Raspberry Pi Zero W; the teensy was mainly used to interface with the encoders and other sensors. The entire bot was centered around the PCB. The motors directly attached to the PCB using small brackets, and all of the electrical components were soldered on in some manner. Although the schematic of the electrical components and the PCB design (which are in this folder) give an idea of the set up of our bot, we unfortunately do not have a SolidWorks design of our 2018-19 bot. A few photos of the 2018-19 bot in this folder help give a picture of the overall design.
+### Sensors
+
+IR sensors are used for detecting whether we are near walls. These are placed on the sides and the front/back of the bot (see photos). Past robots used PID control on these sensors to follow the walls.
+
+Magnetic encoders are attached to the motors to track the amount of distance we travel.
+
+An IMU was intended to be used for general navigation of the robot (to ensure we don't hit walls and turn accurately - other uses are possible). It's not present in the photos.
+
+### Processors
+
+A Raspberry Pi Zero W is used to interface with the motors (through the motor driver) and the IR sensors. It also connects to our local wifi network in order to receive instructions from a computer regarding where the bot should travel (the high level code would run on a remote computer and send commands to the PacBot).
+
+Because of the encoder's output requirements, a Teensy is used to receive the encoder readings. The Teensy is also connected to the IMU. The Teensy communicates these sensor readings to the Raspberry Pi via serial communication.
+
+### Motors
+
+Two medium power, 6V, brushed DC gear motors are used on our bot (see https://www.pololu.com/product/2381). A motor driver is necessary to communicate with the motors from the Raspberry Pi. The encoders are attached to the motors.
+
+### PCB
+
+All of our electrical components are connected via a Printed Circuit Board. This is the main "structure" of our bot; all components are soldered onto this. The KiCad files for the PCB can be found in this directory.
+
+### Code
+
+All of the code for our bot (high level and low level) can be found in the *src/botCode* directory of this GitHub repo.
