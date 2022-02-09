@@ -1,0 +1,48 @@
+syntax = "proto2";
+
+package botCode;
+
+message PacmanState {
+
+  message AgentState {
+    required int32 x = 1;
+    required int32 y = 2;
+    optional Direction direction = 3;
+    optional int32 frightened_counter = 4;
+  }
+  required AgentState pacman = 1;
+  required AgentState red_ghost = 2;
+  required AgentState pink_ghost = 3;
+  required AgentState orange_ghost = 4;
+  required AgentState blue_ghost = 5;
+  required GameMode mode = 6;
+  required int32 frightened_timer = 7;
+  required int32 score = 8;
+  repeated GridElement grid = 9;
+  required int32 grid_columns = 10;
+  required int32 lives = 11;
+  required int32 update_ticks = 12;
+  required int32 ticks_per_update = 13;
+  optional float elapsed_time = 14;
+
+  enum GameMode {
+    CHASE = 0;
+    SCATTER = 1;
+    FRIGHTENED = 2;
+    PAUSED = 3;
+  }
+
+  enum GridElement {
+    WALL = 0;
+    PELLET = 1;
+    POWER_PELLET = 2;
+    EMPTY = 3;
+  }
+
+  enum Direction {
+    UP = 0;
+    DOWN = 1;
+    LEFT = 2;
+    RIGHT = 3;
+  }
+}
