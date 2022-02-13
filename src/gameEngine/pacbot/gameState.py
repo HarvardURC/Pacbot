@@ -5,6 +5,9 @@ from .pacbot import *
 from .grid import grid
 import copy, time
 
+
+FREQUENCY = game_frequency * ticks_per_update
+
 class GameState:
     def __init__(self):
         self.pacbot = PacBot()
@@ -13,6 +16,7 @@ class GameState:
         self.orange = GhostAgent(orange_init_pos[0], orange_init_pos[1], orange_init_npos[0], orange_init_npos[1], orange, red_init_dir, self, orange_start_path, orange_scatter_pos)
         self.blue = GhostAgent(blue_init_pos[0], blue_init_pos[1], blue_init_npos[0], blue_init_npos[1], blue, blue_init_dir, self, blue_start_path, blue_scatter_pos)
         self.restart()
+        self.ticks_since_spawn = 0
 
     # Frightens all of the ghosts and saves the old state to be restored when frightened mode ends.
     def _become_frightened(self):
@@ -74,17 +78,32 @@ class GameState:
     # Returns true if the cherry should be spawned; this happens 
     # when only 170 pellets remain.
     def _should_spawn_cherry(self):
-        if self.pellets == 170:
+        if self.pellets == 170 or self.pellets == 70:
             #print("Cherry spawned")
             return True
         #print(self.pellets)
         return False
 
+    def _should_remove_cherry(self):
+        if self.ticks_since_spawn == FREQUENCY * 10:
+            return True 
+        else:
+            return False
+
     # Places the cherry on the board.
     def _spawn_cherry(self):
-        # self.grid[cherry_pos[0]][cherry_pos[1]] = c
-        # self.cherry = True
-        pass
+        self.grid[cherry_pos[0]][cherry_pos[1]] = c
+        self.cherry = True
+        self.ticks_since_spawn = 0
+
+    def _despawn_cherry(self):
+        self.grid[cherry_pos[0]][cherry_pos[1]] = e
+        self.cherry = False
+
+
+        # cherry to disappear when pacman dies
+
+        
 
     # Updates the score based on what Pacman has just eaten 
     # (what is in Pacman's current space on the board).
@@ -126,6 +145,7 @@ class GameState:
             self.frightened_multiplier = 1
             self.pause()
             self._update_score()
+            self.grid[cherry_pos[0]][cherry_pos[1]] = e
         else:
             self._end_game() 
 
@@ -205,6 +225,10 @@ class GameState:
             self._update_score()
             if self._should_spawn_cherry():
                 self._spawn_cherry()
+            if self.cherry:
+                self.ticks_since_spawn += 1
+            if self._should_remove_cherry():
+                self._despawn_cherry()
             self.update_ticks += 1
 
     # Sets the game back to its original state (no rounds played).
@@ -226,3 +250,4 @@ class GameState:
         self.lives = starting_lives
         self.elapsed_time = 0
         self._update_score()
+        self.grid[cherry_pos[0]][cherry_pos[1]] = e
