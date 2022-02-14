@@ -1,0 +1,1 @@
+gnome-terminal --tab --command="./server.py" --tab --command="./heuristicHighLevelModule.py" --tab --command="./pacbotCommsModule.py" --tab --command="./pacbotSimulatorModule.py";
