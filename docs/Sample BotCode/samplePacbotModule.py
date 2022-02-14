@@ -29,6 +29,8 @@ class SamplePacbotModule(rm.ProtoModule):
             print('\n' * 100)
             print('score: {}'.format(self.state.score))
             print('lives: {}'.format(self.state.lives))
+            print("cherry present:", self.state.cherry)
+
             state = 'Running' if self.state.mode == LightState.RUNNING else 'Paused'
             print('state: {}'.format(state))
             print("pacbot's location (x,y): ({},{})".format(self.state.pacman.x, self.state.pacman.y))
@@ -48,7 +50,6 @@ class SamplePacbotModule(rm.ProtoModule):
             print("Orange ghost's location (x,y): ({},{})".format(self.state.orange_ghost.x, self.state.orange_ghost.y))
             state = 'Frightened' if self.state.orange_ghost.state == LightState.FRIGHTENED else 'Normal'
             print('Orange ghost state: {}'.format(state))
-
 
 
 def main():
