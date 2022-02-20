@@ -31,6 +31,7 @@ class GameState:
         self.pink.become_frightened()
         self.orange.become_frightened()
         self.blue.become_frightened()
+        self.just_swapped_state = True
 
     # Resets the state of the game to what it was before frightened,
     # and resets the score multiplier to be equal to 1.
@@ -207,6 +208,8 @@ class GameState:
                 if self.state == frightened:
                     if self.frightened_counter == 1:
                         self._end_frightened()
+                    elif self.frightened_counter == frightened_length:
+                        self.just_swapped_state = False
                     self.frightened_counter -= 1
                 else:
                     self._swap_state_if_necessary()

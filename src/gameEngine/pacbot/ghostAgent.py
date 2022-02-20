@@ -151,10 +151,10 @@ class GhostAgent:
 
     # Returns the correct move for the ghost based on what state the ghost is in.
     def _get_next_state_move(self):
-        if self.frightened_counter > 0:
-            return self._get_next_frightened_move()
-        elif self.game_state.just_swapped_state:
+        if self.game_state.just_swapped_state:
             return self._reverse_direction()
+        elif self.frightened_counter > 0:
+            return self._get_next_frightened_move()
         elif self.game_state.state == chase:
             return self._get_next_chase_move()
         else:
