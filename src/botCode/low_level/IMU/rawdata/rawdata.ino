@@ -20,9 +20,13 @@
 /* Set the delay between fresh samples */
 #define BNO055_SAMPLERATE_DELAY_MS (100)
 
-// Check I2C device address and correct line below (by default address is 0x29 or 0x28)
+// A few notes from Tom:
+// - we were using the wrong I2C bus - the IMU was hooked up to Wire1. This requires changing the Wire library so that Wire1 is defined. Specifically, uncomment #define WIRE_IMPLEMENT_WIRE1 in WireKinetis.h
+// - also the sensors need to be calibrated. This website has info for how to do that: https://learn.adafruit.com/adafruit-bno055-absolute-orientation-sensor/device-calibration 
+
+// Check I2C device address and correct line below (by default address is 0x29 or 0x28), make sure the bus is ok too!
 //                                   id, address
-Adafruit_BNO055 bno = Adafruit_BNO055(-1, 0x29);
+Adafruit_BNO055 bno = Adafruit_BNO055(-1, 0x28, &Wire1);
 
 /**************************************************************************/
 /*
