@@ -17,6 +17,7 @@ class GameState:
         self.blue = GhostAgent(blue_init_pos[0], blue_init_pos[1], blue_init_npos[0], blue_init_npos[1], blue, blue_init_dir, self, blue_start_path, blue_scatter_pos)
         self.restart()
         self.ticks_since_spawn = 0
+        self.prev_cherry_pellets = 0
 
     # Frightens all of the ghosts and saves the old state to be restored when frightened mode ends.
     def _become_frightened(self):
@@ -78,14 +79,16 @@ class GameState:
     # Returns true if the cherry should be spawned; this happens 
     # when only 170 pellets remain.
     def _should_spawn_cherry(self):
-        if self.pellets == 170 or self.pellets == 70:
+        if (self.pellets == 170 or self.pellets == 70) and self.prev_cherry_pellets != self.pellets:
             #print("Cherry spawned")
+            self.prev_cherry_pellets = self.pellets
             return True
         #print(self.pellets)
         return False
 
     def _should_remove_cherry(self):
-        if self.ticks_since_spawn == FREQUENCY * 10:
+        if self.ticks_since_spawn >= FREQUENCY * 10:
+            self.ticks_since_spawn = 0
             return True 
         else:
             return False
@@ -94,7 +97,6 @@ class GameState:
     def _spawn_cherry(self):
         self.grid[cherry_pos[0]][cherry_pos[1]] = c
         self.cherry = True
-        self.ticks_since_spawn = 0
 
     def _despawn_cherry(self):
         self.grid[cherry_pos[0]][cherry_pos[1]] = e
@@ -237,6 +239,7 @@ class GameState:
         self.pellets = sum([col.count(o) for col in self.grid])
         self.power_pellets = sum([col.count(O) for col in self.grid])
         self.cherry = False
+        self.prev_cherry_pellets = 0
         self.old_state = chase
         self.state = scatter
         self.frightened_counter = 0
@@ -251,3 +254,4 @@ class GameState:
         self.elapsed_time = 0
         self._update_score()
         self.grid[cherry_pos[0]][cherry_pos[1]] = e
+        self.ticks_since_spawn = 0
