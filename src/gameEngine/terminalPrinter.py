@@ -6,8 +6,8 @@ import sys, os, time
 import robomodules as rm
 from messages import *
 
-ADDRESS = os.environ.get("SERVER_ADDRESS","localhost")
-PORT = os.environ.get("SERVER_PORT", 11297)
+ADDRESS = os.environ.get("BIND_ADDRESS","localhost")
+PORT = os.environ.get("BIND_PORT", 11297)
 
 FREQUENCY = 10
 
