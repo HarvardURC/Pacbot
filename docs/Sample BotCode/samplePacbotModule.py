@@ -5,7 +5,7 @@ import robomodules as rm # may need to change depending on location of file
 from messages import * # may need to change depending on location of file
 
 ADDRESS = os.environ.get("BIND_ADDRESS","localhost") # Address of game engine server (localhost if running game locally)
-PORT = os.environ.get("BIND_PORT", 11297) # Port of game engine server
+PORT = os.environ.get("BIND_PORT", 11297)            # Port game engine server is listening on
 
 FREQUENCY = 10
 

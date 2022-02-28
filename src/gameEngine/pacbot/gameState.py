@@ -201,7 +201,7 @@ class GameState:
                     self._swap_state_if_necessary()
                     self.state_counter += 1
                 self.start_counter += 1
-                self.print_ghost_pos()
+                # self.print_ghost_pos()
             self._update_score()
             if self._should_spawn_cherry():
                 self._spawn_cherry()
