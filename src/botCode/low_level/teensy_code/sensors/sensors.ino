@@ -7,7 +7,16 @@
  */
 
 #include <Encoder.h>
+#include <Wire.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BNO055.h>
+#include <utility/imumaths.h>
 
+
+/* Set the delay between fresh samples */
+#define SAMPLERATE_DELAY_MS (100)
+
+/* Set up Encoder */
 // Change these pin numbers to the pins connected to your encoder.
 //   Best Performance: both pins have interrupt capability
 //   Good Performance: only the first pin has interrupt capability
@@ -18,8 +27,6 @@ Encoder knobRight(14, 15);
 
 
 /* Set up IMU */
-/* Set the delay between fresh samples */
-#define BNO055_SAMPLERATE_DELAY_MS (100)
 
 // A few notes from Tom:
 // - we were using the wrong I2C bus - the IMU was hooked up to Wire1. This requires changing the Wire library so that Wire1 is defined. Specifically, uncomment #define WIRE_IMPLEMENT_WIRE1 in WireKinetis.h
@@ -31,63 +38,97 @@ Adafruit_BNO055 bno = Adafruit_BNO055(-1, 0x28, &Wire1);
 
 
 /* Print to one serial bus */
-#define CURR_SERIAL SERIAL
+auto CurrSerial = Serial;
 
 void setup() {
-  Serial1.setTX(1);
-  Serial1.setRX(2);
-  Serial1.begin(9600);
-  Serial.begin(9600);
-  Serial1.println("TwoKnobs Encoder Test:");
+  CurrSerial.begin(9600);
 
-
-  Serial.begin(115200);
-  Serial.println("Orientation Sensor Raw Data Test"); Serial.println("");
-
-  /* Initialise the sensor */
+  /* Initialise the IMU */
   if(!bno.begin())
   {
     /* There was a problem detecting the BNO055 ... check your connections */
-    Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
+    CurrSerial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
     while(1);
   }
 
   delay(1000);
 
-  /* Display the current temperature */
-  int8_t temp = bno.getTemp();
-  Serial.print("Current Temperature: ");
-  Serial.print(temp);
-  Serial.println(" C");
-  Serial.println("");
-
   bno.setExtCrystalUse(true);
-
-  Serial.println("Calibration status values: 0=uncalibrated, 3=fully calibrated");
 }
 
 long positionLeft  = -999;
 long positionRight = -999;
 
+String printVectorValues(imu::Vector<3> vector) {
+  return "X: " + String(vector.x()) + " Y: " + String(vector.y()) + " Z: " + String(vector.z()) + "\t";
+}
+
 void loop() {
+
+  // Base string
+  String base = "";
+  
+  /*
+   * Encoder reading and writing
+   * 
+   */
   long newLeft, newRight;
   newLeft = knobLeft.read();
   newRight = knobRight.read();
-  if (newLeft != positionLeft || newRight != positionRight) {
-    Serial1.print("Left = ");
-    Serial1.print(newLeft);
-    Serial1.print(", Right = ");
-    Serial1.print(newRight);
-    Serial1.println();
-    positionLeft = newLeft;
-    positionRight = newRight;
-  }
-  // if a character is sent from the Serial1 monitor,
+  base += "ENCODER: ";
+  base += "Left = ";
+  base += String(newLeft);
+  base += ", Right = ";
+  base += newRight;
+  
+  // if a character is sent from the CurrSerial monitor,
   // reset both back to zero.
-  if (Serial1.available()) {
-    Serial1.read();
-    Serial1.println("Reset both knobs to zero");
+  if (CurrSerial.available()) {
+    CurrSerial.read();
     knobLeft.write(0);
     knobRight.write(0);
   }
+  base += "\t";
+
+
+  /*
+   * IMU reading and writing
+   * 
+   */
+   
+  // Possible vector values can be:
+  // - VECTOR_ACCELEROMETER - m/s^2
+  // - VECTOR_MAGNETOMETER  - uT
+  // - VECTOR_GYROSCOPE     - rad/s
+  // - VECTOR_EULER         - degrees
+  // - VECTOR_LINEARACCEL   - m/s^2
+  // - VECTOR_GRAVITY       - m/s^2
+  imu::Vector<3> accelerometer = bno.getVector(Adafruit_BNO055::VECTOR_LINEARACCEL);
+  base += "LINEARACCEL: ";
+  base += printVectorValues(accelerometer);
+
+  imu::Vector<3> gyroscope = bno.getVector(Adafruit_BNO055::VECTOR_GYROSCOPE);
+  base += "GYROSCOPE: ";
+  base += printVectorValues(gyroscope);
+
+  imu::Vector<3> euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
+  base += "EULER: ";
+  base += printVectorValues(euler);
+  
+
+  /* Display calibration status for each sensor. */
+  uint8_t system, gyro, accel, mag = 0;
+  bno.getCalibration(&system, &gyro, &accel, &mag);
+  base += "CALIBRATION: Sys=";
+  base += String(system);
+  base += " Gyro=";
+  base += String(gyro);
+  base += " Accel=";
+  base += String(accel);
+  base += " Mag=";
+  base += String(mag);
+
+  CurrSerial.println(base);
+
+  delay(SAMPLERATE_DELAY_MS);
 }
