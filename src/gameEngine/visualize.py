@@ -5,8 +5,8 @@ from graphics import Visualizer
 from graphics.variables import Split
 from graphics.variables import SQUARE_SIZE
 
-ADDRESS = os.environ.get("ADDRESS","localhost")
-PORT = os.environ.get("SERVER_PORT", 11297)
+ADDRESS = os.environ.get("BIND_ADDRESS","localhost")
+PORT = os.environ.get("BIND_PORT", 11297)
 
 def main():
     walls = ('-w' in sys.argv or os.environ.get("WALLS",False))
