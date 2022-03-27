@@ -56,6 +56,18 @@ class Motors:
         self.PIDfLeft = PID(self.inputfL, self.setpointfL, 2.0, 0.002, 0.000, DIRECT, Timer)
         self.PIDfLeft.set_output_limits(-1 * MOTOR_SPEED, MOTOR_SPEED)
         self.PIDfLeft.set_mode(AUTOMATIC)
+
+        self.setpointHeading = 0
+        self.inputStraight = 0
+        self.PIDHeading = PID(self.inputStraight, self.setpointHeading, KP, KI, KD, DIRECT, Timer)
+        self.PIDHeading.set_output_limits(-1*MOTOR_SPEED, MOTOR_SPEED)
+        self.PIDHeading.set_mode(AUTOMATIC)
+
+        self.setpointTurnHeading = 0
+        self.inputTurn = 0
+        self.PIDTurn = PID(self.inputTurn, self.setpointHeading, KP, KI, KD, DIRECT, Timer)
+        self.PIDTurn.set_output_limits(-1*MOTOR_SPEED, MOTOR_SPEED)
+        self.PIDTurn.set_mode(AUTOMATIC)
         
         self.setpointfR = 0
         self.inputfR = 0
@@ -140,6 +152,12 @@ class Motors:
             self.advance(TICKS_CELL)
         """
         self.advance(cells*TICKS_CELL)
+    
+    def driveStraight(self, heading):
+        return NotImplementedError
+        
+
+
     def advance(self, ticks):
         Encoder.write(0, 0)
         Encoder.write(0, 1)
@@ -277,6 +295,9 @@ class Motors:
     def turn_around_r(self):
         self.turn_right()
         self.turn_right()
+
+    def turn_to_direction(self, heading):
+                
 
     def turn_left(self): 
         self.PIDLeft.set_tunings(KP3,0.01,0)
