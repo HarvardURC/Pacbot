@@ -29,6 +29,9 @@ class Motors:
         self._rearIR = self.sensors.sensors["rear"]
         self._rleftIR = self.sensors.sensors["rleft"]
         self._rrightIR = self.sensors.sensors["rright"]
+        self.directions = ["N", "E", "S", "W"]
+        self.cur_dir = 1
+        self.heading = {"E": 0, "N": 90, "W": 180, "S": 270}
 
         self.dir = True
 
@@ -153,9 +156,31 @@ class Motors:
         """
         self.advance(cells*TICKS_CELL)
     
-    def driveStraight(self, heading):
-        return NotImplementedError
-        
+    def driveStraight(self, heading, ticks):
+        Encoder.write(0, 0)
+        Encoder.write(0, 1)
+        self.setpointHeading = heading
+
+        factor = ticks/TICKS_CELL
+
+        distance_l, distance_r = self.read_encoders()
+        added = 0
+        have_driven = False
+        start = time.time() * 1000
+        while (min(distance_r, distance_l) < ticks and (time.time()*1000 - start < factor * TIME)):
+            # might wanna add logic to avoid hitting wall
+
+            # logic to add distance for more time to straighten out
+            # if abs(distance_l - distance_r) > 140:
+            #     print('added: {}'.format(added))
+            #     added += 4
+            #     ticks += 4
+            distance_l, distance_r = self.read_encoders()
+
+            self.inputStraight = getHeading()
+            self.PIDHeading.compute(self.inputStraight, self.setpointHeading)
+            self.move_motors((MOTOR_SPEED + self.PIDHeading.output())/2, (MOTOR_SPEED - self.PIDHeading.output())/2)
+
 
 
     def advance(self, ticks):
@@ -296,8 +321,25 @@ class Motors:
         self.turn_right()
         self.turn_right()
 
+    def compute_heading_error(self, cur, des):
+        return (cur - des + 540) % 360 - 180
+
     def turn_to_direction(self, heading):
-                
+        self.inputTurn = self.compute_heading_error(self.getHeading(), heading)
+        self.setpointTurnHeading = 0
+        while abs(self.inputTurn) > 2:
+            self.move_motors(-self.PIDTurn.output(), self.PIDTurn.output())
+            self.inputTurn = self.compute_heading_error(self.getHeading(), heading)
+            self.PIDTurn.compute(self.inputTurn, self.setpointTurnHeading)
+
+
+    def turn_left_imu(self):
+        self.cur_dir = (self.cur_dir + 1)%4
+        self.turn_to_direction(self.heading[self.cur_dir])
+    
+    def turn_right_imu(self):
+        self.cur_dir = (self.cur_dir - 1)%4
+        self.turn_to_direction(self.heading[self.cur_dir])
 
     def turn_left(self): 
         self.PIDLeft.set_tunings(KP3,0.01,0)
