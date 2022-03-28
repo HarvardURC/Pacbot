@@ -144,7 +144,6 @@ class GhostAgent:
         return (move, self._get_direction(self.pos["next"], move))
 
     def _reverse_direction(self):
-        print(str(self.color)+" REVERSING DIRECTION")
         move = self.pos["current"]
         return (move, self._get_direction(self.pos["next"], move))
 
@@ -191,7 +190,6 @@ class GhostAgent:
         if self.frightened_counter > 0:
             self.frightened_counter -= 1
         next_moves = self._decide_next_moves()
-        self.pos['prev'] = self.pos['current']
         self.pos['current'] = self.pos['next']
         self.pos['next'] = next_moves[0]
         self.direction = next_moves[1]
@@ -199,7 +197,6 @@ class GhostAgent:
     # Sets the ghost's position back to the respawn zone and removes the frightened condition.
     # This function is called when the ghost gets eaten by Pacman.
     def send_home(self):
-        self.pos['prev'] = self.pos['current']
         self.pos['current'] = ghost_home_pos
         self.pos['next'] = (ghost_home_pos[0], ghost_home_pos[1]+1)
         self.direction = up
@@ -221,7 +218,6 @@ class GhostAgent:
     # Distinct from send_home(), which only occurs when the ghost is eaten by Pacman.
     def respawn(self):
         self.pos = {
-            'prev': (None, None),
             'current': (self.init_moves[0], self.init_moves[1]),
             'next': (self.init_moves[2], self.init_moves[3])
         }

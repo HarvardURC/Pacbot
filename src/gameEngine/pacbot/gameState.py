@@ -197,7 +197,6 @@ class GameState:
                 self.state = scatter
             else:
                 self.state = chase
-            print("ACTIVATING")
             self.just_swapped_state = True
         else:
             self.just_swapped_state = False
