@@ -1,9 +1,0 @@
-LAYER DESCRIPTIONS
-
-tplace (21), tnames (25): Top silk layer
-
-bplace (22), bnames (26): Bottom silk layer
-
-holes (45): Reference for where holes should be placed so that PCB can be fastened by nut and bolt
-
-reference (49): For personal reference (not to be printed)

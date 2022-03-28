@@ -12,7 +12,7 @@ To run the gameEngine, first run the server and then run each of the module proc
 Specifically, run the following files:
 
 1. `./server.py`
-This creates a server for communicating between the different modules.
+This creates a server for communicating between the different modules. The modules that run the game connect to this server. In addition, the PacBot will connect to this server to receive the game state. The server automatically binds to 'localhost' for testing purposes, but should be bound to the computer's local IP address when attempting to communicate with the robot over WiFi. Set the environment variable BIND_ADDRESS to control the IP address of the server. In addition, a different port may be needed than the default; set the environment variable BIND_PORT to control this as well.
 
 2. `./gameEngine.py`
 This runs the game. Type r to restart, p to unpause/pause, and q to quit.

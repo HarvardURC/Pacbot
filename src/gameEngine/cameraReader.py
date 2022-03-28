@@ -4,8 +4,8 @@ import os
 import sys
 from vision import MovementProcessor
 
-ADDRESS = os.environ.get("SERVER_ADDRESS","localhost")
-PORT = os.environ.get("SERVER_PORT", 11297)
+ADDRESS = os.environ.get("BIND_ADDRESS","localhost")    # address of game engine server
+PORT = os.environ.get("BIND_PORT", 11297)               # port game engine server is listening on
 
 def main():
     
