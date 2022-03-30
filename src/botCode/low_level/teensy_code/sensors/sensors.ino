@@ -38,7 +38,7 @@ Adafruit_BNO055 bno = Adafruit_BNO055(-1, 0x28, &Wire1);
 
 
 /* Print to one serial bus */
-auto CurrSerial = Serial;
+auto CurrSerial = Serial1;
 
 void setup() {
   CurrSerial.begin(9600);
