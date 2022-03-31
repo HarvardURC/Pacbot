@@ -63,6 +63,7 @@ class Sensors():
         print("Heading: " + str(self.heading) + " Encoders: " + str(self.left_encoder) + " " + str(self.right_encoder))
 
 def main():
+    # Example usage of the class
     sensors = Sensors()
     i = 0
     while 1:
