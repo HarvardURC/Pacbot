@@ -14,7 +14,7 @@
 
 
 /* Set the delay between fresh samples */
-#define SAMPLERATE_DELAY_MS (100)
+#define SAMPLERATE_DELAY_MS (50)
 
 /* Set up Encoder */
 // Change these pin numbers to the pins connected to your encoder.
@@ -41,7 +41,7 @@ Adafruit_BNO055 bno = Adafruit_BNO055(-1, 0x28, &Wire1);
 auto CurrSerial = Serial1;
 
 void setup() {
-  CurrSerial.begin(9600);
+  CurrSerial.begin(38400);
 
   /* Initialise the IMU */
   if(!bno.begin())
@@ -60,7 +60,7 @@ long positionLeft  = -999;
 long positionRight = -999;
 
 String printVectorValues(imu::Vector<3> vector) {
-  return "X: " + String(vector.x()) + " Y: " + String(vector.y()) + " Z: " + String(vector.z()) + "\t";
+  return String(vector.x()) + " " + String(vector.y()) + " " + String(vector.z()) + "\t";
 }
 
 void loop() {
@@ -75,11 +75,9 @@ void loop() {
   long newLeft, newRight;
   newLeft = knobLeft.read();
   newRight = knobRight.read();
-  base += "ENCODER: ";
-  base += "Left = ";
   base += String(newLeft);
-  base += ", Right = ";
-  base += newRight;
+  base += " ";
+  base += String(newRight);
   
   // if a character is sent from the CurrSerial monitor,
   // reset both back to zero.
@@ -104,28 +102,28 @@ void loop() {
   // - VECTOR_LINEARACCEL   - m/s^2
   // - VECTOR_GRAVITY       - m/s^2
   imu::Vector<3> accelerometer = bno.getVector(Adafruit_BNO055::VECTOR_LINEARACCEL);
-  base += "LINEARACCEL: ";
+  //  base += "LINEARACCEL: ";
   base += printVectorValues(accelerometer);
 
   imu::Vector<3> gyroscope = bno.getVector(Adafruit_BNO055::VECTOR_GYROSCOPE);
-  base += "GYROSCOPE: ";
+  //  base += "GYROSCOPE: ";
   base += printVectorValues(gyroscope);
 
   imu::Vector<3> euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
-  base += "EULER: ";
+  //  base += "EULER: ";
   base += printVectorValues(euler);
   
 
   /* Display calibration status for each sensor. */
   uint8_t system, gyro, accel, mag = 0;
   bno.getCalibration(&system, &gyro, &accel, &mag);
-  base += "CALIBRATION: Sys=";
+  //  base += "CALIBRATION: Sys=";
   base += String(system);
-  base += " Gyro=";
+  //  base += " Gyro=";
   base += String(gyro);
-  base += " Accel=";
+  //  base += " Accel=";
   base += String(accel);
-  base += " Mag=";
+  //  base += " Mag=";
   base += String(mag);
 
   CurrSerial.println(base);
