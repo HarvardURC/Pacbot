@@ -127,7 +127,6 @@ void loop() {
   base += String(mag);
 
   CurrSerial.println(base);
-  CurrSerial.read();
 
   delay(SAMPLERATE_DELAY_MS);
 }
