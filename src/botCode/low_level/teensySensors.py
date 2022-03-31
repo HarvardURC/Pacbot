@@ -56,14 +56,22 @@ class Sensors():
     def get_right_encoder_ticks(self):
         return self.right_encoder
 
+    def reset_encoders(self):
+        self.serial_port.write(b'a') # writing anything will do
+
     def print_sensor_values(self):
         print("Heading: " + str(self.heading) + " Encoders: " + str(self.left_encoder) + " " + str(self.right_encoder))
 
 def main():
     sensors = Sensors()
+    i = 0
     while 1:
         sleep(0.1)
         sensors.print_sensor_values()
+        i += 1
+
+        if i % 100 == 0:
+            sensors.reset_encoders()
 
 
 if __name__ == "__main__":
