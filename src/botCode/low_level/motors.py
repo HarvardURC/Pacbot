@@ -12,7 +12,8 @@ from teensySensors import SensorsV2
 from time import sleep
 
 
-MOTOR_SPEED = 47
+#MOTOR_SPEED = 47
+MOTOR_SPEED = 150
 TICKS_CELL = 260
 TICKS_TURN = 231
 WALL_THRESHOLD_DIAG = 85
@@ -178,7 +179,8 @@ class Motors:
         distance_l, distance_r = self.read_encodersV2()
         print(distance_l, distance_r)
         start = time.time() * 1000
-        while (min(distance_r, distance_l) < ticks and (time.time()*1000 - start < factor * TIME)):
+        #while (min(distance_r, distance_l) < ticks and (time.time()*1000 - start < factor * TIME)):
+        while min(distance_r, distance_l) < ticks:
             # might wanna add logic to avoid hitting wall
 
             # logic to add distance for more time to straighten out
@@ -186,15 +188,18 @@ class Motors:
             #     print('added: {}'.format(added))
             #     added += 4
             #     ticks += 4
-            print("running the loop")
+            #print("running the loop")
             distance_l, distance_r = self.read_encodersV2()
 
             self.inputStraight = self.sensorsv2.get_heading()
-            self.PIDHeading.compute(self.inputStraight, self.setpointHeading)
-            print("Pid heading:", self.PIDHeading.output())
-            #self.move_motors((MOTOR_SPEED + self.PIDHeading.output())/2, (MOTOR_SPEED - self.PIDHeading.output())/2)
-            self.move_motors(80, 80)
+            
+            # Compute error
+            error = self.compute_heading_error(self.inputStraight, self.setpointHeading)
 
+            self.PIDHeading.compute(error, 0)
+            #print("Pid heading:", self.PIDHeading.output())
+            self.move_motors((MOTOR_SPEED + self.PIDHeading.output())/2, (MOTOR_SPEED - self.PIDHeading.output())/2)
+            #sleep(0.01)
 
     def advance(self, ticks):
         Encoder.write(0, 0)
