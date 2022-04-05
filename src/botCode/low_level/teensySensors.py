@@ -4,7 +4,7 @@ import serial
 import threading
 from time import sleep
 
-class Sensors():
+class SensorsV2():
     def __init__(self):
         # Instance variables for current sensor values
         self.heading = None
@@ -64,7 +64,7 @@ class Sensors():
 
 def main():
     # Example usage of the class
-    sensors = Sensors()
+    sensors = SensorsV2()
     i = 0
     while 1:
         sleep(0.1)

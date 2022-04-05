@@ -8,6 +8,8 @@ setGPIO()
 import time
 import signal, sys
 
+from .teensySensors import SensorsV2
+
 MOTOR_SPEED = 47
 TICKS_CELL = 260
 TICKS_TURN = 231
@@ -22,6 +24,7 @@ KI = 0.01
 KD = 0.05
 class Motors:
     def __init__(self):
+        self.sensorsv2 = SensorsV2()
         self.sensors = Sensors([pins.tof_front,pins.tof_rear,pins.tof_fleft,pins.tof_fright,pins.tof_rleft,pins.tof_rright], ["front", "rear","fleft","fright","rleft","rright"], [0x30,0x31,0x32,0x33,0x34,0x35])
         self._frontIR = self.sensors.sensors["front"]
         self._fleftIR = self.sensors.sensors["fleft"]
@@ -96,6 +99,9 @@ class Motors:
         else:
             return (Encoder.read(0), -Encoder.read(1))
 
+    def read_encodersV2(self):
+        return self.sensorsv2.get_left_encoder_ticks(), self.sensorsv2.get_right_encoder_ticks()
+
     def raw_encoders(self):
         return (Encoder.read(0), Encoder.read(1))
 
@@ -157,15 +163,14 @@ class Motors:
         self.advance(cells*TICKS_CELL)
     
     def driveStraight(self, heading, ticks):
-        Encoder.write(0, 0)
-        Encoder.write(0, 1)
+        # Encoder.write(0, 0)
+        # Encoder.write(0, 1)
+        self.sensorsv2.reset_encoders()
         self.setpointHeading = heading
 
         factor = ticks/TICKS_CELL
 
-        distance_l, distance_r = self.read_encoders()
-        added = 0
-        have_driven = False
+        distance_l, distance_r = self.read_encodersV2()
         start = time.time() * 1000
         while (min(distance_r, distance_l) < ticks and (time.time()*1000 - start < factor * TIME)):
             # might wanna add logic to avoid hitting wall
@@ -175,9 +180,9 @@ class Motors:
             #     print('added: {}'.format(added))
             #     added += 4
             #     ticks += 4
-            distance_l, distance_r = self.read_encoders()
+            distance_l, distance_r = self.read_encodersV2()
 
-            self.inputStraight = getHeading()
+            self.inputStraight = self.sensorsv2.get_heading()
             self.PIDHeading.compute(self.inputStraight, self.setpointHeading)
             self.move_motors((MOTOR_SPEED + self.PIDHeading.output())/2, (MOTOR_SPEED - self.PIDHeading.output())/2)
 
@@ -325,7 +330,7 @@ class Motors:
         return (cur - des + 540) % 360 - 180
 
     def turn_to_direction(self, heading):
-        self.inputTurn = self.compute_heading_error(self.getHeading(), heading)
+        self.inputTurn = self.compute_heading_error(self.sensorsv2.get_heading(), heading)
         self.setpointTurnHeading = 0
         while abs(self.inputTurn) > 2:
             self.move_motors(-self.PIDTurn.output(), self.PIDTurn.output())
