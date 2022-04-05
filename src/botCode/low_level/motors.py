@@ -38,8 +38,8 @@ class Motors:
 
         self.dir = True
 
-        Encoder.init(pins.encoder_pin_l1, pins.encoder_pin_l2, 0)
-        Encoder.init(pins.encoder_pin_r1, pins.encoder_pin_r2, 1)
+        # Encoder.init(pins.encoder_pin_l1, pins.encoder_pin_l2, 0)
+        # Encoder.init(pins.encoder_pin_r1, pins.encoder_pin_r2, 1)
 
         self.left_motor = Motor("Left", pins.motor_speed_l, pins.motor_direction_l, 0)
 

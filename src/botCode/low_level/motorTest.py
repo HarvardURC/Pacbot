@@ -1,6 +1,7 @@
 from motor import Motor, MotorDirection
 from pins import *
 from time import sleep
+from .motors import Motors
 
 def test():
     left_motor = Motor("Left", pins.motor_speed_l, pins.motor_direction_l, 100)
@@ -52,4 +53,9 @@ def test():
     right_motor.stop()
     left_motor.stop()
 
-test()
+# test()
+
+
+if __name__ == "__main__":
+    motors = Motors()
+    motors.driveStraight(0, 260)
