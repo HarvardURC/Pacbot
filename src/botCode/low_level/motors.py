@@ -1,14 +1,13 @@
-from .motor import Motor, MotorDirection
-import Encoder
-from .pins import *
-from .sensors import Sensors
-from .GPIOhelpers import *
-from .PID import *
+from motor import Motor, MotorDirection
+from pins import *
+from sensors import Sensors
+from GPIOhelpers import *
+from PID import *
 setGPIO()
 import time
 import signal, sys
 
-from .teensySensors import SensorsV2
+from teensySensors import SensorsV2
 
 MOTOR_SPEED = 47
 TICKS_CELL = 260
@@ -25,13 +24,15 @@ KD = 0.05
 class Motors:
     def __init__(self):
         self.sensorsv2 = SensorsV2()
-        self.sensors = Sensors([pins.tof_front,pins.tof_rear,pins.tof_fleft,pins.tof_fright,pins.tof_rleft,pins.tof_rright], ["front", "rear","fleft","fright","rleft","rright"], [0x30,0x31,0x32,0x33,0x34,0x35])
-        self._frontIR = self.sensors.sensors["front"]
-        self._fleftIR = self.sensors.sensors["fleft"]
-        self._frightIR = self.sensors.sensors["fright"]
-        self._rearIR = self.sensors.sensors["rear"]
-        self._rleftIR = self.sensors.sensors["rleft"]
-        self._rrightIR = self.sensors.sensors["rright"]
+
+        # self.sensors = Sensors([pins.tof_front,pins.tof_rear,pins.tof_fleft,pins.tof_fright,pins.tof_rleft,pins.tof_rright], ["front", "rear","fleft","fright","rleft","rright"], [0x30,0x31,0x32,0x33,0x34,0x35])
+        #self._frontIR = self.sensors.sensors["front"]
+        #self._fleftIR = self.sensors.sensors["fleft"]
+        #self._frightIR = self.sensors.sensors["fright"]
+        #self._rearIR = self.sensors.sensors["rear"]
+        #self._rleftIR = self.sensors.sensors["rleft"]
+        #self._rrightIR = self.sensors.sensors["rright"]
+
         self.directions = ["N", "E", "S", "W"]
         self.cur_dir = 1
         self.heading = {"E": 0, "N": 90, "W": 180, "S": 270}

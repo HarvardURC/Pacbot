@@ -1,5 +1,5 @@
 
-from .GPIOhelpers import *
+from GPIOhelpers import *
 from enum import Enum
 from time import sleep
 setGPIO()

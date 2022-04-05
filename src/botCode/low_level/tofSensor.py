@@ -1,5 +1,5 @@
-from .ST_VL6180X import VL6180X
-from .GPIOhelpers import *
+from ST_VL6180X import VL6180X
+from GPIOhelpers import *
 setGPIO()
 
 class TofSensor:
