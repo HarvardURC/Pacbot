@@ -12,7 +12,7 @@ class SensorsV2():
         self.right_encoder = None
 
         # Set up communication with teensy
-        self.serial_port = serial.Serial("/dev/ttyAMA0", 38400, timeout = 2) # port may be ttyS0
+        self.serial_port = serial.Serial("/dev/ttyS0", 38400, timeout = 10) # port may be ttyS0
         
         # Start threaded reading from Serial
         self.read_thread = threading.Thread(target=self.read_from_teensy, daemon=True)

@@ -24,7 +24,7 @@ pins = SimpleNamespace(**{
     "encoder_pin_l2" : 14,
     "encoder_pin_r1" : 15, 
     "encoder_pin_r2" : 17, 
-    "motor_speed_l" : 19,
-    "motor_direction_l" : 18,
-    "motor_speed_r" : 6,
-    "motor_direction_r" : 12})
+    "motor_speed_l" : 18,
+    "motor_direction_l" : 19,
+    "motor_speed_r" : 12,
+    "motor_direction_r" : 6})

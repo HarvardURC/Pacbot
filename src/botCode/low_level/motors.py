@@ -9,6 +9,9 @@ import signal, sys
 
 from teensySensors import SensorsV2
 
+from time import sleep
+
+
 MOTOR_SPEED = 47
 TICKS_CELL = 260
 TICKS_TURN = 231
@@ -24,7 +27,8 @@ KD = 0.05
 class Motors:
     def __init__(self):
         self.sensorsv2 = SensorsV2()
-
+        sleep(2)
+        print("Sensors:", self.sensorsv2.print_sensor_values())
         # self.sensors = Sensors([pins.tof_front,pins.tof_rear,pins.tof_fleft,pins.tof_fright,pins.tof_rleft,pins.tof_rright], ["front", "rear","fleft","fright","rleft","rright"], [0x30,0x31,0x32,0x33,0x34,0x35])
         #self._frontIR = self.sensors.sensors["front"]
         #self._fleftIR = self.sensors.sensors["fleft"]
@@ -172,6 +176,7 @@ class Motors:
         factor = ticks/TICKS_CELL
 
         distance_l, distance_r = self.read_encodersV2()
+        print(distance_l, distance_r)
         start = time.time() * 1000
         while (min(distance_r, distance_l) < ticks and (time.time()*1000 - start < factor * TIME)):
             # might wanna add logic to avoid hitting wall
@@ -181,12 +186,14 @@ class Motors:
             #     print('added: {}'.format(added))
             #     added += 4
             #     ticks += 4
+            print("running the loop")
             distance_l, distance_r = self.read_encodersV2()
 
             self.inputStraight = self.sensorsv2.get_heading()
             self.PIDHeading.compute(self.inputStraight, self.setpointHeading)
-            self.move_motors((MOTOR_SPEED + self.PIDHeading.output())/2, (MOTOR_SPEED - self.PIDHeading.output())/2)
-
+            print("Pid heading:", self.PIDHeading.output())
+            #self.move_motors((MOTOR_SPEED + self.PIDHeading.output())/2, (MOTOR_SPEED - self.PIDHeading.output())/2)
+            self.move_motors(80, 80)
 
 
     def advance(self, ticks):
