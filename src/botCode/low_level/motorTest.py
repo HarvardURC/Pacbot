@@ -23,6 +23,6 @@ def test():
 if __name__ == "__main__":
     if "-1" in sys.argv:
         motors = Motors()
-        motors.driveStraight(314.2, 260)
+        motors.driveStraight(279.3, 260)
     else:
         test()

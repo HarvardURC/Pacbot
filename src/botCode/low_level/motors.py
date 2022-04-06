@@ -13,7 +13,7 @@ from time import sleep
 
 
 #MOTOR_SPEED = 47
-MOTOR_SPEED = 150
+MOTOR_SPEED = 75
 TICKS_CELL = 260
 TICKS_TURN = 231
 WALL_THRESHOLD_DIAG = 85
@@ -29,7 +29,6 @@ class Motors:
     def __init__(self):
         self.sensorsv2 = SensorsV2()
         sleep(2)
-        print("Sensors:", self.sensorsv2.print_sensor_values())
         # self.sensors = Sensors([pins.tof_front,pins.tof_rear,pins.tof_fleft,pins.tof_fright,pins.tof_rleft,pins.tof_rright], ["front", "rear","fleft","fright","rleft","rright"], [0x30,0x31,0x32,0x33,0x34,0x35])
         #self._frontIR = self.sensors.sensors["front"]
         #self._fleftIR = self.sensors.sensors["fleft"]
@@ -66,13 +65,13 @@ class Motors:
         self.setpointfL = 0
         self.inputfL = 0
         self.PIDfLeft = PID(self.inputfL, self.setpointfL, 2.0, 0.002, 0.000, DIRECT, Timer)
-        self.PIDfLeft.set_output_limits(-1 * MOTOR_SPEED, MOTOR_SPEED)
+        self.PIDfLeft.set_output_limits(-1 * MOTOR_SPEED, 100 - MOTOR_SPEED)
         self.PIDfLeft.set_mode(AUTOMATIC)
 
         self.setpointHeading = 0
         self.inputStraight = 0
         self.PIDHeading = PID(self.inputStraight, self.setpointHeading, KP, KI, KD, DIRECT, Timer)
-        self.PIDHeading.set_output_limits(-1*MOTOR_SPEED, MOTOR_SPEED)
+        self.PIDHeading.set_output_limits(-1*(100 - MOTOR_SPEED), 100 - MOTOR_SPEED)
         self.PIDHeading.set_mode(AUTOMATIC)
 
         self.setpointTurnHeading = 0
@@ -177,7 +176,7 @@ class Motors:
         factor = ticks/TICKS_CELL
 
         distance_l, distance_r = self.read_encodersV2()
-        print(distance_l, distance_r)
+        
         start = time.time() * 1000
         #while (min(distance_r, distance_l) < ticks and (time.time()*1000 - start < factor * TIME)):
         while min(distance_r, distance_l) < ticks:
@@ -195,11 +194,10 @@ class Motors:
             
             # Compute error
             error = self.compute_heading_error(self.inputStraight, self.setpointHeading)
-
             self.PIDHeading.compute(error, 0)
-            #print("Pid heading:", self.PIDHeading.output())
-            self.move_motors((MOTOR_SPEED + self.PIDHeading.output())/2, (MOTOR_SPEED - self.PIDHeading.output())/2)
-            #sleep(0.01)
+            #print("Error:", error, " Pid heading:", self.PIDHeading.output())
+            self.move_motors((MOTOR_SPEED + self.PIDHeading.output()), (MOTOR_SPEED - self.PIDHeading.output()))
+            sleep(0.1)
 
     def advance(self, ticks):
         Encoder.write(0, 0)
