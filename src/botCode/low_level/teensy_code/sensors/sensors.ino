@@ -41,6 +41,7 @@ Adafruit_BNO055 bno = Adafruit_BNO055(-1, 0x28, &Wire1);
 auto CurrSerial = Serial1;
 
 void setup() {
+  delay(10000);           // teensy may be turning on too fast?
   CurrSerial.begin(38400);
 
   /* Initialise the IMU */
