@@ -10,19 +10,20 @@ def test():
     sleep(3)
     print("Motors Initialized.\n")
     sleep(1)
-    right_motor.move(MotorDirection.FORWARD, 50)
-    left_motor.move(MotorDirection.FORWARD, 50)
+    right_motor.move(MotorDirection.FORWARD, 10)
+    left_motor.move(MotorDirection.FORWARD, 10)
     
     sleep(5)
     right_motor.stop()
     left_motor.stop()
 
-#test()
-
+def test_drive_straight():
+    motors = Motors()
+    motors.driveStraight(57.31, 530)
+    
 
 if __name__ == "__main__":
     if "-1" in sys.argv:
-        motors = Motors()
-        motors.driveStraight(336.44, 260)
+        test_drive_straight()
     else:
         test()
