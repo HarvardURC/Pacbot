@@ -41,7 +41,7 @@ Adafruit_BNO055 bno = Adafruit_BNO055(-1, 0x28, &Wire1);
 auto CurrSerial = Serial1;
 
 void setup() {
-  delay(10000);           // teensy may be turning on too fast?
+  delay(10000);           // teensy was turning on too fast
   CurrSerial.begin(38400);
 
   /* Initialise the IMU */
@@ -73,13 +73,6 @@ void loop() {
    * Encoder reading and writing
    * 
    */
-  long newLeft, newRight;
-  newLeft = knobLeft.read();
-  newRight = knobRight.read();
-  base += String(newLeft);
-  base += " ";
-  base += String(newRight);
-  
   // if a character is sent from the CurrSerial monitor,
   // reset both back to zero.
   if (CurrSerial.available()) {
@@ -87,6 +80,14 @@ void loop() {
     knobLeft.write(0);
     knobRight.write(0);
   }
+  
+  long newLeft, newRight;
+  newLeft = knobLeft.read();
+  newRight = knobRight.read();
+  base += String(newLeft);
+  base += " ";
+  base += String(newRight);
+  
   base += "\t";
 
 
@@ -102,13 +103,13 @@ void loop() {
   // - VECTOR_EULER         - degrees
   // - VECTOR_LINEARACCEL   - m/s^2
   // - VECTOR_GRAVITY       - m/s^2
-  imu::Vector<3> accelerometer = bno.getVector(Adafruit_BNO055::VECTOR_LINEARACCEL);
-  //  base += "LINEARACCEL: ";
-  base += printVectorValues(accelerometer);
-
-  imu::Vector<3> gyroscope = bno.getVector(Adafruit_BNO055::VECTOR_GYROSCOPE);
-  //  base += "GYROSCOPE: ";
-  base += printVectorValues(gyroscope);
+//  imu::Vector<3> accelerometer = bno.getVector(Adafruit_BNO055::VECTOR_LINEARACCEL);
+//  //  base += "LINEARACCEL: ";
+//  base += printVectorValues(accelerometer);
+//
+//  imu::Vector<3> gyroscope = bno.getVector(Adafruit_BNO055::VECTOR_GYROSCOPE);
+//  //  base += "GYROSCOPE: ";
+//  base += printVectorValues(gyroscope);
 
   imu::Vector<3> euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
   //  base += "EULER: ";
@@ -116,16 +117,16 @@ void loop() {
   
 
   /* Display calibration status for each sensor. */
-  uint8_t system, gyro, accel, mag = 0;
-  bno.getCalibration(&system, &gyro, &accel, &mag);
-  //  base += "CALIBRATION: Sys=";
-  base += String(system);
-  //  base += " Gyro=";
-  base += String(gyro);
-  //  base += " Accel=";
-  base += String(accel);
-  //  base += " Mag=";
-  base += String(mag);
+//  uint8_t system, gyro, accel, mag = 0;
+//  bno.getCalibration(&system, &gyro, &accel, &mag);
+//  //  base += "CALIBRATION: Sys=";
+//  base += String(system);
+//  //  base += " Gyro=";
+//  base += String(gyro);
+//  //  base += " Accel=";
+//  base += String(accel);
+//  //  base += " Mag=";
+//  base += String(mag);
 
   CurrSerial.println(base);
 
