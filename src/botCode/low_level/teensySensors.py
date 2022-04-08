@@ -4,22 +4,29 @@ import serial
 import threading
 from time import sleep
 
-class SensorsV2():
+class TeensySensors():
     def __init__(self):
         # Instance variables for current sensor values
         self.heading = None
         self.left_encoder = None
         self.right_encoder = None
 
+        # For zeroing out encoder
+        self.orig_left_encoder = 0
+        self.orig_right_encoder = 0
+
         # Set up communication with teensy
         self.serial_port = serial.Serial("/dev/ttyS0", 38400, timeout = 10) # port may be ttyS0
-        
+        self.serial_port.reset_input_buffer() 
+        self.actual_encoder_reset()
+
         # Start threaded reading from Serial
         self.read_thread = threading.Thread(target=self.read_from_teensy, daemon=True)
         self.read_thread.start()
 
     def read_from_teensy(self):
         while 1:
+            self.serial_port.reset_input_buffer()
             curr_line = self.serial_port.readline()
             try:    
                 self.heading, self.left_encoder, self.right_encoder = self.parse_line(curr_line)
@@ -38,11 +45,11 @@ class SensorsV2():
 
         # Get encoder values
         encoders = split_line[0].split(' ')
-        left_encoder = int(encoders[0])
-        right_encoder = int(encoders[1])
+        left_encoder = -int(encoders[0])
+        right_encoder = -int(encoders[1])
 
         # Get heading values
-        euler = split_line[3].split(' ')
+        euler = split_line[1].split(' ')
         heading = float(euler[0])
 
         return heading, left_encoder, right_encoder
@@ -51,27 +58,33 @@ class SensorsV2():
         return self.heading
     
     def get_left_encoder_ticks(self):
-        return self.left_encoder
+        return self.left_encoder - self.orig_left_encoder
     
     def get_right_encoder_ticks(self):
-        return self.right_encoder
+        return self.right_encoder - self.orig_right_encoder
 
     def reset_encoders(self):
-        self.serial_port.write(b'a') # writing anything will do
+        #self.serial_port.write(b'a') # writing anything will do
+        self.orig_left_encoder = self.left_encoder
+        self.orig_right_encoder = self.right_encoder
+    
+    def actual_encoder_reset(self):
+        self.serial_port.write(b'a')
 
     def print_sensor_values(self):
-        print("Heading: " + str(self.heading) + " Encoders: " + str(self.left_encoder) + " " + str(self.right_encoder))
+        print("Heading: " + str(self.heading) + " Encoders: " + str(self.get_left_encoder_ticks()) + " " + str(self.get_right_encoder_ticks()))
+
 
 def main():
     # Example usage of the class
-    sensors = SensorsV2()
+    sensors = TeensySensors()
     i = 0
     while 1:
         sleep(0.1)
         sensors.print_sensor_values()
         i += 1
 
-        if i % 100 == 0:
+        if i % 10 == 0:
             sensors.reset_encoders()
 
 

@@ -12,7 +12,6 @@ from teensySensors import TeensySensors
 from time import sleep
 
 
-#MOTOR_SPEED = 47
 MOTOR_SPEED = 47
 TICKS_CELL = 260
 TICKS_TURN = 231
@@ -20,23 +19,22 @@ WALL_THRESHOLD_DIAG = 85
 WALL_DISTANCE_DIAG = 75
 WALL_DIST = 80
 TIME = 3000
-KP3 = 0.5
 KP = 0.4
-KP2 = .17
 KI = 0.01
 KD = 0.05
+
 class Motors:
     def __init__(self):
         self.teensy_sensors = TeensySensors()
         sleep(2)
         
-        self.ir_sensors = Sensors([pins.tof_front,pins.tof_rear,pins.tof_fleft,pins.tof_fright,pins.tof_rleft,pins.tof_rright], ["front", "rear","fleft","fright","rleft","rright"], [0x30,0x31,0x32,0x33,0x34,0x35]
-        self._frontIR = self.ir_sensors.sensors["front"]
-        self._fleftIR = self.ir_sensors.sensors["fleft"]
-        self._frightIR = self.ir_sensors.sensors["fright"]
-        self._rearIR = self.ir_sensors.sensors["rear"]
-        self._rleftIR = self.ir_sensors.sensors["rleft"]
-        self._rrightIR = self.ir_sensors.sensors["rright"]
+        #self.ir_sensors = Sensors([pins.tof_front,pins.tof_rear,pins.tof_fleft,pins.tof_fright,pins.tof_rleft,pins.tof_rright], ["front", "rear","fleft","fright","rleft","rright"], [0x30,0x31,0x32,0x33,0x34,0x35])
+        #self._frontIR = self.ir_sensors.sensors["front"]
+        #self._fleftIR = self.ir_sensors.sensors["fleft"]
+        #self._frightIR = self.ir_sensors.sensors["fright"]
+        #self._rearIR = self.ir_sensors.sensors["rear"]
+        #self._rleftIR = self.ir_sensors.sensors["rleft"]
+        #self._rrightIR = self.ir_sensors.sensors["rright"]
 
         self.directions = ["N", "E", "S", "W"]
         self.cur_dir = 1
@@ -125,18 +123,16 @@ class Motors:
         self.advance(cells*TICKS_CELL)
     
     def driveStraight(self, heading, ticks):
-        # Encoder.write(0, 0)
-        # Encoder.write(0, 1)
         self.teensy_sensors.reset_encoders()
         self.setpointHeading = heading
 
         factor = ticks/TICKS_CELL
-
-        distance_l, distance_r = self.read_encoders()
-        
+        distance_l, distance_r = 0, 0 
+       
         start = time.time() * 1000
         #while (min(distance_r, distance_l) < ticks and (time.time()*1000 - start < factor * TIME)):
         while min(distance_r, distance_l) < ticks:
+        #while 1:
             # might wanna add logic to avoid hitting wall
 
             # logic to add distance for more time to straighten out
@@ -146,6 +142,7 @@ class Motors:
             #     ticks += 4
             #print("running the loop")
             distance_l, distance_r = self.read_encoders()
+            print("Distance:", distance_l, distance_r)
 
             self.inputStraight = self.teensy_sensors.get_heading()
             
