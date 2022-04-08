@@ -12,7 +12,7 @@ from teensySensors import TeensySensors
 from time import sleep
 
 
-MOTOR_SPEED = 47
+MOTOR_SPEED = 25 
 TICKS_CELL = 260
 TICKS_TURN = 231
 WALL_THRESHOLD_DIAG = 85
@@ -55,7 +55,7 @@ class Motors:
 
         self.setpointTurnHeading = 0
         self.inputTurn = 0
-        self.PIDTurn = PID(self.inputTurn, self.setpointHeading, KP, KI, KD, DIRECT, Timer)
+        self.PIDTurn = PID(self.inputTurn, self.setpointHeading, 0.2, 0, 0, DIRECT, Timer)
         self.PIDTurn.set_output_limits(-1*MOTOR_SPEED, MOTOR_SPEED)
         self.PIDTurn.set_mode(AUTOMATIC)
 
@@ -130,6 +130,7 @@ class Motors:
         distance_l, distance_r = 0, 0 
        
         start = time.time() * 1000
+        last_set = time.time()
         #while (min(distance_r, distance_l) < ticks and (time.time()*1000 - start < factor * TIME)):
         while min(distance_r, distance_l) < ticks:
         #while 1:
@@ -142,10 +143,12 @@ class Motors:
             #     ticks += 4
             #print("running the loop")
             distance_l, distance_r = self.read_encoders()
-            print("Distance:", distance_l, distance_r)
+            #print("Distance:", distance_l, distance_r)
 
             self.inputStraight = self.teensy_sensors.get_heading()
             
+            # Only undergo PID ever 0.1 second
+            last_set = time.time()
             # Compute error
             error = self.compute_heading_error(self.inputStraight, self.setpointHeading)
             self.PIDHeading.compute(error, 0)
@@ -297,9 +300,9 @@ class Motors:
     def turn_to_direction(self, heading):
         self.inputTurn = self.compute_heading_error(self.teensy_sensors.get_heading(), heading)
         self.setpointTurnHeading = 0
-        while abs(self.inputTurn) > 2:
-            self.move_motors(-self.PIDTurn.output(), self.PIDTurn.output())
-            self.inputTurn = self.compute_heading_error(self.getHeading(), heading)
+        while abs(self.inputTurn) > 0.5:
+            self.move_motors(self.PIDTurn.output(), -self.PIDTurn.output())
+            self.inputTurn = self.compute_heading_error(self.teensy_sensors.get_heading(), heading)
             self.PIDTurn.compute(self.inputTurn, self.setpointTurnHeading)
 
 

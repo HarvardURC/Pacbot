@@ -19,11 +19,25 @@ def test():
 
 def test_drive_straight():
     motors = Motors()
-    motors.driveStraight(57.31, 530)
-    
+    motors.driveStraight(110.38, 530)
+
+def test_turn_to_heading():
+    motors = Motors()
+    motors.turn_to_direction(107.5)
+
+def test_drive_turn():
+    motors = Motors()
+    motors.driveStraight(110.38, 530)
+    motors.stop()
+    motors.turn_to_direction(30)
+
 
 if __name__ == "__main__":
     if "-1" in sys.argv:
         test_drive_straight()
+    elif "-2" in sys.argv:
+        test_turn_to_heading()
+    elif "-3" in sys.argv:
+        test_drive_turn()
     else:
         test()
