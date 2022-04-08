@@ -7,7 +7,7 @@ setGPIO()
 import time
 import signal, sys
 
-from teensySensors import SensorsV2
+from teensySensors import TeensySensors
 
 from time import sleep
 
@@ -27,15 +27,16 @@ KI = 0.01
 KD = 0.05
 class Motors:
     def __init__(self):
-        self.sensorsv2 = SensorsV2()
+        self.teensy_sensors = TeensySensors()
         sleep(2)
-        # self.sensors = Sensors([pins.tof_front,pins.tof_rear,pins.tof_fleft,pins.tof_fright,pins.tof_rleft,pins.tof_rright], ["front", "rear","fleft","fright","rleft","rright"], [0x30,0x31,0x32,0x33,0x34,0x35])
-        #self._frontIR = self.sensors.sensors["front"]
-        #self._fleftIR = self.sensors.sensors["fleft"]
-        #self._frightIR = self.sensors.sensors["fright"]
-        #self._rearIR = self.sensors.sensors["rear"]
-        #self._rleftIR = self.sensors.sensors["rleft"]
-        #self._rrightIR = self.sensors.sensors["rright"]
+        
+        self.ir_sensors = Sensors([pins.tof_front,pins.tof_rear,pins.tof_fleft,pins.tof_fright,pins.tof_rleft,pins.tof_rright], ["front", "rear","fleft","fright","rleft","rright"], [0x30,0x31,0x32,0x33,0x34,0x35]
+        self._frontIR = self.ir_sensors.sensors["front"]
+        self._fleftIR = self.ir_sensors.sensors["fleft"]
+        self._frightIR = self.ir_sensors.sensors["fright"]
+        self._rearIR = self.ir_sensors.sensors["rear"]
+        self._rleftIR = self.ir_sensors.sensors["rleft"]
+        self._rrightIR = self.ir_sensors.sensors["rright"]
 
         self.directions = ["N", "E", "S", "W"]
         self.cur_dir = 1
@@ -43,30 +44,10 @@ class Motors:
 
         self.dir = True
 
-        # Encoder.init(pins.encoder_pin_l1, pins.encoder_pin_l2, 0)
-        # Encoder.init(pins.encoder_pin_r1, pins.encoder_pin_r2, 1)
 
         self.left_motor = Motor("Left", pins.motor_speed_l, pins.motor_direction_l, 0)
 
         self.right_motor = Motor("Right", pins.motor_speed_r, pins.motor_direction_r, 0)
-
-        self.setpointL = 0
-        self.inputL = 0
-        self.PIDLeft = PID(self.inputL, self.setpointL, KP3, 0.002, 0.000, DIRECT, Timer)
-        self.PIDLeft.set_output_limits(-1 * MOTOR_SPEED*1.5, MOTOR_SPEED*1.5)
-        self.PIDLeft.set_mode(AUTOMATIC)
-
-        self.setpointR = 0
-        self.inputR = 0
-        self.PIDRight = PID(self.inputR, self.setpointR, KP3, 0.002, 0.000, DIRECT, Timer)
-        self.PIDRight.set_output_limits(-1 * MOTOR_SPEED*1.5, MOTOR_SPEED*1.5)
-        self.PIDRight.set_mode(AUTOMATIC)
-
-        self.setpointfL = 0
-        self.inputfL = 0
-        self.PIDfLeft = PID(self.inputfL, self.setpointfL, 2.0, 0.002, 0.000, DIRECT, Timer)
-        self.PIDfLeft.set_output_limits(-1 * MOTOR_SPEED, 100 - MOTOR_SPEED)
-        self.PIDfLeft.set_mode(AUTOMATIC)
 
         self.setpointHeading = 0
         self.inputStraight = 0
@@ -79,33 +60,9 @@ class Motors:
         self.PIDTurn = PID(self.inputTurn, self.setpointHeading, KP, KI, KD, DIRECT, Timer)
         self.PIDTurn.set_output_limits(-1*MOTOR_SPEED, MOTOR_SPEED)
         self.PIDTurn.set_mode(AUTOMATIC)
-        
-        self.setpointfR = 0
-        self.inputfR = 0
-        self.PIDfRight = PID(self.inputfR, self.setpointfR, 2.0, 0.002, 0.000, DIRECT, Timer)
-        self.PIDfRight.set_output_limits(-1 * MOTOR_SPEED, MOTOR_SPEED)
-        self.PIDfRight.set_mode(AUTOMATIC)
-
-        self.setpointrL = 0
-        self.inputrL = 0
-        self.PIDrLeft = PID(self.inputrL, self.setpointrL, 2.0, 0.002, 0.000, DIRECT, Timer)
-        self.PIDrLeft.set_output_limits(-1 * MOTOR_SPEED, MOTOR_SPEED)
-        self.PIDrLeft.set_mode(AUTOMATIC)
-        
-        self.setpointrR = 0
-        self.inputrR = 0
-        self.PIDrRight = PID(self.inputrR, self.setpointrR, 2.0, 0.002, 0.000, DIRECT, Timer)
-        self.PIDrRight.set_output_limits(-1 * MOTOR_SPEED, MOTOR_SPEED)
-        self.PIDrRight.set_mode(AUTOMATIC)
 
     def read_encoders(self):
-        if self.dir:
-            return (-Encoder.read(0), Encoder.read(1))
-        else:
-            return (Encoder.read(0), -Encoder.read(1))
-
-    def read_encodersV2(self):
-        return self.sensorsv2.get_left_encoder_ticks(), self.sensorsv2.get_right_encoder_ticks()
+        return self.teensy_sensors.get_left_encoder_ticks(), self.teensy_sensors.get_right_encoder_ticks()
 
     def raw_encoders(self):
         return (Encoder.read(0), Encoder.read(1))
@@ -170,12 +127,12 @@ class Motors:
     def driveStraight(self, heading, ticks):
         # Encoder.write(0, 0)
         # Encoder.write(0, 1)
-        self.sensorsv2.reset_encoders()
+        self.teensy_sensors.reset_encoders()
         self.setpointHeading = heading
 
         factor = ticks/TICKS_CELL
 
-        distance_l, distance_r = self.read_encodersV2()
+        distance_l, distance_r = self.read_encoders()
         
         start = time.time() * 1000
         #while (min(distance_r, distance_l) < ticks and (time.time()*1000 - start < factor * TIME)):
@@ -188,9 +145,9 @@ class Motors:
             #     added += 4
             #     ticks += 4
             #print("running the loop")
-            distance_l, distance_r = self.read_encodersV2()
+            distance_l, distance_r = self.read_encoders()
 
-            self.inputStraight = self.sensorsv2.get_heading()
+            self.inputStraight = self.teensy_sensors.get_heading()
             
             # Compute error
             error = self.compute_heading_error(self.inputStraight, self.setpointHeading)
@@ -341,7 +298,7 @@ class Motors:
         return (cur - des + 540) % 360 - 180
 
     def turn_to_direction(self, heading):
-        self.inputTurn = self.compute_heading_error(self.sensorsv2.get_heading(), heading)
+        self.inputTurn = self.compute_heading_error(self.teensy_sensors.get_heading(), heading)
         self.setpointTurnHeading = 0
         while abs(self.inputTurn) > 2:
             self.move_motors(-self.PIDTurn.output(), self.PIDTurn.output())

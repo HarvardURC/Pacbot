@@ -14,16 +14,12 @@ from types import SimpleNamespace
     "tof_right" : 0})
 '''
 pins = SimpleNamespace(**{ 
-    "tof_front" : 27,
-    "tof_fleft" : 18,
-    "tof_fright" : 23,
-    "tof_rear" : 13,
-    "tof_rleft" : 6,
-    "tof_rright" :26,
-    "encoder_pin_l1" : 4, 
-    "encoder_pin_l2" : 14,
-    "encoder_pin_r1" : 15, 
-    "encoder_pin_r2" : 17, 
+    "tof_front" : 21,
+    "tof_fleft" : 23,
+    "tof_fright" : 20,
+    "tof_rear" : 22,
+    "tof_rleft" : 4,
+    "tof_rright" : 24,
     "motor_speed_l" : 18,
     "motor_direction_l" : 19,
     "motor_speed_r" : 12,
