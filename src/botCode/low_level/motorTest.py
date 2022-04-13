@@ -46,6 +46,28 @@ def test_advance_two_then_turn_right():
     motors.move_cells(2)
     motors.turn_left()
 
+def test_advance_three():
+    motors = Motors()
+    motors.move_cells(3)
+
+def test_advance_right():
+    motors = Motors()
+    motors.move_cells(3)
+    motors.turn_right()
+    motors.move_cells(2)
+    motors.turn_left()
+    motors.move_cells(3)
+
+def test_advance_right_more():
+    motors = Motors()
+    motors.move_cells(3)
+    motors.turn_right()
+    motors.move_cells(2)
+    motors.turn_left()
+    motors.move_cells(3)
+    motors.turn_left()
+    motors.move_cells(5)
+    motors.turn_right()
 
 if __name__ == "__main__":
     if "-1" in sys.argv:
@@ -60,5 +82,11 @@ if __name__ == "__main__":
         test_advance_four()
     elif "-6" in sys.argv:
         test_advance_two_then_turn_right()
+    elif "-7" in sys.argv:
+        test_advance_three()
+    elif "-8" in sys.argv:
+        test_advance_right()
+    elif "-9" in sys.argv:
+        test_advance_right_more()
     else:
         test()

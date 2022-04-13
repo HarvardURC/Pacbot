@@ -13,7 +13,8 @@ from time import sleep
 
 
 MOTOR_SPEED = 25 
-TICKS_CELL = 390
+TICKS_CELL = 520   # this is (encoder ticks per axis rev) * (motor gear ratio) * (ratio of cell width to circumference of wheel) - but I think we're missing ticks or something so I did it experimentally
+
 
 TIME = 3000
 KP = 0.4
@@ -54,7 +55,7 @@ class Motors:
 
         self.setpointTurnHeading = 0
         self.inputTurn = 0
-        self.PIDTurn = PID(self.inputTurn, self.setpointHeading, 0.22, 0, 0, DIRECT, Timer)
+        self.PIDTurn = PID(self.inputTurn, self.setpointHeading, 0.18, 0, 0, DIRECT, Timer)
         self.PIDTurn.set_output_limits(-1*MOTOR_SPEED, MOTOR_SPEED)
         self.PIDTurn.set_mode(AUTOMATIC)
 
@@ -158,7 +159,4 @@ class Motors:
 
     def straight(self):
         #print("straight")
-        if self.dir:
-            self.move_motors(MOTOR_SPEED/2, MOTOR_SPEED/2)
-        else:
-            self.move_motors(-MOTOR_SPEED/2, -MOTOR_SPEED/2)
+        self.move_motors(MOTOR_SPEED/2, MOTOR_SPEED/2)

@@ -74,6 +74,9 @@ class TeensySensors():
     def print_sensor_values(self):
         print("Heading: " + str(self.heading) + " Encoders: " + str(self.get_left_encoder_ticks()) + " " + str(self.get_right_encoder_ticks()))
 
+    def print_orig_values(self):
+        print("Heading: " + str(self.heading) + " Encoders: " + str(self.left_encoder) + " " + str(self.right_encoder))
+
 
 def main():
     # Example usage of the class
@@ -81,11 +84,11 @@ def main():
     i = 0
     while 1:
         sleep(0.1)
-        sensors.print_sensor_values()
+        sensors.print_orig_values()
         i += 1
 
-        if i % 10 == 0:
-            sensors.reset_encoders()
+        #if i % 100 == 0:
+        #    sensors.reset_encoders()
 
 
 if __name__ == "__main__":
