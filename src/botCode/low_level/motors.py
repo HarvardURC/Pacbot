@@ -32,13 +32,13 @@ class Motors:
         self.teensy_sensors = TeensySensors()
         sleep(2)
         
-        #self.ir_sensors = Sensors([pins.tof_front,pins.tof_rear,pins.tof_fleft,pins.tof_fright,pins.tof_rleft,pins.tof_rright], ["front", "rear","fleft","fright","rleft","rright"], [0x30,0x31,0x32,0x33,0x34,0x35])
-        #self._frontIR = self.ir_sensors.sensors["front"]
-        #self._fleftIR = self.ir_sensors.sensors["fleft"]
-        #self._frightIR = self.ir_sensors.sensors["fright"]
-        #self._rearIR = self.ir_sensors.sensors["rear"]
-        #self._rleftIR = self.ir_sensors.sensors["rleft"]
-        #self._rrightIR = self.ir_sensors.sensors["rright"]
+        self.ir_sensors = Sensors([pins.tof_front,pins.tof_rear,pins.tof_fleft,pins.tof_fright,pins.tof_rleft,pins.tof_rright], ["front", "rear","fleft","fright","rleft","rright"], [0x30,0x31,0x32,0x33,0x34,0x35])
+        self._frontIR = self.ir_sensors.sensors["front"]
+        self._fleftIR = self.ir_sensors.sensors["fleft"]
+        self._frightIR = self.ir_sensors.sensors["fright"]
+        self._rearIR = self.ir_sensors.sensors["rear"]
+        self._rleftIR = self.ir_sensors.sensors["rleft"]
+        self._rrightIR = self.ir_sensors.sensors["rright"]
 
         self.cur_dir = Direction.W
         self.heading = {Direction.W: 0, Direction.N: 90, Direction.E: 180, Direction.S: 270}
@@ -148,12 +148,27 @@ class Motors:
             self.inputTurn = self.compute_heading_error(self.teensy_sensors.get_heading(), heading)
             self.PIDTurn.compute(self.inputTurn, self.setpointTurnHeading)
 
+    def driveForwardTillClear(self, irSensor):
+        while(irSensor.detectWall()):
+            self.drive_straight(self.heading[self.cur_dir], 25)
 
     def turn_left(self):
+        if(self._fleftIR.detectWall()):
+            self.driveForwardTillClear(self._fleftIR)
+        elif(self._rleftIR.detectWall()):
+            self.driveForwardTillClear(self._rleftIR)
+
         self.cur_dir = (self.cur_dir - 1)%4
         self.turn_to_direction(self.heading[self.cur_dir])
     
+
     def turn_right(self):
+        thresh = 90 # mm
+        if(self._frightIR.detectWall()):
+            self.driveForwardTillClear(self._frightIR)
+        elif(self._rrightIR.detectWall()):
+            self.driveForwardTillClear(self._rrightIR)
+
         self.cur_dir = (self.cur_dir + 1)%4
         self.turn_to_direction(self.heading[self.cur_dir])
 
