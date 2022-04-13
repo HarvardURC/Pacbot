@@ -13,11 +13,8 @@ from time import sleep
 
 
 MOTOR_SPEED = 25 
-TICKS_CELL = 260
-TICKS_TURN = 231
-WALL_THRESHOLD_DIAG = 85
-WALL_DISTANCE_DIAG = 75
-WALL_DIST = 80
+TICKS_CELL = 390
+
 TIME = 3000
 KP = 0.4
 KI = 0.01
@@ -37,10 +34,8 @@ class Motors:
         #self._rrightIR = self.ir_sensors.sensors["rright"]
 
         self.directions = ["N", "E", "S", "W"]
-        self.cur_dir = 1
+        self.cur_dir = 0
         self.heading = {"E": 0, "N": 90, "W": 180, "S": 270}
-
-        self.dir = True
 
 
         self.left_motor = Motor("Left", pins.motor_speed_l, pins.motor_direction_l, 0)
@@ -59,14 +54,18 @@ class Motors:
         self.PIDTurn.set_output_limits(-1*MOTOR_SPEED, MOTOR_SPEED)
         self.PIDTurn.set_mode(AUTOMATIC)
 
+        self.reset_heading()
+
     def read_encoders(self):
         return self.teensy_sensors.get_left_encoder_ticks(), self.teensy_sensors.get_right_encoder_ticks()
 
-    def raw_encoders(self):
-        return (Encoder.read(0), Encoder.read(1))
+    def reset_heading(self):
+        current_heading = self.teensy_sensors.get_heading()
 
-    def reverse_direction(self):
-        self.dir = not self.dir
+        for i in range(4):
+            self.heading[(self.cur_dir + i)] = (current_heading + (i * 90)) % 360
+
+
 
     def move_motors(self, left, right):
         if left >= 0:
@@ -117,21 +116,15 @@ class Motors:
         self.stop()
     
     def move_cells(self, cells):
-        """for _ in range(cells):  
-            self.advance(TICKS_CELL)
-        """
         self.advance(cells*TICKS_CELL)
     
-    def driveStraight(self, heading, ticks):
+    def drive_straight(self, heading, ticks):
         self.teensy_sensors.reset_encoders()
         self.setpointHeading = heading
 
         factor = ticks/TICKS_CELL
         distance_l, distance_r = 0, 0 
        
-        start = time.time() * 1000
-        last_set = time.time()
-        #while (min(distance_r, distance_l) < ticks and (time.time()*1000 - start < factor * TIME)):
         while min(distance_r, distance_l) < ticks:
         #while 1:
             # might wanna add logic to avoid hitting wall
@@ -141,7 +134,6 @@ class Motors:
             #     print('added: {}'.format(added))
             #     added += 4
             #     ticks += 4
-            #print("running the loop")
             distance_l, distance_r = self.read_encoders()
             #print("Distance:", distance_l, distance_r)
 
@@ -156,78 +148,6 @@ class Motors:
             self.move_motors((MOTOR_SPEED + self.PIDHeading.output()), (MOTOR_SPEED - self.PIDHeading.output()))
             sleep(0.1)
 
-    def advance(self, ticks):
-        Encoder.write(0, 0)
-        Encoder.write(0, 1)
-
-        factor = ticks/TICKS_CELL
-
-        distance_l, distance_r = self.read_encoders()
-        added = 0
-        have_driven = False
-        start = time.time()*1000
-        while (min(distance_r, distance_l) < ticks and (time.time()*1000 - start < factor * TIME)):
-            if have_driven and self.dir and self._frontIR.get_distance() < 40  and self._fleftIR.get_distance() < 65 and  self._frightIR.get_distance() < 65:
-                print("break:",self._frontIR.get_distance())
-                break
-            elif have_driven and not self.dir and self._rearIR.get_distance() < 40 and (self._rleftIR.get_distance() < 65 or  self._rrightIR.get_distance() < 65):
-                break
-            
-            if abs(distance_l - distance_r) > 140:
-                print('added: {}'.format(added))
-                added += 4
-                ticks += 4
-            distance_l, distance_r = self.read_encoders()
-            #print(distance_l)
-            #print(distance_r)
-            dists = {
-                'fr': self._frightIR.get_distance(),
-                'fl': self._fleftIR.get_distance(),
-                'rr': self._rrightIR.get_distance(),
-                'rl': self._rleftIR.get_distance()
-            }
-
-            front_valid = dists['fr'] < WALL_THRESHOLD_DIAG and dists['fl'] < WALL_THRESHOLD_DIAG and (dists['fr'] < WALL_DIST or dists['fl'] < WALL_DIST)
-            rear_valid = dists['rr'] < WALL_THRESHOLD_DIAG and dists['rl'] < WALL_THRESHOLD_DIAG and (dists['rr'] < WALL_DIST or dists['rl'] < WALL_DIST)
-            left_valid = dists['fl'] <  WALL_THRESHOLD_DIAG and dists['rr'] <  WALL_THRESHOLD_DIAG and (dists['fl'] <  WALL_DIST or dists['rr'] <  WALL_DIST)
-            right_valid = dists['fr'] <  WALL_THRESHOLD_DIAG and dists['rl'] <  WALL_THRESHOLD_DIAG and (dists['fr'] <  WALL_DIST or dists['rl'] <  WALL_DIST)
-
-            if self.dir:
-                max2 = min(dists, key = lambda k: dists[k] if (dists[k] < WALL_THRESHOLD_DIAG and k[0] != 'r') else float('inf'))
-                single_sensor_functions = {
-                        'fr': self.follow_front_right,
-                        'fl': self.follow_front_left
-                }
-            else:
-                max2 = min(dists, key = lambda k: dists[k] if (dists[k] < WALL_THRESHOLD_DIAG and k[0] != 'f') else float('inf'))
-                single_sensor_functions = {
-                        'rr': self.follow_rear_right,
-                        'rl': self.follow_rear_left
-                }
-
-            if front_valid and self.dir:
-                self.follow_front()
-            elif rear_valid and not self.dir:
-                self.follow_rear()
-            elif dists[max2] < WALL_THRESHOLD_DIAG and max2[0] != 'r' and self.dir:
-                #print(max2)
-                single_sensor_functions[max2]()
-            elif dists[max2] < WALL_THRESHOLD_DIAG and max2[0] != 'f' and not self.dir:
-                single_sensor_functions[max2]()
-            else:
-                self.straight()
-            have_driven = True
- 
-            """
-            elif left_valid:
-                self.follow_left()
-            elif right_valid:
-                print("right")
-                self.follow_right()
-
-            """ 
-        self.stop()
-
     def reverse(self, ticks):
         self.reverse_direction()
         self.move_cells(ticks)
@@ -239,60 +159,11 @@ class Motors:
             self.move_ticks(-TICKS_CELL/4, -TICKS_CELL/4)
         else:
             print("not back")
-
-    def turn_slight_left(self):
-        print("turn_slight_left")
-        self.PIDLeft.set_tunings(KP3,0.01,0)
-        self.PIDRight.set_tunings(KP3,0.01,0)
-        self.move_ticks(-1 * TICKS_TURN/6, TICKS_TURN/6)
-    
-    def turn_slight_right(self):
-        print("turn_slight_right")
-        self.PIDLeft.set_tunings(KP3,0.01,0)
-        self.PIDRight.set_tunings(KP3,0.01,0)
-        self.move_ticks(1 * TICKS_TURN/6, -1*TICKS_TURN/6)
-
-    def attempt_escape(self):
-        if(self._frontIR.get_distance() > 40 and self._fleftIR.get_distance()> 60 and self._frightIR.get_distance() > 60):
-            print("attempted")
-            self.move_cells(1)
-            return True
-        else:
-            print("could not")
-            return False
-
-    def escape(self):
-        escaped = False
-        self.dir = True
-        if self._frightIR.get_distance() <= self._fleftIR.get_distance():
-            while not escaped:
-                print('stuck')
-                self.back()
-                self.turn_slight_left()
-                escaped = self.attempt_escape()
-            if(self._frontIR.get_distance() < 40  or self._fleftIR.get_distance() < 10 or self._frightIR.get_distance() < 10):
-                print("second escape")
-                self.turn_left()
-                self.move_cells(2)
-        else: 
-            while not escaped:
-                print('stuck')
-                self.back()
-                self.turn_slight_right()
-                escaped = self.attempt_escape()
-            if(self._frontIR.get_distance() < 40  or self._fleftIR.get_distance() < 10 or self._frightIR.get_distance() < 10):
-                print("second escape")
-                self.turn_right()
-                self.move_cells(2)
  
 
-    def turn_around_l(self):
-        self.turn_left()
-        self.turn_left()
-
-    def turn_around_r(self):
-        self.turn_right()
-        self.turn_right()
+    def turn_around(self):
+        self.cur_dir = (self.cur_dir + 2) % 4
+        self.turn_to_direction(self.heading[self.cur_dir])
 
     def compute_heading_error(self, cur, des):
         return (cur - des + 540) % 360 - 180
@@ -306,168 +177,13 @@ class Motors:
             self.PIDTurn.compute(self.inputTurn, self.setpointTurnHeading)
 
 
-    def turn_left_imu(self):
+    def turn_left(self):
         self.cur_dir = (self.cur_dir + 1)%4
         self.turn_to_direction(self.heading[self.cur_dir])
     
-    def turn_right_imu(self):
+    def turn_right(self):
         self.cur_dir = (self.cur_dir - 1)%4
         self.turn_to_direction(self.heading[self.cur_dir])
-
-    def turn_left(self): 
-        self.PIDLeft.set_tunings(KP3,0.01,0)
-        self.PIDRight.set_tunings(KP3,0.01,0)
-        if self.dir:
-            self.move_ticks(-1 * TICKS_TURN, TICKS_TURN)
-        else: 
-            self.move_ticks(TICKS_TURN, -1*TICKS_TURN)
-            self.reverse_direction()
-
-    def turn_right(self):
-        self.PIDLeft.set_tunings(KP3,0.01,0)
-        self.PIDRight.set_tunings(KP3,0.01,0)
-        if self.dir:
-            self.move_ticks(TICKS_TURN, -1 * TICKS_TURN)
-        else: 
-            self.move_ticks(-1 * TICKS_TURN, TICKS_TURN)
-            self.reverse_direction()
-
-    def follow_front(self):
-        #print("fFront")
-        self.PIDfLeft.set_tunings(KP, KI, KD)
-        self.PIDfRight.set_tunings(KP, KI, KD)
-        self.setpointfR = WALL_DISTANCE_DIAG
-        self.setpointfL = WALL_DISTANCE_DIAG
-
-        self.inputfR = self._frightIR.get_distance()
-        self.inputfL = self._fleftIR.get_distance()
-
-        self.PIDfRight.compute(self.inputfR, self.setpointfR)
-        self.PIDfLeft.compute(self.inputfL, self.setpointfL)
-
-
-        self.move_motors((MOTOR_SPEED + self.PIDfLeft.output())/2, (MOTOR_SPEED + self.PIDfRight.output())/2)
-        
-
-    def follow_rear(self):
-        #print("fRear")
-
-        self.PIDrLeft.set_tunings(KP, KI, KD)
-        self.PIDrRight.set_tunings(KP, KI, KD)
-        self.setpointrR = WALL_DISTANCE_DIAG
-        self.setpointrL = WALL_DISTANCE_DIAG
-
-        self.inputrR = self._rrightIR.get_distance()
-        self.inputrL = self._rleftIR.get_distance()
-        
-        #print("R:",self.inputrR)
-        #print("L:",self.inputrL)
-        self.PIDrRight.compute(self.inputrR, self.setpointrR)
-        self.PIDrLeft.compute(self.inputrL, self.setpointrL)
-
-
-        self.move_motors(-(MOTOR_SPEED + self.PIDrLeft.output())/2, -(MOTOR_SPEED + self.PIDrRight.output())/2)
-            
-
-    def follow_left(self):
-        #print("fLeft")
-
-        self.PIDfLeft.set_tunings(KP, KI, KD)
-        self.PIDrLeft.set_tunings(KP, KI, KD)
-        self.setpointfL = WALL_DISTANCE_DIAG
-        self.setpointrR = WALL_DISTANCE_DIAG
-
-
-        self.inputfL = self._fleftIR.get_distance()
-        self.inputrR = self._rrightIR.get_distance()
-
-        self.PIDfLeft.compute(self.inputfL, self.setpointfL)
-        self.PIDrRightt.compute(self.inputrR, self.setpointrR)
-
-        if self.dir:
-            self.move_motors((MOTOR_SPEED + self.PIDfLeft.output())/2, (MOTOR_SPEED + self.PIDrRight.output())/2)
-        else:
-            self.move_motors(-(MOTOR_SPEED + self.PIDfLeft.output())/2, -(MOTOR_SPEED + self.PIDrRight.output())/2)
-
-    def follow_right(self):
-        #print("fRight")
-
-        self.PIDfRight.set_tunings(KP, KI, KD)
-        self.PIDrRight.set_tunings(KP, KI, KD)
-        self.setpointfR = WALL_DISTANCE_DIAG
-        self.setpointrL = WALL_DISTANCE_DIAG
-
-        self.inputfR = self._frightIR.get_distance()
-        self.inputrL = self._rleftIR.get_distance()              
-            
-        self.PIDfRight.compute(self.inputfR, self.setpointfR)
-        self.PIDrLeft.compute(self.inputrL, self.setpointrL)
-
-        if self.dir:
-            self.move_motors((MOTOR_SPEED + self.PIDrLeft.output())/2, (MOTOR_SPEED + self.PIDfRight.output())/2)
-        else:
-            self.move_motors(-(MOTOR_SPEED + self.PIDrLeft.output())/2, -(MOTOR_SPEED + self.PIDfRight.output())/2)
-
-    def follow_front_right(self):
-        #print("ffRight")
-
-        self.PIDfRight.set_tunings(KP2, KI, KD)
-        self.setpointfR = WALL_DISTANCE_DIAG
-
-        self.inputfR = self._frightIR.get_distance()
-
-        self.PIDfRight.compute(self.inputfR, self.setpointfR)
-
-        if self.dir:
-            self.move_motors((MOTOR_SPEED - self.PIDfRight.output())/2, (MOTOR_SPEED + self.PIDfRight.output())/2)
-        else:
-            self.move_motors(-(MOTOR_SPEED - self.PIDfRight.output())/2, -(MOTOR_SPEED + self.PIDfRight.output())/2)
-
-    def follow_front_left(self):
-        #print("ffLeft")
-
-        self.PIDfLeft.set_tunings(KP2, KI, KD)
-        self.setpointfL = WALL_DISTANCE_DIAG
-
-        self.inputfL = self._fleftIR.get_distance()
-
-        self.PIDfLeft.compute(self.inputfL, self.setpointfL)
-
-        if self.dir:
-            self.move_motors((MOTOR_SPEED + self.PIDfLeft.output())/2, (MOTOR_SPEED - self.PIDfLeft.output())/2)
-        else:
-            self.move_motors(-(MOTOR_SPEED + self.PIDfLeft.output())/2, -(MOTOR_SPEED - self.PIDfLeft.output())/2)
-
-    def follow_rear_right(self):
-        #print("frRight")
-
-        self.PIDrRight.set_tunings(KP2, KI, KD)
-        self.setpointrR = WALL_DISTANCE_DIAG
-
-        self.inputrR = self._rrightIR.get_distance()
-
-        self.PIDrRight.compute(self.inputrR, self.setpointrR)
-
-        if self.dir:
-            self.move_motors((MOTOR_SPEED - self.PIDrRight.output())/2, (MOTOR_SPEED + self.PIDrRight.output())/2)
-        else:
-            self.move_motors(-(MOTOR_SPEED - self.PIDrRight.output())/2, -(MOTOR_SPEED + self.PIDrRight.output())/2)
-
-    def follow_rear_left(self):
-        #print("frLeft")
-
-        self.PIDrLeft.set_tunings(KP2, KI, KD)
-        self.setpointrL = WALL_DISTANCE_DIAG
-
-        self.inputrL = self._rleftIR.get_distance()
-
-        self.PIDrLeft.compute(self.inputrL, self.setpointrL)
-
-        if self.dir:
-            self.move_motors((MOTOR_SPEED + self.PIDrLeft.output())/2, (MOTOR_SPEED - self.PIDrLeft.output())/2)
-        else:
-            self.move_motors(-(MOTOR_SPEED + self.PIDrLeft.output())/2, -(MOTOR_SPEED - self.PIDrLeft.output())/2)
-
 
     def straight(self):
         #print("straight")
