@@ -31,6 +31,10 @@ def test_drive_turn():
     motors.stop()
     motors.turn_to_direction(30)
 
+def test_advance_one():
+    motors = Motors()
+    motors.advance(1)
+
 
 if __name__ == "__main__":
     if "-1" in sys.argv:

@@ -81,42 +81,9 @@ class Motors:
         print("stopped")
         self.right_motor.stop()
         self.left_motor.stop()
-
-    def move_ticks(self, ticks_l, ticks_r):
-        Encoder.write(0, 0)
-        Encoder.write(0, 1)
-
-        factor = abs(ticks_l)/TICKS_CELL
-
-        self.setpointL = ticks_l
-        self.setpointR = ticks_r
-
-        self.inputR = 0
-        self.inputL = 0
-
-        start = time.time() * 1000
-        while ((abs(self.inputL - self.setpointL) > 5 or abs(self.inputR - self.setpointR) > 5) and (time.time()* 1000 - start < factor *TIME)):
-            self.inputL , self.inputR = self.read_encoders()
-            #print(self.inputL)
-            #print(self.inputR)
-
-            self.PIDRight.compute(self.inputR, self.setpointR)
-            self.PIDLeft.compute(self.inputL, self.setpointL)
-
-            l_rem = abs(self.inputL - self.setpointL)
-            r_rem = abs(self.inputR - self.setpointR)
-            
-            if l_rem > r_rem and (abs(l_rem - r_rem) > 10 or r_rem < 10):
-                self.move_motors(self.PIDLeft.output(),0)
-            elif r_rem > l_rem and (abs(l_rem - r_rem) > 10 or l_rem < 10):
-                self.move_motors(0,self.PIDRight.output())
-            else:
-                self.move_motors(self.PIDLeft.output(),self.PIDRight.output()) 
-            
-        self.stop()
     
     def move_cells(self, cells):
-        self.advance(cells*TICKS_CELL)
+        self.drive_straight(self.heading[self.cur_dir], cells*TICKS_CELL)
     
     def drive_straight(self, heading, ticks):
         self.teensy_sensors.reset_encoders()
