@@ -19,7 +19,7 @@ def test():
 
 def test_drive_straight():
     motors = Motors()
-    motors.driveStraight(110.38, 530)
+    motors.drive_straight(110.38, 530)
 
 def test_turn_to_heading():
     motors = Motors()
@@ -27,7 +27,7 @@ def test_turn_to_heading():
 
 def test_drive_turn():
     motors = Motors()
-    motors.driveStraight(110.38, 530)
+    motors.drive_straight(110.38, 530)
     motors.stop()
     motors.turn_to_direction(30)
 
