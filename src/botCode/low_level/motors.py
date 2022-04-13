@@ -20,6 +20,12 @@ KP = 0.4
 KI = 0.01
 KD = 0.05
 
+class Direction():
+    W = 0
+    N = 1
+    E = 2
+    S = 3
+
 class Motors:
     def __init__(self):
         self.teensy_sensors = TeensySensors()
@@ -33,10 +39,8 @@ class Motors:
         #self._rleftIR = self.ir_sensors.sensors["rleft"]
         #self._rrightIR = self.ir_sensors.sensors["rright"]
 
-        self.directions = ["N", "E", "S", "W"]
-        self.cur_dir = 0
-        self.heading = {"E": 0, "N": 90, "W": 180, "S": 270}
-
+        self.cur_dir = Direction.W
+        self.heading = {Direction.W: 0, Direction.N: 90, Direction.E: 180, Direction.S: 270}
 
         self.left_motor = Motor("Left", pins.motor_speed_l, pins.motor_direction_l, 0)
 
@@ -50,7 +54,7 @@ class Motors:
 
         self.setpointTurnHeading = 0
         self.inputTurn = 0
-        self.PIDTurn = PID(self.inputTurn, self.setpointHeading, 0.2, 0, 0, DIRECT, Timer)
+        self.PIDTurn = PID(self.inputTurn, self.setpointHeading, 0.22, 0, 0, DIRECT, Timer)
         self.PIDTurn.set_output_limits(-1*MOTOR_SPEED, MOTOR_SPEED)
         self.PIDTurn.set_mode(AUTOMATIC)
 
@@ -145,11 +149,11 @@ class Motors:
 
 
     def turn_left(self):
-        self.cur_dir = (self.cur_dir + 1)%4
+        self.cur_dir = (self.cur_dir - 1)%4
         self.turn_to_direction(self.heading[self.cur_dir])
     
     def turn_right(self):
-        self.cur_dir = (self.cur_dir - 1)%4
+        self.cur_dir = (self.cur_dir + 1)%4
         self.turn_to_direction(self.heading[self.cur_dir])
 
     def straight(self):
