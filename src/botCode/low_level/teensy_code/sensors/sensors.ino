@@ -14,7 +14,7 @@
 
 
 /* Set the delay between fresh samples */
-#define SAMPLERATE_DELAY_MS (50)
+#define SAMPLERATE_DELAY_MS (10)
 
 /* Set up Encoder */
 // Change these pin numbers to the pins connected to your encoder.
