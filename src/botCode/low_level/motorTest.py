@@ -33,7 +33,18 @@ def test_drive_turn():
 
 def test_advance_one():
     motors = Motors()
-    motors.advance(1)
+    motors.move_cells(1)
+
+def test_advance_four():
+    motors = Motors()
+    motors.move_cells(4)
+
+def test_advance_two_then_turn_right():
+    motors = Motors()
+    motors.move_cells(2)
+    motors.turn_right()
+    motors.move_cells(2)
+    motors.turn_left()
 
 
 if __name__ == "__main__":
@@ -43,5 +54,11 @@ if __name__ == "__main__":
         test_turn_to_heading()
     elif "-3" in sys.argv:
         test_drive_turn()
+    elif "-4" in sys.argv:
+        test_advance_one()
+    elif "-5" in sys.argv:
+        test_advance_four()
+    elif "-6" in sys.argv:
+        test_advance_two_then_turn_right()
     else:
         test()
