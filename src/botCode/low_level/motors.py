@@ -13,7 +13,7 @@ from time import sleep
 
 
 MOTOR_SPEED = 25 
-TICKS_CELL = 520   # this is (encoder ticks per axis rev) * (motor gear ratio) * (ratio of cell width to circumference of wheel) - but I think we're missing ticks or something so I did it experimentally
+TICKS_CELL = 550   # this is (encoder ticks per axis rev) * (motor gear ratio) * (ratio of cell width to circumference of wheel) - but I think we're missing ticks or something so I did it experimentally
 
 
 TIME = 3000
@@ -153,21 +153,21 @@ class Motors:
             self.drive_straight(self.heading[self.cur_dir], 25)
 
     def turn_left(self):
-        if(self._fleftIR.detectWall()):
-            self.driveForwardTillClear(self._fleftIR)
-        elif(self._rleftIR.detectWall()):
-            self.driveForwardTillClear(self._rleftIR)
+        #if(self._fleftIR.detectWall()):
+        #    self.driveForwardTillClear(self._fleftIR)
+        #elif(self._rleftIR.detectWall()):
+        #    self.driveForwardTillClear(self._rleftIR)
 
         self.cur_dir = (self.cur_dir - 1)%4
         self.turn_to_direction(self.heading[self.cur_dir])
     
 
     def turn_right(self):
-        thresh = 90 # mm
-        if(self._frightIR.detectWall()):
-            self.driveForwardTillClear(self._frightIR)
-        elif(self._rrightIR.detectWall()):
-            self.driveForwardTillClear(self._rrightIR)
+        #$thresh = 90 # mm
+        #if(self._frightIR.detectWall()):
+        #    self.driveForwardTillClear(self._frightIR)
+        #elif(self._rrightIR.detectWall()):
+        #    self.driveForwardTillClear(self._rrightIR)
 
         self.cur_dir = (self.cur_dir + 1)%4
         self.turn_to_direction(self.heading[self.cur_dir])
