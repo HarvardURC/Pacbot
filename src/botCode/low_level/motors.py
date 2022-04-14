@@ -13,7 +13,7 @@ from time import sleep
 
 
 MOTOR_SPEED = 25 
-TICKS_CELL = 550   # this is (encoder ticks per axis rev) * (motor gear ratio) * (ratio of cell width to circumference of wheel) - but I think we're missing ticks or something so I did it experimentally
+TICKS_CELL = 300   # this is (encoder ticks per axis rev) * (motor gear ratio) * (ratio of cell width to circumference of wheel) - but I think we're missing ticks or something so I did it experimentally
 
 
 TIME = 3000
@@ -118,6 +118,9 @@ class Motors:
             self.PIDHeading.compute(error, 0)
             #print("Error:", error, " Pid heading:", self.PIDHeading.output())
             self.move_motors((MOTOR_SPEED + self.PIDHeading.output()), (MOTOR_SPEED - self.PIDHeading.output()))
+
+            print(self._rleftIR.get_distance(), " ", self._rrightIR.get_distance())
+
             sleep(0.1)
 
     def reverse(self, ticks):
@@ -150,13 +153,26 @@ class Motors:
 
     def driveForwardTillClear(self, irSensor):
         while(irSensor.detectWall()):
-            self.drive_straight(self.heading[self.cur_dir], 25)
+            # self.drive_straight(self.heading[self.cur_dir], 1)
+            self.move_motors(10, 10)
+            print("Not clear")
+        # self.drive_straight(self.heading[self.cur_dir], 1)
+        # self.move_motors(25, 25)
+        sleep(0.2)
 
     def turn_left(self):
+        past_wall = True
+
         #if(self._fleftIR.detectWall()):
         #    self.driveForwardTillClear(self._fleftIR)
-        #elif(self._rleftIR.detectWall()):
-        #    self.driveForwardTillClear(self._rleftIR)
+        #    past_wall = False
+        # if(self._rleftIR.detectWall()):
+            # self.driveForwardTillClear(self._rleftIR)
+            # past_wall = False
+        self.driveForwardTillClear(self._rleftIR)
+
+        # if past_wall
+        print(past_wall)
 
         self.cur_dir = (self.cur_dir - 1)%4
         self.turn_to_direction(self.heading[self.cur_dir])
@@ -166,8 +182,10 @@ class Motors:
         #$thresh = 90 # mm
         #if(self._frightIR.detectWall()):
         #    self.driveForwardTillClear(self._frightIR)
-        #elif(self._rrightIR.detectWall()):
+        # if(self._rrightIR.detectWall()):
         #    self.driveForwardTillClear(self._rrightIR)
+
+        self.driveForwardTillClear(self._rrightIR)
 
         self.cur_dir = (self.cur_dir + 1)%4
         self.turn_to_direction(self.heading[self.cur_dir])
