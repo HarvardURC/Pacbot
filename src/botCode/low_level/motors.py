@@ -48,7 +48,7 @@ class Motors:
         self._rleftIR.get_distance()
         self._rrightIR.get_distance()
 
-        self.cur_dir = Direction.W
+        self.cur_dir = Direction.E
         self.heading = {Direction.W: 0, Direction.N: 90, Direction.E: 180, Direction.S: 270}
 
         self.left_motor = Motor("Left", pins.motor_speed_l, pins.motor_direction_l, 0)
@@ -161,13 +161,20 @@ class Motors:
         self.stop()
 
     def driveForwardTillClear(self, irSensor):
+        self.teensy_sensors.reset_encoders()
+        self.setpointHeading = self.heading[self.cur_dir]
+       
         while (irSensor.detectWall()):
-            # self.drive_straight(self.heading[self.cur_dir], 1)
-            self.move_motors(10, 10)
-            print("Not clear")
-        # self.drive_straight(self.heading[self.cur_dir], 1)
-        # self.move_motors(25, 25)
-        sleep(0.2)
+            self.inputStraight = self.teensy_sensors.get_heading()
+            error = self.compute_heading_error(self.inputStraight, self.setpointHeading)
+            self.PIDHeading.compute(error, 0)
+            self.move_motors((MOTOR_SPEED + self.PIDHeading.output()), (MOTOR_SPEED - self.PIDHeading.output()))
+
+            print(self._rleftIR.get_distance(), " ", self._rrightIR.get_distance())
+
+            sleep(0.1)
+
+
 
     def turn_left(self):
         past_wall = True
