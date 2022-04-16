@@ -86,6 +86,12 @@ def test_reverse():
     motors = Motors()
     motors.reverse_direction()
 
+
+def test_drive_forward_till_clear():
+    motors = Motors()
+    motors.driveForwardTillClear(motors._rleftIR)
+
+
 if __name__ == "__main__":
     if "-1" in sys.argv:
         test_drive_straight()
@@ -113,5 +119,7 @@ if __name__ == "__main__":
         test_turn_left()
     elif "-13" in sys.argv:
         test_reverse_direction()
+    elif "-14" in sys.argv:
+        test_drive_forward_till_clear()
     else:
         test()

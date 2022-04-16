@@ -13,7 +13,7 @@ from time import sleep
 
 
 MOTOR_SPEED = 25 
-TICKS_CELL = 300   # this is (encoder ticks per axis rev) * (motor gear ratio) * (ratio of cell width to circumference of wheel) - but I think we're missing ticks or something so I did it experimentally
+TICKS_CELL = 510   # this is (encoder ticks per axis rev) * (motor gear ratio) * (ratio of cell width to circumference of wheel) - but I think we're missing ticks or something so I did it experimentally
 
 
 TIME = 3000
@@ -91,7 +91,7 @@ class Motors:
             self.right_motor.move(MotorDirection.BACKWARD, abs(right))
 
     def stop(self):
-        print("stopped")
+        #print("stopped")
         self.right_motor.stop()
         self.left_motor.stop()
     
@@ -127,7 +127,7 @@ class Motors:
             #print("Error:", error, " Pid heading:", self.PIDHeading.output())
             self.move_motors((MOTOR_SPEED + self.PIDHeading.output()), (MOTOR_SPEED - self.PIDHeading.output()))
 
-            print(self._rleftIR.get_distance(), " ", self._rrightIR.get_distance())
+            #print(self._rleftIR.get_distance(), " ", self._rrightIR.get_distance())
 
             sleep(0.1)
 
@@ -161,23 +161,25 @@ class Motors:
         self.stop()
 
     def driveForwardTillClear(self, irSensor):
-        self.teensy_sensors.reset_encoders()
         self.setpointHeading = self.heading[self.cur_dir]
        
         while (irSensor.detectWall()):
             self.inputStraight = self.teensy_sensors.get_heading()
             error = self.compute_heading_error(self.inputStraight, self.setpointHeading)
             self.PIDHeading.compute(error, 0)
-            self.move_motors((MOTOR_SPEED + self.PIDHeading.output()), (MOTOR_SPEED - self.PIDHeading.output()))
+            self.move_motors((MOTOR_SPEED - 10 + self.PIDHeading.output()), (MOTOR_SPEED - 10 - self.PIDHeading.output()))
 
-            print(self._rleftIR.get_distance(), " ", self._rrightIR.get_distance())
+            #print("Sensor reading:", irSensor.get_distance())
+            #print(self._rleftIR.get_distance(), " ", self._rrightIR.get_distance())
 
             sleep(0.1)
+        sleep(0.05)
+        self.stop()
 
 
 
     def turn_left(self):
-        past_wall = True
+        #past_wall = True
 
         #if(self._fleftIR.detectWall()):
         #    self.driveForwardTillClear(self._fleftIR)
@@ -188,7 +190,7 @@ class Motors:
         self.driveForwardTillClear(self._rleftIR)
 
         # if past_wall
-        print(past_wall)
+        #print(past_wall)
 
         self.cur_dir = (self.cur_dir - 1)%4
         self.turn_to_direction(self.heading[self.cur_dir])
