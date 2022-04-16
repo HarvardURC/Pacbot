@@ -1,7 +1,7 @@
-from .motor import Motor, MotorDirection
-from .pins import *
+from low_level.motor import Motor, MotorDirection
+from low_level.pins import *
 from time import sleep
-from .motors import Motors
+from low_level.motors import Motors
 import sys
 
 def test():
