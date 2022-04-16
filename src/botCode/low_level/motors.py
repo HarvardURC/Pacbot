@@ -105,7 +105,7 @@ class Motors:
         factor = ticks/TICKS_CELL
         distance_l, distance_r = 0, 0 
        
-        while min(distance_r, distance_l) < ticks and not self._frontIR.detectWall(threshold = 30):
+        while min(distance_r, distance_l) < ticks and not self._frontIR.detectWall(threshold = 50):
         #while 1:
             # might wanna add logic to avoid hitting wall
 
