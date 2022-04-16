@@ -1,4 +1,4 @@
-from motors import Motors
+from .motors import Motors
 from time import sleep
 
 def test_sensor_response():

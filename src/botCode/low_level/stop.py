@@ -1,6 +1,6 @@
 
-from GPIOhelpers import *
-from pins import *
+from .GPIOhelpers import *
+from .pins import *
 setGPIO()
 analogMode(pins.motor_speed_r, 0)
 analogMode(pins.motor_speed_l, 0)

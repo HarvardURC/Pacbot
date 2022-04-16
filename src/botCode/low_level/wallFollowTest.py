@@ -5,11 +5,11 @@
 
     Borrowed from the micromouse directory at https://github.com/HarvardURC/Micromouse/blob/master/2017%2C2018/tests/wall_follow_test/wall_follow_test.ino
 """
-from pins import *
-from GPIOhelpers import *
-from sensors import Sensors
-from motor import *
-from PID import *
+from .pins import *
+from .GPIOhelpers import *
+from .sensors import Sensors
+from .motor import *
+from .PID import *
 from time import sleep
 testing_distance = 50
 min_num = 180
