@@ -39,6 +39,14 @@ class Motors:
         self._rearIR = self.ir_sensors.sensors["rear"]
         self._rleftIR = self.ir_sensors.sensors["rleft"]
         self._rrightIR = self.ir_sensors.sensors["rright"]
+        sleep(0.5)
+        # sometimes intial sensor readings are 0
+        self._frontIR.get_distance()
+        self._fleftIR.get_distance()
+        self._frightIR.get_distance()
+        self._rearIR.get_distance()
+        self._rleftIR.get_distance()
+        self._rrightIR.get_distance()
 
         self.cur_dir = Direction.W
         self.heading = {Direction.W: 0, Direction.N: 90, Direction.E: 180, Direction.S: 270}
@@ -55,7 +63,7 @@ class Motors:
 
         self.setpointTurnHeading = 0
         self.inputTurn = 0
-        self.PIDTurn = PID(self.inputTurn, self.setpointHeading, 0.18, 0, 0, DIRECT, Timer)
+        self.PIDTurn = PID(self.inputTurn, self.setpointHeading, 0.15, 0., 0.0, DIRECT, Timer)
         self.PIDTurn.set_output_limits(-1*MOTOR_SPEED, MOTOR_SPEED)
         self.PIDTurn.set_mode(AUTOMATIC)
 
@@ -146,13 +154,14 @@ class Motors:
     def turn_to_direction(self, heading):
         self.inputTurn = self.compute_heading_error(self.teensy_sensors.get_heading(), heading)
         self.setpointTurnHeading = 0
-        while abs(self.inputTurn) > 0.5:
-            self.move_motors(self.PIDTurn.output(), -self.PIDTurn.output())
+        while abs(self.inputTurn) > 1:
             self.inputTurn = self.compute_heading_error(self.teensy_sensors.get_heading(), heading)
             self.PIDTurn.compute(self.inputTurn, self.setpointTurnHeading)
+            self.move_motors(self.PIDTurn.output(), -self.PIDTurn.output())
+        self.stop()
 
     def driveForwardTillClear(self, irSensor):
-        while(irSensor.detectWall()):
+        while (irSensor.detectWall()):
             # self.drive_straight(self.heading[self.cur_dir], 1)
             self.move_motors(10, 10)
             print("Not clear")
@@ -188,6 +197,10 @@ class Motors:
         self.driveForwardTillClear(self._rrightIR)
 
         self.cur_dir = (self.cur_dir + 1)%4
+        self.turn_to_direction(self.heading[self.cur_dir])
+
+    def reverse_direction(self):
+        self.cur_dir = (self.cur_dir + 2) % 4
         self.turn_to_direction(self.heading[self.cur_dir])
 
     def straight(self):

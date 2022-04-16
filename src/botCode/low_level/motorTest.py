@@ -74,6 +74,18 @@ def test_advance_left():
     motors.move_cells(1)
     motors.turn_left()
 
+def test_turn_right():
+    motors = Motors()
+    motors.turn_right()
+
+def test_turn_left():
+    motors = Motors()
+    motors.turn_left()
+
+def test_reverse():
+    motors = Motors()
+    motors.reverse_direction()
+
 if __name__ == "__main__":
     if "-1" in sys.argv:
         test_drive_straight()
@@ -95,5 +107,11 @@ if __name__ == "__main__":
         test_advance_right_more()
     elif "-10" in sys.argv:
         test_advance_left()
+    elif "-11" in sys.argv:
+        test_turn_right()
+    elif "-12" in sys.argv:
+        test_turn_left()
+    elif "-13" in sys.argv:
+        test_reverse_direction()
     else:
         test()
