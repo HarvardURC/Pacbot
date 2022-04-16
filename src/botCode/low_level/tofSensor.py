@@ -28,5 +28,5 @@ class TofSensor:
     def get_distance(self):
         return self.sensor.get_distance()
 
-    def detectWall(self):
-        return self.get_distance() < 90
+    def detectWall(self, threshold = 90):
+        return self.get_distance() < threshold
