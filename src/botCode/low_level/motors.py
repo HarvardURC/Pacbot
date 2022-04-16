@@ -131,10 +131,9 @@ class Motors:
 
             sleep(0.1)
 
-    def reverse(self, ticks):
+    def reverse(self, cells):
         self.reverse_direction()
-        self.move_cells(ticks)
-        self.reverse_direction()
+        self.move_cells(cells)
 
     def back(self):
         if(self._rearIR.get_distance() > 25 and self._rleftIR.get_distance()> 10 and self._rrightIR.get_distance() > 10):
