@@ -19,7 +19,7 @@ def main():
         camera_number = 0
         processor = MovementProcessor(ADDRESS, PORT, camera_number, 15, 16, 27, windows)
     elif bottom:
-        camera_number = 0
+        camera_number = 2
         processor = MovementProcessor(ADDRESS, PORT, camera_number, 1, 15, 27, windows)
     processor.run()
 
