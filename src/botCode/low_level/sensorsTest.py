@@ -1,5 +1,5 @@
-from .pins import *
-from .sensors import Sensors
+from low_level.pins import *
+from low_level.sensors import Sensors
 from time import sleep
 
 #sensors = Sensors([pins.tof_fleft,pins.tof_fright], ["fleft","fright"], [0x32,0x33])

@@ -132,7 +132,7 @@ class LowLevelModule(rm.ProtoModule):
                 """
                 self.motors.reverse_direction()
                 self.motors.move_cells(1)
-                self.motors.reverse_direction()
+                #self.motors.reverse_direction()
                 self.forwards = 0
 
                                                
@@ -176,6 +176,8 @@ class LowLevelModule(rm.ProtoModule):
         self.set_frequency(0)
         if self.current_command:
             self._execute_command()
+        #else:
+        self.kill()
         self.loop.call_soon(self.tick)
 
     def kill(self):

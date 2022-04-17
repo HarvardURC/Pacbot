@@ -68,6 +68,13 @@ def test_advance_right_more():
     motors.turn_left()
     motors.move_cells(5)
     motors.turn_right()
+    if True:
+        motors.move_cells(6)
+        motors.turn_left()
+        motors.move_cells(3)
+        motors.turn_left()
+        motors.move_cells(6)
+        motors.turn_right()
 
 def test_advance_left():
     motors = Motors()
@@ -85,7 +92,6 @@ def test_turn_left():
 def test_reverse():
     motors = Motors()
     motors.reverse_direction()
-
 
 def test_drive_forward_till_clear():
     motors = Motors()

@@ -1,7 +1,7 @@
 import sys
 from time import sleep
-from pins import *
-from tofSensor import TofSensor
+from .pins import *
+from .tofSensor import TofSensor
 from .GPIOhelpers import *
 
 setGPIO()
