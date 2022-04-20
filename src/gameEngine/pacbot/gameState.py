@@ -137,8 +137,9 @@ class GameState:
         self.blue.respawn()
 
     def _end_game(self):
+        self.elapsed_time += time.time() - self.previous_start
         self.play = False
-        print("Sore: " + str(self.score))
+        print("Score: " + str(self.score))
         print("Time: " + str(self.elapsed_time))
 
     # Resets the round if Pacman dies with lives remaining

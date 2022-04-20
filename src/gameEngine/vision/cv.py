@@ -10,7 +10,7 @@ from .variables import *
 FREQUENCY = 30
 
 class MovementProcessor(rm.ProtoModule):
-    def __init__(self, addr, port, cam_id, y_off, height, width, show_windows):
+    def __init__(self, addr, port, cam_id, y_off, height, width, show_windows, flip_v=False, flip_h=False):
         super().__init__(addr, port, message_buffers, MsgType, FREQUENCY)
         self.cap = cv2.VideoCapture(cam_id)
         self.cap.set(3,640)
@@ -19,6 +19,8 @@ class MovementProcessor(rm.ProtoModule):
         self.height = height
         self.width = width
         self.show_windows = show_windows
+        self.flip_v = flip_v
+        self.flip_h = flip_h
         
     def msg_received(self, msg, msg_type):
         # This gets called whenever any message is received
@@ -43,6 +45,11 @@ class MovementProcessor(rm.ProtoModule):
             return
 
         warped = warped[:,20:-20]
+
+        if self.flip_v:
+            warped = warped[::-1]
+        if self.flip_h:
+            warped = warped[:,::-1]
 
         warped_blur = cv2.medianBlur(warped, 5)
         hsv = cv2.cvtColor(warped_blur, cv2.COLOR_BGR2HSV)

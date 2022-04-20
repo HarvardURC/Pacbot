@@ -101,7 +101,7 @@ class HeuristicHighLevelModule(rm.ProtoModule):
 
             pellet_heuristic = dist_to_pellet * PELLET_WEIGHT
             heuristics.append(ghost_heuristic + pellet_heuristic)
-        print(heuristics)
+        # print(heuristics)
         mins = []
         min_heur = float('inf')
         for i, heur in enumerate(heuristics):
@@ -120,6 +120,14 @@ class HeuristicHighLevelModule(rm.ProtoModule):
     def _send_command_message_to_target(self, p_loc, target):
         new_msg = PacmanCommand()
         new_msg.dir = self._get_direction(p_loc, target)
+        if new_msg.dir == PacmanCommand.NORTH:
+            print("N")
+        elif new_msg.dir == PacmanCommand.SOUTH:
+            print("S")
+        elif new_msg.dir == PacmanCommand.EAST:
+            print("E")
+        else:
+            print("W")
         self.write(new_msg.SerializeToString(), MsgType.PACMAN_COMMAND)
 
     def _send_stop_command(self):

@@ -2,11 +2,15 @@
 
 import cv2
 import numpy as np
+import sys
 from time import sleep
 from variables import lower_green, upper_green, lower_yellow, upper_yellow
 
-CAM_NUM = 1
+CAM_NUM = 0
+
 green = True
+if '-y' in sys.argv:
+    green = False
 
 def nothing(x):
     pass
@@ -70,11 +74,16 @@ class ViewImages:
             
 
             return_value, cv_image = camera.read()
-            cv_image = self.threshold(cv_image)
+            thres_cv_image = self.threshold(cv_image)
             # Display the modified image
-            cv2.imshow('picture', cv_image)
-            cv2.waitKey(3)
-            sleep(0.03)
+            cv2.imshow('picture', thres_cv_image)
+            cv2.imshow('actual', cv_image)
+            key = cv2.waitKey(3)
+            if key & 0xFF == ord('q'):
+                print("H: ",cv2.getTrackbarPos('H (low)', 'thresholds'), " to ", cv2.getTrackbarPos('H (high)', 'thresholds'))
+                print("S: ",cv2.getTrackbarPos('S (low)', 'thresholds'), " to ", cv2.getTrackbarPos('S (high)', 'thresholds'))
+                print("V: ",cv2.getTrackbarPos('V (low)', 'thresholds'), " to ", cv2.getTrackbarPos('V (high)', 'thresholds'))
+            #sleep(0.03)
 
     def threshold(self, img):
         """
