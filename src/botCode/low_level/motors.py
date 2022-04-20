@@ -185,6 +185,34 @@ class Motors:
             sleep(0.1)
         sleep(0.05)
         self.stop()
+    
+    def follow_heading_till_clear(self, irSensor, heading, direction=1):
+        self.setpointHeading = heading
+        
+        # Cycle front and back IR  (this is weird and we don't know why)
+        self._frontIR.get_distance()
+        self._rearIR.get_distance()
+
+
+        #TODO: This PID loop is busted.  It stops as soon as the sensor no longer detects a wall, which happens mid-turn.
+        start_time = time.time()
+        while (irSensor.detectWall() and ((time.time() - start_time < 1))):
+            self.inputStraight = self.teensy_sensors.get_heading()
+            error = self.compute_heading_error(self.inputStraight, self.setpointHeading)
+            self.PIDHeading.compute(error, 0)
+            self.move_motors(direction * (MOTOR_SPEED - 10 + self.PIDHeading.output()), direction * (MOTOR_SPEED - 10 - self.PIDHeading.output()))
+
+            #print("Sensor reading:", irSensor.get_distance())
+            #print(self._rleftIR.get_distance(), " ", self._rrightIR.get_distance())
+            sleep(0.1)
+            
+            if direction == 1 and self._frontIR.detectWall(threshold = 60):
+                break
+            elif direction == -1 and self._rearIR.detectWall(threshold = 60):
+                break
+
+        sleep(0.05)
+        self.stop()
 
 
 
@@ -229,3 +257,26 @@ class Motors:
 
     def escape(self):
         pass
+
+
+    # Alternative function for driving in actual direction
+    def drive_in_direction(self, direction, cells):
+        desired_heading = self.heading[direction]
+        heading_error = self.compute_heading_error(self.teensy_sensors.get_heading(), desired_heading)
+        
+        # Make directional adjustment if greater than 20 degrees
+        if abs(heading_error) > 20:
+            # Do appropriate corrections with IR sensors (when turning about 90 degrees left or right)
+            if heading_error < -70 and heading_error > -110:
+                curr_heading = self.heading[(direction - 1) % 4]
+                self.follow_heading_till_clear(self._rrightIR, curr_heading)
+                self.follow_heading_till_clear(self._frightIR, curr_heading, direction=-1)
+            elif heading_error > 70 and heading_error < 110:
+                curr_heading = self.heading[(direction + 1) % 4]
+                self.follow_heading_till_clear(self._rleftIR, curr_heading)
+                self.follow_heading_till_clear(self._frightIR, curr_heading, direction=-1)
+
+            self.turn_to_direction(desired_heading)
+
+        # Drive forward
+        self.drive_straight(desired_heading, cells*TICKS_CELL)

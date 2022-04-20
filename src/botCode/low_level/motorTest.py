@@ -2,6 +2,7 @@ from low_level.motor import Motor, MotorDirection
 from low_level.pins import *
 from time import sleep
 from low_level.motors import Motors
+from low_level.motors import Direction
 import sys
 
 def test():
@@ -97,6 +98,10 @@ def test_drive_forward_till_clear():
     motors = Motors()
     motors.driveForwardTillClear(motors._rleftIR)
 
+def test_drive_in_direction_north():
+    motors = Motors()
+    motors.drive_in_direction(Direction.N, 1)
+
 
 if __name__ == "__main__":
     if "-1" in sys.argv:
@@ -127,5 +132,7 @@ if __name__ == "__main__":
         test_reverse_direction()
     elif "-14" in sys.argv:
         test_drive_forward_till_clear()
+    elif "-15" in sys.argv:
+        test_drive_in_direction_north()
     else:
         test()
