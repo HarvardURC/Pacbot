@@ -184,7 +184,7 @@ class Visualizer(rm.ProtoModule):
                     self.sprites['frightened']['r'].next().set_alpha(255)
             else:
                 self.sprites['frightened']['r'].next().set_alpha(255)
-            print(time_left)
+            #print(time_left)
         elif direction == PacmanState.LEFT:
             self.surface.blit(pygame.transform.scale(sprite_set['l'].next(), (self.square_size, self.square_size)), (x,y))
         elif direction == PacmanState.RIGHT:
