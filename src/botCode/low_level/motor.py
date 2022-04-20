@@ -30,12 +30,15 @@ class Motor:
                 #print("forwards")
             #print("...\n")
             #print(direction.value)
-            digitalWrite(self.direction_pin, direction.value)
+            if self.name == "Right":
+                digitalWrite(self.direction_pin, (direction.value + 1) % 2)
+            else:
+                digitalWrite(self.direction_pin, direction.value)
             analogWrite(self.power_pin,speed)
 
     def stop(self):
         analogWrite(self.power_pin,0)
-            
+        digitalWrite(self.direction_pin, 0)
             #GPIO.setup(10, OUTPUT)
             #pwm = GPIO.PWM(10, 490)
             #pwm.start(90)
