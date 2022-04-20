@@ -144,6 +144,9 @@ class Motors:
         self.reverse_direction()
         self.move_cells(cells)
 
+    def detectWalls():
+        return self._frontIR.detectWall(threshold = 60) or self._rearIR.detectWall(threshold = 60)
+
     def back(self):
         if(self._rearIR.get_distance() > 25 and self._rleftIR.get_distance()> 10 and self._rrightIR.get_distance() > 10):
             print("back")
@@ -187,6 +190,9 @@ class Motors:
         sleep(0.05)
         self.stop()
     
+    def follow_heading_till_condition(self, condition):
+        self.setpointHeading = self.heading[self.cur_dir]
+
     def follow_heading_till_clear(self, irSensor, heading, direction=1):
         self.setpointHeading = heading
         
