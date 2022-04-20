@@ -102,6 +102,22 @@ def test_drive_in_direction_north():
     motors = Motors()
     motors.drive_in_direction(Direction.N, 1)
 
+def test_drive_in_direction_long():
+    motors = Motors()
+    motors.drive_in_direction(Direction.N, 3)
+    motors.drive_in_direction(Direction.E, 2)
+    motors.drive_in_direction(Direction.N, 3)
+    motors.drive_in_direction(Direction.W, 5)
+
+def test_drive_in_direction_longer():
+    motors = Motors()
+    motors.drive_in_direction(Direction.N, 3)
+    motors.drive_in_direction(Direction.E, 2)
+    motors.drive_in_direction(Direction.N, 3)
+    motors.drive_in_direction(Direction.W, 5)
+    motors.drive_in_direction(Direction.N, 6)
+    motors.drive_in_direction(Direction.W, 3)
+    motors.drive_in_direction(Direction.S, 6)
 
 if __name__ == "__main__":
     if "-1" in sys.argv:
@@ -134,5 +150,9 @@ if __name__ == "__main__":
         test_drive_forward_till_clear()
     elif "-15" in sys.argv:
         test_drive_in_direction_north()
+    elif "-16" in sys.argv:
+        test_drive_in_direction_long()
+    elif "-17" in sys.argv:
+        test_drive_in_direction_longer()
     else:
         test()

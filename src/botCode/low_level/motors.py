@@ -49,7 +49,8 @@ class Motors:
         self._rrightIR.get_distance()
 
         self.heading = {Direction.W: 0, Direction.N: 90, Direction.E: 180, Direction.S: 270}
-        self.cur_dir = Direction.E
+        self.cur_dir = Direction.N
+        
 
         self.left_motor = Motor("Left", pins.motor_speed_l, pins.motor_direction_l, 0)
 
@@ -274,7 +275,7 @@ class Motors:
             elif heading_error > 70 and heading_error < 110:
                 curr_heading = self.heading[(direction + 1) % 4]
                 self.follow_heading_till_clear(self._rleftIR, curr_heading)
-                self.follow_heading_till_clear(self._frightIR, curr_heading, direction=-1)
+                self.follow_heading_till_clear(self._fleftIR, curr_heading, direction=-1)
 
             self.turn_to_direction(desired_heading)
 

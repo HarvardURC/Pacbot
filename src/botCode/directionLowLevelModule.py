@@ -29,23 +29,27 @@ class LowLevelModule(rm.ProtoModule):
         self.forwards = 0
         
 
-    def _move_forward(self):
-        self.motors.move_cells(1)
-
     def _execute_command(self):
         if self.current_command:
-            #print(self.current_dir)
             cmd = self.current_command
             self.current_command = None
             
+            if cmd == PacmanCommand.STOP:
+                self.motors.stop()
+                return
+
             if cmd == PacmanCommand.NORTH:
                 motor_dir = Direction.N
+                print("N")
             elif cmd == PacmanCommand.SOUTH:
                 motor_dir = Direction.S
+                print("S")
             elif cmd == PacmanCommand.WEST:
                 motor_dir = Direction.W
+                print("W")
             else:
                 motor_dir = Direction.E
+                print("E")
             
             self.motors.drive_in_direction(motor_dir, 1)
 
@@ -62,7 +66,7 @@ class LowLevelModule(rm.ProtoModule):
         if self.current_command:
             self._execute_command()
         #else:
-        #self.kill()
+        self.kill()
         self.loop.call_soon(self.tick)
 
     def kill(self):
