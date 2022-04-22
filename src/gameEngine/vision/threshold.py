@@ -6,7 +6,7 @@ import sys
 from time import sleep
 from variables import lower_green, upper_green, lower_yellow, upper_yellow
 
-CAM_NUM = 0
+CAM_NUM = 3
 
 green = True
 if '-y' in sys.argv:

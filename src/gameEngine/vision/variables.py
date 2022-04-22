@@ -8,8 +8,8 @@ n = 5
 
 # Threshold values for yellow dots
 # Hue, saturation, value
-lower_yellow = np.array([15,25,50])
+lower_yellow = np.array([20,50,181])
 upper_yellow = np.array([38,190,255])
 
-lower_green = np.array([64,25,152])
-upper_green = np.array([75,81,255])
+lower_green = np.array([40,44,129])
+upper_green = np.array([70,150,255])
