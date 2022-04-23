@@ -80,6 +80,17 @@ class MovementProcessor(rm.ProtoModule):
                     b_x = 1
                 elif b_x > self.width:
                     b_x = self.width
+
+                if b_x == 27:
+                    b_x = 26
+                elif b_x == 0:
+                    b_x = 1
+                
+                if b_y == 0:
+                    b_y = 1
+                elif b_y == 30:
+                    b_y = 29
+
                 if grid[b_x][b_y] == I:
                     skip = True
                 print((b_x, b_y))

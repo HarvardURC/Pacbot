@@ -37,6 +37,10 @@ class LowLevelModule(rm.ProtoModule):
             #print(self.current_dir)
             cmd = self.current_command
             self.current_command = None
+
+            if cmd == PacmanCommand.STOP:
+                self.kill()
+                return
             
             if cmd == PacmanCommand.NORTH:
                 motor_dir = Direction.N
