@@ -159,31 +159,12 @@ class Motors:
         return (cur - des + 540) % 360 - 180
 
     def turn_to_direction(self, heading):
-        #print("turn_to_direction() ", heading)
         self.inputTurn = self.compute_heading_error(self.teensy_sensors.get_heading(), heading)
         self.setpointTurnHeading = 0
         while abs(self.inputTurn) > 1:
             self.inputTurn = self.compute_heading_error(self.teensy_sensors.get_heading(), heading)
             self.PIDTurn.compute(self.inputTurn, self.setpointTurnHeading)
             self.move_motors(self.PIDTurn.output(), -self.PIDTurn.output())
-        self.stop()
-
-    def driveForwardTillClear(self, irSensor):
-        #print("driveForwardTillClear")
-        self.setpointHeading = self.heading[self.cur_dir]
-        
-        #TODO: This PID loop is busted.  It stops as soon as the sensor no longer detects a wall, which happens mid-turn.
-        while (irSensor.detectWall()):
-            self.inputStraight = self.teensy_sensors.get_heading()
-            error = self.compute_heading_error(self.inputStraight, self.setpointHeading)
-            self.PIDHeading.compute(error, 0)
-            self.move_motors((MOTOR_SPEED - 10 + self.PIDHeading.output()), (MOTOR_SPEED - 10 - self.PIDHeading.output()))
-
-            #print("Sensor reading:", irSensor.get_distance())
-            #print(self._rleftIR.get_distance(), " ", self._rrightIR.get_distance())
-
-            sleep(0.1)
-        sleep(0.05)
         self.stop()
     
     def follow_heading_till_clear(self, irSensor, heading, direction=1):
@@ -193,8 +174,7 @@ class Motors:
         self._frontIR.get_distance()
         self._rearIR.get_distance()
 
-
-        #TODO: This PID loop is busted.  It stops as soon as the sensor no longer detects a wall, which happens mid-turn.
+        
         start_time = time.time()
         while (irSensor.detectWall() and ((time.time() - start_time < 1))):
             self.inputStraight = self.teensy_sensors.get_heading()
@@ -214,52 +194,18 @@ class Motors:
         sleep(0.05)
         self.stop()
 
-
-
-    def turn_left(self):
-        #past_wall = True
-
-        #if(self._fleftIR.detectWall()):
-        #    self.driveForwardTillClear(self._fleftIR)
-        #    past_wall = False
-        # if(self._rleftIR.detectWall()):
-            # self.driveForwardTillClear(self._rleftIR)
-            # past_wall = False
-        self.driveForwardTillClear(self._rleftIR)
-
-        # if past_wall
-        #print(past_wall)
-        self.cur_dir = (self.cur_dir - 1)%4
-        #print("turn left ", self.cur_dir)
-        self.turn_to_direction(self.heading[self.cur_dir])
-    
-
-    def turn_right(self):
-        #$thresh = 90 # mm
-        #if(self._frightIR.detectWall()):
-        #    self.driveForwardTillClear(self._frightIR)
-        # if(self._rrightIR.detectWall()):
-        #    self.driveForwardTillClear(self._rrightIR)
-
-        self.driveForwardTillClear(self._rrightIR)
-
-        self.cur_dir = (self.cur_dir + 1) % 4
-        #print("turn right ", self.cur_dir)
-        self.turn_to_direction(self.heading[self.cur_dir])
-
     def reverse_direction(self):
         self.cur_dir = (self.cur_dir + 2) % 4
         self.turn_to_direction(self.heading[self.cur_dir])
 
     def straight(self):
-        #print("straight")
         self.move_motors(MOTOR_SPEED/2, MOTOR_SPEED/2)
 
     def escape(self):
         pass
 
 
-    # Alternative function for driving in actual direction
+    # function for driving in actual direction
     def drive_in_direction(self, direction, cells):
         desired_heading = self.heading[direction]
         heading_error = self.compute_heading_error(self.teensy_sensors.get_heading(), desired_heading)

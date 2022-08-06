@@ -11,6 +11,11 @@ PORT = os.environ.get("LOCAL_PORT", 11295)
 FREQUENCY = 2.05
 
 class PacbotSimulatorModule(rm.ProtoModule):
+    """ 
+        Run this module to simulate moving the PacMan with the heuristicHighLevelModule.
+        This translates the heuristicHighLevelModule PACMAN_COMMANDS to PacMan locations
+        that can be displayed on game graphics and processed by the game engine.
+    """
     def __init__(self, addr, port):
         self.subscriptions = [MsgType.PACMAN_COMMAND]
         super().__init__(addr, port, message_buffers, MsgType, FREQUENCY, self.subscriptions)

@@ -15,7 +15,7 @@ Run './heuristicHighLevelModule.py' to run the high level module.
 
 ## Low Level Code
 
-The module 'cameraLowLevelModule.py' is our current low level code module. It receives direction commands from the high level module and makes decisions on how to move the motors. The module 'lowLevelModule.py' is a previous iteration of this.
+The module 'directionLowLevelModule.py' is our current low level code module. It receives direction commands from the high level module and makes decisions on how to move the motors.
 
 Motor movement is managed through PID loops dependent on the IR sensors. See 'low_level' directory for related code.
 
@@ -28,8 +28,20 @@ Motor movement is managed through PID loops dependent on the IR sensors. See 'lo
 ## How to run the code
 
 1. Start the game engine - follow instructions in src/gameEngine.
-2. Start the local server.
-  - Supply the correct server address:port combination in `server.py` either through environment variables or by changing the default values in the code itself.
+2. Start the local bot server. 
+  - Supply the correct server address:port combination in `server.py` either through environment variables or by changing the default values in the code itself. Like the game engine server, the bot server should bind to your computer's local IP address.
   - run `./server.py`.
 3. Start the communications module by running `./pacbotCommsModule.py`.
-4. Start all other desired modules.
+  - Make sure the SERVER_ADDRESS:SERVER_PORT is the address of the game engine server and that you are on the same WiFi network as the game engine server. Make sure the LOCAL_ADDRESS:LOCAL_PORT is the adress of the local bot server (and that you're on the same WiFi network as the local server).
+4. Start all other desired modules (i.e. heuristicHighLevelModule and directionLowLevelModule).
+
+
+## Other Modules
+
+pacbotSimulatorModule.py
+
+Running this module will allow you to simulate the heuristicHighLevelModule playing the game. It communicates the moves the high level module makes to the game engine.
+
+keyboardModule.py
+
+This module should allow you to control the PacBot with your keyboard AWSD keys.
