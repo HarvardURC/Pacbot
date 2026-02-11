@@ -1,2 +1,2 @@
-protobuf==3.19.1
+protobuf==5.29.6
 pygame==2.1.0
